@@ -1,16 +1,16 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace 'ru.kpfu.itis.paramonov.quiz'
+    namespace 'ru.kpfu.itis.paramonov.firebase'
     compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
-        applicationId "ru.kpfu.itis.paramonov.quiz"
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
         versionCode rootProject.versionCode
@@ -36,31 +36,27 @@ android {
     kotlin {
         jvmToolchain(8)
     }
-
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
-    implementation project(':firebase-users')
-
     implementation(daggerHilt)
     "kapt"(daggerHiltKapt)
 
-    implementation(viewBindingDelegate)
-
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
-
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
 
     def firebaseBoMVersion = '32.7.4'
     implementation(platform("com.google.firebase:firebase-bom:${firebaseBoMVersion}"))
     implementation("com.google.firebase:firebase-auth")
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.2.2'
+
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.firebase:firebase-storage:20.2.1'
+    implementation 'com.google.firebase:firebase-messaging:23.1.2'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "822251863975",
+    "firebase_url": "https://quiz-6001c-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "quiz-6001c",
+    "storage_bucket": "quiz-6001c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822251863975:android:86f869c4815bf7397e8082",
+        "android_client_info": {
+          "package_name": "ru.kpfu.itis.paramonov.quiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFPhgIuzb8G78AvsVAiOKMkt90Ham1QMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

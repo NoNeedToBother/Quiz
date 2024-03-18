@@ -1,16 +1,14 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace 'ru.kpfu.itis.paramonov.quiz'
+    namespace 'ru.kpfu.itis.paramonov.common'
     compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
-        applicationId "ru.kpfu.itis.paramonov.quiz"
+        applicationId "ru.kpfu.itis.paramonov.common"
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
         versionCode rootProject.versionCode
@@ -32,31 +30,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-    kotlin {
-        jvmToolchain(8)
-    }
-
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
-    implementation project(':firebase-users')
-
-    implementation(daggerHilt)
-    "kapt"(daggerHiltKapt)
-
-    implementation(viewBindingDelegate)
-
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
-
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
-
-    def firebaseBoMVersion = '32.7.4'
-    implementation(platform("com.google.firebase:firebase-bom:${firebaseBoMVersion}"))
-    implementation("com.google.firebase:firebase-auth")
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

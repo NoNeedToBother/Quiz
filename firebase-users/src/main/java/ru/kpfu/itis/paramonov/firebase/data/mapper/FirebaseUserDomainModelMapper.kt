@@ -7,6 +7,7 @@ import javax.inject.Inject
 class FirebaseUserDomainModelMapper @Inject constructor() {
     fun fromFirebaseDataModel(firebaseUser: FirebaseUserDataModel): FirebaseUserDomainModel {
         return FirebaseUserDomainModel(
+            firebaseUser.id,
             firebaseUser.username
         )
     }

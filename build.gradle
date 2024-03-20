@@ -15,6 +15,13 @@ buildscript {
 
         viewBindingDelegateVersion = "1.5.9"
         viewBindingDelegate = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:$viewBindingDelegateVersion"
+
+        androidxCoreVersion = "1.8.0"
+        androidXCore = "androidx.core:core-ktx:$androidxCoreVersion"
+        androidXCompatVersion = "1.6.1"
+        androidXCompat = "androidx.appcompat:appcompat:$androidXCompatVersion"
+        materialVersion = "1.11.0"
+        material = "com.google.android.material:material:$materialVersion"
     }
 
     repositories {

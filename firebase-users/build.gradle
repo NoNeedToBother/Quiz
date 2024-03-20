@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'ru.kpfu.itis.paramonov.firebase'
+    namespace 'ru.kpfu.itis.paramonov.quiz'
     compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
@@ -39,12 +39,10 @@ android {
 }
 
 dependencies {
+    implementation project(':common')
+
     implementation(daggerHilt)
     "kapt"(daggerHiltKapt)
-
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
 
     def firebaseBoMVersion = '32.7.4'
     implementation(platform("com.google.firebase:firebase-bom:${firebaseBoMVersion}"))

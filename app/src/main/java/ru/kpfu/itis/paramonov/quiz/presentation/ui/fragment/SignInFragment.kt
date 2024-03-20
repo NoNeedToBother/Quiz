@@ -1,24 +1,52 @@
 package ru.kpfu.itis.paramonov.quiz.presentation.ui.fragment
 
-import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import ru.kpfu.itis.paramonov.common_android.ui.fragments.BaseFragment
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.databinding.FragmentSignInBinding
 import ru.kpfu.itis.paramonov.quiz.presentation.ui.viewmodel.SignInViewModel
 
-class SignInFragment(): Fragment(R.layout.fragment_sign_in) {
+class SignInFragment(): BaseFragment(R.layout.fragment_sign_in) {
 
     private val binding: FragmentSignInBinding by viewBinding(FragmentSignInBinding::bind)
 
     private val viewModel: SignInViewModel by viewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView() {
         setOnClickListeners()
+    }
+
+    override fun observeData() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
+                launch {
+                    checkErrors()
+                }
+                launch {
+                    collectUserData()
+                }
+            }
+        }
+    }
+
+    private suspend fun checkErrors() {
+        for (error in viewModel.errorsChannel) {
+            val errorMessage = error.message ?: getString(R.string.default_error_msg)
+            val errorTitle = getString(R.string.login_failed)
+
+            showErrorBottomSheetDialog(errorTitle, errorMessage)
+        }
+    }
+
+    private suspend fun collectUserData() {
+        viewModel.userDataFlow.collect { userModel ->
+
+        }
     }
 
     private fun setOnClickListeners() {

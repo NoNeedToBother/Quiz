@@ -32,6 +32,7 @@ class SignInViewModel @Inject constructor(
                 _userDataFlow.value = authenticateUserUseCase.invoke(username, password)
                 Log.i("SUCCESS", "GOOD!")
             } catch (ex: Exception) {
+                errorsChannel.send(ex)
                 Log.i("EXCEPTION", ex.message ?: "ERROR! ERROR! ERROR!")
             }
         }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- registration -->
+    <string name="weak_password">Password must have 6 or more symbols, contain one uppercase
+        and lowercase letter and one digit;</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="taken_email">The email is already taken</string>
+    <string name="register_fail_try_again">Failed to register, try again</string>
+
+    <!--signing in -->
+    <string name="user_email_exists">No user with this email exists</string>
+    <string name="no_user_email">No user with this email exists</string>
+    <string name="sign_in_fail_try_again">Failed to sign in, try again</string>
+
+    <!-- misc -->
+    <string name="fail_read_user_data">Failed to read user data</string>
+</resources>

@@ -36,8 +36,7 @@ class RegisterViewModel @Inject constructor(
 
                 Log.i("SUCCESS", "GOOD!")
             } catch (ex: Throwable) {
-                Log.i("FAIL", ex.message ?: "ERROR! ERROR! ERROR!")
-                //errorsChannel.send(ex)
+                errorsChannel.send(ex)
             }
         }
     }

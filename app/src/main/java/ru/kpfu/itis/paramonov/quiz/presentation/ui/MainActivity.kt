@@ -4,8 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import ru.kpfu.itis.paramonov.quiz.R
-import ru.kpfu.itis.paramonov.quiz.presentation.ui.fragment.RegisterFragment
-import ru.kpfu.itis.paramonov.quiz.presentation.ui.fragment.SignInFragment
+import ru.kpfu.itis.paramonov.feature_authentication.presentation.fragment.RegisterFragment
 
 @AndroidEntryPoint
 class MainActivity: AppCompatActivity(R.layout.activity_main) {

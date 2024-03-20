@@ -15,5 +15,6 @@ dependencyResolutionManagement {
 rootProject.name = "Quiz"
 include ':app'
 include ':common'
-include ':firebase-users'
+include ':firebase-api'
 include ':common-android'
+include ':feature-authentication'

@@ -9,4 +9,11 @@
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bottom_sheet_background</item>
     </style>
+
+    <style name="QuizLogo">
+        <item name="android:text">Quiz</item>
+        <item name="android:textSize">100sp</item>
+        <item name="fontFamily">@font/stardos_stencil_bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

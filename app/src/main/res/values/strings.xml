@@ -1,15 +1,2 @@
 <resources>
-    <string name="app_name">Quiz</string>
-    <string name="enter_username">Enter username</string>
-    <string name="enter_password">Enter password</string>
-    <string name="go_to_register">Go to register</string>
-    <string name="sign_in_guest">Sign in as guest</string>
-    <string name="sign_in">Sign in</string>
-    <string name="go_to_sign_in">Go to sign in</string>
-    <string name="register">Register</string>
-    <string name="confirm_password">Confirm password</string>
-    <string name="enter_email">Enter email</string>
-    <string name="registration_failed">Registration failed</string>
-    <string name="default_error_msg">Something wrong happened…</string>
-    <string name="login_failed">Login failed</string>
 </resources>

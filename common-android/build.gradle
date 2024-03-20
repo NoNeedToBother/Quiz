@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation project(':common')
 
     implementation(androidXCore)
     implementation(androidXCompat)

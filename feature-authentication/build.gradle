@@ -1,16 +1,15 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace 'ru.kpfu.itis.paramonov.quiz'
+    namespace 'ru.kpfu.itis.paramonov.feature_authentication'
     compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
-        applicationId "ru.kpfu.itis.paramonov.quiz"
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
         versionCode rootProject.versionCode
@@ -32,7 +31,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
     kotlin {
         jvmToolchain(8)
     }
@@ -43,10 +41,13 @@ android {
 }
 
 dependencies {
-    implementation project(':firebase-api')
     implementation project(':common')
     implementation project(':common-android')
-    implementation project(':feature-authentication')
+    implementation project(':firebase-api')
+
+    implementation(androidXCore)
+    implementation(androidXCompat)
+    implementation(material)
 
     implementation(daggerHilt)
     "kapt"(daggerHiltKapt)
@@ -57,13 +58,6 @@ dependencies {
 
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
-    def firebaseBoMVersion = '32.7.4'
-    implementation(platform("com.google.firebase:firebase-bom:${firebaseBoMVersion}"))
-    implementation("com.google.firebase:firebase-auth")
-
-    implementation(androidXCore)
-    implementation(androidXCompat)
-    implementation(material)
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

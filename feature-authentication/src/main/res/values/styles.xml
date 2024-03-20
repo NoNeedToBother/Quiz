@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Username">
+        <item name="endIconDrawable">@drawable/edit</item>
+        <item name="endIconMode">custom</item>
+    </style>
+    <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Password">
+
+        <item name="endIconMode">password_toggle</item>
+    </style>
+
+    <style name="Widget.Material3.Button.OutlinedButton.AuthMenu">
+        <item name="strokeColor">@color/auth_menu</item>
+        <item name="android:textColor">@color/auth_menu</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+</resources>

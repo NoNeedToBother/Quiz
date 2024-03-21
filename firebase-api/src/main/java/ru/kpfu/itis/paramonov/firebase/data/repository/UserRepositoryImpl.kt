@@ -6,7 +6,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.common.utils.ResourceManager
+import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.RegisterException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.SignInException
 import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
@@ -27,9 +27,14 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun registerUser
                 (username: String,
                  email: String,
-                 password: String): FirebaseUser {
+                 password: String,
+                 confirmPassword: String
+    ): FirebaseUser {
         if (!checkPassword(password)) throw RegisterException(
             resManager.getString(R.string.weak_password)
+        )
+        if (confirmPassword != password) throw RegisterException(
+            resManager.getString(R.string.passwords_not_match)
         )
         val result = withContext(dispatcher) {
             try {

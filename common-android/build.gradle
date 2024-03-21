@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -30,6 +32,10 @@ android {
         jvmTarget = '1.8'
     }
 
+    kotlin {
+        jvmToolchain(8)
+    }
+
     buildFeatures {
         viewBinding = true
     }
@@ -41,6 +47,9 @@ dependencies {
     implementation(androidXCore)
     implementation(androidXCompat)
     implementation(material)
+
+    implementation(daggerHilt)
+    "kapt"(daggerHiltKapt)
 
     implementation(viewBindingDelegate)
     testImplementation 'junit:junit:4.13.2'

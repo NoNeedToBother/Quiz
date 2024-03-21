@@ -22,6 +22,10 @@ buildscript {
         androidXCompat = "androidx.appcompat:appcompat:$androidXCompatVersion"
         materialVersion = "1.11.0"
         material = "com.google.android.material:material:$materialVersion"
+
+        jetpackNavigationVersion = "2.7.7"
+        jetpackNavigationFragment = "androidx.navigation:navigation-fragment-ktx:$jetpackNavigationVersion"
+        jetpackNavigationUi = "androidx.navigation:navigation-ui-ktx:$jetpackNavigationVersion"
     }
 
     repositories {

@@ -12,9 +12,10 @@ class RegisterUserUseCase @Inject constructor(
     private val repository: UserRepository,
     private val mapper: UserModelMapper
 ) {
-    suspend operator fun invoke(username: String, email: String, password: String): UserModel {
+    suspend operator fun invoke(username: String, email: String,
+                                password: String, confirmPassword: String): UserModel {
         return withContext(dispatcher) {
-            val firebaseUser = repository.registerUser(username, email, password)
+            val firebaseUser = repository.registerUser(username, email, password, confirmPassword)
             mapper.map(firebaseUser)
         }
     }

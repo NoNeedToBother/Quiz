@@ -1,11 +1,10 @@
 package ru.kpfu.itis.paramonov.firebase.data.handler
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import ru.kpfu.itis.paramonov.common.handler.ExceptionHandler
-import ru.kpfu.itis.paramonov.common.utils.ResourceManager
+import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.RegisterException
 import ru.kpfu.itis.paramonov.quiz.R
 import javax.inject.Inject

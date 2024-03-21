@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">feature-registration</string>
     <string name="enter_username">Enter username</string>
     <string name="enter_password">Enter password</string>
     <string name="go_to_register">Go to register</string>
@@ -12,4 +11,6 @@
     <string name="registration_failed">Registration failed</string>
     <string name="login_failed">Login failed</string>
     <string name="default_error_msg">Something wrong happened…</string>
+    <string name="welcome_user">Welcome, %s</string>
+    <string name="welcome_back_user">Welcome back, %s</string>
 </resources>

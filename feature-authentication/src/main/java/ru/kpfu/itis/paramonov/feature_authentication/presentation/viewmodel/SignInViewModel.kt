@@ -33,7 +33,6 @@ class SignInViewModel @Inject constructor(
                 Log.i("SUCCESS", "GOOD!")
             } catch (ex: Exception) {
                 errorsChannel.send(ex)
-                Log.i("EXCEPTION", ex.message ?: "ERROR! ERROR! ERROR!")
             }
         }
     }

@@ -60,26 +60,14 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="64dp"
         style="@style/Widget.Material3.Button.OutlinedButton.AuthMenu"
-        app:layout_constraintBottom_toTopOf="@id/btn_login_guest"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="4dp"
-        android:text="@string/sign_in"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_login_guest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="64dp"
-        style="@style/Widget.Material3.Button.OutlinedButton.AuthMenu"
-        app:layout_constraintBottom_toTopOf="@id/btn_go_sign_in"
+        app:layout_constraintBottom_toTopOf="@id/btn_go_register"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="32dp"
-        android:text="@string/sign_in_guest"/>
+        android:text="@string/sign_in"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_go_sign_in"
+        android:id="@+id/btn_go_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="64dp"

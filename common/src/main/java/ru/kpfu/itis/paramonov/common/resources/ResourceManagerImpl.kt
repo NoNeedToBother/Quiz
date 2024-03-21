@@ -1,7 +1,10 @@
-package ru.kpfu.itis.paramonov.common.utils
+package ru.kpfu.itis.paramonov.common.resources
 
 import android.content.Context
+import android.content.res.Resources.NotFoundException
+import android.graphics.drawable.Drawable
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -13,4 +16,10 @@ class ResourceManagerImpl @Inject constructor(
     override fun getString(@StringRes stringId: Int, vararg args: Any?): String {
         return context.resources.getString(stringId, *args)
     }
+
+    override fun getDrawable(drawableId: Int): Drawable {
+        return ContextCompat.getDrawable(context, drawableId)
+            ?: throw NotFoundException()
+    }
+
 }

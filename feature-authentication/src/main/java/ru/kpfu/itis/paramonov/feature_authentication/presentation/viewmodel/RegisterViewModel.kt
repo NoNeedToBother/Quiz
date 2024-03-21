@@ -23,12 +23,12 @@ class RegisterViewModel @Inject constructor(
 
     val errorsChannel = Channel<Throwable>()
 
-    fun registerUser(username: String, email: String, password: String) {
+    fun registerUser(username: String, email: String, password: String, confirmPassword: String) {
         _userDataFlow.value = null
 
         viewModelScope.launch {
             try {
-                _userDataFlow.value = registerUserUseCase.invoke(username, email, password)
+                _userDataFlow.value = registerUserUseCase.invoke(username, email, password, confirmPassword)
 
                 Log.i("SUCCESS", "GOOD!")
             } catch (ex: Throwable) {

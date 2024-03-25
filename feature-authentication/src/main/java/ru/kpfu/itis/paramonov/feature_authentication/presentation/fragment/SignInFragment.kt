@@ -7,14 +7,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.common_android.ui.fragments.BaseFragment
+import ru.kpfu.itis.paramonov.common.model.UserModel
+import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.feature_authentication.R
 import ru.kpfu.itis.paramonov.common_android.R as commonR
 import ru.kpfu.itis.paramonov.feature_authentication.databinding.FragmentSignInBinding
 import ru.kpfu.itis.paramonov.feature_authentication.presentation.viewmodel.SignInViewModel
 
-@AndroidEntryPoint
-class SignInFragment(): BaseFragment(R.layout.fragment_sign_in) {
+class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
 
     private val binding: FragmentSignInBinding by viewBinding(FragmentSignInBinding::bind)
 
@@ -28,33 +28,37 @@ class SignInFragment(): BaseFragment(R.layout.fragment_sign_in) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
                 launch {
-                    checkErrors()
-                }
-                launch {
                     collectUserData()
                 }
             }
         }
     }
 
-    private suspend fun checkErrors() {
-        for (error in viewModel.errorsChannel) {
-            val errorMessage = error.message ?: getString(commonR.string.default_error_msg)
-            val errorTitle = getString(R.string.login_failed)
-
-            showErrorBottomSheetDialog(errorTitle, errorMessage)
+    private suspend fun collectUserData() {
+        viewModel.userDataFlow.collect { result ->
+            result?.run {
+                when (this) {
+                    is SignInViewModel.SigningInResult.Success ->
+                        onSigningInSuccess(getValue())
+                    is SignInViewModel.SigningInResult.Failure ->
+                        onSigningInFail(getException())
+                }
+            }
         }
     }
 
-    private suspend fun collectUserData() {
-        viewModel.userDataFlow.collect { user ->
-            user?.run {
-                showMessageSnackbar(
-                    binding.tvLogo,
-                    getString(R.string.welcome_back_user, username)
-                )
-            }
-        }
+    private fun onSigningInSuccess(user: UserModel) {
+        showMessageSnackbar(
+            binding.tvLogo,
+            getString(R.string.welcome_back_user, user.username)
+        )
+    }
+
+    private fun onSigningInFail(exception: Throwable) {
+        val errorMessage = exception.message ?: getString(commonR.string.default_error_msg)
+        val errorTitle = getString(R.string.login_failed)
+
+        showErrorBottomSheetDialog(errorTitle, errorMessage)
     }
 
     private fun setOnClickListeners() {

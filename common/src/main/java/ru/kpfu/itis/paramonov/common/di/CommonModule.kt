@@ -9,10 +9,10 @@ import ru.kpfu.itis.paramonov.common.resources.ResourceManagerImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface CommonBinderModule {
+abstract class CommonModule {
 
     @Binds
-    fun bindResManagerToImpl(
+    abstract fun bindResManagerToImpl(
         impl: ResourceManagerImpl
     ): ResourceManager
 }

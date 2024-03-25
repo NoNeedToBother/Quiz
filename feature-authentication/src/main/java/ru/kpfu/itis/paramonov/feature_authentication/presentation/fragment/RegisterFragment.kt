@@ -6,8 +6,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.common_android.ui.fragments.BaseFragment
+import kotlinx.coroutines.withContext
+import ru.kpfu.itis.paramonov.common.model.UserModel
+import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.feature_authentication.R
 import ru.kpfu.itis.paramonov.common_android.R as commonR
 import ru.kpfu.itis.paramonov.feature_authentication.databinding.FragmentRegisterBinding
@@ -28,9 +31,6 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
                 launch {
-                    checkErrors()
-                }
-                launch {
                     collectUserData()
                 }
             }
@@ -38,24 +38,32 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
     }
 
     private suspend fun collectUserData() {
-        viewModel.userDataFlow.collect { user ->
-            user?.run {
-                showMessageSnackbar(
-                    binding.tvLogo,
-                    getString(R.string.welcome_user, username)
-                )
+        viewModel.userDataFlow.collect { result ->
+            result?.run {
+                when (this) {
+                    is RegisterViewModel.RegistrationResult.Success ->
+                        onRegistrationSuccess(getValue())
+                    is RegisterViewModel.RegistrationResult.Failure ->
+                        onRegistrationFail(getException())
+                }
             }
         }
     }
 
-    private suspend fun checkErrors() {
-        for (error in viewModel.errorsChannel) {
-            val errorMessage = error.message ?: getString(commonR.string.default_error_msg)
-            val errorTitle = getString(R.string.registration_failed)
-
-            showErrorBottomSheetDialog(errorTitle, errorMessage)
-        }
+    private fun onRegistrationSuccess(user: UserModel) {
+        showMessageSnackbar(
+            binding.tvLogo,
+            getString(R.string.welcome_user, user.username)
+        )
     }
+
+    private fun onRegistrationFail(exception: Throwable) {
+        val errorMessage = exception.message ?: getString(commonR.string.default_error_msg)
+        val errorTitle = getString(R.string.registration_failed)
+
+        showErrorBottomSheetDialog(errorTitle, errorMessage)
+    }
+
 
     private fun setOnClickListeners() {
         with(binding) {

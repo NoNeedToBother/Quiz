@@ -26,6 +26,13 @@ buildscript {
         jetpackNavigationVersion = "2.7.7"
         jetpackNavigationFragment = "androidx.navigation:navigation-fragment-ktx:$jetpackNavigationVersion"
         jetpackNavigationUi = "androidx.navigation:navigation-ui-ktx:$jetpackNavigationVersion"
+
+        retrofitVersion = "2.9.0"
+        retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
+        retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
+        gsonVersion = "2.10.1"
+        gson = "com.google.code.gson:gson:$gsonVersion"
     }
 
     repositories {

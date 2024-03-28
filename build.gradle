@@ -9,9 +9,8 @@ buildscript {
         targetSdkVersion = 34
 
         daggerVersion = '2.49'
-
-        daggerHilt = "com.google.dagger:hilt-android:$daggerVersion"
-        daggerHiltKapt = "com.google.dagger:hilt-compiler:$daggerVersion"
+        dagger = "com.google.dagger:dagger:$daggerVersion"
+        daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
 
         viewBindingDelegateVersion = "1.5.9"
         viewBindingDelegate = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:$viewBindingDelegateVersion"
@@ -27,12 +26,21 @@ buildscript {
         jetpackNavigationFragment = "androidx.navigation:navigation-fragment-ktx:$jetpackNavigationVersion"
         jetpackNavigationUi = "androidx.navigation:navigation-ui-ktx:$jetpackNavigationVersion"
 
+        viewModelKtxVersion = "2.6.0"
+        viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelKtxVersion"
+
+        fragmentKtxVersion = "1.6.2"
+        fragmentKtx = "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
+
         retrofitVersion = "2.9.0"
         retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
         retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
         gsonVersion = "2.10.1"
         gson = "com.google.code.gson:gson:$gsonVersion"
+
+        coroutinesVersion = "1.3.9"
+        coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     }
 
     repositories {
@@ -49,5 +57,4 @@ plugins {
     id 'com.android.application' version '8.0.2' apply false
     id 'com.android.library' version '8.0.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.20' apply false
-    id("com.google.dagger.hilt.android") version "2.49" apply false
 }

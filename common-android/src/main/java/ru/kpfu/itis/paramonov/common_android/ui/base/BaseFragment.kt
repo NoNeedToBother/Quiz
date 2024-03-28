@@ -33,22 +33,6 @@ abstract class BaseFragment(@LayoutRes layoutId: Int): Fragment(layoutId) {
         val defaultMargin =
             requireContext().resources.getDimensionPixelSize(com.google.android.material.R.dimen.mtrl_snackbar_margin)
         messageSnackbar.adjustPosition(defaultMargin, marginTop = marginTop)
-        /*
-        val view = LayoutInflater.from(context).inflate(R.layout.snackbar_message, null)
-        view.findViewById<TextView>(R.id.tv_message).text = message
-        val snackbar = Snackbar
-            .make(anchor, message, Snackbar.LENGTH_LONG)
-        val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        layoutParams.setMargins(defaultMargin, marginTop, defaultMargin, defaultMargin)
-        with (snackbar.view as SnackbarLayout) {
-            setBackgroundColor(Color.TRANSPARENT)
-            addView(view, 0)
-            setLayoutParams(layoutParams)
-        }
-        snackbar.show()*/
         messageSnackbar.show()
 
     }

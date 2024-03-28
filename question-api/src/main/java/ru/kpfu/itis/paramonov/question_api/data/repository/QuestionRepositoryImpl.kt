@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.question_api.data
+package ru.kpfu.itis.paramonov.question_api.data.repository
 
 import ru.kpfu.itis.paramonov.question_api.data.mapper.QuestionDomainModelMapper
 import ru.kpfu.itis.paramonov.question_api.data.remote.QuestionApi

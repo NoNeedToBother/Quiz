@@ -2,7 +2,6 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -34,6 +33,9 @@ android {
     kotlin {
         jvmToolchain(8)
     }
+    kapt {
+        correctErrorTypes = true
+    }
 
     buildFeatures {
         viewBinding = true
@@ -49,14 +51,16 @@ dependencies {
     implementation(androidXCompat)
     implementation(material)
 
-    implementation(daggerHilt)
-    "kapt"(daggerHiltKapt)
+    implementation(dagger)
+    "kapt"(daggerCompiler)
 
     implementation(viewBindingDelegate)
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+    implementation(viewModelKtx)
 
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation(fragmentKtx)
+    implementation(dagger)
+    kapt(daggerCompiler)
 
     implementation(jetpackNavigationFragment)
     implementation(jetpackNavigationUi)

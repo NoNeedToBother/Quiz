@@ -1,8 +1,6 @@
-package ru.kpfu.itis.paramonov.feature_authentication.presentation.viewmodel
+package ru.kpfu.itis.paramonov.feature_authentication.presentation.registration
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -11,8 +9,7 @@ import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.RegisterUserUseCase
 import javax.inject.Inject
 
-@HiltViewModel
-class RegisterViewModel @Inject constructor(
+class RegisterViewModel(
     private val registerUserUseCase: RegisterUserUseCase
 ): BaseViewModel() {
 

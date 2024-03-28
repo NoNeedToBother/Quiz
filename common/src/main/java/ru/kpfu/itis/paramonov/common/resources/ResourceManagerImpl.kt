@@ -5,11 +5,10 @@ import android.content.res.Resources.NotFoundException
 import android.graphics.drawable.Drawable
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class ResourceManagerImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    private val context: Context
 ): ResourceManager {
     override fun getString(@StringRes stringId: Int): String = context.resources.getString(stringId)
 

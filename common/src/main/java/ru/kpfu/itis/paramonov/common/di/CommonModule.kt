@@ -1,18 +1,22 @@
 package ru.kpfu.itis.paramonov.common.di
 
-import dagger.Binds
 import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common.resources.ResourceManagerImpl
 
 @Module
-@InstallIn(SingletonComponent::class)
-abstract class CommonModule {
+class CommonModule {
 
-    @Binds
-    abstract fun bindResManagerToImpl(
+    @Provides
+    fun bindResManagerToImpl(
         impl: ResourceManagerImpl
-    ): ResourceManager
+    ): ResourceManager = impl
+
+    @Provides
+    fun provideDispatcher(): CoroutineDispatcher {
+        return Dispatchers.IO
+    }
 }

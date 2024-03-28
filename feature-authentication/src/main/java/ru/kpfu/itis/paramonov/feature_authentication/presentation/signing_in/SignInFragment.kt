@@ -1,25 +1,36 @@
-package ru.kpfu.itis.paramonov.feature_authentication.presentation.fragment
+package ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in
 
-import androidx.fragment.app.viewModels
+import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.feature_authentication.R
 import ru.kpfu.itis.paramonov.common_android.R as commonR
 import ru.kpfu.itis.paramonov.feature_authentication.databinding.FragmentSignInBinding
-import ru.kpfu.itis.paramonov.feature_authentication.presentation.viewmodel.SignInViewModel
+import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationComponent
+import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
+import ru.kpfu.itis.paramonov.feature_authentication.presentation.registration.RegisterFragment
+import javax.inject.Inject
 
 class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
 
     private val binding: FragmentSignInBinding by viewBinding(FragmentSignInBinding::bind)
 
-    private val viewModel: SignInViewModel by viewModels()
+    @Inject
+    lateinit var viewModel: SignInViewModel
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        FeatureUtils.getFeature<FeatureAuthenticationComponent>(this, FeatureAuthenticationDependencies::class.java)
+            .signingInComponentFactory()
+            .create(this)
+            .inject(this)
+    }
     override fun initView() {
         setOnClickListeners()
     }
@@ -71,9 +82,6 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
             }
 
             btnGoRegister.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .add(RegisterFragment(), RegisterFragment.REGISTER_FRAGMENT_TAG)
-                    .commit()
             }
         }
     }

@@ -2,7 +2,6 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -34,11 +33,17 @@ android {
     kotlin {
         jvmToolchain(8)
     }
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
-    implementation(daggerHilt)
-    "kapt"(daggerHiltKapt)
+    implementation(dagger)
+    "kapt"(daggerCompiler)
+
+    implementation(androidXCore)
+    implementation(coroutines)
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

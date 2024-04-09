@@ -9,7 +9,6 @@ import ru.kpfu.itis.paramonov.common.model.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.AuthenticateUserUseCase
 import java.lang.Exception
-import javax.inject.Inject
 
 class SignInViewModel(
     private val authenticateUserUseCase: AuthenticateUserUseCase
@@ -19,8 +18,12 @@ class SignInViewModel(
 
     val userDataFlow: StateFlow<SigningInResult?> get() = _userDataFlow
 
+    private val _signInProceedingFlow = MutableStateFlow(false)
+    val signInProceedingFlow: StateFlow<Boolean> get() = _signInProceedingFlow
+
     fun authenticateUser(username: String, password: String) {
         _userDataFlow.value = null
+        _signInProceedingFlow.value = true
 
         viewModelScope.launch {
             try {
@@ -28,6 +31,8 @@ class SignInViewModel(
                 _userDataFlow.value = SigningInResult.Success(user)
             } catch (ex: Exception) {
                 _userDataFlow.value = SigningInResult.Failure(ex)
+            } finally {
+                _signInProceedingFlow.value = false
             }
         }
     }
@@ -39,9 +44,5 @@ class SignInViewModel(
         class Failure(private val ex: Throwable): SigningInResult(), BaseViewModel.Result.Failure {
             override fun getException(): Throwable = ex
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 }

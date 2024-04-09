@@ -9,6 +9,10 @@ import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.quiz.App
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesModule
 import ru.kpfu.itis.paramonov.quiz.di.main.MainDependencies
+import ru.kpfu.itis.paramonov.quiz.di.modules.AppModule
+import ru.kpfu.itis.paramonov.quiz.di.modules.FeatureManagerModule
+import ru.kpfu.itis.paramonov.quiz.di.modules.NavigationModule
+
 @ApplicationScope
 @Component(
     modules = [

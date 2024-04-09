@@ -50,6 +50,7 @@ dependencies {
     implementation project(':common')
     implementation project(':common-android')
     implementation project(':feature-authentication')
+    implementation project(':navigation')
 
     implementation(dagger)
     "kapt"(daggerCompiler)

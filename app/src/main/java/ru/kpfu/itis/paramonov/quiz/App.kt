@@ -5,7 +5,6 @@ import com.google.firebase.FirebaseApp
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.FeatureHolderManager
 import ru.kpfu.itis.paramonov.common.di.FeatureContainer
 import ru.kpfu.itis.paramonov.common.di.dependencies.CommonApi
-import ru.kpfu.itis.paramonov.firebase.di.FirebaseApi
 import ru.kpfu.itis.paramonov.quiz.di.AppComponent
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesProvider
 import javax.inject.Inject

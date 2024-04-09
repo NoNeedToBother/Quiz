@@ -5,7 +5,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import ru.kpfu.itis.paramonov.common.handler.ExceptionHandler
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.SignInException
-import ru.kpfu.itis.paramonov.quiz.R
+import ru.kpfu.itis.paramonov.firebase.R
 import javax.inject.Inject
 
 class SignInExceptionHandler @Inject constructor(

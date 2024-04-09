@@ -10,9 +10,6 @@
         android:name="ru.kpfu.itis.paramonov.feature_authentication.presentation.registration.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
-        <action
-            android:id="@+id/action_registerFragment_to_userFragment"
-            app:destination="@id/signInFragment" />
     </fragment>
 
     <fragment
@@ -20,9 +17,6 @@
         android:name="ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" >
-        <action
-            android:id="@+id/action_userFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
     </fragment>
 
 </navigation>

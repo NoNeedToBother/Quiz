@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.quiz.di
+package ru.kpfu.itis.paramonov.quiz.di.modules
 
 import android.content.Context
 import dagger.Module
@@ -11,7 +11,7 @@ class AppModule {
 
     @ApplicationScope
     @Provides
-    fun provideContext(application: App): Context {
+    fun context(application: App): Context {
         return application
     }
 }

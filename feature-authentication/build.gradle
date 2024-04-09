@@ -46,6 +46,7 @@ dependencies {
     implementation project(':common')
     implementation project(':common-android')
     implementation project(':firebase-api')
+    implementation project(':navigation')
 
     implementation(androidXCore)
     implementation(androidXCompat)

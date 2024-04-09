@@ -14,7 +14,7 @@ import ru.kpfu.itis.paramonov.common_android.R as commonR
 import ru.kpfu.itis.paramonov.feature_authentication.databinding.FragmentSignInBinding
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationComponent
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
-import ru.kpfu.itis.paramonov.feature_authentication.presentation.registration.RegisterFragment
+import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import javax.inject.Inject
 
 class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
@@ -23,6 +23,9 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
 
     @Inject
     lateinit var viewModel: SignInViewModel
+
+    @Inject
+    lateinit var authenticationRouter: AuthenticationRouter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -82,11 +85,8 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
             }
 
             btnGoRegister.setOnClickListener {
+                authenticationRouter.goToRegister()
             }
         }
-    }
-
-    companion object {
-        const val SIGN_IN_FRAGMENT_TAG = "SIGN_IN_FRAGMENT"
     }
 }

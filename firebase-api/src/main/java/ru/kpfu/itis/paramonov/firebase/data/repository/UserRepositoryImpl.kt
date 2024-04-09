@@ -13,7 +13,7 @@ import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
-import ru.kpfu.itis.paramonov.quiz.R
+import ru.kpfu.itis.paramonov.firebase.R
 import java.lang.RuntimeException
 import javax.inject.Inject
 

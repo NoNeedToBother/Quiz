@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:822251863975:android:86f869c4815bf7397e8082",
         "android_client_info": {
-          "package_name": "ru.kpfu.itis.paramonov.quiz"
+          "package_name": "ru.kpfu.itis.paramonov.firebase"
         }
       },
       "oauth_client": [],

@@ -7,7 +7,7 @@ import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.feature_authentication.domain.mapper.UserModelMapper
 import javax.inject.Inject
 
-class  RegisterUserUseCase @Inject constructor(
+class RegisterUserUseCase @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val repository: UserRepository,
     private val mapper: UserModelMapper

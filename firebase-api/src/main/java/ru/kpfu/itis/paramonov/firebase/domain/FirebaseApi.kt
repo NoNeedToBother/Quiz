@@ -1,7 +1,7 @@
-package ru.kpfu.itis.paramonov.firebase.di
+package ru.kpfu.itis.paramonov.firebase.domain
 
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 
 interface FirebaseApi {
-    fun repository(): UserRepository
+    fun userRepository(): UserRepository
 }

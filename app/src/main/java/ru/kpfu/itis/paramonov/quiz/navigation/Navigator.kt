@@ -1,8 +1,10 @@
 package ru.kpfu.itis.paramonov.quiz.navigation
 
 import androidx.navigation.NavController
+import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
+import ru.kpfu.itis.paramonov.quiz.R
 
-class Navigator {
+class Navigator: AuthenticationRouter {
 
     private var navController: NavController? = null
 
@@ -15,5 +17,17 @@ class Navigator {
         if (this.navController == navController) {
             this.navController = null
         }
+    }
+
+    override fun goToRegister() {
+        navController?.navigate(
+            R.id.registerFragment
+        )
+    }
+
+    override fun goToSignIn() {
+        navController?.navigate(
+            R.id.signInFragment
+        )
     }
 }

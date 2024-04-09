@@ -9,7 +9,7 @@ import ru.kpfu.itis.paramonov.common.di.FeatureContainer
 import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationHolder
-import ru.kpfu.itis.paramonov.firebase.di.FirebaseApi
+import ru.kpfu.itis.paramonov.firebase.domain.FirebaseApi
 import ru.kpfu.itis.paramonov.firebase.di.FirebaseHolder
 import ru.kpfu.itis.paramonov.quiz.App
 

@@ -1,6 +1,4 @@
-package ru.kpfu.itis.paramonov.common.di
-
-import ru.kpfu.itis.paramonov.common.di.dependencies.CommonApi
+package ru.kpfu.itis.paramonov.common_android.di
 
 interface FeatureContainer {
 

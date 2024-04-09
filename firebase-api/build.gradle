@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id("kotlin-kapt")
     id("com.google.gms.google-services")
 }
 
@@ -31,9 +30,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    kapt {
-        correctErrorTypes = true
-    }
 
     kotlin {
         jvmToolchain(8)
@@ -42,9 +38,6 @@ android {
 
 dependencies {
     implementation project(':common')
-
-    implementation(dagger)
-    "kapt"(daggerCompiler)
 
     def firebaseBoMVersion = '32.7.4'
     implementation(platform("com.google.firebase:firebase-bom:${firebaseBoMVersion}"))

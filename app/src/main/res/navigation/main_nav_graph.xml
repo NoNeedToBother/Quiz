@@ -19,4 +19,11 @@
         tools:layout="@layout/fragment_sign_in" >
     </fragment>
 
+    <fragment
+        android:id="@+id/mainMenuFragment"
+        android:name="ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments.MainMenuFragment"
+        android:label="fragment_main_menu"
+        tools:layout="@layout/fragment_main_menu"
+        />
+
 </navigation>

@@ -1,6 +1,8 @@
 package ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in
 
 import android.content.Context
+import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -9,12 +11,15 @@ import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.gone
+import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_authentication.R
 import ru.kpfu.itis.paramonov.common_android.R as commonR
 import ru.kpfu.itis.paramonov.feature_authentication.databinding.FragmentSignInBinding
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationComponent
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
+import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import javax.inject.Inject
 
 class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
@@ -26,6 +31,9 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
 
     @Inject
     lateinit var authenticationRouter: AuthenticationRouter
+
+    @Inject
+    lateinit var mainMenuRouter: MainMenuRouter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -43,6 +51,23 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
                 launch {
                     collectUserData()
+                }
+                launch {
+                    checkSigningInProceeding()
+                }
+            }
+        }
+    }
+
+    private suspend fun checkSigningInProceeding() {
+        viewModel.signInProceedingFlow.collect {
+            with(binding) {
+                if (it) {
+                    layoutBase.gone()
+                    layoutProceeding.show()
+                } else {
+                    layoutBase.show()
+                    layoutProceeding.gone()
                 }
             }
         }
@@ -66,6 +91,7 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
             binding.tvLogo,
             getString(R.string.welcome_back_user, user.username)
         )
+        mainMenuRouter.goToMainMenu()
     }
 
     private fun onSigningInFail(exception: Throwable) {
@@ -88,5 +114,9 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
                 authenticationRouter.goToRegister()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }

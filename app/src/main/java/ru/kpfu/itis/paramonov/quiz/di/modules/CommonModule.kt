@@ -6,7 +6,7 @@ import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.resources.ResourceManagerImpl
+import ru.kpfu.itis.paramonov.common_android.utils.ResourceManagerImpl
 
 @Module
 class CommonModule {

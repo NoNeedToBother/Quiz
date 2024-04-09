@@ -83,6 +83,12 @@ class UserRepositoryImpl(
         } ?: throw RuntimeException(resManager.getString(R.string.fail_read_user_data))
     }
 
+    override suspend fun checkUserIsAuthenticated(): Boolean {
+        return auth.currentUser?.let {
+            true
+        } ?: false
+    }
+
     private suspend fun signInUser(email: String, password: String): FirebaseUser {
         val result = withContext(dispatcher) {
             try {

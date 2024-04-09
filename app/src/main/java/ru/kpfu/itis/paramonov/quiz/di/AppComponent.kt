@@ -4,10 +4,9 @@ import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentHolderModule
 import dagger.BindsInstance
 import dagger.Component
 import ru.kpfu.itis.paramonov.quiz.di.modules.CommonModule
-import ru.kpfu.itis.paramonov.common.di.dependencies.CommonApi
+import ru.kpfu.itis.paramonov.common_android.di.CommonApi
 import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.quiz.App
-import ru.kpfu.itis.paramonov.quiz.di.DaggerAppComponent
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesModule
 import ru.kpfu.itis.paramonov.quiz.di.main.MainDependencies
 import ru.kpfu.itis.paramonov.quiz.di.modules.AppModule

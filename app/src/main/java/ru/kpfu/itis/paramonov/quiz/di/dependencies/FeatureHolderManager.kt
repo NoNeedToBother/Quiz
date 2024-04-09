@@ -1,6 +1,6 @@
 package ru.kpfu.itis.paramonov.quiz.di.dependencies
 
-import ru.kpfu.itis.paramonov.common.di.FeatureApiHolder
+import ru.kpfu.itis.paramonov.common_android.di.FeatureApiHolder
 
 class FeatureHolderManager(
     private val mFeatureHolders: Map<Class<*>, FeatureApiHolder>

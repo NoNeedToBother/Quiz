@@ -9,12 +9,15 @@ import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.gone
+import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_authentication.R
 import ru.kpfu.itis.paramonov.common_android.R as commonR
 import ru.kpfu.itis.paramonov.feature_authentication.databinding.FragmentRegisterBinding
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationComponent
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
+import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import javax.inject.Inject
 
 class RegisterFragment: BaseFragment(R.layout.fragment_register) {
@@ -26,6 +29,9 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
 
     @Inject
     lateinit var authenticationRouter: AuthenticationRouter
+
+    @Inject
+    lateinit var mainMenuRouter: MainMenuRouter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,6 +50,23 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
                 launch {
                     collectUserData()
+                }
+                launch {
+                    checkRegisterProceeding()
+                }
+            }
+        }
+    }
+
+    private suspend fun checkRegisterProceeding() {
+        viewModel.registerProceedingFlow.collect {
+            with(binding) {
+                if (it) {
+                    layoutBase.gone()
+                    layoutProceeding.show()
+                } else {
+                    layoutBase.show()
+                    layoutProceeding.gone()
                 }
             }
         }
@@ -67,6 +90,7 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
             binding.tvLogo,
             getString(R.string.welcome_user, user.username)
         )
+        mainMenuRouter.goToMainMenu()
     }
 
     private fun onRegistrationFail(exception: Throwable) {

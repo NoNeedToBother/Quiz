@@ -2,9 +2,10 @@ package ru.kpfu.itis.paramonov.quiz.navigation
 
 import androidx.navigation.NavController
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
+import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.quiz.R
 
-class Navigator: AuthenticationRouter {
+class Navigator: AuthenticationRouter, MainMenuRouter {
 
     private var navController: NavController? = null
 
@@ -28,6 +29,12 @@ class Navigator: AuthenticationRouter {
     override fun goToSignIn() {
         navController?.navigate(
             R.id.signInFragment
+        )
+    }
+
+    override fun goToMainMenu() {
+        navController?.navigate(
+            R.id.mainMenuFragment
         )
     }
 }

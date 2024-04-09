@@ -1,6 +1,5 @@
-package ru.kpfu.itis.paramonov.common.di
+package ru.kpfu.itis.paramonov.common_android.di
 
-import ru.kpfu.itis.paramonov.common.di.dependencies.CommonApi
 import java.util.concurrent.locks.ReentrantLock
 
 abstract class FeatureApiHolder(

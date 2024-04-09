@@ -3,7 +3,7 @@ package ru.kpfu.itis.paramonov.common_android.ui.di
 import android.app.Activity
 import androidx.fragment.app.Fragment
 import android.content.Context
-import ru.kpfu.itis.paramonov.common.di.FeatureContainer
+import ru.kpfu.itis.paramonov.common_android.di.FeatureContainer
 
 object FeatureUtils {
 

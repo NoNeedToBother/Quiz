@@ -17,7 +17,7 @@ import ru.kpfu.itis.paramonov.firebase.R
 import java.lang.RuntimeException
 import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(
+class UserRepositoryImpl(
     private val auth: FirebaseAuth,
     private val dispatcher: CoroutineDispatcher,
     private val registerExceptionHandler: RegistrationExceptionHandler,

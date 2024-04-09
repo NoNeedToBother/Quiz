@@ -1,21 +1,19 @@
 package ru.kpfu.itis.paramonov.feature_authentication.di
 
-import ru.kpfu.itis.paramonov.common.di.FeatureApiHolder
-import ru.kpfu.itis.paramonov.common.di.FeatureContainer
 import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
-import ru.kpfu.itis.paramonov.firebase.domain.FirebaseApi
+import ru.kpfu.itis.paramonov.firebase.domain.FirebaseContainer
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import javax.inject.Inject
 
 @ApplicationScope
 class FeatureAuthenticationHolder @Inject constructor(
-    featureContainer: FeatureContainer,
+    featureContainer: FirebaseContainer,
     private val authenticationRouter: AuthenticationRouter
-) : FeatureApiHolder(featureContainer) {
+) : FirebaseFeatureApiHolder(featureContainer) {
 
     override fun initializeDependencies(): Any {
         val authFeatureDependencies = DaggerFeatureAuthenticationComponent_FeatureAuthenticationDependenciesComponent.builder()
-            .firebaseApi(getFeature(FirebaseApi::class.java))
+            .firebaseApi(firebaseApi())
             .commonApi(commonApi())
             .build()
         return DaggerFeatureAuthenticationComponent.builder()

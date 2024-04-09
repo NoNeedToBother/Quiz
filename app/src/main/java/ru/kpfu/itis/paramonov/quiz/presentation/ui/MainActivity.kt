@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies
+import ru.kpfu.itis.paramonov.quiz.di.firebase.FirebaseComponent
 import ru.kpfu.itis.paramonov.quiz.di.main.MainComponent
 import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
 import javax.inject.Inject

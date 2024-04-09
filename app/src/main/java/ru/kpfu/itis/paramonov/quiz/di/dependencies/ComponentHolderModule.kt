@@ -10,25 +10,24 @@ import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationHolder
 import ru.kpfu.itis.paramonov.firebase.domain.FirebaseApi
-import ru.kpfu.itis.paramonov.firebase.di.FirebaseHolder
+import ru.kpfu.itis.paramonov.firebase.domain.FirebaseContainer
 import ru.kpfu.itis.paramonov.quiz.App
+import ru.kpfu.itis.paramonov.quiz.di.firebase.FirebaseComponent
 
 @Module
 interface ComponentHolderModule {
 
     @ApplicationScope
     @Binds
-    fun provideFeatureContainer(application: App): FeatureContainer
+    fun featureContainer(application: App): FeatureContainer
+
+    @ApplicationScope
+    @Binds
+    fun firebaseContainer(application: App): FirebaseContainer
 
     @ApplicationScope
     @Binds
     @ClassKey(FeatureAuthenticationDependencies::class)
     @IntoMap
-    fun provideAuthenticationFeatureHolder(authenticationFeatureHolder: FeatureAuthenticationHolder): FeatureApiHolder
-
-    @ApplicationScope
-    @Binds
-    @ClassKey(FirebaseApi::class)
-    @IntoMap
-    fun provideFirebaseHolder(firebaseHolder: FirebaseHolder): FeatureApiHolder
+    fun authenticationFeatureHolder(authenticationFeatureHolder: FeatureAuthenticationHolder): FeatureApiHolder
 }

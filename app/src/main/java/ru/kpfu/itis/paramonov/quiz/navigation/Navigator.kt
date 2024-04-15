@@ -3,9 +3,10 @@ package ru.kpfu.itis.paramonov.quiz.navigation
 import androidx.navigation.NavController
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
+import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import ru.kpfu.itis.paramonov.quiz.R
 
-class Navigator: AuthenticationRouter, MainMenuRouter {
+class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter {
 
     private var navController: NavController? = null
 
@@ -36,5 +37,11 @@ class Navigator: AuthenticationRouter, MainMenuRouter {
         navController?.navigate(
             R.id.mainMenuFragment
         )
+    }
+
+    override fun goToQuestion() {
+    }
+
+    override fun goToQuestionSettings() {
     }
 }

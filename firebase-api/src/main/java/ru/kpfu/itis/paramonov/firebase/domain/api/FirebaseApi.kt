@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.firebase.domain
+package ru.kpfu.itis.paramonov.firebase.domain.api
 
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 

@@ -5,7 +5,7 @@ import com.google.firebase.FirebaseApp
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.FeatureHolderManager
 import ru.kpfu.itis.paramonov.common_android.di.FeatureContainer
 import ru.kpfu.itis.paramonov.common_android.di.CommonApi
-import ru.kpfu.itis.paramonov.firebase.domain.FirebaseApi
+import ru.kpfu.itis.paramonov.firebase.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.feature_authentication.di.FirebaseContainer
 import ru.kpfu.itis.paramonov.quiz.di.AppComponent
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesProvider

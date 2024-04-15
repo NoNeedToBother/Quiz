@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.quiz.di.modules
+package ru.kpfu.itis.paramonov.quiz.di.firebase
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth

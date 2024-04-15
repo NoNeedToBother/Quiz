@@ -51,6 +51,8 @@ dependencies {
     implementation project(':common-android')
     implementation project(':feature-authentication')
     implementation project(':navigation')
+    implementation project(':local-database-api')
+    implementation project(':feature-questions')
 
     implementation(dagger)
     "kapt"(daggerCompiler)

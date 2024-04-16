@@ -14,6 +14,8 @@ import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesProvider
 import ru.kpfu.itis.paramonov.quiz.di.firebase.DaggerFirebaseComponent
 import ru.kpfu.itis.paramonov.quiz.di.firebase.DaggerFirebaseComponent_FirebaseDependenciesComponent
 import ru.kpfu.itis.paramonov.quiz.di.firebase.FirebaseComponent
+import ru.kpfu.itis.paramonov.quiz.di.local_database.DaggerLocalDatabaseComponent
+import ru.kpfu.itis.paramonov.quiz.di.local_database.DaggerLocalDatabaseComponent_LocalDatabaseDependenciesComponent
 import ru.kpfu.itis.paramonov.quiz.di.local_database.LocalDatabaseComponent
 import javax.inject.Inject
 
@@ -62,6 +64,13 @@ class App: Application(), FeatureContainer, FirebaseContainer, LocalDatabaseCont
     }
 
     private fun initLocalDatabaseComponent() {
+        val localDatabaseDependencies = DaggerLocalDatabaseComponent_LocalDatabaseDependenciesComponent.builder()
+            .commonApi(appComponent)
+            .build()
+
+        localDatabaseComponent = DaggerLocalDatabaseComponent.builder()
+            .localDatabaseDependencies(localDatabaseDependencies)
+            .build()
     }
 
     override fun <T> getFeature(key: Class<*>): T {

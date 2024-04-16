@@ -1,6 +1,7 @@
 package ru.kpfu.itis.paramonov.common_android.utils
 
 import android.content.Context
+import android.content.res.Resources
 import android.content.res.Resources.NotFoundException
 import android.graphics.drawable.Drawable
 import androidx.annotation.StringRes
@@ -19,6 +20,10 @@ class ResourceManagerImpl (
     override fun getDrawable(drawableId: Int): Drawable {
         return ContextCompat.getDrawable(context, drawableId)
             ?: throw NotFoundException()
+    }
+
+    override fun getTheme(themeId: Int): Resources.Theme {
+        return context.theme
     }
 
 }

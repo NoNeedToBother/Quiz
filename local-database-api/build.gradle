@@ -9,7 +9,6 @@ android {
     compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
-        applicationId "ru.kpfu.itis.paramonov.local_database_api"
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
         versionCode rootProject.versionCode
@@ -30,6 +29,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    kotlin {
+        jvmToolchain(8)
     }
 }
 

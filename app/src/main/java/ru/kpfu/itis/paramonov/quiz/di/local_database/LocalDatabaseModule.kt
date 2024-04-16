@@ -8,7 +8,7 @@ import ru.kpfu.itis.paramonov.local_database_api.data.repository.SharedPreferenc
 import ru.kpfu.itis.paramonov.local_database_api.domain.repository.SharedPreferencesRepository
 
 @Module
-class DatabaseModule {
+class LocalDatabaseModule {
 
     @SharedPreferencesKey
     @Provides

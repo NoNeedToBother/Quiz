@@ -5,7 +5,7 @@ import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 
 interface FeatureAuthenticationDependencies {
 
-    fun repository(): UserRepository
+    fun userRepository(): UserRepository
 
     fun dispatcher(): CoroutineDispatcher
 }

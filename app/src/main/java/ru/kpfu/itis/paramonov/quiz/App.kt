@@ -7,14 +7,17 @@ import ru.kpfu.itis.paramonov.common_android.di.FeatureContainer
 import ru.kpfu.itis.paramonov.common_android.di.CommonApi
 import ru.kpfu.itis.paramonov.firebase.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.feature_authentication.di.FirebaseContainer
+import ru.kpfu.itis.paramonov.feature_questions.di.LocalDatabaseContainer
+import ru.kpfu.itis.paramonov.local_database_api.domain.api.LocalDatabaseApi
 import ru.kpfu.itis.paramonov.quiz.di.AppComponent
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesProvider
 import ru.kpfu.itis.paramonov.quiz.di.firebase.DaggerFirebaseComponent
 import ru.kpfu.itis.paramonov.quiz.di.firebase.DaggerFirebaseComponent_FirebaseDependenciesComponent
 import ru.kpfu.itis.paramonov.quiz.di.firebase.FirebaseComponent
+import ru.kpfu.itis.paramonov.quiz.di.local_database.LocalDatabaseComponent
 import javax.inject.Inject
 
-class App: Application(), FeatureContainer, FirebaseContainer {
+class App: Application(), FeatureContainer, FirebaseContainer, LocalDatabaseContainer {
     @Inject
     lateinit var featureHolderManager: FeatureHolderManager
 
@@ -25,6 +28,8 @@ class App: Application(), FeatureContainer, FirebaseContainer {
 
     private lateinit var firebaseComponent: FirebaseComponent
 
+    private lateinit var localDatabaseComponent: LocalDatabaseComponent
+
     override fun onCreate() {
         super.onCreate()
         init()
@@ -34,6 +39,7 @@ class App: Application(), FeatureContainer, FirebaseContainer {
         initFirebase()
         initAppComponent()
         initFirebaseComponent()
+        initLocalDatabaseComponent()
     }
 
     private fun initFirebase() {
@@ -55,6 +61,9 @@ class App: Application(), FeatureContainer, FirebaseContainer {
             .build()
     }
 
+    private fun initLocalDatabaseComponent() {
+    }
+
     override fun <T> getFeature(key: Class<*>): T {
         return featureHolderManager.getFeature<T>(key)!!
     }
@@ -69,5 +78,9 @@ class App: Application(), FeatureContainer, FirebaseContainer {
 
     override fun firebaseApi(): FirebaseApi {
         return firebaseComponent
+    }
+
+    override fun localDatabaseApi(): LocalDatabaseApi {
+        return localDatabaseComponent
     }
 }

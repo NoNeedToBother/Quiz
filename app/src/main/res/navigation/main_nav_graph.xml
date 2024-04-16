@@ -24,6 +24,17 @@
         android:name="ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments.MainMenuFragment"
         android:label="fragment_main_menu"
         tools:layout="@layout/fragment_main_menu"
+        >
+        <action
+            android:id="@+id/action_mainMenuFragment_to_questionsSettingsFragment"
+            app:destination="@id/questionsSettingsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/questionsSettingsFragment"
+        android:name="ru.kpfu.itis.paramonov.feature_questions.presentation.ui.fragments.QuestionsSettingsFragment"
+        android:label="fragment_question_settings"
+        tools:layout="@layout/fragment_questions_settings"
         />
 
 </navigation>

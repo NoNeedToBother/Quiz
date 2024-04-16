@@ -6,12 +6,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies
-import ru.kpfu.itis.paramonov.quiz.di.firebase.FirebaseComponent
 import ru.kpfu.itis.paramonov.quiz.di.main.MainComponent
 import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
 import javax.inject.Inject
 
 class MainActivity: AppCompatActivity(R.layout.activity_main) {
+    lateinit var mainComponent: MainComponent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inject()
@@ -23,8 +24,8 @@ class MainActivity: AppCompatActivity(R.layout.activity_main) {
     private var navController: NavController? = null
 
     private fun inject() {
-        MainComponent.init(this, findComponentDependencies())
-            .inject(this)
+        mainComponent = MainComponent.init(this, findComponentDependencies())
+        mainComponent.inject(this)
     }
 
     private fun initViews() {

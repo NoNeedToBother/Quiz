@@ -1,12 +1,14 @@
 package ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments
 
+import android.content.Context
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
-import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.databinding.FragmentMainMenuBinding
+import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
+import ru.kpfu.itis.paramonov.quiz.presentation.ui.MainActivity
 import javax.inject.Inject
 
 class MainMenuFragment: BaseFragment(R.layout.fragment_main_menu) {
@@ -14,7 +16,12 @@ class MainMenuFragment: BaseFragment(R.layout.fragment_main_menu) {
     private val binding: FragmentMainMenuBinding by viewBinding(FragmentMainMenuBinding::bind)
 
     @Inject
-    lateinit var questionsRouter: QuestionsRouter
+    lateinit var navigator: Navigator
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity() as MainActivity).mainComponent.inject(this)
+    }
 
     override fun initView() {
         setMainMenu()
@@ -38,10 +45,10 @@ class MainMenuFragment: BaseFragment(R.layout.fragment_main_menu) {
     private fun setOnClickListeners() {
         with(binding) {
             tvQuestion.setOnClickListener {
-                questionsRouter.goToQuestion()
+                navigator.goToQuestion()
             }
             tvQuestionSettings.setOnClickListener {
-                questionsRouter.goToQuestionSettings()
+                navigator.goToQuestionSettings()
             }
         }
     }

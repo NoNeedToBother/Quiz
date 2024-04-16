@@ -2,20 +2,21 @@ package ru.kpfu.itis.paramonov.quiz.di.local_database
 
 import dagger.Component
 import ru.kpfu.itis.paramonov.common_android.di.CommonApi
+import ru.kpfu.itis.paramonov.local_database_api.domain.api.LocalDatabaseApi
 
 @Component(
     modules = [
-        DatabaseModule::class
+        LocalDatabaseModule::class
     ],
     dependencies = [
-        DatabaseDependencies::class
+        LocalDatabaseDependencies::class
     ]
 )
-interface DatabaseComponent {
+interface LocalDatabaseComponent: LocalDatabaseApi {
     @Component(
         dependencies = [
             CommonApi::class
         ]
     )
-    interface DatabaseDependenciesComponent : DatabaseDependencies
+    interface LocalDatabaseDependenciesComponent : LocalDatabaseDependencies
 }

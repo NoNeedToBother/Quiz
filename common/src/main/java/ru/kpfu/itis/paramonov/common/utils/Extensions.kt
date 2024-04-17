@@ -1,0 +1,11 @@
+package ru.kpfu.itis.paramonov.common.utils
+
+fun String.normalizeEnumName(): String {
+    return this
+        .lowercase()
+        .replace("_", " ")
+        .replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase()
+            else it.toString()
+        }
+}

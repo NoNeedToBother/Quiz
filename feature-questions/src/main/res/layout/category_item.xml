@@ -16,5 +16,12 @@
         android:layout_marginStart="80dp"
         android:textSize="28sp"/>
 
+    <View
+        android:id="@+id/category_divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/spinner_item_txt"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

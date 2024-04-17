@@ -22,7 +22,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_username"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Username"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.AuthMenu.Username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_email"
@@ -42,7 +42,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_password"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.AuthMenu.Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_password"
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="64dp"
-            style="@style/Widget.Material3.Button.OutlinedButton.AuthMenu"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.AuthMenu"
             app:layout_constraintBottom_toTopOf="@id/btn_go_register"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="64dp"
-            style="@style/Widget.Material3.Button.OutlinedButton.AuthMenu"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.AuthMenu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

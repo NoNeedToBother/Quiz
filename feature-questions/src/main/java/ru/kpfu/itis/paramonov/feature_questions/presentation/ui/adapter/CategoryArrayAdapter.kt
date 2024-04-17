@@ -14,14 +14,14 @@ class CategoryArrayAdapter(
     private val items: List<CategoryItem>
 ): ArrayAdapter<CategoryItem>(ctx, 0, items) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return getDifficultyView(position, convertView, parent)
+        return getCategoryView(position, convertView, parent)
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return getDifficultyView(position, convertView, parent)
+        return getCategoryView(position, convertView, parent)
     }
 
-    private fun getDifficultyView(position: Int, convertView: View?, parent: ViewGroup): View {
+    private fun getCategoryView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view = convertView
         if (view == null) {
             val viewHolder = CategoryItemViewHolder()
@@ -29,6 +29,7 @@ class CategoryArrayAdapter(
             view = inflater.inflate(R.layout.category_item, parent, false)
 
             viewHolder.tvDifficulty = view.findViewById(R.id.tv_category)
+            viewHolder.divider = view.findViewById(R.id.category_divider)
 
             view!!.tag = viewHolder
         }

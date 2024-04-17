@@ -33,6 +33,7 @@ class DifficultyArrayAdapter(
 
             viewHolder.ivDifficulty = view.findViewById(R.id.iv_difficulty)
             viewHolder.tvDifficulty = view.findViewById(R.id.tv_difficulty)
+            viewHolder.divider = view.findViewById(R.id.difficulty_divider)
 
             view!!.tag = viewHolder
         }

@@ -1,6 +1,7 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.ui.fragments
 
 import android.content.Context
+import androidx.core.content.res.ResourcesCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
@@ -42,19 +43,31 @@ class QuestionSettingsFragment: BaseFragment(R.layout.fragment_questions_setting
     private fun initDifficultiesTextView() {
         val difficulties = getDifficultyList()
         val adapter = DifficultyArrayAdapter(requireContext(), difficulties, resourceManager)
-        binding.tvDifficulties.setAdapter(adapter)
+        binding.tvDifficulties.apply {
+            setAdapter(adapter)
+            setDropDownBackgroundDrawable(ResourcesCompat.getDrawable(
+                resources, R.drawable.popup_bg, requireContext().theme))
+        }
     }
 
     private fun initCategoriesTextView() {
         val categories = getCategoryList()
         val adapter = CategoryArrayAdapter(requireContext(), categories)
-        binding.tvCategories.setAdapter(adapter)
+        binding.tvCategories.apply {
+            setAdapter(adapter)
+            setDropDownBackgroundDrawable(ResourcesCompat.getDrawable(
+                resources, R.drawable.popup_bg, requireContext().theme))
+        }
     }
 
     private fun initGameModesTextView() {
         val gameModes = getGameModeList()
         val adapter = GameModeArrayAdapter(requireContext(), gameModes)
-        binding.tvGameModes.setAdapter(adapter)
+        binding.tvGameModes.apply {
+            setAdapter(adapter)
+            setDropDownBackgroundDrawable(ResourcesCompat.getDrawable(
+                resources, R.drawable.popup_bg, requireContext().theme))
+        }
     }
 
     private fun getDifficultyList(): List<DifficultyItem> {

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="auth_menu">#006970</color>
+    <color name="auth_menu_btn_ripple">#66006970</color>
 </resources>

@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Username">
+    <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.AuthMenu.Username"
+        parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.AuthMenu">
         <item name="endIconDrawable">@drawable/edit</item>
         <item name="endIconMode">custom</item>
     </style>
-    <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Password">
-
+    <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.AuthMenu.Password"
+        parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.AuthMenu">
         <item name="endIconMode">password_toggle</item>
     </style>
 
-    <style name="Widget.Material3.Button.OutlinedButton.AuthMenu">
+    <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.AuthMenu"
+        parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/auth_menu</item>
+        <item name="hintTextColor">@color/auth_menu</item>
+        <item name="android:textColorHint">@color/auth_menu</item>
+        <item name="cursorColor">@color/auth_menu</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.Button.OutlinedButton.AuthMenu"
+        parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/auth_menu</item>
         <item name="android:textColor">@color/auth_menu</item>
         <item name="android:textSize">20sp</item>
+        <item name="rippleColor">@color/auth_menu_btn_ripple</item>
     </style>
 </resources>

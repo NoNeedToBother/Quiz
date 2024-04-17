@@ -14,14 +14,14 @@ class GameModeArrayAdapter(ctx: Context,
 ): ArrayAdapter<GameModeItem>(ctx, 0, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return getDifficultyView(position, convertView, parent)
+        return getGameModeView(position, convertView, parent)
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return getDifficultyView(position, convertView, parent)
+        return getGameModeView(position, convertView, parent)
     }
 
-    private fun getDifficultyView(position: Int, convertView: View?, parent: ViewGroup): View {
+    private fun getGameModeView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view = convertView
         if (view == null) {
             val viewHolder = GameModeItemViewHolder()
@@ -29,6 +29,7 @@ class GameModeArrayAdapter(ctx: Context,
             view = inflater.inflate(R.layout.game_mode_item, parent, false)
 
             viewHolder.tvGameMode = view.findViewById(R.id.tv_game_mode)
+            viewHolder.divider = view.findViewById(R.id.game_mode_divider)
 
             view!!.tag = viewHolder
         }

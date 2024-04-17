@@ -26,4 +26,12 @@
         android:layout_marginStart="20dp"
         android:textSize="28sp"/>
 
+    <View
+        android:id="@+id/difficulty_divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/spinner_item_txt"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

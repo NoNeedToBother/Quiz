@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.ui.viewholder
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
@@ -11,9 +12,12 @@ import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.model.Difficulty
 class DifficultyItemViewHolder(
     private val resourceManager: ResourceManager
 ) {
+
     var ivDifficulty: ImageView? = null
 
     var tvDifficulty: TextView? = null
+
+    var divider: View? = null
 
     fun bindItem(item: DifficultyItem) {
         tvDifficulty?.text = item.difficulty.name.normalizeEnumName()

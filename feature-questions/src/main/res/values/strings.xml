@@ -1,9 +1,25 @@
 <resources>
     <string name="app_name">feature-questions</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="category">Category</string>
+    <string name="game_mode">Game mode</string>
 
     <string-array name="difficulties">
         <item>EASY</item>
         <item>MEDIUM</item>
         <item>HARD</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>General</item>
+        <item>Book</item>
+        <item>Film</item>
+        <item>Music</item>
+        <item>TV</item>
+        <item>Video games</item>
+        <item>Sports</item>
+        <item>Geography</item>
+        <item>History</item>
+        <item>Animals</item>
     </string-array>
 </resources>

@@ -1,6 +1,7 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.ui.fragments
 
 import android.content.Context
+import android.widget.ArrayAdapter
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
@@ -10,8 +11,8 @@ import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionsSet
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsComponent
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
 import ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings.DifficultyUiModel
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.adapter.DifficultySpinnerAdapter
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.model.DifficultySpinnerItem
+import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.adapter.DifficultyArrayAdapter
+import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.model.DifficultyItem
 import javax.inject.Inject
 
 class QuestionSettingsFragment: BaseFragment(R.layout.fragment_questions_settings) {
@@ -28,21 +29,34 @@ class QuestionSettingsFragment: BaseFragment(R.layout.fragment_questions_setting
 
     }
     override fun initView() {
-        initDifficultySpinner()
+        initDifficultiesTextView()
+        initCategoriesTextView()
+        initGameModesTextView()
     }
 
-    private fun initDifficultySpinner() {
+    private fun initDifficultiesTextView() {
         val difficulties = getDifficultyList()
-        val adapter = DifficultySpinnerAdapter(requireContext(), difficulties, resourceManager)
-        binding.spinnerDifficulty.adapter = adapter
+        val adapter = DifficultyArrayAdapter(requireContext(), difficulties, resourceManager)
+        binding.tvDifficulties.setAdapter(adapter)
     }
 
-    private fun getDifficultyList(): List<DifficultySpinnerItem> {
+    private fun initCategoriesTextView() {
+        val adapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.categories,
+            android.R.layout.simple_spinner_dropdown_item
+        )
+        binding.tvCategories.setAdapter(adapter)
+    }
+
+    private fun initGameModesTextView() {}
+
+    private fun getDifficultyList(): List<DifficultyItem> {
         return resources.getStringArray(R.array.difficulties)
             .asList()
             .map { difficulty ->
                 val model = DifficultyUiModel.valueOf(difficulty.uppercase())
-                DifficultySpinnerItem(model)
+                DifficultyItem(model)
             }
     }
 

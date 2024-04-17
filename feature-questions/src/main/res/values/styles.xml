@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu.QuestionsSettings"
+        parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/spinner_item_txt</item>
+        <item name="hintTextColor">@color/spinner_item_txt</item>
+        <item name="android:textColorHint">@color/spinner_item_txt</item>
+        <item name="endIconTint">@color/spinner_item_txt</item>
+    </style>
+</resources>

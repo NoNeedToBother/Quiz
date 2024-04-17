@@ -1,8 +1,8 @@
 package ru.kpfu.itis.paramonov.feature_questions.domain.mapper
 
-import ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings.CategoryUiModel
-import ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings.DifficultyUiModel
-import ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings.GameModeUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.CategoryUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.DifficultyUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.GameModeUiModel
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Category
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Difficulty
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.GameMode

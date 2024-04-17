@@ -7,7 +7,6 @@ import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.RegisterUserUseCase
-import javax.inject.Inject
 
 class RegisterViewModel(
     private val registerUserUseCase: RegisterUserUseCase
@@ -37,11 +36,11 @@ class RegisterViewModel(
         }
     }
 
-    sealed class RegistrationResult: Result {
-        class Success(private val result: UserModel): RegistrationResult(), Result.Success<UserModel> {
+    sealed interface RegistrationResult: Result {
+        class Success(private val result: UserModel): RegistrationResult, Result.Success<UserModel> {
             override fun getValue(): UserModel = result
         }
-        class Failure(private val ex: Throwable): RegistrationResult(), Result.Failure {
+        class Failure(private val ex: Throwable): RegistrationResult, Result.Failure {
             override fun getException(): Throwable = ex
         }
     }

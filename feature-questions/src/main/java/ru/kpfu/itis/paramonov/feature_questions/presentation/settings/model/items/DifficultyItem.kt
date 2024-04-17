@@ -1,7 +1,7 @@
-package ru.kpfu.itis.paramonov.feature_questions.presentation.ui.model
+package ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.items
 
 import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
-import ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings.DifficultyUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.DifficultyUiModel
 
 class DifficultyItem(
     val difficulty: DifficultyUiModel

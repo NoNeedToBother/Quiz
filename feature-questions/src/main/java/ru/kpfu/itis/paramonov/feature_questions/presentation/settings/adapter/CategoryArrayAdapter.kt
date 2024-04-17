@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.feature_questions.presentation.ui.adapter
+package ru.kpfu.itis.paramonov.feature_questions.presentation.settings.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import ru.kpfu.itis.paramonov.feature_questions.R
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.model.CategoryItem
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.viewholder.CategoryItemViewHolder
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.items.CategoryItem
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.viewholder.CategoryItemViewHolder
 
 class CategoryArrayAdapter(
     ctx: Context,

@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings
+package ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model
 
 enum class DifficultyUiModel {
     EASY, MEDIUM, HARD;

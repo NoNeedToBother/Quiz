@@ -3,7 +3,7 @@ package ru.kpfu.itis.paramonov.feature_questions.domain.usecase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionSettingsUiModelMapper
-import ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings.QuestionSettingsUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.QuestionSettingsUiModel
 import ru.kpfu.itis.paramonov.local_database_api.domain.repository.SharedPreferencesRepository
 import javax.inject.Inject
 

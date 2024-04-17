@@ -9,3 +9,9 @@ fun String.normalizeEnumName(): String {
             else it.toString()
         }
 }
+
+fun String.toEnumName(): String {
+    return this
+        .uppercase()
+        .replace(" ", "_")
+}

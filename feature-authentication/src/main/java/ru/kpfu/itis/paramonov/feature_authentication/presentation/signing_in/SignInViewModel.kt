@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +11,7 @@ import java.lang.Exception
 
 class SignInViewModel(
     private val authenticateUserUseCase: AuthenticateUserUseCase
-): ViewModel() {
+): BaseViewModel() {
 
     private val _userDataFlow = MutableStateFlow<SigningInResult?>(null)
 
@@ -37,11 +36,11 @@ class SignInViewModel(
         }
     }
 
-    sealed class SigningInResult: BaseViewModel.Result {
-        class Success(private val result: UserModel): SigningInResult(), BaseViewModel.Result.Success<UserModel> {
+    sealed interface SigningInResult: Result {
+        class Success(private val result: UserModel): SigningInResult, Result.Success<UserModel> {
             override fun getValue(): UserModel = result
         }
-        class Failure(private val ex: Throwable): SigningInResult(), BaseViewModel.Result.Failure {
+        class Failure(private val ex: Throwable): SigningInResult, Result.Failure {
             override fun getException(): Throwable = ex
         }
     }

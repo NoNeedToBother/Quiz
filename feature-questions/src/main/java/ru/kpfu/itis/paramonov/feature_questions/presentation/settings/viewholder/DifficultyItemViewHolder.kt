@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.feature_questions.presentation.ui.viewholder
+package ru.kpfu.itis.paramonov.feature_questions.presentation.settings.viewholder
 
 import android.view.View
 import android.widget.ImageView
@@ -6,8 +6,8 @@ import android.widget.TextView
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.feature_questions.R
-import ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings.DifficultyUiModel
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.model.DifficultyItem
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.DifficultyUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.items.DifficultyItem
 
 class DifficultyItemViewHolder(
     private val resourceManager: ResourceManager

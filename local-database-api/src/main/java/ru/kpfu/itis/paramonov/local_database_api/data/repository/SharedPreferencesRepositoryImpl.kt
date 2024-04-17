@@ -1,7 +1,8 @@
 package ru.kpfu.itis.paramonov.local_database_api.data.repository
 
 import android.content.SharedPreferences
-import ru.kpfu.itis.paramonov.local_database_api.data.repository.exception.NoParameterFoundException
+import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
+import ru.kpfu.itis.paramonov.local_database_api.data.exception.NoParameterFoundException
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Category
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Difficulty
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.GameMode
@@ -26,33 +27,54 @@ class SharedPreferencesRepositoryImpl(
     }
 
     override fun getDifficulty(): Difficulty {
-        val res = getString(DIFFICULTY_KEY)
-        return Difficulty.valueOf(res.uppercase())
+        return try {
+            val res = getString(DIFFICULTY_KEY)
+            Difficulty.valueOf(res.uppercase())
+        } catch (ex: NoParameterFoundException) {
+            getDefaultDifficulty()
+        }
     }
 
-    override fun saveDifficulty(difficulty: Difficulty) {
-        val difficultyStr = difficulty.name.lowercase()
-        saveString(DIFFICULTY_KEY, difficultyStr)
+    override fun saveDifficulty(difficulty: String) {
+        saveString(DIFFICULTY_KEY, difficulty.normalizeEnumName())
     }
 
     override fun getCategory(): Category {
-        val res = getString(CATEGORY_KEY)
-        return Category.valueOf(res.uppercase())
+        return try {
+            val res = getString(CATEGORY_KEY)
+            Category.valueOf(res.uppercase())
+        } catch (ex: NoParameterFoundException) {
+            getDefaultCategory()
+        }
     }
 
-    override fun saveCategory(category: Category) {
-        val categoryStr = category.name.lowercase()
-        saveString(CATEGORY_KEY, categoryStr)
+    override fun saveCategory(category: String) {
+        saveString(CATEGORY_KEY, category.normalizeEnumName())
     }
 
     override fun getGameMode(): GameMode {
-        val res = getString(GAME_MODE_KEY)
-        return GameMode.valueOf(res.uppercase())
+        return try {
+            val res = getString(GAME_MODE_KEY)
+            GameMode.valueOf(res.uppercase())
+        } catch (ex: NoParameterFoundException) {
+            getDefaultGameMode()
+        }
     }
 
-    override fun saveGameMode(gameMode: GameMode) {
-        val gameModeStr = gameMode.name.lowercase()
-        saveString(DIFFICULTY_KEY, gameModeStr)
+    override fun saveGameMode(gameMode: String) {
+        saveString(DIFFICULTY_KEY, gameMode.normalizeEnumName())
+    }
+
+    private fun getDefaultDifficulty(): Difficulty {
+        return Difficulty.MEDIUM
+    }
+
+    private fun getDefaultCategory(): Category {
+        return Category.GENERAL
+    }
+
+    private fun getDefaultGameMode(): GameMode {
+        return GameMode.BLITZ
     }
 
     companion object {

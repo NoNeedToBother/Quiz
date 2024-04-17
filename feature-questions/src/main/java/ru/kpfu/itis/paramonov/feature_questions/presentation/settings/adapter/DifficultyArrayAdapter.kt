@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.feature_questions.presentation.ui.adapter
+package ru.kpfu.itis.paramonov.feature_questions.presentation.settings.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.feature_questions.R
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.model.DifficultyItem
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.viewholder.DifficultyItemViewHolder
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.items.DifficultyItem
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.viewholder.DifficultyItemViewHolder
 
 class DifficultyArrayAdapter(
     ctx: Context,

@@ -1,24 +1,29 @@
-package ru.kpfu.itis.paramonov.feature_questions.presentation.ui.fragments
+package ru.kpfu.itis.paramonov.feature_questions.presentation.settings
 
 import android.content.Context
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
+import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionsSettingsBinding
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsComponent
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
-import ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings.CategoryUiModel
-import ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings.DifficultyUiModel
-import ru.kpfu.itis.paramonov.feature_questions.presentation.model.settings.GameModeUiModel
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.adapter.CategoryArrayAdapter
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.adapter.DifficultyArrayAdapter
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.adapter.GameModeArrayAdapter
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.model.CategoryItem
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.model.DifficultyItem
-import ru.kpfu.itis.paramonov.feature_questions.presentation.ui.model.GameModeItem
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.CategoryUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.DifficultyUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.GameModeUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.adapter.CategoryArrayAdapter
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.adapter.DifficultyArrayAdapter
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.adapter.GameModeArrayAdapter
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.items.CategoryItem
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.items.DifficultyItem
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.items.GameModeItem
 import javax.inject.Inject
 
 class QuestionSettingsFragment: BaseFragment(R.layout.fragment_questions_settings) {
@@ -28,9 +33,14 @@ class QuestionSettingsFragment: BaseFragment(R.layout.fragment_questions_setting
     @Inject
     lateinit var resourceManager: ResourceManager
 
+    @Inject
+    lateinit var viewModel: QuestionSettingsViewModel
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         FeatureUtils.getFeature<FeatureQuestionsComponent>(this, FeatureQuestionsDependencies::class.java)
+            .questionSettingsComponentFactory()
+            .create(this)
             .inject(this)
 
     }
@@ -38,6 +48,10 @@ class QuestionSettingsFragment: BaseFragment(R.layout.fragment_questions_setting
         initDifficultiesTextView()
         initCategoriesTextView()
         initGameModesTextView()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun initDifficultiesTextView() {
@@ -113,5 +127,26 @@ class QuestionSettingsFragment: BaseFragment(R.layout.fragment_questions_setting
     }
 
     override fun observeData() {
+        viewModel.getQuestionSettings()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
+                launch {
+                    collectSettingsData()
+                }
+            }
+        }
+    }
+
+    private suspend fun collectSettingsData() {
+        viewModel.settingsDataFlow.collect {
+            it?.let { model ->
+                with(binding) {
+                    tvDifficulties.setText(model.difficulty.name.normalizeEnumName(), false)
+                    tvGameModes.setText(model.gameMode.name.normalizeEnumName(), false)
+                    tvCategories.setText(model.category.name.normalizeEnumName(), false)
+                }
+            }
+        }
     }
 }

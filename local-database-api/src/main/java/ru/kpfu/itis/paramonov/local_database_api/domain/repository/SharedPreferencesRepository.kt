@@ -12,13 +12,13 @@ interface SharedPreferencesRepository {
 
     fun getDifficulty(): Difficulty
 
-    fun saveDifficulty(difficulty: Difficulty)
+    fun saveDifficulty(difficulty: String)
 
     fun getCategory(): Category
 
-    fun saveCategory(category: Category)
+    fun saveCategory(category: String)
 
     fun getGameMode(): GameMode
 
-    fun saveGameMode(gameMode: GameMode)
+    fun saveGameMode(gameMode: String)
 }

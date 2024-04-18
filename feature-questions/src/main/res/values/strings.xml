@@ -3,6 +3,7 @@
     <string name="difficulty">Difficulty</string>
     <string name="category">Category</string>
     <string name="game_mode">Game mode</string>
+    <string name="save">Save</string>
 
     <string-array name="difficulties">
         <item>EASY</item>

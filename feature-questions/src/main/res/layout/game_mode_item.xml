@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="40dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/spinner_bg">
+    android:background="@color/settings_color">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_game_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/spinner_item_txt"
+        android:textColor="@color/settings_inner_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,7 +20,7 @@
         android:id="@+id/game_mode_divider"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/spinner_item_txt"
+        android:background="@color/settings_inner_color"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

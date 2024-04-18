@@ -48,10 +48,19 @@ class QuestionSettingsFragment: BaseFragment(R.layout.fragment_questions_setting
         initDifficultiesTextView()
         initCategoriesTextView()
         initGameModesTextView()
+        setOnClickListeners()
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun setOnClickListeners() {
+        with(binding) {
+            btnSave.setOnClickListener {
+                viewModel.saveQuestionSettings(
+                    difficulty = tvDifficulties.text.toString(),
+                    category = tvCategories.text.toString(),
+                    gameMode = tvGameModes.text.toString()
+                )
+            }
+        }
     }
 
     private fun initDifficultiesTextView() {
@@ -145,6 +154,7 @@ class QuestionSettingsFragment: BaseFragment(R.layout.fragment_questions_setting
                     tvDifficulties.setText(model.difficulty.name.normalizeEnumName(), false)
                     tvGameModes.setText(model.gameMode.name.normalizeEnumName(), false)
                     tvCategories.setText(model.category.name.normalizeEnumName(), false)
+                    btnSave.isEnabled = true
                 }
             }
         }

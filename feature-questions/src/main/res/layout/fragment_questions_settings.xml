@@ -18,7 +18,7 @@
             android:id="@+id/tv_categories"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/spinner_bg"
+            android:backgroundTint="@color/settings_color"
             android:inputType="none"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -37,7 +37,7 @@
             android:id="@+id/tv_difficulties"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/spinner_bg"
+            android:backgroundTint="@color/settings_color"
             android:inputType="none"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -56,9 +56,26 @@
             android:id="@+id/tv_game_modes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/spinner_bg"
+            android:backgroundTint="@color/settings_color"
             android:inputType="none"/>
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="64dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:strokeColor="@color/settings_inner_color"
+        android:textColor="@color/settings_inner_color"
+        android:textSize="20sp"
+        app:rippleColor="@color/settings_btn_ripple_color"
+        android:layout_marginBottom="100dp"
+        android:enabled="false"
+        android:text="@string/save"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

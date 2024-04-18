@@ -10,4 +10,6 @@ interface UserRepository {
     suspend fun updateUser(vararg pairs: Pair<String, Any>): FirebaseUser
 
     suspend fun checkUserIsAuthenticated(): Boolean
+
+    suspend fun logoutUser()
 }

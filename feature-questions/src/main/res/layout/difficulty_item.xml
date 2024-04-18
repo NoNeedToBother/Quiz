@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/spinner_bg">
+    android:background="@color/settings_color">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_difficulty"
@@ -19,7 +19,7 @@
         android:id="@+id/tv_difficulty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/spinner_item_txt"
+        android:textColor="@color/settings_inner_color"
         app:layout_constraintStart_toEndOf="@id/iv_difficulty"
         app:layout_constraintTop_toTopOf="@id/iv_difficulty"
         app:layout_constraintBottom_toBottomOf="@id/iv_difficulty"
@@ -30,7 +30,7 @@
         android:id="@+id/difficulty_divider"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/spinner_item_txt"
+        android:background="@color/settings_inner_color"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 

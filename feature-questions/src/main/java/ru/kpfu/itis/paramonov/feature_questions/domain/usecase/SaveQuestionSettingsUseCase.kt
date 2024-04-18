@@ -5,7 +5,7 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.local_database_api.domain.repository.SharedPreferencesRepository
 import javax.inject.Inject
 
-class SaveQuestionSettingsUseCase@Inject constructor(
+class SaveQuestionSettingsUseCase @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val repository: SharedPreferencesRepository
 ) {

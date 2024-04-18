@@ -15,7 +15,6 @@ import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
 import java.lang.RuntimeException
-import javax.inject.Inject
 
 class UserRepositoryImpl(
     private val auth: FirebaseAuth,
@@ -63,6 +62,17 @@ class UserRepositoryImpl(
     }
 
     override suspend fun updateUser(vararg pairs: Pair<String, Any>): FirebaseUser {
+        val user = updateUserProfile(pairs)
+
+        return user?.displayName?.let {
+            FirebaseUser(
+                user.uid,
+                it
+            )
+        } ?: throw RuntimeException(resManager.getString(R.string.fail_read_user_data))
+    }
+
+    private suspend fun updateUserProfile(pairs: Array<out Pair<String, Any>>): com.google.firebase.auth.FirebaseUser? {
         val builder = UserProfileChangeRequest.Builder()
         for (pair in pairs) {
             val param = pair.first
@@ -75,18 +85,17 @@ class UserRepositoryImpl(
 
         val user = auth.currentUser
         user?.updateProfile(builder.build())?.waitResult()
-        return user?.displayName?.let {
-            FirebaseUser(
-                user.uid,
-                it
-            )
-        } ?: throw RuntimeException(resManager.getString(R.string.fail_read_user_data))
+        return user
     }
 
     override suspend fun checkUserIsAuthenticated(): Boolean {
         return auth.currentUser?.let {
             true
         } ?: false
+    }
+
+    override suspend fun logoutUser() {
+        auth.signOut()
     }
 
     private suspend fun signInUser(email: String, password: String): FirebaseUser {

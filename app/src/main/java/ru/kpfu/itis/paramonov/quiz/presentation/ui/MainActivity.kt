@@ -7,11 +7,17 @@ import androidx.navigation.fragment.NavHostFragment
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies
 import ru.kpfu.itis.paramonov.quiz.di.main.MainComponent
+import ru.kpfu.itis.paramonov.quiz.di.main.MainDependencies
+import ru.kpfu.itis.paramonov.quiz.di.main.MainFirebaseDependencies
 import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
+import ru.kpfu.itis.paramonov.quiz.presentation.viewmodel.MainViewModel
 import javax.inject.Inject
 
 class MainActivity: AppCompatActivity(R.layout.activity_main) {
     lateinit var mainComponent: MainComponent
+
+    @Inject
+    lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +30,9 @@ class MainActivity: AppCompatActivity(R.layout.activity_main) {
     private var navController: NavController? = null
 
     private fun inject() {
-        mainComponent = MainComponent.init(this, findComponentDependencies())
+        mainComponent = MainComponent.init(this,
+            findComponentDependencies<MainDependencies>(),
+            findComponentDependencies<MainFirebaseDependencies>())
         mainComponent.inject(this)
     }
 
@@ -35,9 +43,10 @@ class MainActivity: AppCompatActivity(R.layout.activity_main) {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        viewModel.logoutUser()
         navController?.let {
             navigator.detachNavController(it)
         }
+        super.onDestroy()
     }
 }

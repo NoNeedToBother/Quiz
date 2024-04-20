@@ -9,8 +9,7 @@ import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.AuthenticateUserUseCase
-import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.RegisterUserUseCase
-import ru.kpfu.itis.paramonov.feature_authentication.presentation.registration.RegisterViewModel
+import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in.SignInViewModel
 
 @Module(
@@ -28,7 +27,10 @@ class SigningInModule {
     @Provides
     @IntoMap
     @ViewModelKey(SignInViewModel::class)
-    fun provideSignInViewModel(useCase: AuthenticateUserUseCase): ViewModel {
-        return SignInViewModel(useCase)
+    fun provideSignInViewModel(
+        authenticateUserUseCase: AuthenticateUserUseCase,
+        getCurrentUserUseCase: GetCurrentUserUseCase
+        ): ViewModel {
+        return SignInViewModel(authenticateUserUseCase, getCurrentUserUseCase)
     }
 }

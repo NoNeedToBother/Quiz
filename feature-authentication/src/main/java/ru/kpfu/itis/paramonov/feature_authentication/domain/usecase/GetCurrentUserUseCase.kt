@@ -8,7 +8,7 @@ import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import java.util.Optional
 import javax.inject.Inject
 
-class CheckUserIsAuthenticated @Inject constructor(
+class GetCurrentUserUseCase @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val repository: UserRepository,
     private val mapper: UserModelMapper

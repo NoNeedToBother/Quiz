@@ -1,8 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in
 
 import android.content.Context
-import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -47,6 +45,8 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
     }
 
     override fun observeData() {
+        viewModel.checkCurrentUser()
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
                 launch {
@@ -54,6 +54,9 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
                 }
                 launch {
                     checkSigningInProceeding()
+                }
+                launch {
+
                 }
             }
         }
@@ -77,9 +80,9 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
         viewModel.userDataFlow.collect { result ->
             result?.run {
                 when (this) {
-                    is SignInViewModel.SigningInResult.Success ->
+                    is SignInViewModel.UserDataResult.Success ->
                         onSigningInSuccess(getValue())
-                    is SignInViewModel.SigningInResult.Failure ->
+                    is SignInViewModel.UserDataResult.Failure ->
                         onSigningInFail(getException())
                 }
             }
@@ -114,9 +117,5 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
                 authenticationRouter.goToRegister()
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 }

@@ -6,15 +6,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
+import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.RegisterUserUseCase
 
 class RegisterViewModel(
-    private val registerUserUseCase: RegisterUserUseCase
+    private val registerUserUseCase: RegisterUserUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
 ): BaseViewModel() {
 
-    private val _userDataFlow = MutableStateFlow<RegistrationResult?>(null)
+    private val _userDataFlow = MutableStateFlow<UserDataResult?>(null)
 
-    val userDataFlow: StateFlow<RegistrationResult?> get() = _userDataFlow
+    val userDataFlow: StateFlow<UserDataResult?> get() = _userDataFlow
 
     private val _registerProceedingFlow = MutableStateFlow(false)
 
@@ -22,13 +24,12 @@ class RegisterViewModel(
 
     fun registerUser(username: String, email: String, password: String, confirmPassword: String) {
         viewModelScope.launch {
-            _userDataFlow.value = null
             _registerProceedingFlow.value = true
             try {
                 val user = registerUserUseCase.invoke(username, email, password, confirmPassword)
-                _userDataFlow.value = RegistrationResult.Success(user)
+                _userDataFlow.value = UserDataResult.Success(user)
             } catch (ex: Throwable) {
-                _userDataFlow.value = RegistrationResult.Failure(ex)
+                _userDataFlow.value = UserDataResult.Failure(ex)
             } finally {
                 _registerProceedingFlow.value = false
             }
@@ -37,13 +38,21 @@ class RegisterViewModel(
     }
 
     fun checkCurrentUser() {
+        viewModelScope.launch {
+            val user = getCurrentUserUseCase.invoke()
+            if (user.isPresent) {
+                _userDataFlow.value = UserDataResult.Success(user.get())
+            }
+
+            _userDataFlow.value = null
+        }
     }
 
-    sealed interface RegistrationResult: Result {
-        class Success(private val result: UserModel): RegistrationResult, Result.Success<UserModel> {
+    sealed interface UserDataResult: Result {
+        class Success(private val result: UserModel): UserDataResult, Result.Success<UserModel> {
             override fun getValue(): UserModel = result
         }
-        class Failure(private val ex: Throwable): RegistrationResult, Result.Failure {
+        class Failure(private val ex: Throwable): UserDataResult, Result.Failure {
             override fun getException(): Throwable = ex
         }
     }

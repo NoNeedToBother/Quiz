@@ -23,6 +23,7 @@ class UserRepositoryImpl(
     private val signInExceptionHandler: SignInExceptionHandler,
     private val resManager: ResourceManager
 ): UserRepository {
+
     override suspend fun registerUser
                 (username: String,
                  email: String,
@@ -53,12 +54,24 @@ class UserRepositoryImpl(
     }
 
     override suspend fun authenticateUser(email: String, password: String): FirebaseUser {
-        val user = auth.currentUser
-        return user?.run {
-            user.displayName?.run {
-                FirebaseUser(user.uid, this)
-            } ?: throw RuntimeException(resManager.getString(R.string.fail_read_user_data))
-        } ?: signInUser(email, password)
+        val result = withContext(dispatcher) {
+            try {
+                auth.signInWithEmailAndPassword(email, password).waitResult()
+            } catch (ex: Exception) {
+                throw signInExceptionHandler.handle(ex)
+            }
+        }
+        result.run {
+            if (isSuccessful) {
+                val user = getCurrentUser()
+                if (user.isPresent) {
+                    return user.get()
+                } else throw SignInException(resManager.getString(R.string.sign_in_fail_try_again))
+            } else {
+                exception?.let { throw registerExceptionHandler.handle(it) } ?:
+                throw SignInException(resManager.getString(R.string.sign_in_fail_try_again))
+            }
+        }
     }
 
     override suspend fun updateUser(vararg pairs: Pair<String, Any>): FirebaseUser {
@@ -99,27 +112,6 @@ class UserRepositoryImpl(
                 Optional.of(user)
             } ?: throw RuntimeException(resManager.getString(R.string.fail_read_user_data))
         } ?: Optional.empty()
-    }
-
-    private suspend fun signInUser(email: String, password: String): FirebaseUser {
-        val result = withContext(dispatcher) {
-            try {
-                auth.signInWithEmailAndPassword(email, password).waitResult()
-            } catch (ex: Exception) {
-                throw signInExceptionHandler.handle(ex)
-            }
-        }
-        result.run {
-            if (isSuccessful) {
-                val user = getCurrentUser()
-                if (user.isPresent) {
-                    return user.get()
-                } else throw SignInException(resManager.getString(R.string.sign_in_fail_try_again))
-            } else {
-                exception?.let { throw registerExceptionHandler.handle(it) } ?:
-                throw SignInException(resManager.getString(R.string.sign_in_fail_try_again))
-            }
-        }
     }
 
     private fun checkPassword(password: String): Boolean {

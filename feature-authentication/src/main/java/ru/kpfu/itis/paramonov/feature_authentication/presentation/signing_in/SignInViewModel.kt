@@ -7,14 +7,16 @@ import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.AuthenticateUserUseCase
+import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.GetCurrentUserUseCase
 
 class SignInViewModel(
-    private val authenticateUserUseCase: AuthenticateUserUseCase
+    private val authenticateUserUseCase: AuthenticateUserUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
 ): BaseViewModel() {
 
-    private val _userDataFlow = MutableStateFlow<SigningInResult?>(null)
+    private val _userDataFlow = MutableStateFlow<UserDataResult?>(null)
 
-    val userDataFlow: StateFlow<SigningInResult?> get() = _userDataFlow
+    val userDataFlow: StateFlow<UserDataResult?> get() = _userDataFlow
 
     private val _signInProceedingFlow = MutableStateFlow(false)
     val signInProceedingFlow: StateFlow<Boolean> get() = _signInProceedingFlow
@@ -22,13 +24,12 @@ class SignInViewModel(
     fun authenticateUser(username: String, password: String) {
 
         viewModelScope.launch {
-            _userDataFlow.value = null
             _signInProceedingFlow.value = true
             try {
                 val user = authenticateUserUseCase.invoke(username, password)
-                _userDataFlow.value = SigningInResult.Success(user)
+                _userDataFlow.value = UserDataResult.Success(user)
             } catch (ex: Throwable) {
-                _userDataFlow.value = SigningInResult.Failure(ex)
+                _userDataFlow.value = UserDataResult.Failure(ex)
             } finally {
                 _signInProceedingFlow.value = false
             }
@@ -36,11 +37,22 @@ class SignInViewModel(
         }
     }
 
-    sealed interface SigningInResult: Result {
-        class Success(private val result: UserModel): SigningInResult, Result.Success<UserModel> {
+    fun checkCurrentUser() {
+        viewModelScope.launch {
+            val user = getCurrentUserUseCase.invoke()
+            if (user.isPresent) {
+                _userDataFlow.value = UserDataResult.Success(user.get())
+            }
+
+            _userDataFlow.value = null
+        }
+    }
+
+    sealed interface UserDataResult: Result {
+        class Success(private val result: UserModel): UserDataResult, Result.Success<UserModel> {
             override fun getValue(): UserModel = result
         }
-        class Failure(private val ex: Throwable): SigningInResult, Result.Failure {
+        class Failure(private val ex: Throwable): UserDataResult, Result.Failure {
             override fun getException(): Throwable = ex
         }
     }

@@ -46,6 +46,8 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
     }
 
     override fun observeData() {
+        viewModel.checkCurrentUser()
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
                 launch {
@@ -76,9 +78,9 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
         viewModel.userDataFlow.collect { result ->
             result?.run {
                 when (this) {
-                    is RegisterViewModel.RegistrationResult.Success ->
+                    is RegisterViewModel.UserDataResult.Success ->
                         onRegistrationSuccess(getValue())
-                    is RegisterViewModel.RegistrationResult.Failure ->
+                    is RegisterViewModel.UserDataResult.Failure ->
                         onRegistrationFail(getException())
                 }
             }

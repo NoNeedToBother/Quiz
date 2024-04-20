@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
+import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.RegisterUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.presentation.registration.RegisterViewModel
 
@@ -26,7 +27,10 @@ class RegistrationModule {
     @Provides
     @IntoMap
     @ViewModelKey(RegisterViewModel::class)
-    fun provideRegisterViewModel(useCase: RegisterUserUseCase): ViewModel {
-        return RegisterViewModel(useCase)
+    fun provideRegisterViewModel(
+        registerUserUseCase: RegisterUserUseCase,
+        getCurrentUserUseCase: GetCurrentUserUseCase
+        ): ViewModel {
+        return RegisterViewModel(registerUserUseCase, getCurrentUserUseCase)
     }
 }

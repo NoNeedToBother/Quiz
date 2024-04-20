@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 android {
@@ -49,6 +50,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-storage:20.2.1'
     implementation 'com.google.firebase:firebase-messaging:23.1.2'
+
+    implementation(dagger)
+    "kapt"(daggerCompiler)
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

@@ -8,7 +8,6 @@ import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies
 import ru.kpfu.itis.paramonov.quiz.di.main.MainComponent
 import ru.kpfu.itis.paramonov.quiz.di.main.MainDependencies
-import ru.kpfu.itis.paramonov.quiz.di.main.MainFirebaseDependencies
 import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
 import ru.kpfu.itis.paramonov.quiz.presentation.viewmodel.MainViewModel
 import javax.inject.Inject
@@ -31,8 +30,7 @@ class MainActivity: AppCompatActivity(R.layout.activity_main) {
 
     private fun inject() {
         mainComponent = MainComponent.init(this,
-            findComponentDependencies<MainDependencies>(),
-            findComponentDependencies<MainFirebaseDependencies>())
+            findComponentDependencies<MainDependencies>())
         mainComponent.inject(this)
     }
 
@@ -43,7 +41,7 @@ class MainActivity: AppCompatActivity(R.layout.activity_main) {
     }
 
     override fun onDestroy() {
-        viewModel.logoutUser()
+        //viewModel.logoutUser()
         navController?.let {
             navigator.detachNavController(it)
         }

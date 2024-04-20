@@ -8,9 +8,8 @@ import ru.kpfu.itis.paramonov.question_api.domain.model.QuestionDataDomainModel
 import ru.kpfu.itis.paramonov.question_api.domain.model.QuestionDomainModel
 import ru.kpfu.itis.paramonov.question_api.utils.Params
 import java.lang.RuntimeException
-import javax.inject.Inject
 
-class QuestionDomainModelMapper @Inject constructor(
+class QuestionDomainModelMapper(
     private val exceptionHandler: QuestionExceptionHandler
 ): ModelMapper<QuestionResponse, QuestionDomainModel> {
     override fun map(model: QuestionResponse): QuestionDomainModel {

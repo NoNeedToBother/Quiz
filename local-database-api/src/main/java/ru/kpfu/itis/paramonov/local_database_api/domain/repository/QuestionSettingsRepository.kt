@@ -4,7 +4,7 @@ import ru.kpfu.itis.paramonov.local_database_api.domain.model.Category
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Difficulty
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.GameMode
 
-interface SharedPreferencesRepository {
+interface QuestionSettingsRepository {
 
     fun getString(key: String): String
 

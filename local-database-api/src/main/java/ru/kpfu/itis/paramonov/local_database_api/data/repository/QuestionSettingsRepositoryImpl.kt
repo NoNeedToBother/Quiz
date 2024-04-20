@@ -6,11 +6,11 @@ import ru.kpfu.itis.paramonov.local_database_api.data.exception.NoParameterFound
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Category
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Difficulty
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.GameMode
-import ru.kpfu.itis.paramonov.local_database_api.domain.repository.SharedPreferencesRepository
+import ru.kpfu.itis.paramonov.local_database_api.domain.repository.QuestionSettingsRepository
 
-class SharedPreferencesRepositoryImpl(
+class QuestionSettingsRepositoryImpl(
     private val sharedPreferences: SharedPreferences
-): SharedPreferencesRepository {
+): QuestionSettingsRepository {
 
     override fun getString(key: String): String {
         val res = sharedPreferences.getString(key, NO_DATA)
@@ -62,7 +62,7 @@ class SharedPreferencesRepositoryImpl(
     }
 
     override fun saveGameMode(gameMode: String) {
-        saveString(DIFFICULTY_KEY, gameMode.normalizeEnumName())
+        saveString(GAME_MODE_KEY, gameMode.normalizeEnumName())
     }
 
     private fun getDefaultDifficulty(): Difficulty {

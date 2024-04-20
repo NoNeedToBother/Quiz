@@ -1,11 +1,11 @@
-package ru.kpfu.itis.paramonov.quiz.di.local_database
+package ru.kpfu.itis.paramonov.local_database_api.di
 
 import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
-import ru.kpfu.itis.paramonov.local_database_api.data.repository.SharedPreferencesRepositoryImpl
-import ru.kpfu.itis.paramonov.local_database_api.domain.repository.SharedPreferencesRepository
+import ru.kpfu.itis.paramonov.local_database_api.data.repository.QuestionSettingsRepositoryImpl
+import ru.kpfu.itis.paramonov.local_database_api.domain.repository.QuestionSettingsRepository
 
 @Module
 class LocalDatabaseModule {
@@ -24,12 +24,12 @@ class LocalDatabaseModule {
 
     @Provides
     fun sharedPreferencesRepositoryImpl(sharedPreferences: SharedPreferences
-    ): SharedPreferencesRepositoryImpl {
-        return SharedPreferencesRepositoryImpl(sharedPreferences)
+    ): QuestionSettingsRepositoryImpl {
+        return QuestionSettingsRepositoryImpl(sharedPreferences)
     }
 
     @Provides
     fun sharedPreferencesRepository(
-        impl: SharedPreferencesRepositoryImpl
-    ): SharedPreferencesRepository = impl
+        impl: QuestionSettingsRepositoryImpl
+    ): QuestionSettingsRepository = impl
 }

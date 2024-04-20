@@ -7,7 +7,6 @@ import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.AuthenticateUserUseCase
-import java.lang.Exception
 
 class SignInViewModel(
     private val authenticateUserUseCase: AuthenticateUserUseCase
@@ -21,18 +20,19 @@ class SignInViewModel(
     val signInProceedingFlow: StateFlow<Boolean> get() = _signInProceedingFlow
 
     fun authenticateUser(username: String, password: String) {
-        _userDataFlow.value = null
-        _signInProceedingFlow.value = true
 
         viewModelScope.launch {
+            _userDataFlow.value = null
+            _signInProceedingFlow.value = true
             try {
                 val user = authenticateUserUseCase.invoke(username, password)
                 _userDataFlow.value = SigningInResult.Success(user)
-            } catch (ex: Exception) {
+            } catch (ex: Throwable) {
                 _userDataFlow.value = SigningInResult.Failure(ex)
             } finally {
                 _signInProceedingFlow.value = false
             }
+            _userDataFlow.value = null
         }
     }
 

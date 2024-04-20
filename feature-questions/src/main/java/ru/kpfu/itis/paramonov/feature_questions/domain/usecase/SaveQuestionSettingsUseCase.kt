@@ -2,12 +2,12 @@ package ru.kpfu.itis.paramonov.feature_questions.domain.usecase
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.local_database_api.domain.repository.SharedPreferencesRepository
+import ru.kpfu.itis.paramonov.local_database_api.domain.repository.QuestionSettingsRepository
 import javax.inject.Inject
 
 class SaveQuestionSettingsUseCase @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
-    private val repository: SharedPreferencesRepository
+    private val repository: QuestionSettingsRepository
 ) {
 
     suspend operator fun invoke(difficulty: String?, category: String?, gameMode: String?) {

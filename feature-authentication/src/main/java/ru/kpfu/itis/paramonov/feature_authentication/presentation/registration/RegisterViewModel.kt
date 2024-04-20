@@ -21,10 +21,9 @@ class RegisterViewModel(
     val registerProceedingFlow: StateFlow<Boolean> get() = _registerProceedingFlow
 
     fun registerUser(username: String, email: String, password: String, confirmPassword: String) {
-        _userDataFlow.value = null
-        _registerProceedingFlow.value = true
-
         viewModelScope.launch {
+            _userDataFlow.value = null
+            _registerProceedingFlow.value = true
             try {
                 val user = registerUserUseCase.invoke(username, email, password, confirmPassword)
                 _userDataFlow.value = RegistrationResult.Success(user)
@@ -33,7 +32,11 @@ class RegisterViewModel(
             } finally {
                 _registerProceedingFlow.value = false
             }
+            _userDataFlow.value = null
         }
+    }
+
+    fun checkCurrentUser() {
     }
 
     sealed interface RegistrationResult: Result {

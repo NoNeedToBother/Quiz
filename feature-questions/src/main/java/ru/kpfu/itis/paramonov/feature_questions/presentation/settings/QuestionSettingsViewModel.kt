@@ -20,9 +20,8 @@ class QuestionSettingsViewModel(
     val settingsDataFlow: StateFlow<QuestionSettingsUiModel?> get() = _settingsDataFlow
 
     fun getQuestionSettings() {
-        _settingsDataFlow.value = null
-
         viewModelScope.launch {
+            _settingsDataFlow.value = null
             _settingsDataFlow.value = getQuestionSettingsUseCase.invoke()
         }
     }

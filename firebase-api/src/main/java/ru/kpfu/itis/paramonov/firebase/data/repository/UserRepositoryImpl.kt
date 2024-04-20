@@ -1,20 +1,20 @@
 package ru.kpfu.itis.paramonov.firebase.data.repository
 
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.RegisterException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.SignInException
-import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
+import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
+import ru.kpfu.itis.paramonov.firebase.data.utils.waitResult
 import java.lang.RuntimeException
+import java.util.Optional
 
 class UserRepositoryImpl(
     private val auth: FirebaseAuth,
@@ -42,9 +42,9 @@ class UserRepositoryImpl(
                 throw registerExceptionHandler.handle(ex)
             }
         }
-        return result.run {
+        result.run {
             if (isSuccessful) {
-                updateUser(USERNAME_KEY to username)
+                return updateUser(USERNAME_KEY to username)
             } else {
                 throw exception?.let { registerExceptionHandler.handle(it) } ?:
                 throw RegisterException(resManager.getString(R.string.register_fail_try_again))
@@ -85,17 +85,20 @@ class UserRepositoryImpl(
 
         val user = auth.currentUser
         user?.updateProfile(builder.build())?.waitResult()
-        return user
-    }
-
-    override suspend fun checkUserIsAuthenticated(): Boolean {
-        return auth.currentUser?.let {
-            true
-        } ?: false
+        return auth.currentUser
     }
 
     override suspend fun logoutUser() {
         auth.signOut()
+    }
+
+    override suspend fun getCurrentUser(): Optional<FirebaseUser> {
+        return auth.currentUser?.run {
+            displayName?.let {
+                val user = FirebaseUser(uid, it)
+                Optional.of(user)
+            } ?: throw RuntimeException(resManager.getString(R.string.fail_read_user_data))
+        } ?: Optional.empty()
     }
 
     private suspend fun signInUser(email: String, password: String): FirebaseUser {
@@ -106,16 +109,12 @@ class UserRepositoryImpl(
                 throw signInExceptionHandler.handle(ex)
             }
         }
-        return result.run {
+        result.run {
             if (isSuccessful) {
-                auth.currentUser?.run {
-                    displayName?.let {
-                        FirebaseUser(
-                            uid,
-                            it
-                        )
-                    }
-                } ?: throw RuntimeException(resManager.getString(R.string.fail_read_user_data))
+                val user = getCurrentUser()
+                if (user.isPresent) {
+                    return user.get()
+                } else throw SignInException(resManager.getString(R.string.sign_in_fail_try_again))
             } else {
                 exception?.let { throw registerExceptionHandler.handle(it) } ?:
                 throw SignInException(resManager.getString(R.string.sign_in_fail_try_again))
@@ -123,13 +122,6 @@ class UserRepositoryImpl(
         }
     }
 
-    private suspend fun <T> Task<T>.waitResult(): Task<T> {
-        while (true) {
-            if (isComplete) break
-            else delay(100L)
-        }
-        return this
-    }
     private fun checkPassword(password: String): Boolean {
         var hasDigit = false
         var hasUpperCase = false

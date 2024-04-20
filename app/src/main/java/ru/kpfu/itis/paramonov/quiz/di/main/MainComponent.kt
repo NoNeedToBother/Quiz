@@ -9,7 +9,6 @@ import ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments.MainMenuFragment
 
 @Component(
     dependencies = [
-        MainFirebaseDependencies::class,
         MainDependencies::class,
     ],
     modules = [
@@ -21,9 +20,8 @@ interface MainComponent {
 
     companion object {
         fun init(activity: AppCompatActivity,
-                 deps: MainDependencies,
-                 firebaseDeps: MainFirebaseDependencies): MainComponent {
-            return DaggerMainComponent.factory().create(activity, deps, firebaseDeps)
+                 deps: MainDependencies): MainComponent {
+            return DaggerMainComponent.factory().create(activity, deps)
         }
     }
 
@@ -31,8 +29,7 @@ interface MainComponent {
     interface Factory {
         fun create(
             @BindsInstance activity: AppCompatActivity,
-            mainDeps: MainDependencies,
-            mainFirebaseDeps: MainFirebaseDependencies
+            mainDeps: MainDependencies
         ): MainComponent
     }
 

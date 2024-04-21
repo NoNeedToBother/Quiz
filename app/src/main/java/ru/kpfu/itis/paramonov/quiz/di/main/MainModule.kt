@@ -20,12 +20,12 @@ class MainModule {
     @Provides
     @IntoMap
     @ViewModelKey(MainViewModel::class)
-    fun mainViewModel(logoutUserUseCase: LogoutUserUseCase): ViewModel {
+    fun provideMainViewModel(logoutUserUseCase: LogoutUserUseCase): ViewModel {
         return MainViewModel(logoutUserUseCase)
     }
 
     @Provides
-    fun provideViewModelCreator(activity: AppCompatActivity, viewModelFactory: ViewModelProvider.Factory): MainViewModel {
+    fun mainViewModel(activity: AppCompatActivity, viewModelFactory: ViewModelProvider.Factory): MainViewModel {
         return ViewModelProvider(activity, viewModelFactory)[MainViewModel::class.java]
     }
 }

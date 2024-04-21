@@ -6,8 +6,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.databinding.FragmentMainMenuBinding
-import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
 import ru.kpfu.itis.paramonov.quiz.presentation.ui.MainActivity
+import ru.kpfu.itis.paramonov.quiz.presentation.viewmodel.MainMenuViewModel
 import javax.inject.Inject
 
 class MainMenuFragment: BaseFragment(R.layout.fragment_main_menu) {
@@ -15,10 +15,13 @@ class MainMenuFragment: BaseFragment(R.layout.fragment_main_menu) {
     private val binding: FragmentMainMenuBinding by viewBinding(FragmentMainMenuBinding::bind)
 
     @Inject
-    lateinit var navigator: Navigator
+    lateinit var viewModel: MainMenuViewModel
 
     override fun inject() {
-        (requireActivity() as MainActivity).mainComponent.inject(this)
+        (requireActivity() as MainActivity).mainComponent
+            .mainMenuComponentFactory()
+            .create(this)
+            .inject(this)
     }
 
     override fun initView() {
@@ -43,10 +46,10 @@ class MainMenuFragment: BaseFragment(R.layout.fragment_main_menu) {
     private fun setOnClickListeners() {
         with(binding) {
             tvQuestion.setOnClickListener {
-                navigator.goToQuestion()
+                viewModel.goToQuestions()
             }
             tvQuestionSettings.setOnClickListener {
-                navigator.goToQuestionSettings()
+                viewModel.goToQuestionSettings()
             }
         }
     }

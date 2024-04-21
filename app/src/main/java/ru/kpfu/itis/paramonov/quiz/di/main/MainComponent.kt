@@ -5,7 +5,6 @@ import dagger.BindsInstance
 import dagger.Component
 import ru.kpfu.itis.paramonov.common.di.scopes.ScreenScope
 import ru.kpfu.itis.paramonov.quiz.presentation.ui.MainActivity
-import ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments.MainMenuFragment
 
 @Component(
     dependencies = [
@@ -17,6 +16,9 @@ import ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments.MainMenuFragment
 )
 @ScreenScope
 interface MainComponent {
+
+    fun mainMenuComponentFactory(): MainMenuComponent.Factory
+
 
     companion object {
         fun init(activity: AppCompatActivity,
@@ -34,6 +36,4 @@ interface MainComponent {
     }
 
     fun inject(mainActivity: MainActivity)
-
-    fun inject(mainMenuFragment: MainMenuFragment)
 }

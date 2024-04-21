@@ -5,6 +5,7 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.question_api.BuildConfig
 import ru.kpfu.itis.paramonov.question_api.data.handler.QuestionExceptionHandler
 import ru.kpfu.itis.paramonov.question_api.data.repository.QuestionRepositoryImpl
@@ -32,8 +33,9 @@ class QuestionModule {
     }
 
     @Provides
-    fun questionRepositoryImpl(api: QuestionApi, mapper: QuestionDomainModelMapper): QuestionRepositoryImpl {
-        return QuestionRepositoryImpl(api, mapper)
+    fun questionRepositoryImpl(api: QuestionApi, mapper: QuestionDomainModelMapper,
+                               resourceManager: ResourceManager): QuestionRepositoryImpl {
+        return QuestionRepositoryImpl(api, mapper, resourceManager)
     }
 
     @Provides

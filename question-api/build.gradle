@@ -16,7 +16,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "TRIVIA_DB_URL", "\"https://opentdb.com/api.php/\"")
+        buildConfigField("String", "TRIVIA_DB_URL", "\"https://opentdb.com/\"")
     }
 
     buildTypes {

@@ -9,10 +9,10 @@ import ru.kpfu.itis.paramonov.common_android.di.FeatureContainer
 import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationHolder
-import ru.kpfu.itis.paramonov.feature_authentication.di.FirebaseContainer
+import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
+import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsHolder
-import ru.kpfu.itis.paramonov.feature_questions.di.LocalDatabaseContainer
 import ru.kpfu.itis.paramonov.quiz.App
 
 @Module
@@ -24,11 +24,11 @@ interface ComponentHolderModule {
 
     @ApplicationScope
     @Binds
-    fun firebaseContainer(application: App): FirebaseContainer
+    fun featureAuthenticationDependenciesContainer(application: App): FeatureAuthenticationDependenciesContainer
 
     @ApplicationScope
     @Binds
-    fun localDatabaseContainer(application: App): LocalDatabaseContainer
+    fun featureQuestionsDependenciesContainer(application: App): FeatureQuestionsDependenciesContainer
 
     @ApplicationScope
     @Binds
@@ -40,5 +40,5 @@ interface ComponentHolderModule {
     @Binds
     @ClassKey(FeatureQuestionsDependencies::class)
     @IntoMap
-    fun questionsFeatureHolder(authenticationFeatureHolder: FeatureQuestionsHolder): FeatureApiHolder
+    fun questionsFeatureHolder(questionsFeatureHolder: FeatureQuestionsHolder): FeatureApiHolder
 }

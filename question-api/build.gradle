@@ -52,8 +52,9 @@ dependencies {
     implementation(dagger)
     "kapt"(daggerCompiler)
 
-    implementation(retrofit)
+    api(retrofit)
     implementation(retrofitGsonConverter)
+    implementation(okHttp3)
 
     implementation(gson)
 

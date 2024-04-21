@@ -8,10 +8,14 @@ import ru.kpfu.itis.paramonov.common.model.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.RegisterUserUseCase
+import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
+import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 
 class RegisterViewModel(
     private val registerUserUseCase: RegisterUserUseCase,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val authenticationRouter: AuthenticationRouter,
+    private val mainMenuRouter: MainMenuRouter
 ): BaseViewModel() {
 
     private val _userDataFlow = MutableStateFlow<UserDataResult?>(null)
@@ -28,6 +32,7 @@ class RegisterViewModel(
             try {
                 val user = registerUserUseCase.invoke(username, email, password, confirmPassword)
                 _userDataFlow.value = UserDataResult.Success(user)
+                mainMenuRouter.goToMainMenu()
             } catch (ex: Throwable) {
                 _userDataFlow.value = UserDataResult.Failure(ex)
             } finally {
@@ -43,8 +48,15 @@ class RegisterViewModel(
             if (user.isPresent) {
                 _userDataFlow.value = UserDataResult.Success(user.get())
             }
+            mainMenuRouter.goToMainMenu()
 
             _userDataFlow.value = null
+        }
+    }
+
+    fun goToSignIn() {
+        viewModelScope.launch {
+            authenticationRouter.goToSignIn()
         }
     }
 

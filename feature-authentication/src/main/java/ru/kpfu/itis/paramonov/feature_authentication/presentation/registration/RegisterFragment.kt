@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.feature_authentication.presentation.registration
 
-import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -16,8 +15,6 @@ import ru.kpfu.itis.paramonov.common_android.R as commonR
 import ru.kpfu.itis.paramonov.feature_authentication.databinding.FragmentRegisterBinding
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationComponent
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
-import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
-import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import javax.inject.Inject
 
 class RegisterFragment: BaseFragment(R.layout.fragment_register) {
@@ -27,14 +24,7 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
     @Inject
     lateinit var viewModel: RegisterViewModel
 
-    @Inject
-    lateinit var authenticationRouter: AuthenticationRouter
-
-    @Inject
-    lateinit var mainMenuRouter: MainMenuRouter
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun inject() {
         FeatureUtils.getFeature<FeatureAuthenticationComponent>(this, FeatureAuthenticationDependencies::class.java)
             .registrationComponentFactory()
             .create(this)
@@ -92,7 +82,6 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
             binding.tvLogo,
             getString(R.string.welcome_user, user.username)
         )
-        mainMenuRouter.goToMainMenu()
     }
 
     private fun onRegistrationFail(exception: Throwable) {
@@ -115,7 +104,7 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
             }
 
             btnGoSignIn.setOnClickListener {
-                authenticationRouter.goToSignIn()
+                viewModel.goToSignIn()
             }
         }
     }

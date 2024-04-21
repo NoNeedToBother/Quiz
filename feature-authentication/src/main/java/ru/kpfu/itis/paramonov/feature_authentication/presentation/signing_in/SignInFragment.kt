@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in
 
-import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -16,8 +15,6 @@ import ru.kpfu.itis.paramonov.common_android.R as commonR
 import ru.kpfu.itis.paramonov.feature_authentication.databinding.FragmentSignInBinding
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationComponent
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
-import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
-import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import javax.inject.Inject
 
 class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
@@ -27,19 +24,13 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
     @Inject
     lateinit var viewModel: SignInViewModel
 
-    @Inject
-    lateinit var authenticationRouter: AuthenticationRouter
-
-    @Inject
-    lateinit var mainMenuRouter: MainMenuRouter
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun inject() {
         FeatureUtils.getFeature<FeatureAuthenticationComponent>(this, FeatureAuthenticationDependencies::class.java)
             .signingInComponentFactory()
             .create(this)
             .inject(this)
     }
+
     override fun initView() {
         setOnClickListeners()
     }
@@ -54,9 +45,6 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
                 }
                 launch {
                     checkSigningInProceeding()
-                }
-                launch {
-
                 }
             }
         }
@@ -94,7 +82,6 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
             binding.tvLogo,
             getString(R.string.welcome_back_user, user.username)
         )
-        mainMenuRouter.goToMainMenu()
     }
 
     private fun onSigningInFail(exception: Throwable) {
@@ -114,7 +101,7 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
             }
 
             btnGoRegister.setOnClickListener {
-                authenticationRouter.goToRegister()
+                viewModel.goToRegister()
             }
         }
     }

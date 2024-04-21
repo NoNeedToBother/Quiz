@@ -6,7 +6,7 @@ import ru.kpfu.itis.paramonov.question_api.utils.Params
 
 class QuestionTypeInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val newUrl = chain.request().url().newBuilder()
+        val newUrl = chain.request().url.newBuilder()
             .addQueryParameter(Params.QUERY_TYPE_KEY, Params.QUERY_TYPE_DEFAULT_VALUE)
             .build()
 

@@ -11,6 +11,8 @@ import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.RegisterUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.presentation.registration.RegisterViewModel
+import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
+import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 
 @Module(
     includes = [
@@ -20,7 +22,7 @@ import ru.kpfu.itis.paramonov.feature_authentication.presentation.registration.R
 class RegistrationModule {
 
     @Provides
-    fun provideMainViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): RegisterViewModel {
+    fun registerViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): RegisterViewModel {
         return ViewModelProvider(fragment, factory)[RegisterViewModel::class.java]
     }
 
@@ -29,8 +31,11 @@ class RegistrationModule {
     @ViewModelKey(RegisterViewModel::class)
     fun provideRegisterViewModel(
         registerUserUseCase: RegisterUserUseCase,
-        getCurrentUserUseCase: GetCurrentUserUseCase
-        ): ViewModel {
-        return RegisterViewModel(registerUserUseCase, getCurrentUserUseCase)
+        getCurrentUserUseCase: GetCurrentUserUseCase,
+        authenticationRouter: AuthenticationRouter,
+        mainMenuRouter: MainMenuRouter
+    ): ViewModel {
+        return RegisterViewModel(registerUserUseCase, getCurrentUserUseCase,
+            authenticationRouter, mainMenuRouter)
     }
 }

@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments
 
-import android.content.Context
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -18,8 +17,7 @@ class MainMenuFragment: BaseFragment(R.layout.fragment_main_menu) {
     @Inject
     lateinit var navigator: Navigator
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun inject() {
         (requireActivity() as MainActivity).mainComponent.inject(this)
     }
 

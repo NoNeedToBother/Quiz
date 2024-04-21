@@ -11,6 +11,8 @@ import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.AuthenticateUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in.SignInViewModel
+import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
+import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 
 @Module(
     includes = [
@@ -20,7 +22,7 @@ import ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in.Sig
 class SigningInModule {
 
     @Provides
-    fun provideMainViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): SignInViewModel {
+    fun signInViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): SignInViewModel {
         return ViewModelProvider(fragment, factory)[SignInViewModel::class.java]
     }
 
@@ -29,8 +31,11 @@ class SigningInModule {
     @ViewModelKey(SignInViewModel::class)
     fun provideSignInViewModel(
         authenticateUserUseCase: AuthenticateUserUseCase,
-        getCurrentUserUseCase: GetCurrentUserUseCase
-        ): ViewModel {
-        return SignInViewModel(authenticateUserUseCase, getCurrentUserUseCase)
+        getCurrentUserUseCase: GetCurrentUserUseCase,
+        authenticationRouter: AuthenticationRouter,
+        mainMenuRouter: MainMenuRouter
+    ): ViewModel {
+        return SignInViewModel(authenticateUserUseCase, getCurrentUserUseCase,
+            authenticationRouter, mainMenuRouter)
     }
 }

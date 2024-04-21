@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @ApplicationScope
 class FeatureAuthenticationHolder @Inject constructor(
-    featureContainer: FirebaseContainer,
+    featureContainer: FeatureAuthenticationDependenciesContainer,
     private val authenticationRouter: AuthenticationRouter,
     private val mainMenuRouter: MainMenuRouter
 ) : FirebaseFeatureApiHolder(featureContainer) {

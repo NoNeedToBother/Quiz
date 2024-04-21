@@ -3,6 +3,7 @@ package ru.kpfu.itis.paramonov.feature_questions.presentation.settings.viewholde
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.feature_questions.R
@@ -22,18 +23,14 @@ class DifficultyItemViewHolder(
     fun bindItem(item: DifficultyItem) {
         tvDifficulty?.text = item.difficulty.name.normalizeEnumName()
         when(item.difficulty) {
-            DifficultyUiModel.EASY -> {
-                val circle = resourceManager.getDrawable(R.drawable.difficulty_easy_circle)
-                ivDifficulty?.setImageDrawable(circle)
-            }
-            DifficultyUiModel.MEDIUM -> {
-                val circle = resourceManager.getDrawable(R.drawable.difficulty_medium_circle)
-                ivDifficulty?.setImageDrawable(circle)
-            }
-            DifficultyUiModel.HARD -> {
-                val circle = resourceManager.getDrawable(R.drawable.difficulty_hard_circle)
-                ivDifficulty?.setImageDrawable(circle)
-            }
+            DifficultyUiModel.EASY -> onBindDifficultyLevel(R.drawable.difficulty_easy_circle)
+            DifficultyUiModel.MEDIUM -> onBindDifficultyLevel(R.drawable.difficulty_medium_circle)
+            DifficultyUiModel.HARD -> onBindDifficultyLevel(R.drawable.difficulty_hard_circle)
         }
+    }
+
+    private fun onBindDifficultyLevel(@DrawableRes drawableId: Int) {
+        val circle = resourceManager.getDrawable(drawableId)
+        ivDifficulty?.setImageDrawable(circle)
     }
 }

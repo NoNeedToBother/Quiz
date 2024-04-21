@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.common_android.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
@@ -8,6 +9,13 @@ import ru.kpfu.itis.paramonov.common_android.ui.views.ErrorBottomSheetDialogFrag
 import ru.kpfu.itis.paramonov.common_android.ui.views.MessageSnackbar
 
 abstract class BaseFragment(@LayoutRes layoutId: Int): Fragment(layoutId) {
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        inject()
+    }
+
+    protected abstract fun inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

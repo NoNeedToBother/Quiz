@@ -42,6 +42,7 @@ dependencies {
     implementation project(':common')
     implementation project(':common-android')
     implementation project(':local-database-api')
+    implementation project(':question-api')
     implementation project(':navigation')
 
     implementation(dagger)

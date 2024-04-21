@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.settings
 
-import android.content.Context
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,14 +35,13 @@ class QuestionSettingsFragment: BaseFragment(R.layout.fragment_questions_setting
     @Inject
     lateinit var viewModel: QuestionSettingsViewModel
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun inject() {
         FeatureUtils.getFeature<FeatureQuestionsComponent>(this, FeatureQuestionsDependencies::class.java)
             .questionSettingsComponentFactory()
             .create(this)
             .inject(this)
-
     }
+
     override fun initView() {
         initDifficultiesTextView()
         initCategoriesTextView()

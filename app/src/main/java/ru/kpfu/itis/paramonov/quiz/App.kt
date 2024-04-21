@@ -6,9 +6,10 @@ import ru.kpfu.itis.paramonov.quiz.di.dependencies.FeatureHolderManager
 import ru.kpfu.itis.paramonov.common_android.di.FeatureContainer
 import ru.kpfu.itis.paramonov.common_android.di.CommonApi
 import ru.kpfu.itis.paramonov.firebase.domain.api.FirebaseApi
-import ru.kpfu.itis.paramonov.feature_authentication.di.FirebaseContainer
-import ru.kpfu.itis.paramonov.feature_questions.di.LocalDatabaseContainer
+import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependenciesContainer
+import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependenciesContainer
 import ru.kpfu.itis.paramonov.local_database_api.domain.api.LocalDatabaseApi
+import ru.kpfu.itis.paramonov.question_api.domain.api.QuestionApi
 import ru.kpfu.itis.paramonov.quiz.di.AppComponent
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesProvider
 import ru.kpfu.itis.paramonov.quiz.di.firebase.DaggerFirebaseComponent
@@ -17,9 +18,13 @@ import ru.kpfu.itis.paramonov.quiz.di.firebase.FirebaseComponent
 import ru.kpfu.itis.paramonov.quiz.di.local_database.DaggerLocalDatabaseComponent
 import ru.kpfu.itis.paramonov.quiz.di.local_database.DaggerLocalDatabaseComponent_LocalDatabaseDependenciesComponent
 import ru.kpfu.itis.paramonov.quiz.di.local_database.LocalDatabaseComponent
+import ru.kpfu.itis.paramonov.quiz.di.questions.DaggerQuestionsComponent
+import ru.kpfu.itis.paramonov.quiz.di.questions.DaggerQuestionsComponent_QuestionDependenciesComponent
+import ru.kpfu.itis.paramonov.quiz.di.questions.QuestionsComponent
 import javax.inject.Inject
 
-class App: Application(), FeatureContainer, FirebaseContainer, LocalDatabaseContainer {
+class App: Application(), FeatureContainer, FeatureAuthenticationDependenciesContainer,
+    FeatureQuestionsDependenciesContainer {
     @Inject
     lateinit var featureHolderManager: FeatureHolderManager
 
@@ -32,6 +37,8 @@ class App: Application(), FeatureContainer, FirebaseContainer, LocalDatabaseCont
 
     private lateinit var localDatabaseComponent: LocalDatabaseComponent
 
+    private lateinit var questionsComponent: QuestionsComponent
+
     override fun onCreate() {
         super.onCreate()
         init()
@@ -42,6 +49,7 @@ class App: Application(), FeatureContainer, FirebaseContainer, LocalDatabaseCont
         initAppComponent()
         initFirebaseComponent()
         initLocalDatabaseComponent()
+        initQuestionsComponent()
     }
 
     private fun initFirebase() {
@@ -73,6 +81,16 @@ class App: Application(), FeatureContainer, FirebaseContainer, LocalDatabaseCont
             .build()
     }
 
+    private fun initQuestionsComponent() {
+        val questionsDependencies = DaggerQuestionsComponent_QuestionDependenciesComponent.builder()
+            .commonApi(appComponent)
+            .build()
+
+        questionsComponent = DaggerQuestionsComponent.builder()
+            .questionsDependencies(questionsDependencies)
+            .build()
+    }
+
     override fun <T> getFeature(key: Class<*>): T {
         return featureHolderManager.getFeature<T>(key)!!
     }
@@ -83,6 +101,10 @@ class App: Application(), FeatureContainer, FirebaseContainer, LocalDatabaseCont
 
     override fun commonApi(): CommonApi {
         return appComponent
+    }
+
+    override fun questionApi(): QuestionApi {
+        return questionsComponent
     }
 
     override fun firebaseApi(): FirebaseApi {

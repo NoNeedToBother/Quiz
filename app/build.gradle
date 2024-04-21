@@ -52,6 +52,7 @@ dependencies {
     implementation project(':navigation')
     implementation project(':local-database-api')
     implementation project(':feature-questions')
+    implementation project(':question-api')
 
     implementation(dagger)
     "kapt"(daggerCompiler)

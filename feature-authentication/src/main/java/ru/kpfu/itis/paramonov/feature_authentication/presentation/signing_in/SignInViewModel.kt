@@ -48,8 +48,6 @@ class SignInViewModel(
                 _userDataFlow.value = UserDataResult.Success(user.get())
             }
             mainMenuRouter.goToMainMenu()
-
-            _userDataFlow.value = null
         }
     }
 

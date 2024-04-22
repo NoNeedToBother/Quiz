@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="settings_inner_color">#006970</color>
-    <color name="settings_color">#00CEDC</color>
-    <color name="settings_btn_ripple_color">#66006970</color>
+    <color name="settings_inner_color">#7582A5</color>
+    <color name="settings_color">#BACDFF</color>
+    <color name="settings_choosing_color">#E4EAFD</color>
+    <color name="settings_btn_ripple_color">#667582A5</color>
 </resources>

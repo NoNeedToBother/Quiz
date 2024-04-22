@@ -1,6 +1,7 @@
 package ru.kpfu.itis.paramonov.question_api.data.mapper
 
 import ru.kpfu.itis.paramonov.common.mapper.ModelMapper
+import ru.kpfu.itis.paramonov.common.utils.HtmlDecoder
 import ru.kpfu.itis.paramonov.question_api.data.handler.QuestionExceptionHandler
 import ru.kpfu.itis.paramonov.question_api.data.model.QuestionDataResponse
 import ru.kpfu.itis.paramonov.question_api.data.model.QuestionResponse
@@ -10,7 +11,8 @@ import ru.kpfu.itis.paramonov.question_api.utils.Params
 import java.lang.RuntimeException
 
 class QuestionDomainModelMapper(
-    private val exceptionHandler: QuestionExceptionHandler
+    private val exceptionHandler: QuestionExceptionHandler,
+    private val htmlDecoder: HtmlDecoder
 ): ModelMapper<QuestionResponse, QuestionDomainModel> {
     override fun map(model: QuestionResponse): QuestionDomainModel {
         model.code?.let {
@@ -25,7 +27,13 @@ class QuestionDomainModelMapper(
             for (questionData in questionsData) {
                 with(questionData) {
                     if (text != null && answer != null && incorrectAnswers != null) {
-                        result.add(QuestionDataDomainModel(text, answer, incorrectAnswers))
+                        result.add(QuestionDataDomainModel(
+                            htmlDecoder.decode(text),
+                            htmlDecoder.decode(answer),
+                            incorrectAnswers.map {
+                                htmlDecoder.decode(it)
+                            })
+                        )
                     } else throw RuntimeException()
                 }
             }

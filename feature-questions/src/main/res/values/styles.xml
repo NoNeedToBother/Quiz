@@ -6,5 +6,6 @@
         <item name="hintTextColor">@color/settings_inner_color</item>
         <item name="android:textColorHint">@color/settings_inner_color</item>
         <item name="endIconTint">@color/settings_inner_color</item>
+        <item name="boxBackgroundColor">@color/settings_choosing_color</item>
     </style>
 </resources>

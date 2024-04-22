@@ -9,7 +9,7 @@ import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionsUseCase
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.QuestionsViewModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
 
 @Module(
     includes = [
@@ -18,14 +18,14 @@ import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.Questions
 )
 class QuestionModule {
     @Provides
-    fun questionSettingsViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): QuestionsViewModel {
+    fun questionsViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): QuestionsViewModel {
         return ViewModelProvider(fragment, factory)[QuestionsViewModel::class.java]
     }
 
     @Provides
     @IntoMap
     @ViewModelKey(QuestionsViewModel::class)
-    fun provideQuestionSettingsViewModel(
+    fun provideQuestionsViewModel(
         getQuestionsUseCase: GetQuestionsUseCase
     ): ViewModel {
         return QuestionsViewModel(getQuestionsUseCase)

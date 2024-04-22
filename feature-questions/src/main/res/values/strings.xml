@@ -4,6 +4,8 @@
     <string name="category">Category</string>
     <string name="game_mode">Game mode</string>
     <string name="save">Save</string>
+    <string name="get_questions_fail_msg">Could not get questions, try again later</string>
+    <string name="question_num">Question: %d/%d</string>
 
     <string-array name="difficulties">
         <item>EASY</item>

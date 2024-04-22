@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.common.utils.HtmlDecoder
 import ru.kpfu.itis.paramonov.question_api.BuildConfig
 import ru.kpfu.itis.paramonov.question_api.data.handler.QuestionExceptionHandler
 import ru.kpfu.itis.paramonov.question_api.data.repository.QuestionRepositoryImpl
@@ -28,8 +29,9 @@ class QuestionModule {
     }
 
     @Provides
-    fun questionDomainModelMapper(exceptionHandler: QuestionExceptionHandler): QuestionDomainModelMapper {
-        return QuestionDomainModelMapper(exceptionHandler)
+    fun questionDomainModelMapper(exceptionHandler: QuestionExceptionHandler,
+                                  htmlDecoder: HtmlDecoder): QuestionDomainModelMapper {
+        return QuestionDomainModelMapper(exceptionHandler, htmlDecoder)
     }
 
     @Provides

@@ -24,14 +24,16 @@ class QuestionRepositoryImpl(
         for (categoryInfo in categories) {
             val name = categoryInfo.name
             val categoryName = getCategoryByName(name)
-            if (category == categoryName) return categoryInfo.id
+            if (category == categoryName) {
+                return categoryInfo.id
+            }
         }
         throw UnknownParameterException(
             resourceManager.getString(R.string.unknown_parameter)
         )
     }
 
-    private fun getCategoryByName(categoryName: String): String {
+    private fun getCategoryByName(categoryName: String): String? {
         return when (categoryName) {
             GENERAL_CATEGORY_NAME -> Categories.GENERAL_CATEGORY
             BOOKS_CATEGORY_NAME -> Categories.BOOK_CATEGORY
@@ -43,9 +45,7 @@ class QuestionRepositoryImpl(
             GEOGRAPHY_CATEGORY_NAME -> Categories.GEOGRAPHY_CATEGORY
             HISTORY_CATEGORY_NAME -> Categories.HISTORY_CATEGORY
             ANIMALS_CATEGORY_NAME -> Categories.ANIMALS_CATEGORY
-            else -> throw UnknownParameterException(
-                resourceManager.getString(R.string.unknown_parameter)
-            )
+            else -> null
         }
     }
 

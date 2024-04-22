@@ -49,8 +49,6 @@ class RegisterViewModel(
                 _userDataFlow.value = UserDataResult.Success(user.get())
             }
             mainMenuRouter.goToMainMenu()
-
-            _userDataFlow.value = null
         }
     }
 

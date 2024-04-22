@@ -18,10 +18,6 @@ class QuestionsViewPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        return with(questionList[position]) {
-            QuestionFragment.newInstance(
-                text, answer, incorrectAnswers
-            )
-        }
+        return QuestionFragment.newInstance(position)
     }
 }

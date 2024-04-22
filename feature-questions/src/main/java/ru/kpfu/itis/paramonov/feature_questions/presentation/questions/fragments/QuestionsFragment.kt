@@ -90,9 +90,4 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
             })
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //viewModelStore.clear()
-    }
 }

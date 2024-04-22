@@ -36,6 +36,6 @@ class GetQuestionsUseCase @Inject constructor(
     }
 
     companion object {
-        private const val BLITZ_QUESTION_AMOUNT = 15
+        private const val BLITZ_QUESTION_AMOUNT = 10
     }
 }

@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.local_database_api.data.repository
 
 import android.content.SharedPreferences
-import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
+import ru.kpfu.itis.paramonov.common.utils.toEnumName
 import ru.kpfu.itis.paramonov.local_database_api.data.exception.NoParameterFoundException
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Category
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Difficulty
@@ -36,7 +36,7 @@ class QuestionSettingsRepositoryImpl(
     }
 
     override fun saveDifficulty(difficulty: String) {
-        saveString(DIFFICULTY_KEY, difficulty.normalizeEnumName())
+        saveString(DIFFICULTY_KEY, difficulty.toEnumName())
     }
 
     override fun getCategory(): Category {
@@ -49,7 +49,7 @@ class QuestionSettingsRepositoryImpl(
     }
 
     override fun saveCategory(category: String) {
-        saveString(CATEGORY_KEY, category.normalizeEnumName())
+        saveString(CATEGORY_KEY, category.toEnumName())
     }
 
     override fun getGameMode(): GameMode {
@@ -62,7 +62,7 @@ class QuestionSettingsRepositoryImpl(
     }
 
     override fun saveGameMode(gameMode: String) {
-        saveString(GAME_MODE_KEY, gameMode.normalizeEnumName())
+        saveString(GAME_MODE_KEY, gameMode.toEnumName())
     }
 
     private fun getDefaultDifficulty(): Difficulty {

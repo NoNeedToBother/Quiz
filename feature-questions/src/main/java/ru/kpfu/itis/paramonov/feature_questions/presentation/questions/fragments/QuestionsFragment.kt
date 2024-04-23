@@ -8,6 +8,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionsBinding
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsComponent
@@ -46,7 +47,16 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
                 launch {
                     collectQuestionsData()
                 }
+                launch {
+                    collectTimerData()
+                }
             }
+        }
+    }
+
+    private suspend fun collectTimerData() {
+        viewModel.currentTimeFlow.collect { time ->
+            binding.swvClock.time = time
         }
     }
 
@@ -71,6 +81,7 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
 
     private fun onGetQuestionsSuccess(questionUiModel: QuestionUiModel) {
         initViewPager(questionUiModel)
+        binding.swvClock.show()
     }
 
     private fun initViewPager(questionUiModel: QuestionUiModel) {
@@ -89,5 +100,10 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
                 }
             })
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopTimer()
     }
 }

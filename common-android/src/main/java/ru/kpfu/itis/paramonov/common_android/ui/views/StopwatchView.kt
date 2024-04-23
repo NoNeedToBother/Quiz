@@ -7,7 +7,9 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import ru.kpfu.itis.paramonov.common_android.R
-import ru.kpfu.itis.paramonov.common_android.utils.fromDp
+import ru.kpfu.itis.paramonov.common_android.utils.toPx
+import kotlin.math.cos
+import kotlin.math.sin
 
 class StopwatchView @JvmOverloads constructor(
     ctx: Context,
@@ -16,7 +18,6 @@ class StopwatchView @JvmOverloads constructor(
 ): View(ctx, attrs, defStyleAttr) {
 
     var time: Int = 0
-        get() = field
         set(value) {
             field = value
             invalidate()
@@ -38,13 +39,13 @@ class StopwatchView @JvmOverloads constructor(
 
     private val strokePaint = Paint().apply {
         color = Color.BLACK
-        strokeWidth = 4f.fromDp(context)
+        strokeWidth = context.toPx(4f)
         style = Paint.Style.STROKE
     }
 
     private val arrowPaint = Paint().apply {
         color = Color.BLACK
-        strokeWidth = 2f.fromDp(context)
+        strokeWidth = context.toPx(2f)
         style = Paint.Style.FILL
     }
 
@@ -58,10 +59,10 @@ class StopwatchView @JvmOverloads constructor(
         get() = Math.PI * time / 30f
 
     private val currentX
-        get() = center + radius * Math.sin(angle).toFloat()
+        get() = center + radius * sin(angle).toFloat()
 
     private val currentY
-        get() = radius * (1 - Math.cos(angle)).toFloat()
+        get() = radius * (1 - cos(angle)).toFloat()
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)

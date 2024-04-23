@@ -12,10 +12,10 @@ fun View.gone() {
     visibility = View.GONE
 }
 
-fun Float.fromDp(ctx: Context): Float {
+fun Context.toPx(dp: Float): Float {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
-        this,
-        ctx.resources.displayMetrics
+        dp,
+        resources.displayMetrics
     )
 }

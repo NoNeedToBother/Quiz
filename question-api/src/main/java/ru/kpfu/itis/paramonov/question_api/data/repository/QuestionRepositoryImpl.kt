@@ -1,9 +1,12 @@
 package ru.kpfu.itis.paramonov.question_api.data.repository
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common.utils.Categories
 import ru.kpfu.itis.paramonov.question_api.R
 import ru.kpfu.itis.paramonov.question_api.data.exceptions.UnknownParameterException
+import ru.kpfu.itis.paramonov.question_api.data.handler.QuestionExceptionHandler
 import ru.kpfu.itis.paramonov.question_api.data.mapper.QuestionDomainModelMapper
 import ru.kpfu.itis.paramonov.question_api.data.remote.QuestionApi
 import ru.kpfu.itis.paramonov.question_api.domain.model.QuestionDomainModel
@@ -12,25 +15,40 @@ import ru.kpfu.itis.paramonov.question_api.domain.repository.QuestionRepository
 class QuestionRepositoryImpl(
     private val api: QuestionApi,
     private val mapper: QuestionDomainModelMapper,
-    private val resourceManager: ResourceManager
+    private val resourceManager: ResourceManager,
+    private val exceptionHandler: QuestionExceptionHandler,
+    private val dispatcher: CoroutineDispatcher
 ): QuestionRepository {
     override suspend fun getQuestions(amount: Int, difficulty: String, category: Int): QuestionDomainModel {
-        val result = api.getQuestions(amount, difficulty, category)
-        return mapper.map(result)
+        return withContext(dispatcher) {
+            try {
+                val result = api.getQuestions(amount, difficulty, category)
+                mapper.map(result)
+            } catch (ex: Exception) {
+                throw exceptionHandler.handle(ex)
+            }
+        }
     }
 
     override suspend fun getCategoryCode(category: String): Int {
-        val categories = api.getCategoriesId().info
-        for (categoryInfo in categories) {
-            val name = categoryInfo.name
-            val categoryName = getCategoryByName(name)
-            if (category == categoryName) {
-                return categoryInfo.id
+        return withContext(dispatcher) {
+            try {
+                val categories = api.getCategoriesId().info
+                var res: Int? = null
+                for (categoryInfo in categories) {
+                    val name = categoryInfo.name
+                    val categoryName = getCategoryByName(name)
+                    if (category == categoryName) {
+                        res = categoryInfo.id
+                    }
+                }
+                res ?: throw UnknownParameterException(
+                    resourceManager.getString(R.string.unknown_parameter)
+                )
+            } catch (ex: Exception) {
+                throw exceptionHandler.handle(ex)
             }
         }
-        throw UnknownParameterException(
-            resourceManager.getString(R.string.unknown_parameter)
-        )
     }
 
     private fun getCategoryByName(categoryName: String): String? {

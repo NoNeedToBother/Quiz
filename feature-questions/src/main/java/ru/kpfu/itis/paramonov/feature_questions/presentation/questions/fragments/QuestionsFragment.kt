@@ -102,8 +102,8 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy() {
+        super.onDestroy()
         viewModel.stopTimer()
     }
 }

@@ -22,6 +22,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone"
+        app:strokeColor="@color/black"
+        android:fillColor="@color/clock_fill_color"
         />
 
     <androidx.viewpager2.widget.ViewPager2

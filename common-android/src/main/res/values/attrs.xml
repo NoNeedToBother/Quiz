@@ -2,6 +2,8 @@
 <resources>
     <declare-styleable name="StopwatchView">
         <attr name="time" format="integer"/>
+        <attr name="strokeColor" format="color"/>
+        <attr name="android:fillColor" format="color"/>
     </declare-styleable>
 
 </resources>

@@ -2,6 +2,7 @@ package ru.kpfu.itis.paramonov.question_api.di
 
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,8 +20,8 @@ import ru.kpfu.itis.paramonov.question_api.domain.repository.QuestionRepository
 class QuestionModule {
 
     @Provides
-    fun questionExceptionHandler(): QuestionExceptionHandler {
-        return QuestionExceptionHandler()
+    fun questionExceptionHandler(resourceManager: ResourceManager): QuestionExceptionHandler {
+        return QuestionExceptionHandler(resourceManager)
     }
 
     @Provides
@@ -36,8 +37,10 @@ class QuestionModule {
 
     @Provides
     fun questionRepositoryImpl(api: QuestionApi, mapper: QuestionDomainModelMapper,
-                               resourceManager: ResourceManager): QuestionRepositoryImpl {
-        return QuestionRepositoryImpl(api, mapper, resourceManager)
+                               resourceManager: ResourceManager,
+                               exceptionHandler: QuestionExceptionHandler, dispatcher: CoroutineDispatcher
+    ): QuestionRepositoryImpl {
+        return QuestionRepositoryImpl(api, mapper, resourceManager, exceptionHandler, dispatcher)
     }
 
     @Provides

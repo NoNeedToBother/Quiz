@@ -4,11 +4,14 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionBinding
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.AnswerAdapter
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.diffutil.AnswerDataDiffUtilCallback
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
 import javax.inject.Inject
 
@@ -19,11 +22,15 @@ class QuestionFragment: BaseFragment(R.layout.fragment_question) {
     @Inject
     lateinit var viewModel: QuestionsViewModel
 
+    private var adapter: AnswerAdapter? = null
+
     override fun inject() {
         (parentFragment as QuestionsFragment).questionsComponent.inject(this)
     }
 
-    override fun initView() {}
+    override fun initView() {
+        initRecyclerView()
+    }
 
     override fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -35,15 +42,29 @@ class QuestionFragment: BaseFragment(R.layout.fragment_question) {
         }
     }
 
+    private fun initRecyclerView() {
+        with(binding) {
+            val adapter = AnswerAdapter(AnswerDataDiffUtilCallback(), ::onAnswerChosen)
+            this@QuestionFragment.adapter = adapter
+            rvAnswers.adapter = adapter
+            val gridLayoutManager = GridLayoutManager(
+                requireContext(), 2, GridLayoutManager.VERTICAL, false
+            )
+            rvAnswers.layoutManager = gridLayoutManager
+        }
+    }
+
+    private fun onAnswerChosen(chosenPos: Int) {
+        val pos = requireArguments().getInt(POS_KEY)
+        viewModel.updateChosenAnswers(pos, chosenPos)
+    }
+
     private suspend fun collectQuestionData() {
         val position = requireArguments().getInt(POS_KEY)
         viewModel.getQuestionFlow(position).collect { data ->
             with(binding) {
                 tvText.text = data.text
-                val answerTextViews = listOf(tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4)
-                for (i in answerTextViews.indices) {
-                    answerTextViews[i].text = data.answers[i].answer
-                }
+                adapter?.submitList(data.answers)
             }
         }
     }

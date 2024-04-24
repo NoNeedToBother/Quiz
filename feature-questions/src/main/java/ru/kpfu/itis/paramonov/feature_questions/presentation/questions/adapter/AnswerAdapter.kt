@@ -3,6 +3,7 @@ package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.feature_questions.databinding.AnswerItemBinding
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.diffutil.AnswerDataDiffUtilCallback
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerData
@@ -10,6 +11,7 @@ import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewholde
 
 class AnswerAdapter(
     diffUtilCallback: AnswerDataDiffUtilCallback,
+    private val resourceManager: ResourceManager,
     private val onAnswerChosen: (Int) -> Unit
 ): ListAdapter<AnswerData, AnswerViewHolder>(diffUtilCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerViewHolder {
@@ -17,7 +19,8 @@ class AnswerAdapter(
             binding = AnswerItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
-            onAnswerChosen = onAnswerChosen
+            onAnswerChosen = onAnswerChosen,
+            resourceManager = resourceManager
         )
     }
 

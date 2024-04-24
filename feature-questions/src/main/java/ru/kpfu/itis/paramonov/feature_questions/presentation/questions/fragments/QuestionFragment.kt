@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments
 
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -7,6 +8,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionBinding
@@ -21,6 +23,9 @@ class QuestionFragment: BaseFragment(R.layout.fragment_question) {
 
     @Inject
     lateinit var viewModel: QuestionsViewModel
+
+    @Inject
+    lateinit var resourceManager: ResourceManager
 
     private var adapter: AnswerAdapter? = null
 
@@ -44,12 +49,15 @@ class QuestionFragment: BaseFragment(R.layout.fragment_question) {
 
     private fun initRecyclerView() {
         with(binding) {
-            val adapter = AnswerAdapter(AnswerDataDiffUtilCallback(), ::onAnswerChosen)
+            val adapter = AnswerAdapter(AnswerDataDiffUtilCallback(), resourceManager, ::onAnswerChosen)
             this@QuestionFragment.adapter = adapter
             rvAnswers.adapter = adapter
-            val gridLayoutManager = GridLayoutManager(
-                requireContext(), 2, GridLayoutManager.VERTICAL, false
-            )
+            val gridLayoutManager = object: GridLayoutManager(
+                requireContext(), 2, VERTICAL, false
+            ) {
+                override fun canScrollVertically(): Boolean = false
+                override fun canScrollHorizontally(): Boolean = false
+            }
             rvAnswers.layoutManager = gridLayoutManager
         }
     }
@@ -63,6 +71,7 @@ class QuestionFragment: BaseFragment(R.layout.fragment_question) {
         val position = requireArguments().getInt(POS_KEY)
         viewModel.getQuestionFlow(position).collect { data ->
             with(binding) {
+                Log.i("a", data.answers.toString())
                 tvText.text = data.text
                 adapter?.submitList(data.answers)
             }

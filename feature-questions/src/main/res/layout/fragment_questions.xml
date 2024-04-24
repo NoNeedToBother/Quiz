@@ -14,23 +14,42 @@
         android:layout_marginTop="40dp"
         />
 
-    <ru.kpfu.itis.paramonov.common_android.ui.views.StopwatchView
-        android:id="@+id/swv_clock"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_question_num"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <LinearLayout
+        android:id="@+id/ll_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_question_num"
+        android:layout_marginHorizontal="100dp"
         android:visibility="gone"
-        app:strokeColor="@color/black"
-        android:fillColor="@color/clock_fill_color"
-        />
+        android:orientation="horizontal">
+
+        <ru.kpfu.itis.paramonov.common_android.ui.views.StopwatchView
+            android:id="@+id/swv_clock"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question_num"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:strokeColor="@color/black"
+            android:fillColor="@color/clock_fill_color"
+            />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_questions"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/swv_clock"
+        app:layout_constraintTop_toBottomOf="@id/ll_time"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 

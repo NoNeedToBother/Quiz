@@ -7,10 +7,11 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
-import android.os.Build
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
-import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import ru.kpfu.itis.paramonov.common_android.R
 import ru.kpfu.itis.paramonov.common_android.utils.toPx
 import kotlin.math.PI
@@ -76,9 +77,9 @@ class StopwatchView @JvmOverloads constructor(
             return pure.toFloat()
         }
 
-    private val currentX get() = center + radius * sin(angle)
+    private val currentX get() = center + center * sin(angle)
 
-    private val currentY get() = radius * (1 - cos(angle))
+    private val currentY get() = center * (1 - cos(angle))
 
     private val path = Path().apply {
         onPolygonPreDraw()
@@ -93,7 +94,6 @@ class StopwatchView @JvmOverloads constructor(
         if (angle > 3 * PI / 2) lineTo(0f, 0f)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         path.apply {
@@ -108,6 +108,32 @@ class StopwatchView @JvmOverloads constructor(
         canvas.restore()
 
         canvas.drawCircle(center, center, radius, strokePaint)
+        drawClockMarks(canvas)
         canvas.drawLine(center, center, currentX, currentY, arrowPaint)
+    }
+
+    private fun drawClockMarks(canvas: Canvas) {
+        canvas.drawLine(center, 0f, center, 2 * radius * CLOCK_MARK_RADIUS_PORTION, arrowPaint)
+        canvas.drawLine( 2 * center, center, 2 * center * (1 - CLOCK_MARK_RADIUS_PORTION), center, arrowPaint)
+        canvas.drawLine(center, 2 * center, center, 2 * center * (1 - CLOCK_MARK_RADIUS_PORTION), arrowPaint)
+        canvas.drawLine(0f, center, 2 * radius * CLOCK_MARK_RADIUS_PORTION, center, arrowPaint)
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        super.onSaveInstanceState()
+        return bundleOf(BUNDLE_TIME_KEY to time)
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        val bundle = state as Bundle?
+        bundle?.let {
+            time = it.getInt(BUNDLE_TIME_KEY)
+        }
+        super.onRestoreInstanceState(state)
+    }
+
+    companion object {
+        const val BUNDLE_TIME_KEY = "time"
+        const val CLOCK_MARK_RADIUS_PORTION = 0.2f
     }
 }

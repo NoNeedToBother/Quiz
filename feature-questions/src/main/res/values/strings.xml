@@ -6,6 +6,8 @@
     <string name="save">Save</string>
     <string name="get_questions_fail_msg">Could not get questions, try again later</string>
     <string name="question_num">Question: %d/%d</string>
+    <string name="clock_time_with_min">Time: %02dm %02ds</string>
+    <string name="clock_time">Time: %02ds</string>
 
     <string-array name="difficulties">
         <item>EASY</item>

@@ -56,7 +56,13 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
 
     private suspend fun collectTimerData() {
         viewModel.currentTimeFlow.collect { time ->
-            binding.swvClock.time = time
+            with(binding) {
+                swvClock.time = time
+                val min = time / 60
+                val sec = time % 60
+                if (min > 0) tvTime.text = getString(R.string.clock_time_with_min, min, sec)
+                else tvTime.text = getString(R.string.clock_time, sec)
+            }
         }
     }
 
@@ -81,7 +87,7 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
 
     private fun onGetQuestionsSuccess(questionUiModel: QuestionUiModel) {
         initViewPager(questionUiModel)
-        binding.swvClock.show()
+        binding.llTime.show()
     }
 
     private fun initViewPager(questionUiModel: QuestionUiModel) {

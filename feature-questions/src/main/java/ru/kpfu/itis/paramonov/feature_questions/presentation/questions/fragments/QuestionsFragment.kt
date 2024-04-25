@@ -16,6 +16,7 @@ import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.QuestionsViewPagerAdapter
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.di.QuestionsComponent
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.utils.QuestionViewPagerTransformer
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
 import javax.inject.Inject
 
@@ -25,6 +26,9 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
 
     @Inject
     lateinit var viewModel: QuestionsViewModel
+
+    @Inject
+    lateinit var questionViewPagerTransformer: QuestionViewPagerTransformer
 
     lateinit var questionsComponent: QuestionsComponent
 
@@ -105,6 +109,7 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
                     )
                 }
             })
+            vpQuestions.setPageTransformer(questionViewPagerTransformer)
         }
     }
 

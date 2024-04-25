@@ -1,8 +1,8 @@
-package ru.kpfu.itis.paramonov.local_database_api.data.repository
+package ru.kpfu.itis.paramonov.local_database_api.data.shared_pref.repository
 
 import android.content.SharedPreferences
 import ru.kpfu.itis.paramonov.common.utils.toEnumName
-import ru.kpfu.itis.paramonov.local_database_api.data.exception.NoParameterFoundException
+import ru.kpfu.itis.paramonov.local_database_api.data.shared_pref.exception.NoParameterFoundException
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Category
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Difficulty
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.GameMode

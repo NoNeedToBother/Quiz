@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
-import ru.kpfu.itis.paramonov.local_database_api.data.repository.QuestionSettingsRepositoryImpl
+import ru.kpfu.itis.paramonov.local_database_api.data.shared_pref.repository.QuestionSettingsRepositoryImpl
 import ru.kpfu.itis.paramonov.local_database_api.domain.repository.QuestionSettingsRepository
 
 @Module

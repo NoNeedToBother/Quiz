@@ -13,4 +13,6 @@ interface UserRepository {
     suspend fun logoutUser()
 
     suspend fun getCurrentUser(): Optional<FirebaseUser>
+
+    suspend fun getUser(id: String): Optional<FirebaseUser>
 }

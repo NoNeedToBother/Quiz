@@ -15,4 +15,6 @@
 
     <!-- misc -->
     <string name="fail_read_user_data">Failed to read user data</string>
+    <string name="not_authorized">You are not authorized, please sign in</string>
+    <string name="update_failed">Failed to dispatch updates, try again later</string>
 </resources>

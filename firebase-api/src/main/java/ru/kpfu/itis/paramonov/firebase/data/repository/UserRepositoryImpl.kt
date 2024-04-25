@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.firebase.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
@@ -11,17 +11,20 @@ import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
+import ru.kpfu.itis.paramonov.firebase.data.exceptions.UpdateException
+import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserNotAuthorizedException
 import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
+import ru.kpfu.itis.paramonov.firebase.data.utils.getUser
 import ru.kpfu.itis.paramonov.firebase.data.utils.waitResult
-import java.lang.RuntimeException
 import java.util.Optional
 
 class UserRepositoryImpl(
     private val auth: FirebaseAuth,
+    private val database: FirebaseDatabase,
     private val dispatcher: CoroutineDispatcher,
     private val registerExceptionHandler: RegistrationExceptionHandler,
     private val signInExceptionHandler: SignInExceptionHandler,
-    private val resManager: ResourceManager
+    private val resourceManager: ResourceManager
 ): UserRepository {
 
     override suspend fun registerUser
@@ -31,10 +34,10 @@ class UserRepositoryImpl(
                  confirmPassword: String
     ): FirebaseUser {
         if (!checkPassword(password)) throw RegisterException(
-            resManager.getString(R.string.weak_password)
+            resourceManager.getString(R.string.weak_password)
         )
         if (confirmPassword != password) throw RegisterException(
-            resManager.getString(R.string.passwords_not_match)
+            resourceManager.getString(R.string.passwords_not_match)
         )
         val result = withContext(dispatcher) {
             try {
@@ -45,10 +48,15 @@ class UserRepositoryImpl(
         }
         result.run {
             if (isSuccessful) {
-                return updateUser(USERNAME_KEY to username)
+                this.result.user?.let {
+                    return updateUser(
+                        UPDATE_ID_KEY to it.uid,
+                        UPDATE_USERNAME_KEY to username
+                    )
+                } ?: throw RegisterException(resourceManager.getString(R.string.register_fail_try_again))
             } else {
                 throw exception?.let { registerExceptionHandler.handle(it) } ?:
-                throw RegisterException(resManager.getString(R.string.register_fail_try_again))
+                throw RegisterException(resourceManager.getString(R.string.register_fail_try_again))
             }
         }
     }
@@ -66,39 +74,38 @@ class UserRepositoryImpl(
                 val user = getCurrentUser()
                 if (user.isPresent) {
                     return user.get()
-                } else throw SignInException(resManager.getString(R.string.sign_in_fail_try_again))
+                } else throw SignInException(resourceManager.getString(R.string.sign_in_fail_try_again))
             } else {
                 exception?.let { throw registerExceptionHandler.handle(it) } ?:
-                throw SignInException(resManager.getString(R.string.sign_in_fail_try_again))
+                throw SignInException(resourceManager.getString(R.string.sign_in_fail_try_again))
             }
         }
     }
 
     override suspend fun updateUser(vararg pairs: Pair<String, Any>): FirebaseUser {
-        val user = updateUserProfile(pairs)
+        auth.currentUser?.let {
+            val userReference = database.getReference(USERS_NODE_NAME).child(it.uid)
+            val updates = mutableMapOf<String, Any>()
+            for (pair in pairs) {
+                val key = pair.first
+                val value = pair.second
 
-        return user?.displayName?.let {
-            FirebaseUser(
-                user.uid,
-                it
-            )
-        } ?: throw RuntimeException(resManager.getString(R.string.fail_read_user_data))
-    }
-
-    private suspend fun updateUserProfile(pairs: Array<out Pair<String, Any>>): com.google.firebase.auth.FirebaseUser? {
-        val builder = UserProfileChangeRequest.Builder()
-        for (pair in pairs) {
-            val param = pair.first
-            val value = pair.second
-
-            when(param) {
-                USERNAME_KEY -> builder.displayName = value as String
+                when(key) {
+                    UPDATE_ID_KEY -> updates[DB_ID_FIELD] = value
+                    UPDATE_USERNAME_KEY -> updates[DB_USERNAME_FIELD] = value
+                }
             }
-        }
 
-        val user = auth.currentUser
-        user?.updateProfile(builder.build())?.waitResult()
-        return auth.currentUser
+            return withContext(dispatcher) {
+                val result = userReference.setValue(updates).waitResult()
+                if (result.isSuccessful) getCurrentUser().get()
+                else throw UpdateException(
+                    resourceManager.getString(R.string.update_failed)
+                )
+            }
+        } ?: throw UserNotAuthorizedException(
+            resourceManager.getString(R.string.not_authorized)
+        )
     }
 
     override suspend fun logoutUser() {
@@ -107,11 +114,18 @@ class UserRepositoryImpl(
 
     override suspend fun getCurrentUser(): Optional<FirebaseUser> {
         return auth.currentUser?.run {
-            displayName?.let {
-                val user = FirebaseUser(uid, it)
-                Optional.of(user)
-            } ?: throw RuntimeException(resManager.getString(R.string.fail_read_user_data))
+            getUser(uid)
         } ?: Optional.empty()
+    }
+
+    override suspend fun getUser(id: String): Optional<FirebaseUser> {
+        val data = withContext(dispatcher) {
+            database.getReference(USERS_NODE_NAME).child(id)
+                .get().waitResult()
+        }
+        return if (data.isSuccessful) {
+            Optional.of(data.result.getUser())
+        } else Optional.empty()
     }
 
     private fun checkPassword(password: String): Boolean {
@@ -127,6 +141,11 @@ class UserRepositoryImpl(
     }
 
     companion object {
-        private const val USERNAME_KEY = "username"
+        const val UPDATE_USERNAME_KEY = "username"
+        private const val UPDATE_ID_KEY = "id"
+
+        const val USERS_NODE_NAME = "users"
+        const val DB_ID_FIELD = "id"
+        const val DB_USERNAME_FIELD = "username"
     }
 }

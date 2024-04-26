@@ -46,8 +46,8 @@ class SignInViewModel(
             val user = getCurrentUserUseCase.invoke()
             if (user.isPresent) {
                 _userDataFlow.value = UserDataResult.Success(user.get())
+                mainMenuRouter.goToMainMenu()
             }
-            mainMenuRouter.goToMainMenu()
         }
     }
 

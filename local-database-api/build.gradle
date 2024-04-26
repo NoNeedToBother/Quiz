@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id("kotlin-kapt")
+    id "com.google.devtools.ksp"
+
 }
 
 android {
@@ -11,8 +12,6 @@ android {
     defaultConfig {
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,10 +41,11 @@ dependencies {
 
     implementation(roomRuntime)
     implementation(roomKtx)
-    "kapt"(roomKapt)
+    ksp("androidx.room:room-compiler:2.6.0")
+    ksp("android.arch.persistence.room:compiler:1.1.1")
 
     implementation(dagger)
-    "kapt"(daggerCompiler)
+    ksp(daggerCompiler)
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

@@ -7,22 +7,23 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionsUseCase
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerData
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionData
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionUiModel
-import java.util.ArrayList
+import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionsUseCase
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerDataUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import java.util.Timer
 import java.util.TimerTask
+import kotlin.collections.ArrayList
 
 class QuestionsViewModel(
-    private val getQuestionsUseCase: GetQuestionsUseCase
+    private val getQuestionsUseCase: GetQuestionsUseCase,
+    private val saveQuestionsUseCase: SaveQuestionsUseCase
 ): BaseViewModel() {
 
     private val _questionsDataFlow = MutableStateFlow<QuestionDataResult?>(null)
 
     val questionsDataFlow: StateFlow<QuestionDataResult?> get() = _questionsDataFlow
 
-    private val _questionList = mutableListOf<MutableStateFlow<QuestionData>>()
+    private val _questionList = mutableListOf<MutableStateFlow<QuestionDataUiModel>>()
 
     private val _currentTimeFlow = MutableStateFlow(0)
 
@@ -30,7 +31,7 @@ class QuestionsViewModel(
 
     val currentTimeFlow: StateFlow<Int> get() = _currentTimeFlow
 
-    fun getQuestionFlow(pos: Int): StateFlow<QuestionData> {
+    fun getQuestionFlow(pos: Int): StateFlow<QuestionDataUiModel> {
         return _questionList[pos].asStateFlow()
     }
 
@@ -39,11 +40,9 @@ class QuestionsViewModel(
             try {
                 val questionData = getQuestionsUseCase.invoke()
 
-                for (pos in questionData.questions.indices) {
+                for (pos in questionData.indices) {
                     _questionList.add(pos,
-                        MutableStateFlow(
-                            QuestionData(questionData.questions[pos])
-                        )
+                        MutableStateFlow(questionData[pos])
                     )
                 }
 
@@ -81,13 +80,15 @@ class QuestionsViewModel(
     fun updateChosenAnswers(pos: Int, chosenPos: Int) {
         viewModelScope.launch {
             val value = _questionList[pos].value
-            val answerListCopy = ArrayList<AnswerData>()
+            val answerListCopy = ArrayList<AnswerDataUiModel>()
             for (answerData in value.answers) {
                 answerListCopy.add(answerData.copy())
             }
-            val question = QuestionData(
-                value.text, answerListCopy
-            )
+            val question = QuestionDataUiModel(value.text, answerListCopy).apply {
+                difficulty = value.difficulty
+                category = value.category
+                gameMode = value.gameMode
+            }
             for (answerPos in question.answers.indices) {
                 val answer = question.answers[answerPos]
                 if (answerPos == chosenPos) answer.chosen = answer.chosen.not()
@@ -97,9 +98,19 @@ class QuestionsViewModel(
         }
     }
 
+    fun saveQuestions() {
+        viewModelScope.launch {
+            val questions = ArrayList<QuestionDataUiModel>()
+            for (question in _questionList) {
+                questions.add(question.value)
+            }
+            saveQuestionsUseCase.invoke(questions)
+        }
+    }
+
     sealed interface QuestionDataResult: Result {
-        class Success(private val result: QuestionUiModel): QuestionDataResult, Result.Success<QuestionUiModel> {
-            override fun getValue(): QuestionUiModel = result
+        class Success(private val result: List<QuestionDataUiModel>): QuestionDataResult, Result.Success<List<QuestionDataUiModel>> {
+            override fun getValue(): List<QuestionDataUiModel> = result
         }
 
         class Failure(private val ex: Throwable): QuestionDataResult, Result.Failure {

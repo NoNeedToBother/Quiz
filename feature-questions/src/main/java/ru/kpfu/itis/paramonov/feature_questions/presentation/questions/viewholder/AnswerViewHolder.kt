@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.AnswerItemBinding
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerData
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerDataUiModel
 
 class AnswerViewHolder(
     private val binding: AnswerItemBinding,
@@ -12,7 +12,7 @@ class AnswerViewHolder(
     onAnswerChosen: (Int) -> Unit
 ): RecyclerView.ViewHolder(binding.root) {
 
-    private var item: AnswerData? = null
+    private var item: AnswerDataUiModel? = null
 
     init {
         binding.root.setOnClickListener {
@@ -20,13 +20,13 @@ class AnswerViewHolder(
         }
     }
 
-    fun bindItem(item: AnswerData) {
+    fun bindItem(item: AnswerDataUiModel) {
         this.item = item
         binding.tvAnswer.text = item.answer
         setChosenMark(item.chosen)
     }
 
-    fun onChosen(item: AnswerData) {
+    fun onChosen(item: AnswerDataUiModel) {
         this.item = item
         setChosenMark(item.chosen)
     }

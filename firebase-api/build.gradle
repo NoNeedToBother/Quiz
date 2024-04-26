@@ -1,8 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id("com.google.gms.google-services")
-    id("kotlin-kapt")
+    id "com.google.devtools.ksp"
 }
 
 android {
@@ -12,8 +11,6 @@ android {
     defaultConfig {
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,7 +48,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:23.1.2'
 
     implementation(dagger)
-    "kapt"(daggerCompiler)
+    ksp(daggerCompiler)
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

@@ -41,6 +41,9 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
     }
 
     override fun initView() {
+        binding.btnSave.setOnClickListener {
+            viewModel.saveQuestions()
+        }
     }
 
     override fun observeData() {

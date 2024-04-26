@@ -1,8 +1,10 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id("kotlin-kapt")
+    id "com.google.devtools.ksp"
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 android {
     namespace 'ru.kpfu.itis.paramonov.quiz'
@@ -35,10 +37,6 @@ android {
         jvmToolchain(8)
     }
 
-    kapt {
-        correctErrorTypes = true
-    }
-
     buildFeatures {
         viewBinding = true
     }
@@ -55,13 +53,18 @@ dependencies {
     implementation project(':question-api')
 
     implementation(dagger)
-    "kapt"(daggerCompiler)
+    ksp(daggerCompiler)
 
     implementation(viewBindingDelegate)
 
     implementation(viewModelKtx)
 
     implementation(fragmentKtx)
+
+    ksp("android.arch.persistence.room:compiler:1.1.1")
+    implementation(roomRuntime)
+    implementation(roomKtx)
+    ksp(roomKapt)
 
     implementation(jetpackNavigationFragment)
     implementation(jetpackNavigationUi)

@@ -7,15 +7,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionsUseCase
+import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetSavedQuestionsUseCase
+import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerData
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionData
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionUiModel
-import java.util.ArrayList
 import java.util.Timer
 import java.util.TimerTask
+import kotlin.collections.ArrayList
 
 class QuestionsViewModel(
-    private val getQuestionsUseCase: GetQuestionsUseCase
+    private val getQuestionsUseCase: GetQuestionsUseCase,
+    private val saveQuestionsUseCase: SaveQuestionsUseCase,
+    private val getSavedQuestionsUseCase: GetSavedQuestionsUseCase
 ): BaseViewModel() {
 
     private val _questionsDataFlow = MutableStateFlow<QuestionDataResult?>(null)
@@ -36,6 +40,7 @@ class QuestionsViewModel(
 
     fun getQuestions() {
         viewModelScope.launch {
+            getSavedQuestionsUseCase.invoke()
             try {
                 val questionData = getQuestionsUseCase.invoke()
 
@@ -86,7 +91,7 @@ class QuestionsViewModel(
                 answerListCopy.add(answerData.copy())
             }
             val question = QuestionData(
-                value.text, answerListCopy
+                value.text, answerListCopy, value.difficulty, value.category
             )
             for (answerPos in question.answers.indices) {
                 val answer = question.answers[answerPos]
@@ -94,6 +99,16 @@ class QuestionsViewModel(
                 else answer.chosen = false
             }
             _questionList[pos].value = question
+        }
+    }
+
+    fun saveQuestions() {
+        viewModelScope.launch {
+            val questions = ArrayList<QuestionData>()
+            for (question in _questionList) {
+                questions.add(question.value)
+            }
+            saveQuestionsUseCase.invoke(questions)
         }
     }
 

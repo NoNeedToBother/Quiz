@@ -17,10 +17,10 @@ import androidx.room.PrimaryKey
 )
 data class AnswerEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val text: Int,
+    val id: Long = 0,
+    val text: String,
     @ColumnInfo(name = "is_correct")
     val correct: Boolean,
     @ColumnInfo(name = "question_id")
-    val questionId: Int
+    val questionId: Long
 )

@@ -3,6 +3,7 @@ package ru.kpfu.itis.paramonov.feature_questions.domain.usecase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
+import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionSettingsUiModelMapper
 import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionUiModelMapper
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionUiModel
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.GameMode
@@ -14,7 +15,8 @@ class GetQuestionsUseCase @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val questionRepository: QuestionRepository,
     private val questionSettingsRepository: QuestionSettingsRepository,
-    private val mapper: QuestionUiModelMapper
+    private val questionUiModelMapper: QuestionUiModelMapper,
+    private val questionSettingsUiModelMapper: QuestionSettingsUiModelMapper
 ) {
 
     suspend operator fun invoke(): QuestionUiModel {
@@ -31,7 +33,12 @@ class GetQuestionsUseCase @Inject constructor(
                 difficulty.name.normalizeEnumName().lowercase(),
                 categoryCode
             )
-            mapper.map(questions)
+            questionUiModelMapper.map(questions).apply {
+                for (model in this.questions) {
+                    model.difficulty = questionSettingsUiModelMapper.mapDifficulty(difficulty)
+                    model.category = questionSettingsUiModelMapper.mapCategory(category)
+                }
+            }
         }
     }
 

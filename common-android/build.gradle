@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id("kotlin-kapt")
+    id "com.google.devtools.ksp"
 }
 
 android {
@@ -11,8 +11,6 @@ android {
     defaultConfig {
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -34,10 +32,6 @@ android {
     kotlin {
         jvmToolchain(8)
     }
-
-    kapt {
-        correctErrorTypes = true
-    }
     buildFeatures {
         viewBinding = true
     }
@@ -51,7 +45,7 @@ dependencies {
     implementation(material)
 
     implementation(dagger)
-    "kapt"(daggerCompiler)
+    ksp(daggerCompiler)
 
     implementation(viewBindingDelegate)
     testImplementation 'junit:junit:4.13.2'

@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id("kotlin-kapt")
+    id "com.google.devtools.ksp"
 }
 
 android {
@@ -11,8 +11,6 @@ android {
     defaultConfig {
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,7 +44,7 @@ dependencies {
     implementation project(':navigation')
 
     implementation(dagger)
-    "kapt"(daggerCompiler)
+    ksp(daggerCompiler)
 
     implementation(viewBindingDelegate)
 

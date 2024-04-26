@@ -2,12 +2,17 @@ package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model
 
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.CategoryUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.DifficultyUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.GameModeUiModel
 
-data class QuestionDataUiModel(
+class QuestionDataUiModel(
     val text: String,
-    val answer: String,
-    val incorrectAnswers: List<String>
+    val answers: List<AnswerDataUiModel>,
 ) {
+
     var difficulty: DifficultyUiModel? = null
+
     var category: CategoryUiModel? = null
+
+    var gameMode: GameModeUiModel? = null
+
 }

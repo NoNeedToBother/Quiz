@@ -6,14 +6,14 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.feature_questions.databinding.AnswerItemBinding
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.diffutil.AnswerDataDiffUtilCallback
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerData
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerDataUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewholder.AnswerViewHolder
 
 class AnswerAdapter(
     diffUtilCallback: AnswerDataDiffUtilCallback,
     private val resourceManager: ResourceManager,
     private val onAnswerChosen: (Int) -> Unit
-): ListAdapter<AnswerData, AnswerViewHolder>(diffUtilCallback) {
+): ListAdapter<AnswerDataUiModel, AnswerViewHolder>(diffUtilCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerViewHolder {
         return AnswerViewHolder(
             binding = AnswerItemBinding.inflate(

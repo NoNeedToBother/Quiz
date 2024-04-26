@@ -8,6 +8,9 @@ import ru.kpfu.itis.paramonov.common.utils.toEnumName
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionSettingsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionSettingsUseCase
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.CategoryUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.DifficultyUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.GameModeUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.QuestionSettingsUiModel
 
 class QuestionSettingsViewModel(
@@ -27,9 +30,15 @@ class QuestionSettingsViewModel(
     }
 
     fun saveQuestionSettings(difficulty: String?, category: String?, gameMode: String?) {
-        val difficultyToSave = difficulty?.toEnumName() ?: difficulty
-        val categoryToSave = category?.toEnumName() ?: category
-        val gameModeToSave = gameMode?.toEnumName() ?: gameMode
+        val difficultyToSave = difficulty?.let {
+            DifficultyUiModel.valueOf(it.toEnumName())
+        }
+        val categoryToSave = category?.let {
+            CategoryUiModel.valueOf(it.toEnumName())
+        }
+        val gameModeToSave = gameMode?.let {
+            GameModeUiModel.valueOf(it.toEnumName())
+        }
 
         viewModelScope.launch {
             saveQuestionSettingsUseCase.invoke(difficultyToSave, categoryToSave, gameModeToSave)

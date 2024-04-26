@@ -8,7 +8,7 @@ import ru.kpfu.itis.paramonov.local_database_api.domain.model.Difficulty
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.GameMode
 import javax.inject.Inject
 
-class QuestionSettingsDomainModelMapper @Inject constructor() {
+class QuestionSettingsApiModelMapper @Inject constructor() {
     fun mapDifficulty(difficulty: DifficultyUiModel): Difficulty {
         return when(difficulty) {
             DifficultyUiModel.EASY -> Difficulty.EASY

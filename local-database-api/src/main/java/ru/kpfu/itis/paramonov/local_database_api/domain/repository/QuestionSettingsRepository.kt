@@ -12,13 +12,13 @@ interface QuestionSettingsRepository {
 
     fun getDifficulty(): Difficulty
 
-    fun saveDifficulty(difficulty: String)
+    fun saveDifficulty(difficulty: Difficulty)
 
     fun getCategory(): Category
 
-    fun saveCategory(category: String)
+    fun saveCategory(category: Category)
 
     fun getGameMode(): GameMode
 
-    fun saveGameMode(gameMode: String)
+    fun saveGameMode(gameMode: GameMode)
 }

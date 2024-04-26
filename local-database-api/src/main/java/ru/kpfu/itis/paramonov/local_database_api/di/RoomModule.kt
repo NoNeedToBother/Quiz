@@ -20,9 +20,9 @@ class RoomModule {
     @Singleton
     fun database(
         context: Context,
-        //@RoomDatabaseNameKey name: String
+        @RoomDatabaseNameKey name: String
     ): QuestionDatabase {
-        return QuestionDatabase.init(context, "quiz")
+        return QuestionDatabase.init(context, name)
     }
 
     @Provides

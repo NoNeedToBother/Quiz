@@ -1,15 +1,15 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.diffutil
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerData
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerDataUiModel
 
-class AnswerDataDiffUtilCallback: DiffUtil.ItemCallback<AnswerData>() {
+class AnswerDataDiffUtilCallback: DiffUtil.ItemCallback<AnswerDataUiModel>() {
 
-    override fun areItemsTheSame(oldItem: AnswerData, newItem: AnswerData): Boolean {
+    override fun areItemsTheSame(oldItem: AnswerDataUiModel, newItem: AnswerDataUiModel): Boolean {
         return true
     }
 
-    override fun areContentsTheSame(oldItem: AnswerData, newItem: AnswerData): Boolean {
+    override fun areContentsTheSame(oldItem: AnswerDataUiModel, newItem: AnswerDataUiModel): Boolean {
         val res = oldItem.let { o ->
             newItem.let {  n ->
                 if (o.answer != n.answer) false
@@ -19,7 +19,7 @@ class AnswerDataDiffUtilCallback: DiffUtil.ItemCallback<AnswerData>() {
         return res
     }
 
-    override fun getChangePayload(oldItem: AnswerData, newItem: AnswerData): Any {
+    override fun getChangePayload(oldItem: AnswerDataUiModel, newItem: AnswerDataUiModel): Any {
         return oldItem.let { o ->
             newItem.let {  n ->
                 val payload = AnswerDataPayload()

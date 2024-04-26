@@ -15,7 +15,7 @@ import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsComponent
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.QuestionsViewPagerAdapter
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.di.QuestionsComponent
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionUiModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.utils.QuestionViewPagerTransformer
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
 import javax.inject.Inject
@@ -92,23 +92,23 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
             getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg))
     }
 
-    private fun onGetQuestionsSuccess(questionUiModel: QuestionUiModel) {
-        initViewPager(questionUiModel)
+    private fun onGetQuestionsSuccess(questions: List<QuestionDataUiModel>) {
+        initViewPager(questions)
         binding.llTime.show()
     }
 
-    private fun initViewPager(questionUiModel: QuestionUiModel) {
+    private fun initViewPager(questions: List<QuestionDataUiModel>) {
         with(binding) {
             val adapter = QuestionsViewPagerAdapter(
                 fragmentManager = childFragmentManager,
                 lifecycle = lifecycle,
-                questionList = questionUiModel.questions)
+                questionList = questions)
 
             vpQuestions.adapter = adapter
             vpQuestions.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     tvQuestionNum.text = getString(
-                        R.string.question_num, position + 1, questionUiModel.questions.size
+                        R.string.question_num, position + 1, questions.size
                     )
                 }
             })

@@ -15,7 +15,13 @@ class MainMenuViewModel(private val navigator: Navigator): BaseViewModel() {
 
     fun goToQuestions() {
         viewModelScope.launch {
-            navigator.goToQuestion()
+            navigator.goToQuestions()
+        }
+    }
+
+    fun goToTrainingMode() {
+        viewModelScope.launch {
+            navigator.goToTraining()
         }
     }
 }

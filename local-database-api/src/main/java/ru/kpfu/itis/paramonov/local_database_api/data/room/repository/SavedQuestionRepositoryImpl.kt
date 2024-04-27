@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.local_database_api.data.room.repository
 
+import android.database.sqlite.SQLiteException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.local_database_api.data.room.database.QuestionDatabase
@@ -45,14 +46,16 @@ class SavedQuestionRepositoryImpl(
         )
 
         withContext(dispatcher) {
-            val questionId = questionDatabase.questionDao().save(question)
+            try {
+                val questionId = questionDatabase.questionDao().save(question)
 
-            for (answer in questionModel.answers) {
-                val answerEntity = AnswerEntity(
-                    text = answer.text, correct = answer.isCorrect, questionId = questionId
-                )
-                questionDatabase.answerDao().save(answerEntity)
-            }
+                for (answer in questionModel.answers) {
+                    val answerEntity = AnswerEntity(
+                        text = answer.text, correct = answer.isCorrect, questionId = questionId
+                    )
+                    questionDatabase.answerDao().save(answerEntity)
+                }
+            } catch (_: SQLiteException) { }
         }
     }
 }

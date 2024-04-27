@@ -39,9 +39,15 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter {
         )
     }
 
-    override fun goToQuestion() {
+    override fun goToQuestions() {
         navController?.navigate(
             R.id.action_mainMenuFragment_to_questionsFragment
+        )
+    }
+
+    override fun goToTraining() {
+        navController?.navigate(
+            R.id.action_mainMenuFragment_to_trainingQuestionsFragment
         )
     }
 

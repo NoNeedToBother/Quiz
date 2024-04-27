@@ -9,7 +9,6 @@ import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionsUseCase
-import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetSavedQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
 
@@ -29,9 +28,8 @@ class QuestionModule {
     @ViewModelKey(QuestionsViewModel::class)
     fun provideQuestionsViewModel(
         getQuestionsUseCase: GetQuestionsUseCase,
-        saveQuestionsUseCase: SaveQuestionsUseCase,
-        getSavedQuestionsUseCase: GetSavedQuestionsUseCase
+        saveQuestionsUseCase: SaveQuestionsUseCase
     ): ViewModel {
-        return QuestionsViewModel(getQuestionsUseCase, saveQuestionsUseCase, getSavedQuestionsUseCase)
+        return QuestionsViewModel(getQuestionsUseCase, saveQuestionsUseCase)
     }
 }

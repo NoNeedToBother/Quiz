@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_mainMenuFragment_to_questionsFragment"
             app:destination="@id/questionsFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_trainingQuestionsFragment"
+            app:destination="@id/trainingQuestionsFragment" />
     </fragment>
 
     <fragment
@@ -45,6 +48,13 @@
         android:name="ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments.QuestionsFragment"
         android:label="fragment_questions"
         tools:layout="@layout/fragment_questions"
+        />
+
+    <fragment
+        android:id="@+id/trainingQuestionsFragment"
+        android:name="ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments.TrainingQuestionsFragment"
+        android:label="fragment_training_questions"
+        tools:layout="@layout/fragment_training_questions"
         />
 
 </navigation>

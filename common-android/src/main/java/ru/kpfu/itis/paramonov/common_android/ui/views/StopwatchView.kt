@@ -7,11 +7,11 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.os.bundleOf
 import ru.kpfu.itis.paramonov.common_android.R
 import ru.kpfu.itis.paramonov.common_android.utils.toPx
 import kotlin.math.PI
@@ -121,19 +121,28 @@ class StopwatchView @JvmOverloads constructor(
 
     override fun onSaveInstanceState(): Parcelable {
         super.onSaveInstanceState()
-        return bundleOf(BUNDLE_TIME_KEY to time)
+        val bundle = Bundle().apply {
+            putParcelable(BUNDLE_SUPER_STATE_KEY, super.onSaveInstanceState())
+            putInt(BUNDLE_TIME_KEY, time)
+        }
+        super.onSaveInstanceState()
+        return bundle
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
-        val bundle = state as Bundle?
-        bundle?.let {
-            time = it.getInt(BUNDLE_TIME_KEY)
+        var viewState = state
+        if (state is Bundle) {
+            time = state.getInt(BUNDLE_TIME_KEY)
+            viewState = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU)
+                state.getParcelable(BUNDLE_SUPER_STATE_KEY, Parcelable::class.java)
+            else state.getParcelable(BUNDLE_SUPER_STATE_KEY)
         }
-        super.onRestoreInstanceState(state)
+        super.onRestoreInstanceState(viewState)
     }
 
     companion object {
         const val BUNDLE_TIME_KEY = "time"
+        const val BUNDLE_SUPER_STATE_KEY = "superState"
         const val CLOCK_MARK_RADIUS_PORTION = 0.2f
     }
 }

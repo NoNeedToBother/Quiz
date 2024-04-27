@@ -2,7 +2,9 @@ package ru.kpfu.itis.paramonov.navigation
 
 interface QuestionsRouter {
 
-    fun goToQuestion()
+    fun goToQuestions()
+
+    fun goToTraining()
 
     fun goToQuestionSettings()
 }

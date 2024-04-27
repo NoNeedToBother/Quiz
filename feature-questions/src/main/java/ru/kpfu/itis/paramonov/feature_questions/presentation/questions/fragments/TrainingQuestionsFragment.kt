@@ -8,37 +8,36 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
-import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_questions.R
-import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionsBinding
+import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentTrainingQuestionsBinding
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsComponent
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.QuestionsViewPagerAdapter
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.di.QuestionsComponent
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.di.TrainingQuestionsComponent
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.utils.QuestionViewPagerTransformer
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.BaseQuestionsViewModel
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.TrainingQuestionsViewModel
 import javax.inject.Inject
 
-class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
+class TrainingQuestionsFragment: BaseFragment(R.layout.fragment_training_questions) {
 
-    private val binding: FragmentQuestionsBinding by viewBinding(FragmentQuestionsBinding::bind)
+    private val binding: FragmentTrainingQuestionsBinding by viewBinding(FragmentTrainingQuestionsBinding::bind)
 
     @Inject
-    lateinit var viewModel: QuestionsViewModel
+    lateinit var viewModel: TrainingQuestionsViewModel
 
     @Inject
     lateinit var questionViewPagerTransformer: QuestionViewPagerTransformer
 
-    lateinit var questionsComponent: QuestionsComponent
+    lateinit var trainingQuestionsComponent: TrainingQuestionsComponent
 
     override fun inject() {
-        questionsComponent = FeatureUtils.getFeature<FeatureQuestionsComponent>(this, FeatureQuestionsDependencies::class.java)
-            .questionsComponentFactory()
+        trainingQuestionsComponent = FeatureUtils.getFeature<FeatureQuestionsComponent>(this, FeatureQuestionsDependencies::class.java)
+            .trainingQuestionsComponentFactory()
             .create(this)
 
-        questionsComponent.inject(this)
+        trainingQuestionsComponent.inject(this)
     }
 
     override fun initView() {
@@ -52,21 +51,6 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
                 launch {
                     collectQuestionsData()
                 }
-                launch {
-                    collectTimerData()
-                }
-            }
-        }
-    }
-
-    private suspend fun collectTimerData() {
-        viewModel.currentTimeFlow.collect { time ->
-            with(binding) {
-                swvClock.time = time
-                val min = time / 60
-                val sec = time % 60
-                if (min > 0) tvTime.text = getString(R.string.clock_time_with_min, min, sec)
-                else tvTime.text = getString(R.string.clock_time, sec)
             }
         }
     }
@@ -92,7 +76,6 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
 
     private fun onGetQuestionsSuccess(questions: List<QuestionDataUiModel>) {
         initViewPager(questions)
-        binding.llTime.show()
     }
 
     private fun initViewPager(questions: List<QuestionDataUiModel>) {
@@ -101,7 +84,7 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
                 fragmentManager = childFragmentManager,
                 lifecycle = lifecycle,
                 questionList = questions,
-                fragmentType = QuestionFragment::class)
+                fragmentType = TrainingQuestionFragment::class)
 
             vpQuestions.adapter = adapter
             vpQuestions.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
@@ -113,10 +96,5 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
             })
             vpQuestions.setPageTransformer(questionViewPagerTransformer)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.stopTimer()
     }
 }

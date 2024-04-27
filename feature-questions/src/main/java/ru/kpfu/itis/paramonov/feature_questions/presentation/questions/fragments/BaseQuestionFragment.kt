@@ -15,19 +15,22 @@ import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.d
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.BaseQuestionsViewModel
 import javax.inject.Inject
 
-abstract class BaseQuestionFragment: BaseFragment(R.layout.fragment_question) {
+abstract class BaseQuestionFragment<VM: BaseQuestionsViewModel>: BaseFragment(R.layout.fragment_question) {
     protected val binding: FragmentQuestionBinding by viewBinding(FragmentQuestionBinding::bind)
 
-    lateinit var viewModel: BaseQuestionsViewModel
+    lateinit var viewModel: VM
 
     @Inject
     lateinit var resourceManager: ResourceManager
 
-    private var adapter: AnswerAdapter? = null
+    protected var adapter: AnswerAdapter? = null
 
     override fun initView() {
+        init()
         initRecyclerView()
     }
+
+    abstract fun init()
 
     override fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -54,20 +57,9 @@ abstract class BaseQuestionFragment: BaseFragment(R.layout.fragment_question) {
         }
     }
 
-    private fun onAnswerChosen(chosenPos: Int) {
-        val pos = requireArguments().getInt(POS_KEY)
-        viewModel.updateChosenAnswers(pos, chosenPos)
-    }
+    abstract fun onAnswerChosen(chosenPos: Int)
 
-    private suspend fun collectQuestionData() {
-        val position = requireArguments().getInt(POS_KEY)
-        viewModel.getQuestionFlow(position).collect { data ->
-            with(binding) {
-                tvText.text = data.text
-                adapter?.submitList(data.answers)
-            }
-        }
-    }
+    abstract suspend fun collectQuestionData()
 
     companion object {
         const val POS_KEY = "pos"

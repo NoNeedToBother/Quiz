@@ -26,4 +26,8 @@ class ResourceManagerImpl (
         return context.theme
     }
 
+    override fun getColor(colorId: Int): Int {
+        return context.getColor(colorId)
+    }
+
 }

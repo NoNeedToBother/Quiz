@@ -8,6 +8,9 @@
     <string name="question_num">Question: %d/%d</string>
     <string name="clock_time_with_min">Time: %02dm %02ds</string>
     <string name="clock_time">Time: %02ds</string>
+    <string name="end">\u2713 End</string>
+    <string name="correct_quess">Correct, keep training!</string>
+    <string name="incorrect_guess">Incorrect, keep quessing!</string>
 
     <string-array name="difficulties">
         <item>EASY</item>

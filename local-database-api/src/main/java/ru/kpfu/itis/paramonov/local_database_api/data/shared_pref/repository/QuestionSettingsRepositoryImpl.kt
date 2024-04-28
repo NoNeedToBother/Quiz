@@ -1,7 +1,10 @@
 package ru.kpfu.itis.paramonov.local_database_api.data.shared_pref.repository
 
 import android.content.SharedPreferences
+import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common.utils.toEnumName
+import ru.kpfu.itis.paramonov.local_database_api.R
+import ru.kpfu.itis.paramonov.local_database_api.data.shared_pref.exception.IncorrectParameterException
 import ru.kpfu.itis.paramonov.local_database_api.data.shared_pref.exception.NoParameterFoundException
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Category
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Difficulty
@@ -9,7 +12,8 @@ import ru.kpfu.itis.paramonov.local_database_api.domain.model.GameMode
 import ru.kpfu.itis.paramonov.local_database_api.domain.repository.QuestionSettingsRepository
 
 class QuestionSettingsRepositoryImpl(
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    private val resourceManager: ResourceManager
 ): QuestionSettingsRepository {
 
     override fun getString(key: String): String {
@@ -72,6 +76,10 @@ class QuestionSettingsRepositoryImpl(
     }
 
     override fun saveLimit(limit: Int) {
+        if (limit !in LIMIT_LOWER_BOUND..LIMIT_UPPER_BOUND)
+            throw IncorrectParameterException(
+                resourceManager.getString(R.string.incorrect_limit, LIMIT_LOWER_BOUND, LIMIT_UPPER_BOUND)
+            )
         sharedPreferences.edit().apply {
             putInt(LIMIT_KEY, limit)
             apply()
@@ -94,5 +102,8 @@ class QuestionSettingsRepositoryImpl(
         private const val DEFAULT_LIMIT = 50
         private const val NO_DATA = "NO_DATA"
         private const val NO_LIMIT = -1
+
+        private const val LIMIT_LOWER_BOUND = 1
+        private const val LIMIT_UPPER_BOUND = 100
     }
 }

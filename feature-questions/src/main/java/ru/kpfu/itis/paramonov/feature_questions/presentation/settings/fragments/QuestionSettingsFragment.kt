@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.feature_questions.presentation.settings
+package ru.kpfu.itis.paramonov.feature_questions.presentation.settings.fragments
 
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
@@ -14,6 +14,7 @@ import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionsSettingsBinding
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsComponent
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.viewmodel.QuestionSettingsViewModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.CategoryUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.DifficultyUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.GameModeUiModel

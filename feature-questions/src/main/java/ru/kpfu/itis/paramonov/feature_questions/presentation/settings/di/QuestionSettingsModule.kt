@@ -10,7 +10,7 @@ import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionSettingsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionSettingsUseCase
-import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.QuestionSettingsViewModel
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.viewmodel.QuestionSettingsViewModel
 
 @Module(
     includes = [

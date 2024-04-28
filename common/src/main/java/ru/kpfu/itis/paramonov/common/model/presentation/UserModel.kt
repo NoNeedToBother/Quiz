@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.common.model
+package ru.kpfu.itis.paramonov.common.model.presentation
 
 data class UserModel(
     val id: String,

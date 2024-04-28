@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionsUseCase
+import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveResultsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import java.util.Timer
 import java.util.TimerTask
@@ -13,7 +14,8 @@ import kotlin.collections.ArrayList
 
 class QuestionsViewModel(
     private val getQuestionsUseCase: GetQuestionsUseCase,
-    private val saveQuestionsUseCase: SaveQuestionsUseCase
+    private val saveQuestionsUseCase: SaveQuestionsUseCase,
+    private val saveResultsUseCase: SaveResultsUseCase
 ): BaseQuestionsViewModel() {
 
     private val _currentTimeFlow = MutableStateFlow(0)
@@ -65,7 +67,7 @@ class QuestionsViewModel(
         timer = null
     }
 
-    fun saveQuestions() {
+    private fun saveQuestions() {
         viewModelScope.launch {
             val questions = ArrayList<QuestionDataUiModel>()
             for (question in _questionList) {

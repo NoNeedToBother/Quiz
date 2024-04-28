@@ -41,6 +41,7 @@ dependencies {
     implementation project(':common-android')
     implementation project(':local-database-api')
     implementation project(':question-api')
+    implementation project(':firebase-api')
     implementation project(':navigation')
 
     implementation(dagger)

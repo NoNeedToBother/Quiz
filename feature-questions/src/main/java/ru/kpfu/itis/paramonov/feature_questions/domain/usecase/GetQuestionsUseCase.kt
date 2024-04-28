@@ -2,11 +2,10 @@ package ru.kpfu.itis.paramonov.feature_questions.domain.usecase
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionSettingsUiModelMapper
 import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionUiModelMapper
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
-import ru.kpfu.itis.paramonov.local_database_api.domain.model.GameMode
+import ru.kpfu.itis.paramonov.common.model.data.GameMode
 import ru.kpfu.itis.paramonov.local_database_api.domain.repository.QuestionSettingsRepository
 import ru.kpfu.itis.paramonov.question_api.domain.repository.QuestionRepository
 import javax.inject.Inject
@@ -27,12 +26,9 @@ class GetQuestionsUseCase @Inject constructor(
             val amount = when (gameMode) {
                 GameMode.BLITZ -> BLITZ_QUESTION_AMOUNT
             }
-            val categoryCode = questionRepository.getCategoryCode(category.name)
+            val categoryCode = questionRepository.getCategoryCode(category)
             val questions = questionRepository.getQuestions(
-                amount,
-                difficulty.name.normalizeEnumName().lowercase(),
-                categoryCode
-            )
+                amount = amount, difficulty = difficulty, category = categoryCode)
             questionUiModelMapper.map(questions).apply {
                 for (question in this) {
                     question.difficulty = questionSettingsUiModelMapper.mapDifficulty(difficulty)

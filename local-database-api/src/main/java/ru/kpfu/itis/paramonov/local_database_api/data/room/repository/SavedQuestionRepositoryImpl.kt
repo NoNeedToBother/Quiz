@@ -6,8 +6,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.local_database_api.data.room.database.QuestionDatabase
 import ru.kpfu.itis.paramonov.local_database_api.data.room.entity.AnswerEntity
 import ru.kpfu.itis.paramonov.local_database_api.data.room.entity.QuestionEntity
-import ru.kpfu.itis.paramonov.local_database_api.domain.model.Category
-import ru.kpfu.itis.paramonov.local_database_api.domain.model.Difficulty
+import ru.kpfu.itis.paramonov.common.model.data.Category
+import ru.kpfu.itis.paramonov.common.model.data.Difficulty
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.question.AnswerModel
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.question.QuestionModel
 import ru.kpfu.itis.paramonov.local_database_api.domain.repository.SavedQuestionRepository

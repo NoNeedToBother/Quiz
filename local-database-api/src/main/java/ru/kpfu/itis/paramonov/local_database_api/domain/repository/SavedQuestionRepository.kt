@@ -4,7 +4,7 @@ import ru.kpfu.itis.paramonov.local_database_api.domain.model.question.QuestionM
 
 interface SavedQuestionRepository {
 
-    suspend fun getAllQuestions(): List<QuestionModel>
+    suspend fun getQuestions(limit: Int): List<QuestionModel>
 
     suspend fun saveQuestions(questions: List<QuestionModel>)
 

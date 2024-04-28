@@ -21,4 +21,8 @@ interface QuestionSettingsRepository {
     fun getGameMode(): GameMode
 
     fun saveGameMode(gameMode: GameMode)
+
+    fun getLimit(): Int
+
+    fun saveLimit(limit: Int)
 }

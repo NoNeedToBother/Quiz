@@ -39,7 +39,7 @@ class TrainingQuestionSettingsFragment: BaseFragment(R.layout.fragment_training_
                     s?.let {
                         val len = it.toString().length
                         val default = getString(R.string.enter_limit_default)
-                        if (len <= default.length - 1) {
+                        if (len == default.length - 1) {
                             etLimit.setText(default)
                             etLimit.setSelection(default.length)
                         }
@@ -54,16 +54,17 @@ class TrainingQuestionSettingsFragment: BaseFragment(R.layout.fragment_training_
                                 val number = it.value.toInt()
                                 if (number !in LIMIT_LOWER_BOUND..LIMIT_UPPER_BOUND) {
                                     etLimit.error = getString(
-                                        R.string.incorrect_limit, LIMIT_LOWER_BOUND, LIMIT_UPPER_BOUND)
+                                        R.string.limit_should_be, LIMIT_LOWER_BOUND, LIMIT_UPPER_BOUND)
                                 }
                             } catch (ex: NumberFormatException) {
                                 etLimit.error = getString(
-                                    R.string.incorrect_limit, LIMIT_LOWER_BOUND, LIMIT_UPPER_BOUND)
+                                    R.string.limit_should_be, LIMIT_LOWER_BOUND, LIMIT_UPPER_BOUND)
                             }
                         }
                     }
                 }
             })
+
             btnSave.setOnClickListener {
                 val limitTxt = etLimit.text.toString()
                 val regex = """\d+""".toRegex()

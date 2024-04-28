@@ -31,7 +31,7 @@ class TrainingQuestionFragment: BaseQuestionFragment<TrainingQuestionsViewModel>
                     if (answer.chosen) anyChosen = true
                     if (answer.chosen && answer.correct) correctlyChosen = true
                 }
-                if (correctlyChosen) tvInfo.text = getString(R.string.correct_quess)
+                if (correctlyChosen) tvInfo.text = getString(R.string.correct_guess)
                 else if (anyChosen) tvInfo.text = getString(R.string.incorrect_guess)
                 else tvInfo.text = getString(ru.kpfu.itis.paramonov.common_android.R.string.empty)
             }

@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.local_database_api.domain.model
+package ru.kpfu.itis.paramonov.common.model.data
 
 enum class Difficulty {
     EASY, MEDIUM, HARD

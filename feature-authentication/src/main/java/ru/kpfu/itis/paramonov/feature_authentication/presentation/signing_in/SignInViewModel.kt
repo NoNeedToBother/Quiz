@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.common.model.UserModel
+import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.AuthenticateUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.GetCurrentUserUseCase
@@ -43,10 +43,14 @@ class SignInViewModel(
 
     fun checkCurrentUser() {
         viewModelScope.launch {
-            val user = getCurrentUserUseCase.invoke()
-            if (user.isPresent) {
-                _userDataFlow.value = UserDataResult.Success(user.get())
-                mainMenuRouter.goToMainMenu()
+            try {
+                val user = getCurrentUserUseCase.invoke()
+                if (user.isPresent) {
+                    _userDataFlow.value = UserDataResult.Success(user.get())
+                    mainMenuRouter.goToMainMenu()
+                }
+            } catch (ex: Throwable) {
+                _userDataFlow.value = UserDataResult.Failure(ex)
             }
         }
     }

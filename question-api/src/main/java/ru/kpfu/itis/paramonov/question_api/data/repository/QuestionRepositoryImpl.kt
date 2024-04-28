@@ -2,8 +2,10 @@ package ru.kpfu.itis.paramonov.question_api.data.repository
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import ru.kpfu.itis.paramonov.common.model.data.Category
+import ru.kpfu.itis.paramonov.common.model.data.Difficulty
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.utils.Categories
+import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.question_api.R
 import ru.kpfu.itis.paramonov.question_api.data.exceptions.UnknownParameterException
 import ru.kpfu.itis.paramonov.question_api.data.handler.QuestionExceptionHandler
@@ -19,10 +21,11 @@ class QuestionRepositoryImpl(
     private val exceptionHandler: QuestionExceptionHandler,
     private val dispatcher: CoroutineDispatcher
 ): QuestionRepository {
-    override suspend fun getQuestions(amount: Int, difficulty: String, category: Int): QuestionDomainModel {
+    override suspend fun getQuestions(amount: Int, difficulty: Difficulty, category: Int): QuestionDomainModel {
         return withContext(dispatcher) {
             try {
-                val result = api.getQuestions(amount, difficulty, category)
+                val result = api.getQuestions(amount,
+                    difficulty.name.normalizeEnumName().lowercase(), category)
                 mapper.map(result)
             } catch (ex: Exception) {
                 throw exceptionHandler.handle(ex)
@@ -30,7 +33,7 @@ class QuestionRepositoryImpl(
         }
     }
 
-    override suspend fun getCategoryCode(category: String): Int {
+    override suspend fun getCategoryCode(category: Category): Int {
         return withContext(dispatcher) {
             try {
                 val categories = api.getCategoriesId().info
@@ -51,18 +54,18 @@ class QuestionRepositoryImpl(
         }
     }
 
-    private fun getCategoryByName(categoryName: String): String? {
+    private fun getCategoryByName(categoryName: String): Category? {
         return when (categoryName) {
-            GENERAL_CATEGORY_NAME -> Categories.GENERAL_CATEGORY
-            BOOKS_CATEGORY_NAME -> Categories.BOOK_CATEGORY
-            FILM_CATEGORY_NAME -> Categories.FILM_CATEGORY
-            MUSIC_CATEGORY_NAME -> Categories.MUSIC_CATEGORY
-            TV_CATEGORY_NAME -> Categories.TV_CATEGORY
-            VIDEO_GAMES_CATEGORY_NAME -> Categories.VIDEO_GAMES_CATEGORY
-            SPORTS_CATEGORY_NAME -> Categories.SPORTS_CATEGORY
-            GEOGRAPHY_CATEGORY_NAME -> Categories.GEOGRAPHY_CATEGORY
-            HISTORY_CATEGORY_NAME -> Categories.HISTORY_CATEGORY
-            ANIMALS_CATEGORY_NAME -> Categories.ANIMALS_CATEGORY
+            GENERAL_CATEGORY_NAME -> Category.GENERAL
+            BOOKS_CATEGORY_NAME -> Category.BOOK
+            FILM_CATEGORY_NAME -> Category.FILM
+            MUSIC_CATEGORY_NAME -> Category.MUSIC
+            TV_CATEGORY_NAME -> Category.TV
+            VIDEO_GAMES_CATEGORY_NAME -> Category.VIDEO_GAMES
+            SPORTS_CATEGORY_NAME -> Category.SPORTS
+            GEOGRAPHY_CATEGORY_NAME -> Category.GEOGRAPHY
+            HISTORY_CATEGORY_NAME -> Category.HISTORY
+            ANIMALS_CATEGORY_NAME -> Category.ANIMALS
             else -> null
         }
     }

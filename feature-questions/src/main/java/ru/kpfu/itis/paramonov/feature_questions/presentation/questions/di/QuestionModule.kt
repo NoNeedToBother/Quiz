@@ -10,6 +10,7 @@ import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionsUseCase
+import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveResultsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
 
 @Module(
@@ -28,8 +29,9 @@ class QuestionModule {
     @ViewModelKey(QuestionsViewModel::class)
     fun provideQuestionsViewModel(
         getQuestionsUseCase: GetQuestionsUseCase,
-        saveQuestionsUseCase: SaveQuestionsUseCase
+        saveQuestionsUseCase: SaveQuestionsUseCase,
+        saveResultsUseCase: SaveResultsUseCase
     ): ViewModel {
-        return QuestionsViewModel(getQuestionsUseCase, saveQuestionsUseCase)
+        return QuestionsViewModel(getQuestionsUseCase, saveQuestionsUseCase, saveResultsUseCase)
     }
 }

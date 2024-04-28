@@ -23,13 +23,13 @@ class ResultRepositoryImpl(
             val resultDocument = database.collection(RESULTS_COLLECTION_NAME)
             val score = calculateScore(
                 time = result.time, correct = result.correct,
-                incorrect = result.incorrect, gameMode = result.gameMode
+                total = result.total, gameMode = result.gameMode
             )
             val values = mutableMapOf<String, Any>(
                 DB_USER_ID_FIELD to result.userId,
                 DB_TIME_FIELD to result.time,
                 DB_CORRECT_FIELD to result.correct,
-                DB_INCORRECT_FIELD to result.incorrect,
+                DB_TOTAL_FIELD to result.total,
                 DB_SCORE_FIELD to score,
                 DB_DIFFICULTY_FIELD to result.difficulty.name,
                 DB_CATEGORY_FIELD to result.category.name,
@@ -39,14 +39,14 @@ class ResultRepositoryImpl(
         }
     }
 
-    private fun calculateScore(time: Int, correct: Int, incorrect: Int, gameMode: GameMode): Double {
-        val ratio = correct.toDouble() / incorrect
+    private fun calculateScore(time: Int, correct: Int, total: Int, gameMode: GameMode): Double {
+        val ratio = correct.toDouble() / total
         val ratioValue = Math.E.pow(ratio)
         val gameModeFactor = when(gameMode) {
             GameMode.BLITZ -> BLITZ_FACTOR
         }
-        val timeValue = Math.E.pow((-1) * (time * gameModeFactor).pow(2))
-        return ratioValue * timeValue
+        val timeValue = Math.E.pow((-1) * (time * gameModeFactor).pow(4))
+        return ratioValue * timeValue * 5 / Math.E
     }
 
     companion object {
@@ -54,12 +54,12 @@ class ResultRepositoryImpl(
         const val DB_USER_ID_FIELD = "userId"
         const val DB_TIME_FIELD = "time"
         const val DB_CORRECT_FIELD = "correct"
-        const val DB_INCORRECT_FIELD = "incorrect"
+        const val DB_TOTAL_FIELD = "total"
         const val DB_SCORE_FIELD = "score"
         const val DB_DIFFICULTY_FIELD = "difficulty"
         const val DB_CATEGORY_FIELD = "category"
         const val DB_GAME_MODE_FIELD = "gameMode"
 
-        private const val BLITZ_FACTOR = (1).toDouble() / 10 / 2
+        private const val BLITZ_FACTOR = (1).toDouble() / 10 / 5
     }
 }

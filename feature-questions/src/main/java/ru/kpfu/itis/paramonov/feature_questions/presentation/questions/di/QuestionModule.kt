@@ -8,10 +8,12 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
+import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionSettingsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveResultsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
+import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 
 @Module(
     includes = [
@@ -30,8 +32,15 @@ class QuestionModule {
     fun provideQuestionsViewModel(
         getQuestionsUseCase: GetQuestionsUseCase,
         saveQuestionsUseCase: SaveQuestionsUseCase,
-        saveResultsUseCase: SaveResultsUseCase
+        saveResultsUseCase: SaveResultsUseCase,
+        getQuestionSettingsUseCase: GetQuestionSettingsUseCase,
+        mainMenuRouter: MainMenuRouter
     ): ViewModel {
-        return QuestionsViewModel(getQuestionsUseCase, saveQuestionsUseCase, saveResultsUseCase)
+        return QuestionsViewModel(
+            getQuestionsUseCase = getQuestionsUseCase,
+            saveQuestionsUseCase = saveQuestionsUseCase,
+            saveResultsUseCase = saveResultsUseCase,
+            getQuestionSettingsUseCase = getQuestionSettingsUseCase,
+            mainMenuRouter = mainMenuRouter)
     }
 }

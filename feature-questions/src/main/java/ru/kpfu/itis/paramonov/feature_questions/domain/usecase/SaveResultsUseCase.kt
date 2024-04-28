@@ -20,7 +20,7 @@ class SaveResultsUseCase @Inject constructor(
 
     suspend operator fun invoke(
         difficultyUiModel: DifficultyUiModel, categoryUiModel: CategoryUiModel,
-        gameModeUiModel: GameModeUiModel, time: Int, correct: Int, incorrect: Int
+        gameModeUiModel: GameModeUiModel, time: Int, correct: Int, total: Int
     ) {
         withContext(dispatcher) {
             val currentUser = userRepository.getCurrentUser()
@@ -29,7 +29,7 @@ class SaveResultsUseCase @Inject constructor(
                 userId = currentUser.get().id,
                 time = time,
                 correct = correct,
-                incorrect = incorrect,
+                total = total,
                 difficulty = mapper.mapDifficulty(difficultyUiModel),
                 category = mapper.mapCategory(categoryUiModel),
                 gameMode = mapper.mapGameMode(gameModeUiModel)

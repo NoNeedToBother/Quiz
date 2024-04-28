@@ -8,7 +8,7 @@ class Result(
     val userId: String,
     val time: Int,
     val correct: Int,
-    val incorrect: Int,
+    val total: Int,
     val difficulty: Difficulty,
     val category: Category,
     val gameMode: GameMode,
@@ -21,9 +21,9 @@ class Result(
         private set
 
 
-    internal constructor(userId: String, time: Int, correct: Int, incorrect: Int, score: Double,
-                difficulty: Difficulty, category: Category, gameMode: GameMode):
-            this(userId, time, correct, incorrect, difficulty, category, gameMode) {
+    internal constructor(userId: String, time: Int, correct: Int, total: Int, score: Double,
+                         difficulty: Difficulty, category: Category, gameMode: GameMode):
+            this(userId, time, correct, total, difficulty, category, gameMode) {
                 _score = score
             }
 }

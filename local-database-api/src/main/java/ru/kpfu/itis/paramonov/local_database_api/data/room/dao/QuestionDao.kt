@@ -10,9 +10,9 @@ import ru.kpfu.itis.paramonov.local_database_api.data.room.entity.QuestionWithAn
 @Dao
 abstract class QuestionDao {
 
-    @Query("select * from questions")
+    @Query("select * from questions order by random() limit :limit")
     @Transaction
-    abstract fun getAll(): List<QuestionWithAnswers>
+    abstract fun getQuestions(limit: Int): List<QuestionWithAnswers>
 
     @Insert
     abstract fun save(question: QuestionEntity): Long

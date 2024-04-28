@@ -4,23 +4,24 @@ import androidx.fragment.app.Fragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.kpfu.itis.paramonov.common.di.scopes.ScreenScope
-import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.fragments.QuestionSettingsFragment
+import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.fragments.TrainingQuestionSettingsFragment
 
 @Subcomponent(
     modules = [
-        QuestionSettingsModule::class
+        TrainingQuestionSettingsModule::class
     ]
 )
 @ScreenScope
-interface QuestionSettingsComponent {
+interface TrainingQuestionSettingsComponent {
 
     @Subcomponent.Factory
     interface Factory {
 
         fun create(
             @BindsInstance fragment: Fragment
-        ): QuestionSettingsComponent
+        ): TrainingQuestionSettingsComponent
     }
 
-    fun inject(fragment: QuestionSettingsFragment)
+    fun inject(fragment: TrainingQuestionSettingsFragment)
+
 }

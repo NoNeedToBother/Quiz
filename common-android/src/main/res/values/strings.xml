@@ -1,4 +1,5 @@
 <resources>
     <string name="default_error_msg">Something wrong happened…</string>
     <string name="proceeding">Working, please wait…</string>
+    <string name="empty"/>
 </resources>

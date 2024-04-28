@@ -1,7 +1,10 @@
 package ru.kpfu.itis.paramonov.local_database_api.data.shared_pref.repository
 
 import android.content.SharedPreferences
+import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common.utils.toEnumName
+import ru.kpfu.itis.paramonov.local_database_api.R
+import ru.kpfu.itis.paramonov.local_database_api.data.shared_pref.exception.IncorrectParameterException
 import ru.kpfu.itis.paramonov.local_database_api.data.shared_pref.exception.NoParameterFoundException
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Category
 import ru.kpfu.itis.paramonov.local_database_api.domain.model.Difficulty
@@ -9,7 +12,8 @@ import ru.kpfu.itis.paramonov.local_database_api.domain.model.GameMode
 import ru.kpfu.itis.paramonov.local_database_api.domain.repository.QuestionSettingsRepository
 
 class QuestionSettingsRepositoryImpl(
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    private val resourceManager: ResourceManager
 ): QuestionSettingsRepository {
 
     override fun getString(key: String): String {
@@ -65,22 +69,41 @@ class QuestionSettingsRepositoryImpl(
         saveString(GAME_MODE_KEY, gameMode.name)
     }
 
-    private fun getDefaultDifficulty(): Difficulty {
-        return Difficulty.MEDIUM
+    override fun getLimit(): Int {
+        val res = sharedPreferences.getInt(LIMIT_KEY, NO_LIMIT)
+        return if (res == NO_LIMIT) getDefaultLimit()
+        else res
     }
 
-    private fun getDefaultCategory(): Category {
-        return Category.GENERAL
+    override fun saveLimit(limit: Int) {
+        if (limit !in LIMIT_LOWER_BOUND..LIMIT_UPPER_BOUND)
+            throw IncorrectParameterException(
+                resourceManager.getString(R.string.incorrect_limit, LIMIT_LOWER_BOUND, LIMIT_UPPER_BOUND)
+            )
+        sharedPreferences.edit().apply {
+            putInt(LIMIT_KEY, limit)
+            apply()
+        }
     }
 
-    private fun getDefaultGameMode(): GameMode {
-        return GameMode.BLITZ
-    }
+    private fun getDefaultDifficulty(): Difficulty = Difficulty.MEDIUM
+
+    private fun getDefaultCategory(): Category = Category.GENERAL
+
+    private fun getDefaultGameMode(): GameMode = GameMode.BLITZ
+
+    private fun getDefaultLimit(): Int = DEFAULT_LIMIT
 
     companion object {
         private const val CATEGORY_KEY = "category"
         private const val DIFFICULTY_KEY = "difficulty"
         private const val GAME_MODE_KEY = "game_mode"
+        private const val LIMIT_KEY = "limit"
+        private const val DEFAULT_LIMIT = 50
         private const val NO_DATA = "NO_DATA"
+        private const val NO_LIMIT = -1
+
+        private const val LIMIT_LOWER_BOUND = 1
+        private const val LIMIT_UPPER_BOUND = 100
     }
 }

@@ -16,9 +16,9 @@ class SavedQuestionRepositoryImpl(
     private val dispatcher: CoroutineDispatcher,
     private val questionDatabase: QuestionDatabase
 ): SavedQuestionRepository {
-    override suspend fun getAllQuestions(): List<QuestionModel> {
+    override suspend fun getQuestions(limit: Int): List<QuestionModel> {
         return withContext(dispatcher) {
-            val questions = questionDatabase.questionDao().getAll()
+            val questions = questionDatabase.questionDao().getQuestions(limit)
             questions.map {
                 QuestionModel(
                     text = it.question.text,

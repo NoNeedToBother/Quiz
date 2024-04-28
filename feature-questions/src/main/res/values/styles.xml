@@ -8,4 +8,12 @@
         <item name="endIconTint">@color/settings_inner_color</item>
         <item name="boxBackgroundColor">@color/settings_choosing_color</item>
     </style>
+
+    <style name="Widget.MaterialComponents.Button.OutlinedButton.Save"
+        parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/settings_inner_color</item>
+        <item name="android:textColor">@color/settings_inner_color</item>
+        <item name="android:textSize">20sp</item>
+        <item name="rippleColor">@color/settings_btn_ripple_color</item>
+    </style>
 </resources>

@@ -30,7 +30,6 @@ class AnswerViewHolder(
         this.item = item
         setChosenMark(item.chosen)
     }
-
     private fun setChosenMark(chosen: Boolean) {
         if (chosen) binding.ivMark.setImageDrawable(
             resourceManager.getDrawable(R.drawable.mark_checked)

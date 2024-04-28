@@ -109,6 +109,11 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
                     tvQuestionNum.text = getString(
                         R.string.question_num, position + 1, questions.size
                     )
+                    if (position == adapter.itemCount - 1) {
+                        (childFragmentManager.findFragmentByTag(
+                            "f" + adapter.getItemId(position)
+                        ) as QuestionFragment).showEndButton()
+                    }
                 }
             })
             vpQuestions.setPageTransformer(questionViewPagerTransformer)

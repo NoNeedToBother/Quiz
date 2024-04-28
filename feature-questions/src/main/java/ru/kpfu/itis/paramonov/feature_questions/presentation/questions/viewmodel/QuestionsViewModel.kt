@@ -45,6 +45,12 @@ class QuestionsViewModel(
         }
     }
 
+    fun onQuestionsEnd() {
+        viewModelScope.launch {
+
+        }
+    }
+
     private fun startClockTicking() {
         viewModelScope.launch {
             if (timer == null) {
@@ -65,7 +71,7 @@ class QuestionsViewModel(
         timer = null
     }
 
-    fun saveQuestions() {
+    private fun saveQuestions() {
         viewModelScope.launch {
             val questions = ArrayList<QuestionDataUiModel>()
             for (question in _questionList) {

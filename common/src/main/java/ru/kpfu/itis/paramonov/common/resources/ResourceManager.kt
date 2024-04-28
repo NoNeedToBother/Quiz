@@ -11,4 +11,6 @@ interface ResourceManager {
     fun getDrawable(drawableId: Int): Drawable
 
     fun getTheme(themeId: Int): Theme
+
+    fun getColor(colorId: Int): Int
 }

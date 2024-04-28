@@ -1,3 +1,3 @@
 <resources>
-    <string name="app_name">local-database-api</string>
+    <string name="incorrect_limit">Limit should be between %d and %d</string>
 </resources>

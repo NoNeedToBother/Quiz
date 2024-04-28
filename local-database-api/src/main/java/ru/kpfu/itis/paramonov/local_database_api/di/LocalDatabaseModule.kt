@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
+import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.local_database_api.data.shared_pref.repository.QuestionSettingsRepositoryImpl
 import ru.kpfu.itis.paramonov.local_database_api.domain.repository.QuestionSettingsRepository
 
@@ -23,9 +24,11 @@ class LocalDatabaseModule {
     }
 
     @Provides
-    fun sharedPreferencesRepositoryImpl(sharedPreferences: SharedPreferences
+    fun sharedPreferencesRepositoryImpl(
+        sharedPreferences: SharedPreferences,
+        resourceManager: ResourceManager
     ): QuestionSettingsRepositoryImpl {
-        return QuestionSettingsRepositoryImpl(sharedPreferences)
+        return QuestionSettingsRepositoryImpl(sharedPreferences, resourceManager)
     }
 
     @Provides

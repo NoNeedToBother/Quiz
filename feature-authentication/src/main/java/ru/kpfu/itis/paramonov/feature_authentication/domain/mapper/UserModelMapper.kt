@@ -8,8 +8,10 @@ import javax.inject.Inject
 class UserModelMapper @Inject constructor(): ModelMapper<FirebaseUser, UserModel> {
     override fun map(model: FirebaseUser): UserModel {
         return UserModel(
-            model.id,
-            model.username
+            id = model.id,
+            username = model.username,
+            profilePictureUrl = model.profilePictureUrl,
+            info = model.info
         )
     }
 }

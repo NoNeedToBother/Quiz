@@ -40,12 +40,9 @@ dependencies {
     def firebaseBoMVersion = '32.7.4'
     implementation(platform("com.google.firebase:firebase-bom:${firebaseBoMVersion}"))
     implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-database")
+    implementation('com.google.firebase:firebase-firestore')
 
-
-    implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-storage:20.2.1'
-    implementation 'com.google.firebase:firebase-messaging:23.1.2'
+    implementation('com.google.firebase:firebase-core:21.1.1')
 
     implementation(dagger)
     ksp(daggerCompiler)

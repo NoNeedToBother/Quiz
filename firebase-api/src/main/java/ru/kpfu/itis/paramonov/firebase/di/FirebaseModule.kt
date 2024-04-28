@@ -3,7 +3,7 @@ package ru.kpfu.itis.paramonov.firebase.di
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.database.database
+import com.google.firebase.firestore.firestore
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -34,7 +34,7 @@ class FirebaseModule {
         signInExceptionHandler: SignInExceptionHandler,
         resManager: ResourceManager
     ): UserRepositoryImpl {
-        return UserRepositoryImpl(firebaseAuth, Firebase.database, dispatcher, registerExceptionHandler,
+        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, dispatcher, registerExceptionHandler,
             signInExceptionHandler, resManager)
     }
 

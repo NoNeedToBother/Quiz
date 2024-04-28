@@ -65,22 +65,34 @@ class QuestionSettingsRepositoryImpl(
         saveString(GAME_MODE_KEY, gameMode.name)
     }
 
-    private fun getDefaultDifficulty(): Difficulty {
-        return Difficulty.MEDIUM
+    override fun getLimit(): Int {
+        val res = sharedPreferences.getInt(LIMIT_KEY, NO_LIMIT)
+        return if (res == NO_LIMIT) getDefaultLimit()
+        else res
     }
 
-    private fun getDefaultCategory(): Category {
-        return Category.GENERAL
+    override fun saveLimit(limit: Int) {
+        sharedPreferences.edit().apply {
+            putInt(LIMIT_KEY, limit)
+            apply()
+        }
     }
 
-    private fun getDefaultGameMode(): GameMode {
-        return GameMode.BLITZ
-    }
+    private fun getDefaultDifficulty(): Difficulty = Difficulty.MEDIUM
+
+    private fun getDefaultCategory(): Category = Category.GENERAL
+
+    private fun getDefaultGameMode(): GameMode = GameMode.BLITZ
+
+    private fun getDefaultLimit(): Int = DEFAULT_LIMIT
 
     companion object {
         private const val CATEGORY_KEY = "category"
         private const val DIFFICULTY_KEY = "difficulty"
         private const val GAME_MODE_KEY = "game_mode"
+        private const val LIMIT_KEY = "limit"
+        private const val DEFAULT_LIMIT = 50
         private const val NO_DATA = "NO_DATA"
+        private const val NO_LIMIT = -1
     }
 }

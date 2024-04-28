@@ -34,9 +34,12 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter {
     }
 
     override fun goToMainMenu() {
-        navController?.navigate(
-            R.id.mainMenuFragment
-        )
+        navController?.apply {
+            popBackStack(R.id.mainMenuFragment, false)
+            navigate(
+                R.id.mainMenuFragment
+            )
+        }
     }
 
     override fun goToQuestions() {

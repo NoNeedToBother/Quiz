@@ -1,11 +1,7 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.feature_questions.R
@@ -31,16 +27,6 @@ abstract class BaseQuestionFragment<VM: BaseQuestionsViewModel>: BaseFragment(R.
     }
 
     abstract fun init()
-
-    override fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                launch {
-                    collectQuestionData()
-                }
-            }
-        }
-    }
 
     private fun initRecyclerView() {
         with(binding) {

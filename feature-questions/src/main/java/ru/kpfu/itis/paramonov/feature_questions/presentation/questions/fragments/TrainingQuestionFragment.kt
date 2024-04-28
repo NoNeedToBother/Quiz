@@ -1,6 +1,10 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments
 
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.TrainingQuestionsViewModel
 import javax.inject.Inject
@@ -17,6 +21,16 @@ class TrainingQuestionFragment: BaseQuestionFragment<TrainingQuestionsViewModel>
     override fun onAnswerChosen(chosenPos: Int) {
         val pos = requireArguments().getInt(POS_KEY)
         viewModel.updateChosenAnswers(pos, chosenPos)
+    }
+
+    override fun observeData() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
+                launch {
+                    collectQuestionData()
+                }
+            }
+        }
     }
 
     override suspend fun collectQuestionData() {

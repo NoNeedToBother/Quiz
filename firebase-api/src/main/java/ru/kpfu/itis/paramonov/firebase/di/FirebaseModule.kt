@@ -3,14 +3,16 @@ package ru.kpfu.itis.paramonov.firebase.di
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.database.database
+import com.google.firebase.firestore.firestore
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
+import ru.kpfu.itis.paramonov.firebase.data.repository.ResultRepositoryImpl
 import ru.kpfu.itis.paramonov.firebase.data.repository.UserRepositoryImpl
+import ru.kpfu.itis.paramonov.firebase.domain.repository.ResultRepository
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 
 @Module
@@ -34,7 +36,7 @@ class FirebaseModule {
         signInExceptionHandler: SignInExceptionHandler,
         resManager: ResourceManager
     ): UserRepositoryImpl {
-        return UserRepositoryImpl(firebaseAuth, Firebase.database, dispatcher, registerExceptionHandler,
+        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, dispatcher, registerExceptionHandler,
             signInExceptionHandler, resManager)
     }
 
@@ -43,4 +45,17 @@ class FirebaseModule {
 
     @Provides
     fun firebaseAuth(): FirebaseAuth = Firebase.auth
+
+    @Provides
+    fun resultRepositoryImpl(
+        dispatcher: CoroutineDispatcher,
+        resourceManager: ResourceManager
+    ): ResultRepositoryImpl {
+        return ResultRepositoryImpl(Firebase.firestore, dispatcher, resourceManager)
+    }
+
+    @Provides
+    fun resultRepository(
+        impl: ResultRepositoryImpl
+    ): ResultRepository = impl
 }

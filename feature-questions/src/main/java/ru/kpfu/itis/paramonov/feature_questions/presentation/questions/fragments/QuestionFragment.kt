@@ -1,6 +1,10 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments
 
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
@@ -16,6 +20,26 @@ class QuestionFragment: BaseQuestionFragment<QuestionsViewModel>() {
     override fun init() {
         binding.tvInfo.setOnClickListener {
             viewModel.onQuestionsEnd()
+        }
+    }
+
+    override fun observeData() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
+                launch {
+                    collectQuestionData()
+                }
+                launch {
+                    collectProceedingData()
+                }
+            }
+        }
+    }
+
+    private suspend fun collectProceedingData() {
+        viewModel.resultProceedingFlow.collect {
+            if (it) binding.tvInfo.isEnabled = false
+            else binding.tvInfo.isEnabled = true
         }
     }
 

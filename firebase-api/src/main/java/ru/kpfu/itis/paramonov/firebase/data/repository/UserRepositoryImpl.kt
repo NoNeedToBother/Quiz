@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.firebase.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
@@ -11,16 +11,17 @@ import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
-import ru.kpfu.itis.paramonov.firebase.data.exceptions.UpdateException
+import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserDataException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserNotAuthorizedException
 import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.utils.getUser
 import ru.kpfu.itis.paramonov.firebase.data.utils.waitResult
+import java.lang.NullPointerException
 import java.util.Optional
 
 class UserRepositoryImpl(
     private val auth: FirebaseAuth,
-    private val database: FirebaseDatabase,
+    private val database: FirebaseFirestore,
     private val dispatcher: CoroutineDispatcher,
     private val registerExceptionHandler: RegistrationExceptionHandler,
     private val signInExceptionHandler: SignInExceptionHandler,
@@ -51,7 +52,9 @@ class UserRepositoryImpl(
                 this.result.user?.let {
                     return updateUser(
                         UPDATE_ID_KEY to it.uid,
-                        UPDATE_USERNAME_KEY to username
+                        UPDATE_USERNAME_KEY to username,
+                        UPDATE_PROFILE_PICTURE_KEY to DEFAULT_PROFILE_PICTURE_URL,
+                        UPDATE_INFO_KEY to String.format(DEFAULT_INFO, username)
                     )
                 } ?: throw RegisterException(resourceManager.getString(R.string.register_fail_try_again))
             } else {
@@ -84,7 +87,7 @@ class UserRepositoryImpl(
 
     override suspend fun updateUser(vararg pairs: Pair<String, Any>): FirebaseUser {
         auth.currentUser?.let {
-            val userReference = database.getReference(USERS_NODE_NAME).child(it.uid)
+            val userDocument = database.collection(USERS_COLLECTION_NAME).document(it.uid)
             val updates = mutableMapOf<String, Any>()
             for (pair in pairs) {
                 val key = pair.first
@@ -93,13 +96,15 @@ class UserRepositoryImpl(
                 when(key) {
                     UPDATE_ID_KEY -> updates[DB_ID_FIELD] = value
                     UPDATE_USERNAME_KEY -> updates[DB_USERNAME_FIELD] = value
+                    UPDATE_PROFILE_PICTURE_KEY -> updates[DB_PROFILE_PICTURE_FIELD] = value
+                    UPDATE_INFO_KEY -> updates[DB_INFO_FIELD] = value
                 }
             }
 
             return withContext(dispatcher) {
-                val result = userReference.setValue(updates).waitResult()
+                val result = userDocument.set(updates).waitResult()
                 if (result.isSuccessful) getCurrentUser().get()
-                else throw UpdateException(
+                else throw UserDataException(
                     resourceManager.getString(R.string.update_failed)
                 )
             }
@@ -120,11 +125,17 @@ class UserRepositoryImpl(
 
     override suspend fun getUser(id: String): Optional<FirebaseUser> {
         val data = withContext(dispatcher) {
-            database.getReference(USERS_NODE_NAME).child(id)
+            database.collection(USERS_COLLECTION_NAME).document(id)
                 .get().waitResult()
         }
         return if (data.isSuccessful) {
-            Optional.of(data.result.getUser())
+            try {
+                Optional.of(data.result.getUser())
+            } catch (ex: NullPointerException) {
+                throw UserDataException(
+                    resourceManager.getString(R.string.corrupted_data)
+                )
+            }
         } else Optional.empty()
     }
 
@@ -143,9 +154,16 @@ class UserRepositoryImpl(
     companion object {
         const val UPDATE_USERNAME_KEY = "username"
         private const val UPDATE_ID_KEY = "id"
+        const val UPDATE_PROFILE_PICTURE_KEY = "profilePicture"
+        const val UPDATE_INFO_KEY = "info"
 
-        const val USERS_NODE_NAME = "users"
+        private const val DEFAULT_PROFILE_PICTURE_URL = ""
+        private const val DEFAULT_INFO = "Hello this is %s"
+
+        const val USERS_COLLECTION_NAME = "users"
         const val DB_ID_FIELD = "id"
         const val DB_USERNAME_FIELD = "username"
+        const val DB_PROFILE_PICTURE_FIELD = "profilePicture"
+        const val DB_INFO_FIELD = "info"
     }
 }

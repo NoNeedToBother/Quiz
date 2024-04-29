@@ -17,6 +17,14 @@
     <string name="enter_limit_default">Enter limit:&#160;</string>
     <string name="limit_should_be">Should be between %d and %d</string>
     <string name="limit_not_correct">Limit should be between %d and %d</string>
+    <string name="results">Results</string>
+    <string name="unsupported_arguments">Unsupported arguments were received</string>
+    <string name="res_difficulty">Difficulty: %s</string>
+    <string name="res_category">Category: %s</string>
+    <string name="res_game_mode">Game mode: %s</string>
+    <string name="res_time">Time: %d</string>
+    <string name="res_ratio">Result: %d/%d</string>
+    <string name="res_score">Score: %.3f</string>
 
     <string-array name="difficulties">
         <item>EASY</item>

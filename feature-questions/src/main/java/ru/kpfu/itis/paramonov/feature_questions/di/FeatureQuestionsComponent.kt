@@ -10,6 +10,7 @@ import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.di.Trainin
 import ru.kpfu.itis.paramonov.firebase.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.local_database_api.domain.api.LocalDatabaseApi
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
+import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import ru.kpfu.itis.paramonov.question_api.domain.api.QuestionApi
 import ru.kpfu.itis.paramonov.quiz.di.scopes.FeatureScope
 
@@ -35,6 +36,9 @@ interface FeatureQuestionsComponent {
 
         @BindsInstance
         fun mainMenuRouter(mainMenuRouter: MainMenuRouter): Builder
+
+        @BindsInstance
+        fun questionsRouter(questionsRouter: QuestionsRouter): Builder
 
         fun build(): FeatureQuestionsComponent
     }

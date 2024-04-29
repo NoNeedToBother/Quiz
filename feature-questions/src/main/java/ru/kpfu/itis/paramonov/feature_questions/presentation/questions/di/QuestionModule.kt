@@ -14,6 +14,7 @@ import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionsUseC
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveResultsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
+import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 
 @Module(
     includes = [
@@ -34,13 +35,15 @@ class QuestionModule {
         saveQuestionsUseCase: SaveQuestionsUseCase,
         saveResultsUseCase: SaveResultsUseCase,
         getQuestionSettingsUseCase: GetQuestionSettingsUseCase,
-        mainMenuRouter: MainMenuRouter
+        mainMenuRouter: MainMenuRouter,
+        questionsRouter: QuestionsRouter
     ): ViewModel {
         return QuestionsViewModel(
             getQuestionsUseCase = getQuestionsUseCase,
             saveQuestionsUseCase = saveQuestionsUseCase,
             saveResultsUseCase = saveResultsUseCase,
             getQuestionSettingsUseCase = getQuestionSettingsUseCase,
-            mainMenuRouter = mainMenuRouter)
+            mainMenuRouter = mainMenuRouter,
+            questionsRouter = questionsRouter)
     }
 }

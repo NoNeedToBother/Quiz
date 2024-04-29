@@ -7,5 +7,5 @@ interface ResultRepository {
 
     suspend fun getByGameMode(gameMode: GameMode)
 
-    suspend fun save(result: Result)
+    suspend fun save(result: Result): Double
 }

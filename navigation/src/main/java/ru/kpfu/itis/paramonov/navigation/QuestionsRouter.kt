@@ -7,4 +7,6 @@ interface QuestionsRouter {
     fun goToTraining()
 
     fun goToQuestionSettings()
+
+    fun goToQuestionResults(vararg args: Pair<String, Any>)
 }

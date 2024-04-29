@@ -18,8 +18,8 @@ class ResultRepositoryImpl(
     override suspend fun getByGameMode(gameMode: GameMode) {
     }
 
-    override suspend fun save(result: Result) {
-        withContext(dispatcher) {
+    override suspend fun save(result: Result): Double {
+        return withContext(dispatcher) {
             val resultDocument = database.collection(RESULTS_COLLECTION_NAME)
             val score = calculateScore(
                 time = result.time, correct = result.correct,
@@ -36,6 +36,7 @@ class ResultRepositoryImpl(
                 DB_GAME_MODE_FIELD to result.gameMode.name
             )
             resultDocument.add(values).waitResult()
+            score
         }
     }
 
@@ -46,7 +47,8 @@ class ResultRepositoryImpl(
             GameMode.BLITZ -> BLITZ_FACTOR
         }
         val timeValue = Math.E.pow((-1) * (time * gameModeFactor).pow(4))
-        return ratioValue * timeValue * 5 / Math.E
+
+        return ratioValue * (timeValue + 1) * 5 / (1 + Math.E)
     }
 
     companion object {

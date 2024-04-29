@@ -4,12 +4,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionSettingsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveResultsUseCase
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments.ResultsFragment
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
+import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import java.util.Timer
 import java.util.TimerTask
 import kotlin.collections.ArrayList
@@ -19,7 +22,8 @@ class QuestionsViewModel(
     private val saveQuestionsUseCase: SaveQuestionsUseCase,
     private val saveResultsUseCase: SaveResultsUseCase,
     private val getQuestionSettingsUseCase: GetQuestionSettingsUseCase,
-    private val mainMenuRouter: MainMenuRouter
+    private val mainMenuRouter: MainMenuRouter,
+    private val questionsRouter: QuestionsRouter
 ): BaseQuestionsViewModel() {
 
     private val _currentTimeFlow = MutableStateFlow(0)
@@ -69,13 +73,22 @@ class QuestionsViewModel(
                         if (answer.correct && answer.chosen) correct++
                     }
                 }
-                saveResultsUseCase.invoke(
+                val score = saveResultsUseCase.invoke(
                     difficultyUiModel = settings.difficulty,
                     categoryUiModel = settings.category,
                     gameModeUiModel = settings.gameMode,
                     time = time, correct = correct, total = total
                 )
-                mainMenuRouter.goToMainMenu()
+                mainMenuRouter.popToMainMenu()
+                questionsRouter.goToQuestionResults(
+                    ResultsFragment.ARGS_DIFFICULTY_KEY to settings.difficulty.name.normalizeEnumName(),
+                    ResultsFragment.ARGS_CATEGORY_KEY to settings.category.name.normalizeEnumName(),
+                    ResultsFragment.ARGS_GAME_MODE_KEY to settings.gameMode.name.normalizeEnumName(),
+                    ResultsFragment.ARGS_TIME_KEY to time,
+                    ResultsFragment.ARGS_CORRECT_AMOUNT_KEY to correct,
+                    ResultsFragment.ARGS_TOTAL_AMOUNT_KEY to total,
+                    ResultsFragment.ARGS_SCORE_KEY to score
+                )
             } catch (ex: Throwable) {
                 _questionsDataFlow.value = QuestionDataResult.Failure(ex)
             } finally {

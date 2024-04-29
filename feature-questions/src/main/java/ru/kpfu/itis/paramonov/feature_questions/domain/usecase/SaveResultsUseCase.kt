@@ -21,8 +21,8 @@ class SaveResultsUseCase @Inject constructor(
     suspend operator fun invoke(
         difficultyUiModel: DifficultyUiModel, categoryUiModel: CategoryUiModel,
         gameModeUiModel: GameModeUiModel, time: Int, correct: Int, total: Int
-    ) {
-        withContext(dispatcher) {
+    ): Double {
+        return withContext(dispatcher) {
             val currentUser = userRepository.getCurrentUser()
 
             val result = Result(

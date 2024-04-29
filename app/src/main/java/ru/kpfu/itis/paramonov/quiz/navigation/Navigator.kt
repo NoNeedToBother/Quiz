@@ -1,6 +1,8 @@
 package ru.kpfu.itis.paramonov.quiz.navigation
 
+import android.os.Bundle
 import androidx.navigation.NavController
+import ru.kpfu.itis.paramonov.common.exception.UnsupportedArgumentException
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
@@ -33,9 +35,13 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter {
         )
     }
 
+    override fun popToMainMenu() {
+        navController?.popBackStack(R.id.mainMenuFragment, false)
+    }
+
     override fun goToMainMenu() {
         navController?.apply {
-            popBackStack(R.id.mainMenuFragment, false)
+            popToMainMenu()
             navigate(
                 R.id.mainMenuFragment
             )
@@ -58,5 +64,29 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter {
         navController?.navigate(
             R.id.action_mainMenuFragment_to_questionSettingsFragment
         )
+    }
+
+    override fun goToQuestionResults(vararg args: Pair<String, Any>) {
+        val arguments = putArguments(args)
+        navController?.navigate(
+            R.id.questionResultsFragment,
+            arguments
+        )
+    }
+
+    private fun putArguments(args: Array<out Pair<String, Any>>): Bundle {
+        return Bundle().apply {
+            for (pair in args) {
+                when(val value = pair.second) {
+                    is Int -> putInt(pair.first, value)
+                    is String -> putString(pair.first, value)
+                    is Double -> putDouble(pair.first, value)
+                    is Float -> putFloat(pair.first, value)
+                    is Boolean -> putBoolean(pair.first, value)
+                    is Long -> putLong(pair.first, value)
+                    else -> throw UnsupportedArgumentException("Unsupported argument")
+                }
+            }
+        }
     }
 }

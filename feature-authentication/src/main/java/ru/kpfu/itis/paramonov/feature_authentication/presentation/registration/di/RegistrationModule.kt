@@ -8,7 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
-import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.GetCurrentUserUseCase
+import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.RegisterUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.presentation.registration.RegisterViewModel
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
@@ -31,11 +31,11 @@ class RegistrationModule {
     @ViewModelKey(RegisterViewModel::class)
     fun provideRegisterViewModel(
         registerUserUseCase: RegisterUserUseCase,
-        getCurrentUserUseCase: GetCurrentUserUseCase,
+        checkUserIsAuthenticatedUseCase: CheckUserIsAuthenticatedUseCase,
         authenticationRouter: AuthenticationRouter,
         mainMenuRouter: MainMenuRouter
     ): ViewModel {
-        return RegisterViewModel(registerUserUseCase, getCurrentUserUseCase,
+        return RegisterViewModel(registerUserUseCase, checkUserIsAuthenticatedUseCase,
             authenticationRouter, mainMenuRouter)
     }
 }

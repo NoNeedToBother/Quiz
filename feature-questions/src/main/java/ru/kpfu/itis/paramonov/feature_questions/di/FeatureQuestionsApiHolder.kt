@@ -5,7 +5,7 @@ import ru.kpfu.itis.paramonov.firebase.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.local_database_api.domain.api.LocalDatabaseApi
 import ru.kpfu.itis.paramonov.question_api.domain.api.QuestionApi
 
-abstract class QuestionsFeatureApiHolder(
+abstract class FeatureQuestionsApiHolder(
     private val mFeatureContainer: FeatureQuestionsDependenciesContainer
 ): FeatureApiHolder(mFeatureContainer) {
 

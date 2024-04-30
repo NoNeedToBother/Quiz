@@ -5,15 +5,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.firebase.data.exceptions.RegisterException
-import ru.kpfu.itis.paramonov.firebase.data.exceptions.SignInException
-import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserDataException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserNotAuthorizedException
-import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
+import ru.kpfu.itis.paramonov.firebase.data.utils.Keys
 import ru.kpfu.itis.paramonov.firebase.data.utils.getUser
 import ru.kpfu.itis.paramonov.firebase.data.utils.waitResult
 import java.lang.NullPointerException
@@ -23,67 +20,8 @@ class UserRepositoryImpl(
     private val auth: FirebaseAuth,
     private val database: FirebaseFirestore,
     private val dispatcher: CoroutineDispatcher,
-    private val registerExceptionHandler: RegistrationExceptionHandler,
-    private val signInExceptionHandler: SignInExceptionHandler,
     private val resourceManager: ResourceManager
 ): UserRepository {
-
-    override suspend fun registerUser
-                (username: String,
-                 email: String,
-                 password: String,
-                 confirmPassword: String
-    ): FirebaseUser {
-        if (!checkPassword(password)) throw RegisterException(
-            resourceManager.getString(R.string.weak_password)
-        )
-        if (confirmPassword != password) throw RegisterException(
-            resourceManager.getString(R.string.passwords_not_match)
-        )
-        val result = withContext(dispatcher) {
-            try {
-                auth.createUserWithEmailAndPassword(email, password).waitResult()
-            } catch (ex: Exception) {
-                throw registerExceptionHandler.handle(ex)
-            }
-        }
-        result.run {
-            if (isSuccessful) {
-                this.result.user?.let {
-                    return updateUser(
-                        UPDATE_ID_KEY to it.uid,
-                        UPDATE_USERNAME_KEY to username,
-                        UPDATE_PROFILE_PICTURE_KEY to DEFAULT_PROFILE_PICTURE_URL,
-                        UPDATE_INFO_KEY to String.format(DEFAULT_INFO, username)
-                    )
-                } ?: throw RegisterException(resourceManager.getString(R.string.register_fail_try_again))
-            } else {
-                throw exception?.let { registerExceptionHandler.handle(it) } ?:
-                throw RegisterException(resourceManager.getString(R.string.register_fail_try_again))
-            }
-        }
-    }
-
-    override suspend fun authenticateUser(email: String, password: String): FirebaseUser {
-        val result = withContext(dispatcher) {
-            try {
-                auth.signInWithEmailAndPassword(email, password).waitResult()
-            } catch (ex: Exception) {
-                throw signInExceptionHandler.handle(ex)
-            }
-        }
-        result.run {
-            if (isSuccessful) {
-                val user = getCurrentUser()
-                if (user.isPresent) {
-                    return user.get()
-                } else throw SignInException(resourceManager.getString(R.string.sign_in_fail_try_again))
-            } else {
-                exception?.let { throw registerExceptionHandler.handle(it) } ?:
-                throw SignInException(resourceManager.getString(R.string.sign_in_fail_try_again))
-            }
-        }
-    }
 
     override suspend fun updateUser(vararg pairs: Pair<String, Any>): FirebaseUser {
         auth.currentUser?.let {
@@ -94,10 +32,10 @@ class UserRepositoryImpl(
                 val value = pair.second
 
                 when(key) {
-                    UPDATE_ID_KEY -> updates[DB_ID_FIELD] = value
-                    UPDATE_USERNAME_KEY -> updates[DB_USERNAME_FIELD] = value
-                    UPDATE_PROFILE_PICTURE_KEY -> updates[DB_PROFILE_PICTURE_FIELD] = value
-                    UPDATE_INFO_KEY -> updates[DB_INFO_FIELD] = value
+                    Keys.UPDATE_ID_KEY -> updates[DB_ID_FIELD] = value
+                    Keys.UPDATE_USERNAME_KEY -> updates[DB_USERNAME_FIELD] = value
+                    Keys.UPDATE_PROFILE_PICTURE_KEY -> updates[DB_PROFILE_PICTURE_FIELD] = value
+                    Keys.UPDATE_INFO_KEY -> updates[DB_INFO_FIELD] = value
                 }
             }
 
@@ -139,24 +77,12 @@ class UserRepositoryImpl(
         } else Optional.empty()
     }
 
-    private fun checkPassword(password: String): Boolean {
-        var hasDigit = false
-        var hasUpperCase = false
-        var hasLowerCase = false
-        for (letter in password) {
-            if (letter.isDigit()) hasDigit = true
-            if (letter.isLowerCase()) hasLowerCase = true
-            if (letter.isUpperCase()) hasUpperCase = true
-        }
-        return hasDigit && hasUpperCase && hasLowerCase
-    }
+    override suspend fun getDefaultProfilePicture(): String = DEFAULT_PROFILE_PICTURE_URL
+
+    override suspend fun getDefaultInfo(username: String): String =
+        String.format(DEFAULT_INFO, username)
 
     companion object {
-        const val UPDATE_USERNAME_KEY = "username"
-        private const val UPDATE_ID_KEY = "id"
-        const val UPDATE_PROFILE_PICTURE_KEY = "profilePicture"
-        const val UPDATE_INFO_KEY = "info"
-
         private const val DEFAULT_PROFILE_PICTURE_URL = ""
         private const val DEFAULT_INFO = "Hello this is %s"
 

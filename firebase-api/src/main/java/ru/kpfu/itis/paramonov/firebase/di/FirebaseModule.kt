@@ -10,8 +10,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
+import ru.kpfu.itis.paramonov.firebase.data.repository.AuthenticationRepositoryImpl
 import ru.kpfu.itis.paramonov.firebase.data.repository.ResultRepositoryImpl
 import ru.kpfu.itis.paramonov.firebase.data.repository.UserRepositoryImpl
+import ru.kpfu.itis.paramonov.firebase.domain.repository.AuthenticationRepository
 import ru.kpfu.itis.paramonov.firebase.domain.repository.ResultRepository
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 
@@ -32,12 +34,9 @@ class FirebaseModule {
     fun userRepositoryImpl(
         firebaseAuth: FirebaseAuth,
         dispatcher: CoroutineDispatcher,
-        registerExceptionHandler: RegistrationExceptionHandler,
-        signInExceptionHandler: SignInExceptionHandler,
-        resManager: ResourceManager
+        resourceManager: ResourceManager
     ): UserRepositoryImpl {
-        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, dispatcher, registerExceptionHandler,
-            signInExceptionHandler, resManager)
+        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, dispatcher, resourceManager)
     }
 
     @Provides
@@ -58,4 +57,22 @@ class FirebaseModule {
     fun resultRepository(
         impl: ResultRepositoryImpl
     ): ResultRepository = impl
+
+    @Provides
+    fun authenticationRepositoryImpl(
+        firebaseAuth: FirebaseAuth,
+        dispatcher: CoroutineDispatcher,
+        registerExceptionHandler: RegistrationExceptionHandler,
+        signInExceptionHandler: SignInExceptionHandler,
+        resourceManager: ResourceManager,
+        userRepository: UserRepository
+    ): AuthenticationRepositoryImpl {
+        return AuthenticationRepositoryImpl(firebaseAuth, dispatcher, registerExceptionHandler,
+            signInExceptionHandler, resourceManager, userRepository)
+    }
+
+    @Provides
+    fun authenticationRepository(
+        impl: AuthenticationRepositoryImpl
+    ): AuthenticationRepository = impl
 }

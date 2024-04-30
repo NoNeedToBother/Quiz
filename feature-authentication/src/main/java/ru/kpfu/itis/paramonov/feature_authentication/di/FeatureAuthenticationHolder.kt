@@ -7,10 +7,10 @@ import javax.inject.Inject
 
 @ApplicationScope
 class FeatureAuthenticationHolder @Inject constructor(
-    featureContainer: FeatureAuthenticationDependenciesContainer,
+    dependenciesContainer: FeatureAuthenticationDependenciesContainer,
     private val authenticationRouter: AuthenticationRouter,
     private val mainMenuRouter: MainMenuRouter
-) : FirebaseFeatureApiHolder(featureContainer) {
+) : FeatureAuthenticationApiHolder(dependenciesContainer) {
 
     override fun initializeDependencies(): Any {
         val authFeatureDependencies = DaggerFeatureAuthenticationComponent_FeatureAuthenticationDependenciesComponent.builder()

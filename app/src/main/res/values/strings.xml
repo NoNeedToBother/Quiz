@@ -3,4 +3,6 @@
     <string name="begin">Begin</string>
     <string name="question_settings">Question settings</string>
     <string name="training">Training mode</string>
+    <string name="profile">Profile</string>
+    <string name="main_menu">Main menu</string>
 </resources>

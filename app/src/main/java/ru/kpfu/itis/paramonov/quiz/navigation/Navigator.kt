@@ -2,6 +2,7 @@ package ru.kpfu.itis.paramonov.quiz.navigation
 
 import android.os.Bundle
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import ru.kpfu.itis.paramonov.common.exception.UnsupportedArgumentException
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
@@ -20,6 +21,12 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter {
     fun detachNavController(navController: NavController) {
         if (this.navController == navController) {
             this.navController = null
+        }
+    }
+
+    fun addOnDestinationChangedListener(listener: (NavDestination) -> Unit) {
+        navController?.addOnDestinationChangedListener { _, destination, _ ->
+            listener.invoke(destination)
         }
     }
 

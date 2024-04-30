@@ -1,9 +1,15 @@
 package ru.kpfu.itis.paramonov.quiz.presentation.ui
 
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import ru.kpfu.itis.paramonov.common_android.utils.gone
+import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies
 import ru.kpfu.itis.paramonov.quiz.di.main.MainComponent
@@ -21,7 +27,7 @@ class MainActivity: AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inject()
-        initViews()
+        setupNavigation()
     }
     @Inject
     lateinit var navigator: Navigator
@@ -34,10 +40,30 @@ class MainActivity: AppCompatActivity(R.layout.activity_main) {
         mainComponent.inject(this)
     }
 
-    private fun initViews() {
+    private fun setupNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         navigator.attachNavController(navController!!, R.navigation.main_nav_graph)
+        val bnv = findViewById<BottomNavigationView>(R.id.bnv_main)
+        navigator.addOnDestinationChangedListener {
+            val id = it.id
+            val fragmentsToHideBnv = listOf(R.id.registerFragment, R.id.signInFragment)
+            if (fragmentsToHideBnv.contains(id)) hideBottomNavigationView(bnv)
+            else if(bnv.visibility == View.GONE) showBottomNavigationView(bnv)
+        }
+        bnv.setupWithNavController(navController!!)
+    }
+
+    private fun showBottomNavigationView(bnv: BottomNavigationView) {
+        bnv.show()
+        val animation = AnimationUtils.loadAnimation(this, R.anim.show_anim)
+        bnv.startAnimation(animation)
+    }
+
+    private fun hideBottomNavigationView(bnv: BottomNavigationView) {
+        val animation = AnimationUtils.loadAnimation(this, R.anim.fade_anim)
+        bnv.startAnimation(animation)
+        bnv.gone()
     }
 
     override fun onDestroy() {

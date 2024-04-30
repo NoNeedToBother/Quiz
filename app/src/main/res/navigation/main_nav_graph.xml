@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/registerFragment">
+    app:startDestination="@id/signInFragment">
 
     <fragment
         android:id="@+id/registerFragment"
@@ -62,6 +62,13 @@
         android:name="ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments.ResultsFragment"
         android:label="fragment_question_results"
         tools:layout="@layout/fragment_results"
+        />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ru.kpfu.itis.paramonov.feature_users.presentation.fragments.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile"
         />
 
 </navigation>

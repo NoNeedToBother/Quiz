@@ -12,7 +12,7 @@
 
     <style name="QuizLogo">
         <item name="android:text">Quiz</item>
-        <item name="android:textSize">100sp</item>
+        <item name="android:textSize">80sp</item>
         <item name="android:fontFamily">@font/stardos_stencil_bold</item>
         <item name="android:textColor">@color/black</item>
     </style>

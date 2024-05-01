@@ -35,4 +35,12 @@ class ProfileViewModel(
             saveProfilePictureUseCase.invoke(uri)
         }
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            logoutUserUseCase.invoke {
+                authenticationRouter.goToSignIn()
+            }
+        }
+    }
 }

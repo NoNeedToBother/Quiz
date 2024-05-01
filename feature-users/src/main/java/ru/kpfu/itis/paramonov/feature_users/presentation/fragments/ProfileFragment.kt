@@ -1,6 +1,7 @@
 package ru.kpfu.itis.paramonov.feature_users.presentation.fragments
 
 import android.net.Uri
+import android.widget.PopupMenu
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Lifecycle
@@ -36,11 +37,14 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
 
     override fun initView() {
         setOnClickListeners()
+        initSettingsMenu()
     }
 
     private val pickProfilePictureIntent = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()) {
-        it?.let { uri -> onProfilePictureChosen(uri)}
+            it?.let {
+                uri -> onProfilePictureChosen(uri)
+            }
     }
 
     private fun setOnClickListeners() {
@@ -52,7 +56,14 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
     }
 
     private fun onProfilePictureChosen(uri: Uri) {
-        viewModel.saveProfilePicture(uri)
+        ProfilePictureDialogFragment.builder()
+            .setOnPositivePressed {
+                viewModel.saveProfilePicture(uri)
+            }
+            .setImageSource(uri)
+            .create()
+            .show(childFragmentManager,
+                ProfilePictureDialogFragment.PROFILE_PICTURE_DIALOG_TAG)
     }
 
     override fun observeData() {
@@ -91,11 +102,47 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
         }
     }
 
+    private fun onUserSettingsClicked() {
+
+    }
+
+    private fun onLogoutClicked() {
+        viewModel.logout()
+    }
+
+    private val popupMenu: PopupMenu by lazy {
+        PopupMenu(requireContext(), binding.ivSettings).apply {
+            setOnMenuItemClickListener {
+                when(it.itemId) {
+                    R.id.item_settings -> {
+                        onUserSettingsClicked()
+                        true
+                    }
+                    R.id.item_logout -> {
+                        onLogoutClicked()
+                        true
+                    }
+                    else -> {true}
+                }
+            }
+            inflate(R.menu.settings_menu)
+        }
+    }
+
+    private fun initSettingsMenu() {
+        with(binding) {
+            ivSettings.setOnClickListener {
+                popupMenu.show()
+            }
+        }
+    }
+
     private fun loadProfilePicture(url: String) {
         Glide.with(requireContext())
             .load(url)
             .placeholder(R.drawable.default_pfp)
             .error(R.drawable.default_pfp)
+            .centerCrop()
             .into(binding.ivProfilePicture)
     }
 }

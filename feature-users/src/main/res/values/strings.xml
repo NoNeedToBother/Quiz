@@ -4,4 +4,9 @@
     <string name="user_data_fail_title">Failed to fetch data</string>
     <string name="registration_date">Since %s</string>
     <string name="submit_photo">Submit photo</string>
+    <string name="preview">Preview</string>
+    <string name="profile_picture_dialog_pos">Save</string>
+    <string name="profile_picture_dialog_neg">Do not save</string>
+    <string name="settings">User settings</string>
+    <string name="logout">Logout</string>
 </resources>

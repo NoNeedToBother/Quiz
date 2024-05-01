@@ -27,7 +27,7 @@ class CommonModule {
     }
 
     @Provides
-    fun htmlDecodeImpl(): HtmlDecoderImpl = htmlDecodeImpl()
+    fun htmlDecoderImpl(): HtmlDecoderImpl = HtmlDecoderImpl()
 
     @Provides
     fun htmlDecoder(impl: HtmlDecoderImpl): HtmlDecoder = impl

@@ -116,7 +116,7 @@
             android:id="@+id/btn_go_sign_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="64dp"
+            android:layout_marginHorizontal="80dp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton.AuthMenu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

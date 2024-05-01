@@ -4,6 +4,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -34,11 +35,11 @@ class FirebaseModule {
     @Provides
     fun userRepositoryImpl(
         firebaseAuth: FirebaseAuth,
+        //firebaseStorage: FirebaseStorage,
         dispatcher: CoroutineDispatcher,
-        resourceManager: ResourceManager,
-        dateTimeParser: DateTimeParser
+        resourceManager: ResourceManager
     ): UserRepositoryImpl {
-        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, dispatcher, resourceManager, dateTimeParser)
+        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, Firebase.storage, dispatcher, resourceManager)
     }
 
     @Provides
@@ -46,6 +47,9 @@ class FirebaseModule {
 
     @Provides
     fun firebaseAuth(): FirebaseAuth = Firebase.auth
+
+    //@Provides
+    //fun firebaseStorage(): FirebaseStorage = Firebase.storage
 
     @Provides
     fun resultRepositoryImpl(

@@ -1,6 +1,6 @@
 package ru.kpfu.itis.paramonov.firebase.data.utils
 
-object Keys {
+object UpdateKeys {
 
     const val UPDATE_USERNAME_KEY = "username"
     const val UPDATE_ID_KEY = "id"

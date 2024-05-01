@@ -10,7 +10,7 @@ import ru.kpfu.itis.paramonov.firebase.data.exceptions.RegisterException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.SignInException
 import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
-import ru.kpfu.itis.paramonov.firebase.data.utils.Keys
+import ru.kpfu.itis.paramonov.firebase.data.utils.UpdateKeys
 import ru.kpfu.itis.paramonov.firebase.data.utils.waitResult
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.AuthenticationRepository
@@ -50,11 +50,11 @@ class AuthenticationRepositoryImpl(
             if (isSuccessful) {
                 this.result.user?.let {
                     return userRepository.updateUser(
-                        Keys.UPDATE_ID_KEY to it.uid,
-                        Keys.UPDATE_USERNAME_KEY to username,
-                        Keys.UPDATE_PROFILE_PICTURE_KEY to userRepository.getDefaultProfilePicture(),
-                        Keys.UPDATE_INFO_KEY to userRepository.getDefaultInfo(username),
-                        Keys.UPDATE_DATE_REGISTERED_KEY to dateTimeParser.parseMillisToString(System.currentTimeMillis())
+                        UpdateKeys.UPDATE_ID_KEY to it.uid,
+                        UpdateKeys.UPDATE_USERNAME_KEY to username,
+                        UpdateKeys.UPDATE_PROFILE_PICTURE_KEY to DEFAULT_PROFILE_PICTURE_URL,
+                        UpdateKeys.UPDATE_INFO_KEY to getDefaultInfo(username),
+                        UpdateKeys.UPDATE_DATE_REGISTERED_KEY to dateTimeParser.parseMillisToString(System.currentTimeMillis())
                     )
                 } ?: throw RegisterException(resourceManager.getString(R.string.register_fail_try_again))
             } else {
@@ -63,7 +63,6 @@ class AuthenticationRepositoryImpl(
             }
         }
     }
-
     override suspend fun authenticateUser(email: String, password: String): FirebaseUser {
         val result = withContext(dispatcher) {
             try {
@@ -99,5 +98,13 @@ class AuthenticationRepositoryImpl(
             if (letter.isUpperCase()) hasUpperCase = true
         }
         return hasDigit && hasUpperCase && hasLowerCase
+    }
+
+    private fun getDefaultInfo(username: String): String = String.format(DEFAULT_INFO, username)
+
+    companion object {
+        private const val DEFAULT_PROFILE_PICTURE_URL =
+            "https://firebasestorage.googleapis.com/v0/b/quiz-6001c.appspot.com/o/profiles%2Fdefault.png?alt=media&token=52efa4e4-9779-4389-b8f4-61aa48004a48"
+        private const val DEFAULT_INFO = "Hello this is %s"
     }
 }

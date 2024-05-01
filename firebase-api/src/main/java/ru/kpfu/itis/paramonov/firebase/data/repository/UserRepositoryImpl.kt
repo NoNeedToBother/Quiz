@@ -1,18 +1,20 @@
 package ru.kpfu.itis.paramonov.firebase.data.repository
 
+import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserDataException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserNotAuthorizedException
-import ru.kpfu.itis.paramonov.firebase.data.utils.Keys
+import ru.kpfu.itis.paramonov.firebase.data.utils.UpdateKeys
 import ru.kpfu.itis.paramonov.firebase.data.utils.waitResult
 import java.lang.NullPointerException
 import java.util.Optional
@@ -20,13 +22,13 @@ import java.util.Optional
 class UserRepositoryImpl(
     private val auth: FirebaseAuth,
     private val database: FirebaseFirestore,
+    private val storage: FirebaseStorage,
     private val dispatcher: CoroutineDispatcher,
-    private val resourceManager: ResourceManager,
-    private val dateTimeParser: DateTimeParser
+    private val resourceManager: ResourceManager
 ): UserRepository {
 
     override suspend fun updateUser(vararg pairs: Pair<String, Any>): FirebaseUser {
-        auth.currentUser?.let {
+        auth.currentUser?.let { it ->
             val userDocument = database.collection(USERS_COLLECTION_NAME).document(it.uid)
             val updates = mutableMapOf<String, Any>()
             for (pair in pairs) {
@@ -34,16 +36,23 @@ class UserRepositoryImpl(
                 val value = pair.second
 
                 when(key) {
-                    Keys.UPDATE_ID_KEY -> updates[DB_ID_FIELD] = value
-                    Keys.UPDATE_USERNAME_KEY -> updates[DB_USERNAME_FIELD] = value
-                    Keys.UPDATE_PROFILE_PICTURE_KEY -> updates[DB_PROFILE_PICTURE_FIELD] = value
-                    Keys.UPDATE_INFO_KEY -> updates[DB_INFO_FIELD] = value
-                    Keys.UPDATE_DATE_REGISTERED_KEY -> updates[DB_DATE_REGISTERED_FIELD] = value
+                    UpdateKeys.UPDATE_ID_KEY -> updates[DB_ID_FIELD] = value
+                    UpdateKeys.UPDATE_USERNAME_KEY -> updates[DB_USERNAME_FIELD] = value
+                    UpdateKeys.UPDATE_PROFILE_PICTURE_KEY -> {
+                        updates[DB_PROFILE_PICTURE_FIELD] = when(value) {
+                            is Uri -> processProfilePictureUri(it.uid, value)
+                            else -> value
+                        }
+                    }
+                    UpdateKeys.UPDATE_INFO_KEY -> updates[DB_INFO_FIELD] = value
+                    UpdateKeys.UPDATE_DATE_REGISTERED_KEY -> updates[DB_DATE_REGISTERED_FIELD] = value
                 }
             }
 
             return withContext(dispatcher) {
-                val result = userDocument.set(updates).waitResult()
+                val result = userDocument.set(updates, SetOptions.mergeFields(pairs.map {
+                    pair -> pair.first
+                })).waitResult()
                 if (result.isSuccessful) getCurrentUser().get()
                 else throw UserDataException(
                     resourceManager.getString(R.string.update_failed)
@@ -52,6 +61,23 @@ class UserRepositoryImpl(
         } ?: throw UserNotAuthorizedException(
             resourceManager.getString(R.string.not_authorized)
         )
+    }
+
+    private suspend fun processProfilePictureUri(id: String, uri: Uri): String {
+        return withContext(dispatcher) {
+            storage.reference.child(
+                String.format(PROFILE_PICTURE_STORAGE_REF, id)
+            ).let { ref ->
+                val result = ref.putFile(uri).waitResult()
+                if (result.isSuccessful) {
+                    ref.downloadUrl.waitResult().result.toString()
+                } else {
+                    throw UserDataException(
+                        resourceManager.getString(R.string.update_failed)
+                    )
+                }
+            }
+        }
     }
 
     override suspend fun logoutUser(onLogoutSuccess: () -> Unit) {
@@ -85,11 +111,6 @@ class UserRepositoryImpl(
         } else Optional.empty()
     }
 
-    override suspend fun getDefaultProfilePicture(): String = DEFAULT_PROFILE_PICTURE_URL
-
-    override suspend fun getDefaultInfo(username: String): String =
-        String.format(DEFAULT_INFO, username)
-
     private fun DocumentSnapshot.getUser(): FirebaseUser {
         val id = data?.get(DB_ID_FIELD) as String
         val username = data?.get(DB_USERNAME_FIELD) as String
@@ -102,14 +123,13 @@ class UserRepositoryImpl(
     }
 
     companion object {
-        private const val DEFAULT_PROFILE_PICTURE_URL = ""
-        private const val DEFAULT_INFO = "Hello this is %s"
-
         private const val USERS_COLLECTION_NAME = "users"
         private const val DB_ID_FIELD = "id"
         private const val DB_USERNAME_FIELD = "username"
         private const val DB_PROFILE_PICTURE_FIELD = "profilePicture"
         private const val DB_INFO_FIELD = "info"
         private const val DB_DATE_REGISTERED_FIELD = "dateRegistered"
+
+        private const val PROFILE_PICTURE_STORAGE_REF = "profiles/%s.png"
     }
 }

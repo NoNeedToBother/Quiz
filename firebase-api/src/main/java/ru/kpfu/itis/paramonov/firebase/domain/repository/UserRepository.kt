@@ -11,8 +11,4 @@ interface UserRepository {
     suspend fun getCurrentUser(): Optional<FirebaseUser>
 
     suspend fun getUser(id: String): Optional<FirebaseUser>
-
-    suspend fun getDefaultProfilePicture(): String
-
-    suspend fun getDefaultInfo(username: String): String
 }

@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.feature_authentication.domain.mapper
+package ru.kpfu.itis.paramonov.feature_users.domain.mapper
 
 import ru.kpfu.itis.paramonov.common.mapper.ModelMapper
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel

@@ -6,7 +6,7 @@ import java.util.Optional
 interface UserRepository {
     suspend fun updateUser(vararg pairs: Pair<String, Any>): FirebaseUser
 
-    suspend fun logoutUser()
+    suspend fun logoutUser(onLogoutSuccess: () -> Unit)
 
     suspend fun getCurrentUser(): Optional<FirebaseUser>
 

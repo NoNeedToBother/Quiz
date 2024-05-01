@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
 import ru.kpfu.itis.paramonov.firebase.R
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.RegisterException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.SignInException
@@ -22,7 +23,8 @@ class AuthenticationRepositoryImpl(
     private val registerExceptionHandler: RegistrationExceptionHandler,
     private val signInExceptionHandler: SignInExceptionHandler,
     private val resourceManager: ResourceManager,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val dateTimeParser: DateTimeParser
 ): AuthenticationRepository {
 
     override suspend fun registerUser
@@ -51,7 +53,8 @@ class AuthenticationRepositoryImpl(
                         Keys.UPDATE_ID_KEY to it.uid,
                         Keys.UPDATE_USERNAME_KEY to username,
                         Keys.UPDATE_PROFILE_PICTURE_KEY to userRepository.getDefaultProfilePicture(),
-                        Keys.UPDATE_INFO_KEY to userRepository.getDefaultInfo(username)
+                        Keys.UPDATE_INFO_KEY to userRepository.getDefaultInfo(username),
+                        Keys.UPDATE_DATE_REGISTERED_KEY to dateTimeParser.parseMillisToString(System.currentTimeMillis())
                     )
                 } ?: throw RegisterException(resourceManager.getString(R.string.register_fail_try_again))
             } else {

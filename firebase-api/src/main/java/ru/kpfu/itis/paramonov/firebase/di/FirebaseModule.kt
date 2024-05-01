@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
 import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.repository.AuthenticationRepositoryImpl
@@ -34,9 +35,10 @@ class FirebaseModule {
     fun userRepositoryImpl(
         firebaseAuth: FirebaseAuth,
         dispatcher: CoroutineDispatcher,
-        resourceManager: ResourceManager
+        resourceManager: ResourceManager,
+        dateTimeParser: DateTimeParser
     ): UserRepositoryImpl {
-        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, dispatcher, resourceManager)
+        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, dispatcher, resourceManager, dateTimeParser)
     }
 
     @Provides
@@ -65,10 +67,11 @@ class FirebaseModule {
         registerExceptionHandler: RegistrationExceptionHandler,
         signInExceptionHandler: SignInExceptionHandler,
         resourceManager: ResourceManager,
-        userRepository: UserRepository
+        userRepository: UserRepository,
+        dateTimeParser: DateTimeParser
     ): AuthenticationRepositoryImpl {
         return AuthenticationRepositoryImpl(firebaseAuth, dispatcher, registerExceptionHandler,
-            signInExceptionHandler, resourceManager, userRepository)
+            signInExceptionHandler, resourceManager, userRepository, dateTimeParser)
     }
 
     @Provides

@@ -31,15 +31,17 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter {
     }
 
     override fun goToRegister() {
-        navController?.navigate(
-            R.id.registerFragment
-        )
+        navController?.apply {
+            popBackStack(R.id.registerFragment, false)
+            navigate(R.id.registerFragment)
+        }
     }
 
     override fun goToSignIn() {
-        navController?.navigate(
-            R.id.signInFragment
-        )
+        navController?.apply {
+            popBackStack(R.id.signInFragment, false)
+            navigate(R.id.signInFragment)
+        }
     }
 
     override fun popToMainMenu() {

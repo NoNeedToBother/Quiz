@@ -49,6 +49,9 @@ buildscript {
         roomRuntime = "androidx.room:room-runtime:$roomVersion"
         roomKtx = "androidx.room:room-ktx:$roomVersion"
         roomKapt = "androidx.room:room-compiler:$roomVersion"
+
+        glideVersion = "4.16.0"
+        glide = "com.github.bumptech.glide:glide:$glideVersion"
     }
 
     repositories {

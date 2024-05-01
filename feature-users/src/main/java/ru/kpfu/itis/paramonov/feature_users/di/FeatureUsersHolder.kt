@@ -1,10 +1,13 @@
 package ru.kpfu.itis.paramonov.feature_users.di
 
 import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
+import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
+import javax.inject.Inject
 
 @ApplicationScope
-class FeatureUsersHolder(
+class FeatureUsersHolder @Inject constructor(
     dependenciesContainer: FeatureUsersDependenciesContainer,
+    private val authenticationRouter: AuthenticationRouter
 ): FeatureUsersApiHolder(dependenciesContainer) {
 
     override fun initializeDependencies(): Any {
@@ -15,6 +18,7 @@ class FeatureUsersHolder(
 
         return DaggerFeatureUsersComponent.builder()
             .dependencies(featureUsersDependencies)
+            .authenticationRouter(authenticationRouter)
             .build()
     }
 }

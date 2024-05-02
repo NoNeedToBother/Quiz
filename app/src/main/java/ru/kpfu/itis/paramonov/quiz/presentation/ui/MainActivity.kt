@@ -48,7 +48,9 @@ class MainActivity: AppCompatActivity(R.layout.activity_main) {
         navigator.addOnDestinationChangedListener {
             val id = it.id
             val fragmentsToHideBnv = listOf(R.id.registerFragment, R.id.signInFragment)
-            if (fragmentsToHideBnv.contains(id)) hideBottomNavigationView(bnv)
+            if (fragmentsToHideBnv.contains(id)) {
+                if (bnv.visibility == View.VISIBLE) hideBottomNavigationView(bnv)
+            }
             else if(bnv.visibility == View.GONE) showBottomNavigationView(bnv)
         }
         bnv.setupWithNavController(navController!!)

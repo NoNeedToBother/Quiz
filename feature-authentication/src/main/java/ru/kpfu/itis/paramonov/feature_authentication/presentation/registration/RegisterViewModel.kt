@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
-import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.GetCurrentUserUseCase
+import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.RegisterUserUseCase
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 
 class RegisterViewModel(
     private val registerUserUseCase: RegisterUserUseCase,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val checkUserIsAuthenticatedUseCase: CheckUserIsAuthenticatedUseCase,
     private val authenticationRouter: AuthenticationRouter,
     private val mainMenuRouter: MainMenuRouter
 ): BaseViewModel() {
@@ -45,7 +45,7 @@ class RegisterViewModel(
     fun checkCurrentUser() {
         viewModelScope.launch {
             try {
-                val user = getCurrentUserUseCase.invoke()
+                val user = checkUserIsAuthenticatedUseCase.invoke()
                 if (user.isPresent) {
                     _userDataFlow.value = UserDataResult.Success(user.get())
                     mainMenuRouter.goToMainMenu()

@@ -7,10 +7,10 @@ import javax.inject.Inject
 
 @ApplicationScope
 class FeatureQuestionsHolder @Inject constructor(
-    featureContainer: FeatureQuestionsDependenciesContainer,
+    dependenciesContainer: FeatureQuestionsDependenciesContainer,
     private val mainMenuRouter: MainMenuRouter,
     private val questionsRouter: QuestionsRouter
-): QuestionsFeatureApiHolder(featureContainer){
+): FeatureQuestionsApiHolder(dependenciesContainer){
     override fun initializeDependencies(): Any {
         val featureQuestionsDependencies = DaggerFeatureQuestionsComponent_FeatureQuestionsDependenciesComponent.builder()
             .commonApi(commonApi())

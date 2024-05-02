@@ -18,4 +18,6 @@
     <string name="not_authorized">You are not authorized, please sign in</string>
     <string name="update_failed">Failed to dispatch updates, try again later</string>
     <string name="corrupted_data">Unable to read user data, try registering new account</string>
+    <string name="credential_update_failed">Failed to update credentials</string>
+    <string name="incorrect_credentials">Incorrect credentials</string>
 </resources>

@@ -17,7 +17,7 @@ class SignInExceptionHandler(
                 resManager.getString(R.string.user_email_exists)
             )
             is FirebaseAuthInvalidCredentialsException -> SignInException(
-                resManager.getString(R.string.no_user_email)
+                resManager.getString(R.string.incorrect_credentials)
             )
             else -> SignInException(
                 resManager.getString(R.string.sign_in_fail_try_again)

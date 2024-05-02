@@ -13,6 +13,9 @@ import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDep
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsHolder
+import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependencies
+import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependenciesContainer
+import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersHolder
 import ru.kpfu.itis.paramonov.quiz.App
 
 @Module
@@ -32,6 +35,10 @@ interface ComponentHolderModule {
 
     @ApplicationScope
     @Binds
+    fun featureUsersDependenciesContainer(application: App): FeatureUsersDependenciesContainer
+
+    @ApplicationScope
+    @Binds
     @ClassKey(FeatureAuthenticationDependencies::class)
     @IntoMap
     fun authenticationFeatureHolder(authenticationFeatureHolder: FeatureAuthenticationHolder): FeatureApiHolder
@@ -41,4 +48,10 @@ interface ComponentHolderModule {
     @ClassKey(FeatureQuestionsDependencies::class)
     @IntoMap
     fun questionsFeatureHolder(questionsFeatureHolder: FeatureQuestionsHolder): FeatureApiHolder
+
+    @ApplicationScope
+    @Binds
+    @ClassKey(FeatureUsersDependencies::class)
+    @IntoMap
+    fun usersFeatureHolder(usersFeatureHolder: FeatureUsersHolder): FeatureApiHolder
 }

@@ -4,14 +4,18 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
 import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
+import ru.kpfu.itis.paramonov.firebase.data.repository.AuthenticationRepositoryImpl
 import ru.kpfu.itis.paramonov.firebase.data.repository.ResultRepositoryImpl
 import ru.kpfu.itis.paramonov.firebase.data.repository.UserRepositoryImpl
+import ru.kpfu.itis.paramonov.firebase.domain.repository.AuthenticationRepository
 import ru.kpfu.itis.paramonov.firebase.domain.repository.ResultRepository
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 
@@ -31,13 +35,11 @@ class FirebaseModule {
     @Provides
     fun userRepositoryImpl(
         firebaseAuth: FirebaseAuth,
+        //firebaseStorage: FirebaseStorage,
         dispatcher: CoroutineDispatcher,
-        registerExceptionHandler: RegistrationExceptionHandler,
-        signInExceptionHandler: SignInExceptionHandler,
-        resManager: ResourceManager
+        resourceManager: ResourceManager
     ): UserRepositoryImpl {
-        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, dispatcher, registerExceptionHandler,
-            signInExceptionHandler, resManager)
+        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, Firebase.storage, dispatcher, resourceManager)
     }
 
     @Provides
@@ -45,6 +47,9 @@ class FirebaseModule {
 
     @Provides
     fun firebaseAuth(): FirebaseAuth = Firebase.auth
+
+    //@Provides
+    //fun firebaseStorage(): FirebaseStorage = Firebase.storage
 
     @Provides
     fun resultRepositoryImpl(
@@ -58,4 +63,23 @@ class FirebaseModule {
     fun resultRepository(
         impl: ResultRepositoryImpl
     ): ResultRepository = impl
+
+    @Provides
+    fun authenticationRepositoryImpl(
+        firebaseAuth: FirebaseAuth,
+        dispatcher: CoroutineDispatcher,
+        registerExceptionHandler: RegistrationExceptionHandler,
+        signInExceptionHandler: SignInExceptionHandler,
+        resourceManager: ResourceManager,
+        userRepository: UserRepository,
+        dateTimeParser: DateTimeParser
+    ): AuthenticationRepositoryImpl {
+        return AuthenticationRepositoryImpl(firebaseAuth, dispatcher, registerExceptionHandler,
+            signInExceptionHandler, resourceManager, userRepository, dateTimeParser)
+    }
+
+    @Provides
+    fun authenticationRepository(
+        impl: AuthenticationRepositoryImpl
+    ): AuthenticationRepository = impl
 }

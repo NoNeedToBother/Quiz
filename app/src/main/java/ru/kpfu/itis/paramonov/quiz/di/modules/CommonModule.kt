@@ -6,6 +6,8 @@ import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
+import ru.kpfu.itis.paramonov.common.utils.DateTimeParserImpl
 import ru.kpfu.itis.paramonov.common.utils.HtmlDecoder
 import ru.kpfu.itis.paramonov.common_android.utils.ResourceManagerImpl
 import ru.kpfu.itis.paramonov.quiz.utils.HtmlDecoderImpl
@@ -14,9 +16,10 @@ import ru.kpfu.itis.paramonov.quiz.utils.HtmlDecoderImpl
 class CommonModule {
 
     @Provides
-    fun resourceManager(context: Context): ResourceManager {
-        return ResourceManagerImpl(context)
-    }
+    fun resourceManagerImpl(context: Context): ResourceManagerImpl = ResourceManagerImpl(context)
+
+    @Provides
+    fun resourceManager(impl: ResourceManagerImpl): ResourceManager = impl
 
     @Provides
     fun dispatcher(): CoroutineDispatcher {
@@ -24,7 +27,14 @@ class CommonModule {
     }
 
     @Provides
-    fun htmlDecoder(): HtmlDecoder {
-        return HtmlDecoderImpl()
-    }
+    fun htmlDecoderImpl(): HtmlDecoderImpl = HtmlDecoderImpl()
+
+    @Provides
+    fun htmlDecoder(impl: HtmlDecoderImpl): HtmlDecoder = impl
+
+    @Provides
+    fun dateTimeParserImpl(): DateTimeParserImpl = DateTimeParserImpl()
+
+    @Provides
+    fun dateTimeParser(impl: DateTimeParserImpl): DateTimeParser = impl
 }

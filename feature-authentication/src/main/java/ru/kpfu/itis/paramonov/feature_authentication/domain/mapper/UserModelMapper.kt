@@ -11,7 +11,8 @@ class UserModelMapper @Inject constructor(): ModelMapper<FirebaseUser, UserModel
             id = model.id,
             username = model.username,
             profilePictureUrl = model.profilePictureUrl,
-            info = model.info
+            info = model.info,
+            dateRegistered = model.dateRegistered
         )
     }
 }

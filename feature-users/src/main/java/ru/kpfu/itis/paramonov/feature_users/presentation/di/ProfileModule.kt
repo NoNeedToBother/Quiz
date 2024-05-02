@@ -8,9 +8,11 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.ChangeCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.LogoutUserUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.SaveProfilePictureUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.SaveUserSettingsUseCase
 import ru.kpfu.itis.paramonov.feature_users.presentation.viewmodel.ProfileViewModel
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 
@@ -33,13 +35,17 @@ class ProfileModule {
         getCurrentUserUseCase: GetCurrentUserUseCase,
         logoutUserUseCase: LogoutUserUseCase,
         saveProfilePictureUseCase: SaveProfilePictureUseCase,
+        saveUserSettingsUseCase: SaveUserSettingsUseCase,
+        changeCredentialsUseCase: ChangeCredentialsUseCase,
         authenticationRouter: AuthenticationRouter
     ): ViewModel {
         return ProfileViewModel(
             getCurrentUserUseCase = getCurrentUserUseCase,
             logoutUserUseCase = logoutUserUseCase,
             saveProfilePictureUseCase = saveProfilePictureUseCase,
-            authenticationRouter = authenticationRouter
+            authenticationRouter = authenticationRouter,
+            saveUserSettingsUseCase = saveUserSettingsUseCase,
+            changeCredentialsUseCase = changeCredentialsUseCase
         )
     }
 }

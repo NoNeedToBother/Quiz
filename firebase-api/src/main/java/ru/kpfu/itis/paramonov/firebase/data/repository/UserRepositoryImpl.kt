@@ -1,6 +1,7 @@
 package ru.kpfu.itis.paramonov.firebase.data.repository
 
 import android.net.Uri
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -12,6 +13,7 @@ import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
+import ru.kpfu.itis.paramonov.firebase.data.exceptions.CredentialUpdateException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserDataException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserNotAuthorizedException
 import ru.kpfu.itis.paramonov.firebase.data.utils.UpdateKeys
@@ -28,7 +30,7 @@ class UserRepositoryImpl(
 ): UserRepository {
 
     override suspend fun updateUser(vararg pairs: Pair<String, Any>): FirebaseUser {
-        auth.currentUser?.let { it ->
+        auth.currentUser?.let {
             val userDocument = database.collection(USERS_COLLECTION_NAME).document(it.uid)
             val updates = mutableMapOf<String, Any>()
             for (pair in pairs) {
@@ -61,6 +63,47 @@ class UserRepositoryImpl(
         } ?: throw UserNotAuthorizedException(
             resourceManager.getString(R.string.not_authorized)
         )
+    }
+
+    override suspend fun updateCredentials(email: String?, password: String?) {
+        withContext(dispatcher) {
+            val onFailure: () -> Unit = {
+                throw CredentialUpdateException(resourceManager.getString(R.string.credential_update_failed))
+            }
+            auth.currentUser?.let { user ->
+                val prevEmail = user.email!!
+                if (email != null && password != null) {
+                    withContext(dispatcher) {
+                        val task = user.updatePassword(password).waitResult().addOnFailureListener {
+                        }
+                        if (task.isSuccessful) {
+                            withContext(dispatcher) {
+                                val credential = EmailAuthProvider.getCredential(prevEmail, password)
+                                user.reauthenticate(credential).waitResult().apply {
+                                    if (isSuccessful) user.verifyBeforeUpdateEmail(email)
+                                }
+
+                            }
+                        } else {
+                            onFailure.invoke()
+                        }
+                    }
+                } else {
+                    email?.let {
+                        withContext(dispatcher) {
+                            val task = user.verifyBeforeUpdateEmail(email).waitResult()
+                            if (!task.isSuccessful) onFailure.invoke()
+                        }
+                    }
+                    password?.let {
+                        withContext(dispatcher) {
+                            val task = user.updatePassword(password).waitResult()
+                            if (!task.isSuccessful) onFailure.invoke()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private suspend fun processProfilePictureUri(id: String, uri: Uri): String {

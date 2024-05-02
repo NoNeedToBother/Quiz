@@ -30,10 +30,10 @@ class ProfilePictureDialogFragment: DialogFragment() {
                 }
             )
             .setTitle(R.string.preview)
-            .setPositiveButton(getString(R.string.profile_picture_dialog_pos)) { _, _ ->
+            .setPositiveButton(getString(R.string.dialog_pos)) { _, _ ->
                 onPositivePressed?.invoke()
             }
-            .setNegativeButton(getString(R.string.profile_picture_dialog_neg)) { _, _ -> }
+            .setNegativeButton(getString(R.string.dialog_neg)) { _, _ -> }
             .create()
     }
 

@@ -103,11 +103,27 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
     }
 
     private fun onUserSettingsClicked() {
-
+        ProfileSettingsDialogFragment.builder()
+            .setOnPositivePressed {
+                viewModel.saveUserSettings(it)
+            }
+            .build()
+            .show(childFragmentManager, ProfileSettingsDialogFragment.SETTINGS_DIALOG_TAG)
     }
 
     private fun onLogoutClicked() {
         viewModel.logout()
+    }
+
+    private fun onChangeCredentialsClicked() {
+        ProfileCredentialsDialogFragment.builder()
+            .setOnPositivePressed(object : ProfileCredentialsDialogFragment.OnCredentialsChangedListener {
+                override fun onCredentialsChanged(email: String?, password: String?) {
+                    viewModel.changeCredentials(email, password)
+                }
+            })
+            .build()
+            .show(childFragmentManager, ProfileCredentialsDialogFragment.CREDENTIALS_DIALOG_TAG)
     }
 
     private val popupMenu: PopupMenu by lazy {
@@ -120,6 +136,10 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
                     }
                     R.id.item_logout -> {
                         onLogoutClicked()
+                        true
+                    }
+                    R.id.item_credentials -> {
+                        onChangeCredentialsClicked()
                         true
                     }
                     else -> {true}

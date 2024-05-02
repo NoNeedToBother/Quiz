@@ -17,6 +17,10 @@ import ru.kpfu.itis.paramonov.feature_users.R
 import ru.kpfu.itis.paramonov.feature_users.databinding.FragmentProfileBinding
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersComponent
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependencies
+import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.ConfirmCredentialsDialogFragment
+import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.ProfileCredentialsDialogFragment
+import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.ProfilePictureDialogFragment
+import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.ProfileSettingsDialogFragment
 import ru.kpfu.itis.paramonov.feature_users.presentation.viewmodel.BaseProfileViewModel
 import ru.kpfu.itis.paramonov.feature_users.presentation.viewmodel.ProfileViewModel
 import javax.inject.Inject
@@ -70,7 +74,44 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
         viewModel.getCurrentUser()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                collectUserData()
+                launch {
+                    collectUserData()
+                }
+                launch {
+                    collectConfirmCredentialsData()
+                }
+                launch {
+                    collectChangeCredentialsErrors()
+                }
+                launch {
+                    collectProcessingCredentialEvents()
+                }
+            }
+        }
+    }
+
+    private suspend fun collectProcessingCredentialEvents() {
+        viewModel.processingCredentialEvents.collect {
+            setChangeCredentialMenuItemEnabled(!it)
+        }
+    }
+
+    private suspend fun collectChangeCredentialsErrors() {
+        viewModel.changeCredentialsErrorFlow.collect {
+            it?.let {
+                showErrorBottomSheetDialog(
+                    getString(R.string.dialog_incorrect_credentials),
+                    getString(R.string.credentials_change_failed)
+                )
+            }
+        }
+    }
+
+    private suspend fun collectConfirmCredentialsData() {
+        viewModel.confirmCredentialsFlow.collect {
+            it?.let {
+                if (it) onCredentialsConfirmed()
+                else onConfirmCredentialsFailed()
             }
         }
     }
@@ -115,13 +156,47 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
         viewModel.logout()
     }
 
+    private fun setChangeCredentialMenuItemEnabled(enabled: Boolean) {
+        popupMenu.menu.findItem(R.id.item_credentials).setEnabled(enabled)
+    }
+
+    private fun onDialogDismiss() {
+        setChangeCredentialMenuItemEnabled(true)
+    }
+
+    private fun onConfirmCredentialsFailed() {
+        showErrorBottomSheetDialog(
+            getString(R.string.dialog_incorrect_credentials),
+            getString(R.string.dialog_incorrect_credentials_expanded)
+        )
+    }
+
     private fun onChangeCredentialsClicked() {
+        setChangeCredentialMenuItemEnabled(false)
+        ConfirmCredentialsDialogFragment.builder()
+            .setOnPositivePressed(object : ConfirmCredentialsDialogFragment.OnCredentialsChangedListener {
+                override fun onCredentialsChanged(email: String?, password: String?) {
+                    if (email != null && password != null) viewModel.confirmCredentials(email, password)
+                    else onConfirmCredentialsFailed()
+                }
+            })
+            .setOnDismiss {
+                onDialogDismiss()
+            }
+            .build()
+            .show(childFragmentManager, ConfirmCredentialsDialogFragment.CONFIRM_CREDENTIALS_DIALOG_TAG)
+    }
+
+    private fun onCredentialsConfirmed() {
         ProfileCredentialsDialogFragment.builder()
             .setOnPositivePressed(object : ProfileCredentialsDialogFragment.OnCredentialsChangedListener {
                 override fun onCredentialsChanged(email: String?, password: String?) {
                     viewModel.changeCredentials(email, password)
                 }
             })
+            .setOnDismiss {
+                onDialogDismiss()
+            }
             .build()
             .show(childFragmentManager, ProfileCredentialsDialogFragment.CREDENTIALS_DIALOG_TAG)
     }

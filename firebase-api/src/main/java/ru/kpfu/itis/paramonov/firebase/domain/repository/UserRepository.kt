@@ -8,6 +8,8 @@ interface UserRepository {
 
     suspend fun updateCredentials(email: String?, password: String?)
 
+    suspend fun reauthenticate(email: String, password: String)
+
     suspend fun logoutUser(onLogoutSuccess: () -> Unit)
 
     suspend fun getCurrentUser(): Optional<FirebaseUser>

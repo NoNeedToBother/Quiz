@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.ChangeCredentialsUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.ConfirmCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.LogoutUserUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.SaveProfilePictureUseCase
@@ -37,6 +38,7 @@ class ProfileModule {
         saveProfilePictureUseCase: SaveProfilePictureUseCase,
         saveUserSettingsUseCase: SaveUserSettingsUseCase,
         changeCredentialsUseCase: ChangeCredentialsUseCase,
+        confirmCredentialsUseCase: ConfirmCredentialsUseCase,
         authenticationRouter: AuthenticationRouter
     ): ViewModel {
         return ProfileViewModel(
@@ -45,7 +47,8 @@ class ProfileModule {
             saveProfilePictureUseCase = saveProfilePictureUseCase,
             authenticationRouter = authenticationRouter,
             saveUserSettingsUseCase = saveUserSettingsUseCase,
-            changeCredentialsUseCase = changeCredentialsUseCase
+            changeCredentialsUseCase = changeCredentialsUseCase,
+            confirmCredentialsUseCase = confirmCredentialsUseCase
         )
     }
 }

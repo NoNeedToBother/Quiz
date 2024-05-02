@@ -1,19 +1,18 @@
-package ru.kpfu.itis.paramonov.feature_users.presentation.fragments
+package ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import ru.kpfu.itis.paramonov.feature_users.R
 
-class ProfileCredentialsDialogFragment: DialogFragment() {
+class ConfirmCredentialsDialogFragment: DialogFragment() {
 
     private var etEmail: EditText? = null
 
     private var etPassword: EditText? = null
-
-    private var etConfirmPassword: EditText? = null
 
     interface OnCredentialsChangedListener {
         fun onCredentialsChanged(email: String?, password: String?)
@@ -21,14 +20,17 @@ class ProfileCredentialsDialogFragment: DialogFragment() {
 
     private var onPositivePressed: OnCredentialsChangedListener? = null
 
+    private var onDismiss: (() -> Unit)? = null
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
-            .setView(layoutInflater.inflate(R.layout.fragment_profile_credentials_dialog, null).apply {
+            .setView(layoutInflater.inflate(R.layout.fragment_confirm_credentials_dialog, null).apply {
                 etEmail = findViewById(R.id.et_email)
                 etPassword = findViewById(R.id.et_password)
             })
-            .setTitle(getString(R.string.settings))
-            .setPositiveButton(R.string.dialog_pos) { _, _ ->
+            .setTitle(getString(R.string.confirm_credentials))
+            .setPositiveButton(R.string.confirm_dialog_pos) { _, _ ->
+                onDismiss = null
                 val password = etPassword?.text?.let {
                     if (it.isNotEmpty()) it.toString()
                     else null
@@ -39,23 +41,32 @@ class ProfileCredentialsDialogFragment: DialogFragment() {
                 }
                 onPositivePressed?.onCredentialsChanged(password = password, email = email)
             }
-            .setNegativeButton(R.string.dialog_neg) { _, _ -> }
+            .setNegativeButton(R.string.confirm_dialog_neg) { _, _ -> }
             .create()
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDismiss?.invoke()
+    }
+
     class Builder {
-        private val dialog = ProfileCredentialsDialogFragment()
+        private val dialog = ConfirmCredentialsDialogFragment()
 
         fun setOnPositivePressed(onPositivePressed: OnCredentialsChangedListener): Builder = this.apply {
             dialog.onPositivePressed = onPositivePressed
         }
 
-        fun build(): ProfileCredentialsDialogFragment = dialog
+        fun setOnDismiss(onDismiss: () -> Unit): Builder = this.apply {
+            dialog.onDismiss = onDismiss
+        }
+
+        fun build(): ConfirmCredentialsDialogFragment = dialog
     }
 
     companion object {
         fun builder() = Builder()
 
-        const val CREDENTIALS_DIALOG_TAG = "CREDENTIALS_DIALOG"
+        const val CONFIRM_CREDENTIALS_DIALOG_TAG = "CONFIRM_CREDENTIALS_DIALOG"
     }
 }

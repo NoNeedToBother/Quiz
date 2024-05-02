@@ -78,7 +78,7 @@ class AuthenticationRepositoryImpl(
                     return user.get()
                 } else throw SignInException(resourceManager.getString(R.string.sign_in_fail_try_again))
             } else {
-                exception?.let { throw registerExceptionHandler.handle(it) } ?:
+                exception?.let { throw signInExceptionHandler.handle(it) } ?:
                 throw SignInException(resourceManager.getString(R.string.sign_in_fail_try_again))
             }
         }

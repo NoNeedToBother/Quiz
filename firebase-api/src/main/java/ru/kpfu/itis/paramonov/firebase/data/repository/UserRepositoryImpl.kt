@@ -13,7 +13,7 @@ import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
-import ru.kpfu.itis.paramonov.firebase.data.exceptions.CredentialUpdateException
+import ru.kpfu.itis.paramonov.firebase.data.exceptions.CredentialException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserDataException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserNotAuthorizedException
 import ru.kpfu.itis.paramonov.firebase.data.utils.UpdateKeys
@@ -68,7 +68,7 @@ class UserRepositoryImpl(
     override suspend fun updateCredentials(email: String?, password: String?) {
         withContext(dispatcher) {
             val onFailure: () -> Unit = {
-                throw CredentialUpdateException(resourceManager.getString(R.string.credential_update_failed))
+                throw CredentialException(resourceManager.getString(R.string.credential_update_failed))
             }
             auth.currentUser?.let { user ->
                 val prevEmail = user.email!!
@@ -80,7 +80,7 @@ class UserRepositoryImpl(
                             withContext(dispatcher) {
                                 val credential = EmailAuthProvider.getCredential(prevEmail, password)
                                 user.reauthenticate(credential).waitResult().apply {
-                                    if (isSuccessful) user.verifyBeforeUpdateEmail(email)
+                                    if (isSuccessful) user.updateEmail(email)
                                 }
 
                             }
@@ -91,7 +91,7 @@ class UserRepositoryImpl(
                 } else {
                     email?.let {
                         withContext(dispatcher) {
-                            val task = user.verifyBeforeUpdateEmail(email).waitResult()
+                            val task = user.updateEmail(email).waitResult()
                             if (!task.isSuccessful) onFailure.invoke()
                         }
                     }
@@ -100,6 +100,26 @@ class UserRepositoryImpl(
                             val task = user.updatePassword(password).waitResult()
                             if (!task.isSuccessful) onFailure.invoke()
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    override suspend fun reauthenticate(email: String, password: String) {
+        withContext(dispatcher) {
+            auth.currentUser?.let {
+                val credential = EmailAuthProvider.getCredential(email, password)
+                withContext(dispatcher) {
+                    try {
+                        val task = it.reauthenticate(credential).waitResult()
+                        if (!task.isSuccessful) throw CredentialException(
+                            resourceManager.getString(R.string.incorrect_credentials)
+                        )
+                    } catch (ex: Throwable) {
+                        throw CredentialException(
+                            resourceManager.getString(R.string.incorrect_credentials)
+                        )
                     }
                 }
             }

@@ -9,11 +9,17 @@
     <string name="dialog_neg">Do not save</string>
     <string name="settings">User settings</string>
     <string name="logout">Logout</string>
-    <string name="settings_dialog_warning">Warning! After changing following parameters you should sign in again</string>
+    <string name="settings_dialog_warning">Warning! After changing following parameters you will have to sign in again</string>
     <string name="username">Username</string>
     <string name="info">Info</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="change_credentials">Change credentials</string>
+    <string name="dialog_incorrect_credentials">Incorrect credentials</string>
+    <string name="dialog_incorrect_credentials_expanded">Incorrect credentials, please provide correct ones to change</string>
+    <string name="confirm_credentials">Confirm credentials to proceed</string>
+    <string name="confirm_dialog_pos">Confirm</string>
+    <string name="confirm_dialog_neg">Do not confirm</string>
+    <string name="credentials_change_failed">Set correct credentials to change them successfully</string>
 </resources>

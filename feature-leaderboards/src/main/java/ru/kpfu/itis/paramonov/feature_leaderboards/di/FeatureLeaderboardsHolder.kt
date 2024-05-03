@@ -13,6 +13,7 @@ class FeatureLeaderboardsHolder @Inject constructor(
             DaggerFeatureLeaderboardsComponent_FeatureLeaderboardsDependenciesComponent.builder()
                 .commonApi(dependenciesContainer.commonApi())
                 .firebaseApi(dependenciesContainer.firebaseApi())
+                .localDatabaseApi(dependenciesContainer.localDatabaseApi())
                 .build()
         return DaggerFeatureLeaderboardsComponent.builder()
             .dependencies(featureLeaderboardsDependencies)

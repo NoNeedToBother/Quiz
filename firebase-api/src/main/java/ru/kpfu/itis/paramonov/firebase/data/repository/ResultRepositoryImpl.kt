@@ -102,10 +102,10 @@ class ResultRepositoryImpl(
 
     private suspend fun DocumentSnapshot.getResult(): Result {
         val userId = data?.get(DB_USER_ID_FIELD) as String
-        val time = data?.get(DB_TIME_FIELD) as Int
-        val correct = data?.get(DB_CORRECT_FIELD) as Int
-        val total = data?.get(DB_TOTAL_FIELD) as Int
-        val score = data?.get(DB_SCORE_FIELD) as Double
+        val time = this.get(DB_TIME_FIELD, Int::class.java) as Int
+        val correct = this.get(DB_CORRECT_FIELD, Int::class.java) as Int
+        val total = this.get(DB_TOTAL_FIELD, Int::class.java) as Int
+        val score = this.get(DB_SCORE_FIELD, Double::class.java) as Double
         val difficulty = data?.get(DB_DIFFICULTY_FIELD) as String
         val category = data?.get(DB_CATEGORY_FIELD) as String
         val gameMode = data?.get(DB_GAME_MODE_FIELD) as String

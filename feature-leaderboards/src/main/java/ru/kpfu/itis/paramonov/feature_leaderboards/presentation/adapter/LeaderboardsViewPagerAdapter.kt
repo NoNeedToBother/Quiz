@@ -4,8 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments.FriendsLeaderboardFragment
-import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments.GlobalLeaderboardFragment
+import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments.LeaderboardFragment
 
 class LeaderboardsViewPagerAdapter(
     fragmentManager: FragmentManager,
@@ -15,8 +14,8 @@ class LeaderboardsViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when(position) {
-            GLOBAL_LEADERBOARD_POS -> GlobalLeaderboardFragment()
-            FRIENDS_LEADERBOARD_POS -> FriendsLeaderboardFragment()
+            GLOBAL_LEADERBOARD_POS -> LeaderboardFragment.newInstance(LeaderboardFragment.LeaderboardType.GLOBAL)
+            FRIENDS_LEADERBOARD_POS -> LeaderboardFragment.newInstance(LeaderboardFragment.LeaderboardType.FRIENDS)
             else -> throw RuntimeException("Unsupported fragment")
         }
     }

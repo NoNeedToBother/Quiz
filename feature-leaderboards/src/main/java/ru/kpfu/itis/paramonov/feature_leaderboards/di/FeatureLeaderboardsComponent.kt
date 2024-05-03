@@ -2,9 +2,9 @@ package ru.kpfu.itis.paramonov.feature_leaderboards.di
 
 import dagger.Component
 import ru.kpfu.itis.paramonov.common_android.di.CommonApi
-import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.di.FriendsLeaderboardComponent
-import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.di.GlobalLeaderboardComponent
+import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.di.LeaderboardsComponent
 import ru.kpfu.itis.paramonov.firebase.domain.api.FirebaseApi
+import ru.kpfu.itis.paramonov.local_database_api.domain.api.LocalDatabaseApi
 import ru.kpfu.itis.paramonov.quiz.di.scopes.FeatureScope
 
 @Component(
@@ -15,9 +15,7 @@ import ru.kpfu.itis.paramonov.quiz.di.scopes.FeatureScope
 @FeatureScope
 interface FeatureLeaderboardsComponent {
 
-    fun globalLeaderboardComponentFactory(): GlobalLeaderboardComponent.Factory
-
-    fun friendsLeaderboardComponentFactory(): FriendsLeaderboardComponent.Factory
+    fun leaderboardComponentFactory(): LeaderboardsComponent.Factory
 
     @Component.Builder
     interface Builder {
@@ -29,6 +27,7 @@ interface FeatureLeaderboardsComponent {
 
     @Component(
         dependencies = [
+            LocalDatabaseApi::class,
             CommonApi::class,
             FirebaseApi::class
         ]

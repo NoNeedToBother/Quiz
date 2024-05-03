@@ -73,33 +73,23 @@ class UserRepositoryImpl(
             auth.currentUser?.let { user ->
                 val prevEmail = user.email!!
                 if (email != null && password != null) {
-                    withContext(dispatcher) {
-                        val task = user.updatePassword(password).waitResult().addOnFailureListener {
+                    val task = user.updatePassword(password).waitResult()
+                    if (task.isSuccessful) {
+                        val credential = EmailAuthProvider.getCredential(prevEmail, password)
+                        user.reauthenticate(credential).waitResult().apply {
+                            if (isSuccessful) user.updateEmail(email).waitResult()
                         }
-                        if (task.isSuccessful) {
-                            withContext(dispatcher) {
-                                val credential = EmailAuthProvider.getCredential(prevEmail, password)
-                                user.reauthenticate(credential).waitResult().apply {
-                                    if (isSuccessful) user.updateEmail(email)
-                                }
-
-                            }
-                        } else {
-                            onFailure.invoke()
-                        }
+                    } else {
+                        onFailure.invoke()
                     }
                 } else {
                     email?.let {
-                        withContext(dispatcher) {
-                            val task = user.updateEmail(email).waitResult()
-                            if (!task.isSuccessful) onFailure.invoke()
-                        }
+                        val task = user.updateEmail(email).waitResult()
+                        if (!task.isSuccessful) onFailure.invoke()
                     }
                     password?.let {
-                        withContext(dispatcher) {
-                            val task = user.updatePassword(password).waitResult()
-                            if (!task.isSuccessful) onFailure.invoke()
-                        }
+                        val task = user.updatePassword(password).waitResult()
+                        if (!task.isSuccessful) onFailure.invoke()
                     }
                 }
             }
@@ -110,17 +100,15 @@ class UserRepositoryImpl(
         withContext(dispatcher) {
             auth.currentUser?.let {
                 val credential = EmailAuthProvider.getCredential(email, password)
-                withContext(dispatcher) {
-                    try {
-                        val task = it.reauthenticate(credential).waitResult()
-                        if (!task.isSuccessful) throw CredentialException(
-                            resourceManager.getString(R.string.incorrect_credentials)
-                        )
-                    } catch (ex: Throwable) {
-                        throw CredentialException(
-                            resourceManager.getString(R.string.incorrect_credentials)
-                        )
-                    }
+                try {
+                    val task = it.reauthenticate(credential).waitResult()
+                    if (!task.isSuccessful) throw CredentialException(
+                        resourceManager.getString(R.string.incorrect_credentials)
+                    )
+                } catch (ex: Throwable) {
+                    throw CredentialException(
+                        resourceManager.getString(R.string.incorrect_credentials)
+                    )
                 }
             }
         }

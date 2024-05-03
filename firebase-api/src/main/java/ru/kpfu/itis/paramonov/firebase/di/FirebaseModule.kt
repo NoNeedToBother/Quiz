@@ -54,9 +54,10 @@ class FirebaseModule {
     @Provides
     fun resultRepositoryImpl(
         dispatcher: CoroutineDispatcher,
-        resourceManager: ResourceManager
+        resourceManager: ResourceManager,
+        userRepository: UserRepository
     ): ResultRepositoryImpl {
-        return ResultRepositoryImpl(Firebase.firestore, dispatcher, resourceManager)
+        return ResultRepositoryImpl(Firebase.firestore, dispatcher, resourceManager, userRepository)
     }
 
     @Provides

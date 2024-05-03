@@ -26,7 +26,7 @@ class SaveResultsUseCase @Inject constructor(
             val currentUser = userRepository.getCurrentUser()
 
             val result = Result(
-                userId = currentUser.get().id,
+                user = currentUser.get(),
                 time = time,
                 correct = correct,
                 total = total,

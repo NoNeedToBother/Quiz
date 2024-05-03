@@ -20,4 +20,5 @@
     <string name="corrupted_data">Unable to read user data, try registering new account</string>
     <string name="credential_update_failed">Failed to update credentials</string>
     <string name="incorrect_credentials">Incorrect credentials</string>
+    <string name="result_data_failed">Couldn\'t get result data, try again later</string>
 </resources>

@@ -5,7 +5,7 @@ import ru.kpfu.itis.paramonov.common.model.data.Difficulty
 import ru.kpfu.itis.paramonov.common.model.data.GameMode
 
 class Result(
-    val userId: String,
+    val user: FirebaseUser,
     val time: Int,
     val correct: Int,
     val total: Int,
@@ -21,9 +21,9 @@ class Result(
         private set
 
 
-    internal constructor(userId: String, time: Int, correct: Int, total: Int, score: Double,
+    internal constructor(user: FirebaseUser, time: Int, correct: Int, total: Int, score: Double,
                          difficulty: Difficulty, category: Category, gameMode: GameMode):
-            this(userId, time, correct, total, difficulty, category, gameMode) {
+            this(user, time, correct, total, difficulty, category, gameMode) {
                 _score = score
             }
 }

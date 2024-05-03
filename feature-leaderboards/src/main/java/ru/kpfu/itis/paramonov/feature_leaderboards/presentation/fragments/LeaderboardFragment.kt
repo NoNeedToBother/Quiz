@@ -1,13 +1,19 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments
 
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.FragmentLeaderboardBinding
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.adapter.LeaderboardResultAdapter
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.adapter.diffutil.ResultDiffUtilCallback
+import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiModel
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel.LeaderboardsViewModel
 import javax.inject.Inject
 
@@ -22,6 +28,12 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
 
     @Inject
     lateinit var resourceManager: ResourceManager
+
+    private val type: LeaderboardType get() {
+        return LeaderboardType.valueOf(requireArguments().getString(TYPE_KEY)
+            ?: LeaderboardType.GLOBAL.name
+        )
+    }
 
     override fun inject() {
         (parentFragment as LeaderboardsViewPagerFragment).leaderboardsComponent.inject(this)
@@ -41,18 +53,57 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
                 ResultDiffUtilCallback(), resourceManager, ::onResultClicked)
             this@LeaderboardFragment.adapter = adapter
             rvResults.adapter = adapter
+            val layoutManager = LinearLayoutManager(requireContext())
+            rvResults.layoutManager = layoutManager
         }
     }
 
     override fun observeData() {
-        val type = LeaderboardType.valueOf(requireArguments().getString(TYPE_KEY)
-            ?: LeaderboardType.GLOBAL.name
+        viewModel.getResultsOnStart(type, LEADERBOARD_MAX_AT_ONCE)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
+                launch {
+                    collectResultData()
+                }
+            }
+        }
+    }
+
+    private suspend fun collectResultData() {
+        viewModel.getDataFlow(type).collect {
+            it?.let {
+                when (it) {
+                    is LeaderboardsViewModel.LeaderboardDataResult.Success -> addResults(it.getValue())
+                    is LeaderboardsViewModel.LeaderboardDataResult.Failure -> onGetResultsFail(it.getException())
+                }
+            }
+        }
+    }
+
+    private fun onGetResultsFail(ex: Throwable) {
+        showErrorBottomSheetDialog(
+            getString(R.string.get_results_fail),
+            ex.message ?: getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
         )
-        viewModel.getResultsOnStart(type)
+    }
+
+    private fun addResults(results: List<ResultUiModel>) {
+        /*
+        val adapterList = adapter?.currentList ?: mutableListOf()
+        val newList = ArrayList(adapterList)
+        newList.addAll(results)*/
+        //adapter?.submitList(newList)
+        adapter?.submitList(results)
+
     }
 
     enum class LeaderboardType {
         GLOBAL, FRIENDS
+    }
+
+    override fun onPause() {
+        super.onPause()
     }
 
     companion object {
@@ -61,5 +112,9 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
         fun newInstance(type: LeaderboardType): LeaderboardFragment = LeaderboardFragment().apply {
             arguments = bundleOf(TYPE_KEY to type.name)
         }
+
+        private const val LEADERBOARD_MAX_AT_ONCE = 50
+
+        private const val LEADERBOARD_ABSOLUTE_MAX = 1000
     }
 }

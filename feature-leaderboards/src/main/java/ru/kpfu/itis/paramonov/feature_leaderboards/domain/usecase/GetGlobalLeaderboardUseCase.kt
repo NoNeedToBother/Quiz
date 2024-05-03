@@ -21,7 +21,8 @@ class GetGlobalLeaderboardUseCase @Inject constructor(
     suspend operator fun invoke(
         gameModeUiModel: GameModeUiModel,
         difficultyUiModel: DifficultyUiModel?,
-        categoryUiModel: CategoryUiModel?
+        categoryUiModel: CategoryUiModel?,
+        max: Int, afterScore: Double?
     ): List<ResultUiModel> {
         return withContext(dispatcher) {
             resultRepository.get(
@@ -31,7 +32,8 @@ class GetGlobalLeaderboardUseCase @Inject constructor(
                 },
                 category = categoryUiModel?.let {
                     questionSettingsApiModelMapper.mapCategory(it)
-                }
+                },
+                max = max, afterScore = afterScore
             ).map {
                 resultUiModelMapper.map(it)
             }

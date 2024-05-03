@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,33 +15,52 @@ class LeaderboardsViewModel(
     private val getGameModeUseCase: GetGameModeUseCase
 ): BaseViewModel() {
 
-    private val _resultDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
+    private val _globalLeaderboardDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
 
-    val resultDataFlow: StateFlow<LeaderboardDataResult?> get() = _resultDataFlow
+    val globalLeaderboardDataFlow: StateFlow<LeaderboardDataResult?> get() = _globalLeaderboardDataFlow
 
-    fun getResultsOnStart(type: LeaderboardFragment.LeaderboardType) {
+    private val _friendsLeaderboardDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
+
+    val friendsLeaderboardDataFlow: StateFlow<LeaderboardDataResult?> get() = _friendsLeaderboardDataFlow
+
+    fun getResultsOnStart(type: LeaderboardFragment.LeaderboardType, max: Int) {
         when(type) {
-            LeaderboardFragment.LeaderboardType.GLOBAL -> getGlobalLeaderboardOnStart()
-            LeaderboardFragment.LeaderboardType.FRIENDS -> getFriendsLeaderboardOnStart()
+            LeaderboardFragment.LeaderboardType.GLOBAL -> getGlobalLeaderboardOnStart(max)
+            LeaderboardFragment.LeaderboardType.FRIENDS -> getFriendsLeaderboardOnStart(max)
         }
     }
 
-    private fun getGlobalLeaderboardOnStart() {
+    private fun getGlobalLeaderboardOnStart(max: Int) {
         viewModelScope.launch {
-            val res = getGlobalLeaderboardUseCase.invoke(
-                gameModeUiModel = getGameModeUseCase.invoke(), null, null
-            )
-            Log.i("a", res.toString())
+            try {
+                val leaderboard = getGlobalLeaderboardUseCase.invoke(
+                    gameModeUiModel = getGameModeUseCase.invoke(),
+                    difficultyUiModel = null,
+                    categoryUiModel = null,
+                    max = max, afterScore = null
+                )
+                _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
+            } catch (ex: Throwable) {
+                _globalLeaderboardDataFlow.value = LeaderboardDataResult.Failure(ex)
+            }
         }
     }
 
-    private fun getFriendsLeaderboardOnStart() {
+    private fun getFriendsLeaderboardOnStart(max: Int) {
 
+    }
+
+    fun getDataFlow(type: LeaderboardFragment.LeaderboardType): StateFlow<LeaderboardDataResult?> {
+        return when(type) {
+            LeaderboardFragment.LeaderboardType.GLOBAL -> globalLeaderboardDataFlow
+            LeaderboardFragment.LeaderboardType.FRIENDS -> friendsLeaderboardDataFlow
+        }
     }
 
     sealed interface LeaderboardDataResult: Result {
-        class Success(private val result: ResultUiModel): LeaderboardDataResult, Result.Success<ResultUiModel> {
-            override fun getValue(): ResultUiModel = result
+        class Success(private val result: List<ResultUiModel>): LeaderboardDataResult,
+            Result.Success<List<ResultUiModel>> {
+            override fun getValue(): List<ResultUiModel> = result
         }
 
         class Failure(private val ex: Throwable): LeaderboardDataResult, Result.Failure {

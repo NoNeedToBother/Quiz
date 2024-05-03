@@ -3,4 +3,5 @@
     <string name="global_leaderboard">Global leaderboards</string>
     <string name="friend_leaderboard">Friends leaderboard</string>
     <string name="score_default">Score: %.3f</string>
+    <string name="get_results_fail">Failed to get leaderboard</string>
 </resources>

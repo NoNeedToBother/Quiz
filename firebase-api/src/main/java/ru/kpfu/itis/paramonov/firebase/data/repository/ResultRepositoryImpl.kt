@@ -2,6 +2,7 @@ package ru.kpfu.itis.paramonov.firebase.data.repository
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.model.data.Category
@@ -25,11 +26,14 @@ class ResultRepositoryImpl(
     override suspend fun get(
         gameMode: GameMode,
         difficulty: Difficulty?,
-        category: Category?
+        category: Category?,
+        max: Int,
+        afterScore: Double?
     ): List<Result> {
         return withContext(dispatcher) {
             val task = database.collection(RESULTS_COLLECTION_NAME)
-                .whereEqualTo(DB_GAME_MODE_FIELD, getGameModeValForDatabase(gameMode)).apply {
+                .whereEqualTo(DB_GAME_MODE_FIELD, getGameModeValForDatabase(gameMode))
+                .apply {
                     difficulty?.let {
                         whereEqualTo(DB_DIFFICULTY_FIELD, getDifficultyValForDatabase(difficulty))
                     }
@@ -37,7 +41,13 @@ class ResultRepositoryImpl(
                         whereEqualTo(DB_CATEGORY_FIELD, getCategoryValForDatabase(category))
                     }
                 }
-                .orderBy(DB_SCORE_FIELD)
+                .orderBy(DB_SCORE_FIELD, Query.Direction.DESCENDING)
+                .apply {
+                    afterScore?.let {
+                        startAfter(afterScore)
+                    }
+                }
+                .limit(max.toLong())
                 .get().waitResult()
 
             if (task.isSuccessful) {

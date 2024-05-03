@@ -31,7 +31,7 @@ class ResultViewHolder(
             tvScore.text = resourceManager.getString(
                 R.string.score_default, item.score
             )
-
+            loadImage(item.user.profilePictureUrl)
         }
     }
 

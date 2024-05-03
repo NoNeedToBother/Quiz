@@ -27,14 +27,4 @@ class LeaderboardResultAdapter(
     override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
         holder.bindItem(getItem(position))
     }
-
-    override fun onBindViewHolder(
-        holder: ResultViewHolder,
-        position: Int,
-        payloads: MutableList<Any>
-    ) {
-        if (payloads.isNotEmpty()) {
-
-        } else super.onBindViewHolder(holder, position, payloads)
-    }
 }

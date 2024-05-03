@@ -9,7 +9,9 @@ interface ResultRepository {
 
     suspend fun get(gameMode: GameMode,
                     difficulty: Difficulty?,
-                    category: Category?): List<Result>
+                    category: Category?,
+                    max: Int, afterScore: Double?
+    ): List<Result>
 
     suspend fun save(result: Result): Double
 }

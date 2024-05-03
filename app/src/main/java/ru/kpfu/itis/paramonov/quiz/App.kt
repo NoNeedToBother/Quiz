@@ -7,6 +7,7 @@ import ru.kpfu.itis.paramonov.common_android.di.FeatureContainer
 import ru.kpfu.itis.paramonov.common_android.di.CommonApi
 import ru.kpfu.itis.paramonov.firebase.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependenciesContainer
+import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependenciesContainer
 import ru.kpfu.itis.paramonov.local_database_api.domain.api.LocalDatabaseApi
@@ -25,7 +26,8 @@ import ru.kpfu.itis.paramonov.quiz.di.questions.QuestionsComponent
 import javax.inject.Inject
 
 class App: Application(), FeatureContainer, FeatureAuthenticationDependenciesContainer,
-    FeatureQuestionsDependenciesContainer, FeatureUsersDependenciesContainer {
+    FeatureQuestionsDependenciesContainer, FeatureUsersDependenciesContainer,
+    FeatureLeaderboardsDependenciesContainer {
     @Inject
     lateinit var featureHolderManager: FeatureHolderManager
 

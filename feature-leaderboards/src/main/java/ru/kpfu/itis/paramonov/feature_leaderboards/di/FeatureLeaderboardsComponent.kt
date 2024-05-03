@@ -1,0 +1,37 @@
+package ru.kpfu.itis.paramonov.feature_leaderboards.di
+
+import dagger.Component
+import ru.kpfu.itis.paramonov.common_android.di.CommonApi
+import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.di.FriendsLeaderboardComponent
+import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.di.GlobalLeaderboardComponent
+import ru.kpfu.itis.paramonov.firebase.domain.api.FirebaseApi
+import ru.kpfu.itis.paramonov.quiz.di.scopes.FeatureScope
+
+@Component(
+    dependencies = [
+        FeatureLeaderboardsDependencies::class
+    ]
+)
+@FeatureScope
+interface FeatureLeaderboardsComponent {
+
+    fun globalLeaderboardComponentFactory(): GlobalLeaderboardComponent.Factory
+
+    fun friendsLeaderboardComponentFactory(): FriendsLeaderboardComponent.Factory
+
+    @Component.Builder
+    interface Builder {
+
+        fun dependencies(dependencies: FeatureLeaderboardsDependencies): Builder
+
+        fun build(): FeatureLeaderboardsComponent
+    }
+
+    @Component(
+        dependencies = [
+            CommonApi::class,
+            FirebaseApi::class
+        ]
+    )
+    interface FeatureLeaderboardsDependenciesComponent: FeatureLeaderboardsDependencies
+}

@@ -31,7 +31,7 @@ class ResultRepositoryImpl(
         afterScore: Double?
     ): List<Result> {
         return withContext(dispatcher) {
-            val task = database.collection(RESULTS_COLLECTION_NAME)
+            var query = database.collection(RESULTS_COLLECTION_NAME)
                 .whereEqualTo(DB_GAME_MODE_FIELD, getGameModeValForDatabase(gameMode))
                 .apply {
                     difficulty?.let {
@@ -41,14 +41,14 @@ class ResultRepositoryImpl(
                         whereEqualTo(DB_CATEGORY_FIELD, getCategoryValForDatabase(category))
                     }
                 }
+            afterScore?.let {
+                query = query.whereLessThan(DB_SCORE_FIELD, it)
+            }
+            val task = query
                 .orderBy(DB_SCORE_FIELD, Query.Direction.DESCENDING)
-                .apply {
-                    afterScore?.let {
-                        startAfter(afterScore)
-                    }
-                }
                 .limit(max.toLong())
                 .get().waitResult()
+
 
             if (task.isSuccessful) {
                 val res = mutableListOf<Result>()

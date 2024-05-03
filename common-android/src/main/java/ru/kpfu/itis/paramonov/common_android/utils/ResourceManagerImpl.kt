@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.Resources
 import android.content.res.Resources.NotFoundException
 import android.graphics.drawable.Drawable
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
@@ -28,6 +30,15 @@ class ResourceManagerImpl (
 
     override fun getColor(colorId: Int): Int {
         return context.getColor(colorId)
+    }
+
+    override fun pxToDp(px: Float): Float {
+        val density = context.resources.displayMetrics.density
+        return px / density
+    }
+
+    override fun loadAnimation(animationId: Int): Animation {
+        return AnimationUtils.loadAnimation(context, animationId)
     }
 
 }

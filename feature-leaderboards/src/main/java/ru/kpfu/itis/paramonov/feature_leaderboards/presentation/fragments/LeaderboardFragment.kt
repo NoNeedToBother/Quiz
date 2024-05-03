@@ -5,6 +5,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
@@ -55,6 +57,22 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
             rvResults.adapter = adapter
             val layoutManager = LinearLayoutManager(requireContext())
             rvResults.layoutManager = layoutManager
+            addLastElementRecyclerViewListener()
+        }
+    }
+
+    private fun addLastElementRecyclerViewListener() {
+        with(binding.rvResults) {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val lastItem = layoutManager.findLastVisibleItemPosition()
+                    if (lastItem + 1>= layoutManager.itemCount) {
+                        viewModel.loadNextResults(LEADERBOARD_MAX_AT_ONCE,
+                            (adapter as ListAdapter<ResultUiModel, *>).currentList[lastItem].score)
+                    }
+                }
+            })
         }
     }
 
@@ -89,21 +107,15 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
     }
 
     private fun addResults(results: List<ResultUiModel>) {
-        /*
         val adapterList = adapter?.currentList ?: mutableListOf()
         val newList = ArrayList(adapterList)
-        newList.addAll(results)*/
-        //adapter?.submitList(newList)
-        adapter?.submitList(results)
+        newList.addAll(results)
+        adapter?.submitList(newList)
 
     }
 
     enum class LeaderboardType {
         GLOBAL, FRIENDS
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
     companion object {
@@ -113,7 +125,7 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
             arguments = bundleOf(TYPE_KEY to type.name)
         }
 
-        private const val LEADERBOARD_MAX_AT_ONCE = 50
+        private const val LEADERBOARD_MAX_AT_ONCE = 5
 
         private const val LEADERBOARD_ABSOLUTE_MAX = 1000
     }

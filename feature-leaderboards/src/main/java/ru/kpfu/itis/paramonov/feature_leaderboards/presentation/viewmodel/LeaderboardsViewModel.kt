@@ -57,6 +57,22 @@ class LeaderboardsViewModel(
         }
     }
 
+    fun loadNextResults(max: Int, startAfter: Double) {
+        viewModelScope.launch {
+            try {
+                val leaderboard = getGlobalLeaderboardUseCase.invoke(
+                    gameModeUiModel = getGameModeUseCase.invoke(),
+                    difficultyUiModel = null,
+                    categoryUiModel = null,
+                    max = max, afterScore = startAfter
+                )
+                _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
+            } catch (ex: Throwable) {
+                _globalLeaderboardDataFlow.value = LeaderboardDataResult.Failure(ex)
+            }
+        }
+    }
+
     sealed interface LeaderboardDataResult: Result {
         class Success(private val result: List<ResultUiModel>): LeaderboardDataResult,
             Result.Success<List<ResultUiModel>> {

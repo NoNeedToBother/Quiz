@@ -5,14 +5,14 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import javax.inject.Inject
 
-class ConfirmCredentialsUseCase @Inject constructor(
-    private val dispatcher: CoroutineDispatcher,
-    private val repository: UserRepository
-){
+class SendFriendRequestUseCase @Inject constructor(
+    private val userRepository: UserRepository,
+    private val dispatcher: CoroutineDispatcher
+) {
 
-    suspend operator fun invoke(email: String, password: String) {
+    suspend operator fun invoke(id: String) {
         withContext(dispatcher) {
-            repository.reauthenticate(email = email, password = password)
+            userRepository.sendFriendRequest(id)
         }
     }
 }

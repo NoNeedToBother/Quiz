@@ -37,6 +37,17 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
     }
 
     override fun initView() {
+        setOnClickListeners()
+    }
+
+    private fun setOnClickListeners() {
+        with(binding) {
+            btnAddFriend.setOnClickListener {
+                id?.let {
+                    viewModel.sendFriendRequest(it)
+                }
+            }
+        }
     }
 
     override fun observeData() {

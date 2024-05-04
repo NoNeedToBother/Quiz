@@ -6,12 +6,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.feature_users.domain.exception.IncorrectUserDataException
-import ru.kpfu.itis.paramonov.feature_users.domain.usecase.ChangeCredentialsUseCase
-import ru.kpfu.itis.paramonov.feature_users.domain.usecase.ConfirmCredentialsUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.ChangeCredentialsUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.ConfirmCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.LogoutUserUseCase
-import ru.kpfu.itis.paramonov.feature_users.domain.usecase.SaveProfilePictureUseCase
-import ru.kpfu.itis.paramonov.feature_users.domain.usecase.SaveUserSettingsUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.SaveProfilePictureUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.SaveUserSettingsUseCase
 import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.ProfileSettingsDialogFragment
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 

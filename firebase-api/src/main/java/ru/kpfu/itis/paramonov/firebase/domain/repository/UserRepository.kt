@@ -14,4 +14,6 @@ interface UserRepository {
     suspend fun getCurrentUser(): FirebaseUser?
 
     suspend fun getUser(id: String): FirebaseUser?
+
+    suspend fun sendFriendRequest(id: String)
 }

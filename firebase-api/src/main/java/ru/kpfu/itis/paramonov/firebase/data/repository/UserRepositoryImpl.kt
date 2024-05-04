@@ -14,6 +14,7 @@ import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.CredentialException
+import ru.kpfu.itis.paramonov.firebase.data.exceptions.FriendRequestException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserDataException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserNotAuthorizedException
 import ru.kpfu.itis.paramonov.firebase.data.utils.UpdateKeys
@@ -46,7 +47,6 @@ class UserRepositoryImpl(
                         }
                     }
                     UpdateKeys.UPDATE_INFO_KEY -> updates[DB_INFO_FIELD] = value
-                    UpdateKeys.UPDATE_DATE_REGISTERED_KEY -> updates[DB_DATE_REGISTERED_FIELD] = value
                 }
             }
 
@@ -165,14 +165,35 @@ class UserRepositoryImpl(
         } else null
     }
 
+    override suspend fun sendFriendRequest(id: String) {
+        withContext(dispatcher) {
+            getUser(id)?.let { to ->
+                val requestsFrom = to.friendRequestFromList.toMutableList()
+                getCurrentUser()?.let {from ->
+                    requestsFrom.add(from.id)
+                    val toDoc = database.collection(USERS_COLLECTION_NAME).document(to.id)
+                    val updates = mutableMapOf(DB_REQUESTS_FIELD to requestsFrom)
+                    toDoc.set(updates, SetOptions.mergeFields(DB_REQUESTS_FIELD)).waitResult()
+                } ?: throw FriendRequestException(
+                    resourceManager.getString(R.string.friend_req_fail)
+                )
+            } ?: throw FriendRequestException(
+                resourceManager.getString(R.string.friend_req_fail)
+            )
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
     private fun DocumentSnapshot.getUser(): FirebaseUser {
         val id = data?.get(DB_ID_FIELD) as String
         val username = data?.get(DB_USERNAME_FIELD) as String
         val profilePicture = data?.get(DB_PROFILE_PICTURE_FIELD) as String
         val info = data?.get(DB_INFO_FIELD) as String
         val dateRegistered = data?.get(DB_DATE_REGISTERED_FIELD) as String
+        val friends = data?.get(DB_FRIENDS_FIELD) as List<String>? ?: listOf()
+        val requestsFrom = data?.get(DB_REQUESTS_FIELD) as List<String>? ?: listOf()
         return FirebaseUser(
-            id, username, profilePicture, info, dateRegistered
+            id, username, profilePicture, info, dateRegistered, friends, requestsFrom
         )
     }
 
@@ -183,6 +204,8 @@ class UserRepositoryImpl(
         private const val DB_PROFILE_PICTURE_FIELD = "profilePicture"
         private const val DB_INFO_FIELD = "info"
         private const val DB_DATE_REGISTERED_FIELD = "dateRegistered"
+        private const val DB_FRIENDS_FIELD = "friends"
+        private const val DB_REQUESTS_FIELD = "requestsFrom"
 
         private const val PROFILE_PICTURE_STORAGE_REF = "profiles/%s.png"
     }

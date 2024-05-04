@@ -12,7 +12,9 @@ class UserUiModelMapper @Inject constructor(): ModelMapper<FirebaseUser, UserMod
             username = model.username,
             profilePictureUrl = model.profilePictureUrl,
             dateRegistered = model.dateRegistered,
-            info = model.info
+            info = model.info,
+            friendIdList = model.friendIdList,
+            friendRequestFromList = model.friendRequestFromList
         )
     }
 }

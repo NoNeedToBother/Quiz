@@ -49,7 +49,6 @@ class ResultRepositoryImpl(
                 .limit(max.toLong())
                 .get().waitResult()
 
-
             if (task.isSuccessful) {
                 val res = mutableListOf<Result>()
                 val documents = task.result.documents

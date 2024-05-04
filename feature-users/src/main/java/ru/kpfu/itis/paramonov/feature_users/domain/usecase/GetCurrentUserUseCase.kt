@@ -20,9 +20,9 @@ class GetCurrentUserUseCase @Inject constructor(
         return withContext(dispatcher) {
             try {
                 val user = repository.getCurrentUser()
-                if (user.isPresent) {
-                    mapper.map(user.get())
-                } else throw IncorrectUserDataException(
+                user?.let {
+                    mapper.map(it)
+                } ?: throw IncorrectUserDataException(
                     resourceManager.getString(R.string.incorrect_user_data)
                 )
             } catch (ex: Throwable) {

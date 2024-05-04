@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">feature-leaderboards</string>
+    <string name="global_leaderboard">Global leaderboards</string>
+    <string name="friend_leaderboard">Friends leaderboard</string>
+    <string name="score_default">Score: %.3f</string>
+    <string name="get_results_fail">Failed to get leaderboard</string>
+    <string name="time_with_min">Time: %02dm %02ds</string>
+    <string name="time">Time: %02ds</string>
+    <string name="res_ratio">Result: %d/%d</string>
+    <string name="res_difficulty">Difficulty: %s</string>
+    <string name="res_category">Category: %s</string>
+    <string name="res_game_mode">Game mode: %s</string>
+</resources>

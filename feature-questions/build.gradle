@@ -50,7 +50,6 @@ dependencies {
     implementation(viewBindingDelegate)
 
     implementation(viewModelKtx)
-
     implementation(fragmentKtx)
 
     implementation(androidXCore)

@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
-import ru.kpfu.itis.paramonov.quiz.domain.usecase.LogoutUserUseCase
 import ru.kpfu.itis.paramonov.quiz.presentation.viewmodel.MainViewModel
 
 @Module(
@@ -20,8 +19,8 @@ class MainModule {
     @Provides
     @IntoMap
     @ViewModelKey(MainViewModel::class)
-    fun provideMainViewModel(logoutUserUseCase: LogoutUserUseCase): ViewModel {
-        return MainViewModel(logoutUserUseCase)
+    fun provideMainViewModel(): ViewModel {
+        return MainViewModel()
     }
 
     @Provides

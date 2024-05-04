@@ -1,15 +1,18 @@
 package ru.kpfu.itis.paramonov.quiz.navigation
 
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import ru.kpfu.itis.paramonov.common.exception.UnsupportedArgumentException
+import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.OtherUserProfileFragment
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
+import ru.kpfu.itis.paramonov.navigation.UserRouter
 import ru.kpfu.itis.paramonov.quiz.R
 
-class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter {
+class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter, UserRouter {
 
     private var navController: NavController? = null
 
@@ -97,5 +100,12 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter {
                 }
             }
         }
+    }
+
+    override fun goToUser(id: String) {
+        navController?.navigate(
+            R.id.otherUserProfileFragment,
+            bundleOf(OtherUserProfileFragment.USER_ID_KEY to id)
+        )
     }
 }

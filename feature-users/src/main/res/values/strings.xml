@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">feature-users</string>
-    <string name="incorrect_user_data">Failed to fetch user data, try to sign in again</string>
-    <string name="user_data_fail_title">Failed to fetch data</string>
+    <string name="incorrect_user_data">Failed to get user data, try to sign in again</string>
+    <string name="user_data_fail_title">Failed to get data</string>
     <string name="registration_date">Since %s</string>
     <string name="submit_photo">Submit photo</string>
     <string name="preview">Preview</string>
@@ -22,4 +22,6 @@
     <string name="confirm_dialog_pos">Confirm</string>
     <string name="confirm_dialog_neg">Do not confirm</string>
     <string name="credentials_change_failed">Set correct credentials to change them successfully</string>
+    <string name="incorrect_other_user_data">Failed to get user data</string>
+    <string name="add_friend">Add friend</string>
 </resources>

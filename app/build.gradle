@@ -52,6 +52,7 @@ dependencies {
     implementation project(':feature-questions')
     implementation project(':question-api')
     implementation project(':feature-users')
+    implementation project(':feature-leaderboards')
 
     implementation(dagger)
     ksp(daggerCompiler)

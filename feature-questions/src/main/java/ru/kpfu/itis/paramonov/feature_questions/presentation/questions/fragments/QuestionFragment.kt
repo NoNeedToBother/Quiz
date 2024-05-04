@@ -38,8 +38,7 @@ class QuestionFragment: BaseQuestionFragment<QuestionsViewModel>() {
 
     private suspend fun collectProceedingData() {
         viewModel.resultProceedingFlow.collect {
-            if (it) binding.tvInfo.isEnabled = false
-            else binding.tvInfo.isEnabled = true
+            binding.tvInfo.isEnabled = !it
         }
     }
 

@@ -235,8 +235,8 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
     private fun loadProfilePicture(url: String) {
         Glide.with(requireContext())
             .load(url)
-            .placeholder(R.drawable.default_pfp)
-            .error(R.drawable.default_pfp)
+            .placeholder(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
+            .error(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
             .centerCrop()
             .into(binding.ivProfilePicture)
     }

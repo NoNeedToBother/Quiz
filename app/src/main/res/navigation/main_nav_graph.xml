@@ -71,4 +71,18 @@
         tools:layout="@layout/fragment_profile"
         />
 
+    <fragment
+        android:id="@+id/otherUserProfileFragment"
+        android:name="ru.kpfu.itis.paramonov.feature_users.presentation.fragments.OtherUserProfileFragment"
+        android:label="fragment_profile_other_user"
+        tools:layout="@layout/fragment_profile_other_user"
+        />
+
+    <fragment
+        android:id="@+id/leaderboardsFragment"
+        android:name="ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments.LeaderboardsViewPagerFragment"
+        android:label="fragment_leaderboards"
+        tools:layout="@layout/fragment_leaderboards_view_pager"
+        />
+
 </navigation>

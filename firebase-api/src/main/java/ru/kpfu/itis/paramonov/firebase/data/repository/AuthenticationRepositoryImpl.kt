@@ -15,7 +15,6 @@ import ru.kpfu.itis.paramonov.firebase.data.utils.waitResult
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.AuthenticationRepository
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
-import java.util.Optional
 
 class AuthenticationRepositoryImpl(
     private val auth: FirebaseAuth,
@@ -74,9 +73,9 @@ class AuthenticationRepositoryImpl(
         result.run {
             if (isSuccessful) {
                 val user = userRepository.getCurrentUser()
-                if (user.isPresent) {
-                    return user.get()
-                } else throw SignInException(resourceManager.getString(R.string.sign_in_fail_try_again))
+                user?.let {
+                    return it
+                } ?: throw SignInException(resourceManager.getString(R.string.sign_in_fail_try_again))
             } else {
                 exception?.let { throw signInExceptionHandler.handle(it) } ?:
                 throw SignInException(resourceManager.getString(R.string.sign_in_fail_try_again))
@@ -84,7 +83,7 @@ class AuthenticationRepositoryImpl(
         }
     }
 
-    override suspend fun checkUserIsAuthenticated(): Optional<FirebaseUser> {
+    override suspend fun checkUserIsAuthenticated(): FirebaseUser? {
         return userRepository.getCurrentUser()
     }
 

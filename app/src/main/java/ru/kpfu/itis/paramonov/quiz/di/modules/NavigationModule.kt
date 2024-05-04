@@ -6,6 +6,7 @@ import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
+import ru.kpfu.itis.paramonov.navigation.UserRouter
 import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
 
 @Module
@@ -23,4 +24,7 @@ class NavigationModule {
 
     @Provides
     fun questionsRouter(navigator: Navigator): QuestionsRouter = navigator
+
+    @Provides
+    fun userRouter(navigator: Navigator): UserRouter = navigator
 }

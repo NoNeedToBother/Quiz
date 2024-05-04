@@ -10,6 +10,9 @@ import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationHolder
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependenciesContainer
+import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsDependencies
+import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsDependenciesContainer
+import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsHolder
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsHolder
@@ -39,6 +42,10 @@ interface ComponentHolderModule {
 
     @ApplicationScope
     @Binds
+    fun featureLeaderboardsDependenciesContainer(application: App): FeatureLeaderboardsDependenciesContainer
+
+    @ApplicationScope
+    @Binds
     @ClassKey(FeatureAuthenticationDependencies::class)
     @IntoMap
     fun authenticationFeatureHolder(authenticationFeatureHolder: FeatureAuthenticationHolder): FeatureApiHolder
@@ -54,4 +61,10 @@ interface ComponentHolderModule {
     @ClassKey(FeatureUsersDependencies::class)
     @IntoMap
     fun usersFeatureHolder(usersFeatureHolder: FeatureUsersHolder): FeatureApiHolder
+
+    @ApplicationScope
+    @Binds
+    @ClassKey(FeatureLeaderboardsDependencies::class)
+    @IntoMap
+    fun leaderboardsFeatureHolder(leaderboardsFeatureHolder: FeatureLeaderboardsHolder): FeatureApiHolder
 }

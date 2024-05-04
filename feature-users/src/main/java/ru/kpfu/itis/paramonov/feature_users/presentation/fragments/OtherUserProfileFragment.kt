@@ -1,18 +1,25 @@
 package ru.kpfu.itis.paramonov.feature_users.presentation.fragments
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.gone
+import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_users.R
 import ru.kpfu.itis.paramonov.feature_users.databinding.FragmentProfileOtherUserBinding
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersComponent
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependencies
+import ru.kpfu.itis.paramonov.feature_users.presentation.model.FriendStatusUiModel
 import ru.kpfu.itis.paramonov.feature_users.presentation.viewmodel.BaseProfileViewModel
 import ru.kpfu.itis.paramonov.feature_users.presentation.viewmodel.OtherUserProfileViewModel
 import javax.inject.Inject
@@ -42,6 +49,7 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
     override fun observeData() {
         id?.let {
             viewModel.getUser(it)
+            viewModel.checkFriendStatus(it)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -49,13 +57,53 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
                 launch {
                     collectUserData()
                 }
+                launch {
+                    collectFriendStatusData()
+                }
             }
         }
     }
 
+    private suspend fun collectFriendStatusData() {
+        viewModel.friendStatusDataFlow.collect {
+            it?.let { result ->
+                when(result) {
+                    is OtherUserProfileViewModel.FriendStatusDataResult.Success ->
+                        onFriendStatusReceived(result.getValue())
+                    is OtherUserProfileViewModel.FriendStatusDataResult.Failure -> {}
+                }
+            }
+        }
+    }
+
+    private fun onFriendStatusReceived(friendStatusUiModel: FriendStatusUiModel) {
+        with(binding) {
+            when(friendStatusUiModel) {
+                FriendStatusUiModel.SAME_USER -> btnAddFriend.gone()
+                FriendStatusUiModel.NOT_FRIEND -> {
+                    btnAddFriend.setOnClickListener {
+                        id?.let { viewModel.sendFriendRequest(it) }
+                    }
+                    btnAddFriend.setIconAndDrawableAndShow(
+                        R.drawable.add_friend, R.string.add_friend)
+                }
+                FriendStatusUiModel.REQUEST_SENT -> btnAddFriend.setIconAndDrawableAndShow(
+                    R.drawable.request_sent, R.string.request_sent)
+                FriendStatusUiModel.FRIEND -> btnAddFriend.setIconAndDrawableAndShow(
+                    R.drawable.is_friend, R.string.is_friend)
+            }
+        }
+    }
+
+    private fun MaterialButton.setIconAndDrawableAndShow(@DrawableRes drawableId: Int, @StringRes textId: Int) {
+        icon = AppCompatResources.getDrawable(requireContext(), drawableId)
+        text = getString(textId)
+        show()
+    }
+
     private suspend fun collectUserData() {
         viewModel.userDataFlow.collect {
-            it?.let {  result ->
+            it?.let { result ->
                 when(result) {
                     is BaseProfileViewModel.UserDataResult.Success -> showUserInfo(result.getValue())
                     is BaseProfileViewModel.UserDataResult.Failure -> showErrorBottomSheetDialog(

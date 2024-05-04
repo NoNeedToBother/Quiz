@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.firebase.domain.repository
 
+import kotlinx.coroutines.flow.Flow
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 
 interface UserRepository {
@@ -14,4 +15,6 @@ interface UserRepository {
     suspend fun getCurrentUser(): FirebaseUser?
 
     suspend fun getUser(id: String): FirebaseUser?
+
+    suspend fun subscribeToProfileUpdates(): Flow<FirebaseUser>
 }

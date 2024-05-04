@@ -1,13 +1,19 @@
 package ru.kpfu.itis.paramonov.firebase.data.repository
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
@@ -46,7 +52,6 @@ class UserRepositoryImpl(
                         }
                     }
                     UpdateKeys.UPDATE_INFO_KEY -> updates[DB_INFO_FIELD] = value
-                    UpdateKeys.UPDATE_DATE_REGISTERED_KEY -> updates[DB_DATE_REGISTERED_FIELD] = value
                 }
             }
 
@@ -165,14 +170,41 @@ class UserRepositoryImpl(
         } else null
     }
 
+    override suspend fun subscribeToProfileUpdates(): Flow<FirebaseUser> {
+        return withContext(dispatcher) {
+            getCurrentUser()?.let { user ->
+                callbackFlow {
+                    val listener =
+                        EventListener<DocumentSnapshot> { value, _ ->
+                            value?.let {
+                                launch {
+                                    send(value.getUser())
+                                    Log.i("a", value.getUser().toString())
+                                }
+                            }
+                        }
+                    val registration = database.collection(USERS_COLLECTION_NAME).document(user.id).addSnapshotListener(listener)
+                    awaitClose {
+                        registration.remove()
+                    }
+                }
+            } ?: throw UserNotAuthorizedException(
+                resourceManager.getString(R.string.not_authorized)
+            )
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
     private fun DocumentSnapshot.getUser(): FirebaseUser {
         val id = data?.get(DB_ID_FIELD) as String
         val username = data?.get(DB_USERNAME_FIELD) as String
         val profilePicture = data?.get(DB_PROFILE_PICTURE_FIELD) as String
         val info = data?.get(DB_INFO_FIELD) as String
         val dateRegistered = data?.get(DB_DATE_REGISTERED_FIELD) as String
+        val friends = data?.get(DB_FRIENDS_FIELD) as List<String>? ?: listOf()
+        val requestsFrom = data?.get(DB_REQUESTS_FIELD) as List<String>? ?: listOf()
         return FirebaseUser(
-            id, username, profilePicture, info, dateRegistered
+            id, username, profilePicture, info, dateRegistered, friends, requestsFrom
         )
     }
 
@@ -183,6 +215,8 @@ class UserRepositoryImpl(
         private const val DB_PROFILE_PICTURE_FIELD = "profilePicture"
         private const val DB_INFO_FIELD = "info"
         private const val DB_DATE_REGISTERED_FIELD = "dateRegistered"
+        private const val DB_FRIENDS_FIELD = "friends"
+        private const val DB_REQUESTS_FIELD = "requestsFrom"
 
         private const val PROFILE_PICTURE_STORAGE_REF = "profiles/%s.png"
     }

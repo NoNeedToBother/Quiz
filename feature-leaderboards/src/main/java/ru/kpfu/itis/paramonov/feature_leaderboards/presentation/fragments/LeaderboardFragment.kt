@@ -31,6 +31,8 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
     @Inject
     lateinit var resourceManager: ResourceManager
 
+    private var currentResultCount = 0
+
     private val type: LeaderboardType get() {
         return LeaderboardType.valueOf(requireArguments().getString(TYPE_KEY)
             ?: LeaderboardType.GLOBAL.name
@@ -61,14 +63,16 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun addLastElementRecyclerViewListener() {
         with(binding.rvResults) {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val lastItem = layoutManager.findLastVisibleItemPosition()
-                    if (lastItem + 1>= layoutManager.itemCount) {
-                        viewModel.loadNextResults(LEADERBOARD_MAX_AT_ONCE,
+                    if (lastItem >= layoutManager.itemCount - 1
+                        && currentResultCount <= LEADERBOARD_ABSOLUTE_MAX) {
+                        viewModel.loadNextResults(type, LEADERBOARD_MAX_AT_ONCE,
                             (adapter as ListAdapter<ResultUiModel, *>).currentList[lastItem].score)
                     }
                 }
@@ -108,10 +112,13 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
 
     private fun addResults(results: List<ResultUiModel>) {
         val adapterList = adapter?.currentList ?: mutableListOf()
-        val newList = ArrayList(adapterList)
+        var newList: MutableList<ResultUiModel> = ArrayList(adapterList)
         newList.addAll(results)
+        newList = ArrayList(newList.distinctBy {
+            it.score
+        })
+        currentResultCount = newList.size
         adapter?.submitList(newList)
-
     }
 
     enum class LeaderboardType {
@@ -125,8 +132,8 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
             arguments = bundleOf(TYPE_KEY to type.name)
         }
 
-        private const val LEADERBOARD_MAX_AT_ONCE = 5
+        private const val LEADERBOARD_MAX_AT_ONCE = 10
 
-        private const val LEADERBOARD_ABSOLUTE_MAX = 1000
+        private const val LEADERBOARD_ABSOLUTE_MAX = 500
     }
 }

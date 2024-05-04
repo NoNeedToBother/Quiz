@@ -21,6 +21,7 @@ import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.Confi
 import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.ProfileCredentialsDialogFragment
 import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.ProfilePictureDialogFragment
 import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.ProfileSettingsDialogFragment
+import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.RequestsDialogFragment
 import ru.kpfu.itis.paramonov.feature_users.presentation.viewmodel.BaseProfileViewModel
 import ru.kpfu.itis.paramonov.feature_users.presentation.viewmodel.ProfileViewModel
 import javax.inject.Inject
@@ -56,7 +57,14 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
             fabChangePfp.setOnClickListener {
                 pickProfilePictureIntent.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
+            btnRequests.setOnClickListener {
+                onRequestsClicked()
+            }
         }
+    }
+
+    private fun onRequestsClicked() {
+        viewModel.getFriendRequests()
     }
 
     private fun onProfilePictureChosen(uri: Uri) {
@@ -72,6 +80,7 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
 
     override fun observeData() {
         viewModel.getCurrentUser()
+        viewModel.subscribeToProfileUpdates()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
                 launch {
@@ -86,8 +95,40 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
                 launch {
                     collectProcessingCredentialEvents()
                 }
+                launch {
+                    collectRequestsData()
+                }
             }
         }
+    }
+
+    private suspend fun collectRequestsData() {
+        viewModel.friendRequestsDataFlow.collect {
+            it?.let {
+                when(it) {
+                    is ProfileViewModel.FriendRequestResult.Success -> onRequestsDataReceived(it.getValue())
+                    is ProfileViewModel.FriendRequestResult.Failure ->
+                        showErrorBottomSheetDialog(
+                            getString(ru.kpfu.itis.paramonov.common_android.R.string.empty),
+                            it.getException().message ?:
+                            getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
+                        )
+                }
+            }
+        }
+    }
+
+    private fun onRequestsDataReceived(list: List<UserModel>) {
+        RequestsDialogFragment.builder()
+            .setRequestList(list)
+            .setOnRequestAccepted {
+                viewModel.acceptFriendRequest(it)
+            }
+            .setOnRequestDenied {
+                viewModel.denyFriendRequest(it)
+            }
+            .build()
+            .show(childFragmentManager, RequestsDialogFragment.REQUESTS_DIALOG_TAG)
     }
 
     private suspend fun collectProcessingCredentialEvents() {

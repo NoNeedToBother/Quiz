@@ -8,12 +8,16 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
-import ru.kpfu.itis.paramonov.feature_users.domain.usecase.ChangeCredentialsUseCase
-import ru.kpfu.itis.paramonov.feature_users.domain.usecase.ConfirmCredentialsUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.ChangeCredentialsUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.ConfirmCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.LogoutUserUseCase
-import ru.kpfu.itis.paramonov.feature_users.domain.usecase.SaveProfilePictureUseCase
-import ru.kpfu.itis.paramonov.feature_users.domain.usecase.SaveUserSettingsUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.SubscribeToProfileUpdatesUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.AcceptFriendRequestUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.DenyFriendRequestUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.GetFriendRequestsUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.SaveProfilePictureUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.SaveUserSettingsUseCase
 import ru.kpfu.itis.paramonov.feature_users.presentation.viewmodel.ProfileViewModel
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 
@@ -39,6 +43,10 @@ class ProfileModule {
         saveUserSettingsUseCase: SaveUserSettingsUseCase,
         changeCredentialsUseCase: ChangeCredentialsUseCase,
         confirmCredentialsUseCase: ConfirmCredentialsUseCase,
+        getFriendRequestsUseCase: GetFriendRequestsUseCase,
+        acceptFriendRequestUseCase: AcceptFriendRequestUseCase,
+        denyFriendRequestUseCase: DenyFriendRequestUseCase,
+        subscribeToProfileUpdatesUseCase: SubscribeToProfileUpdatesUseCase,
         authenticationRouter: AuthenticationRouter
     ): ViewModel {
         return ProfileViewModel(
@@ -48,7 +56,11 @@ class ProfileModule {
             authenticationRouter = authenticationRouter,
             saveUserSettingsUseCase = saveUserSettingsUseCase,
             changeCredentialsUseCase = changeCredentialsUseCase,
-            confirmCredentialsUseCase = confirmCredentialsUseCase
+            confirmCredentialsUseCase = confirmCredentialsUseCase,
+            getFriendRequestsUseCase = getFriendRequestsUseCase,
+            acceptFriendRequestUseCase = acceptFriendRequestUseCase,
+            denyFriendRequestUseCase = denyFriendRequestUseCase,
+            subscribeToProfileUpdatesUseCase = subscribeToProfileUpdatesUseCase
         )
     }
 }

@@ -7,10 +7,16 @@ import ru.kpfu.itis.paramonov.firebase.domain.model.Result
 
 interface ResultRepository {
 
-    suspend fun get(gameMode: GameMode,
-                    difficulty: Difficulty?,
-                    category: Category?,
-                    max: Int, afterScore: Double?
+    suspend fun getGlobalResults(gameMode: GameMode,
+                                 difficulty: Difficulty?,
+                                 category: Category?,
+                                 max: Int, afterScore: Double?
+    ): List<Result>
+
+    suspend fun getFriendsResults(gameMode: GameMode,
+                                  difficulty: Difficulty?,
+                                  category: Category?,
+                                  max: Int, afterScore: Double?
     ): List<Result>
 
     suspend fun save(result: Result): Double

@@ -91,4 +91,16 @@
             android:textColor="@color/black"
             android:textAlignment="center"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_requests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="80dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/check_requests"
+        android:layout_marginBottom="68dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

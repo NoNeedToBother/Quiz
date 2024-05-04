@@ -73,8 +73,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="68dp"
-        app:icon="@drawable/add_friend"
-        app:iconGravity="end"
-        android:text="@string/add_friend"/>
+        android:visibility="gone"
+        app:iconGravity="end"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

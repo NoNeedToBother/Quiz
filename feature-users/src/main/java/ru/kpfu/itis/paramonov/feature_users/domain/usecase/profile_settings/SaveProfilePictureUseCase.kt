@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.feature_users.domain.usecase
+package ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings
 
 import android.net.Uri
 import kotlinx.coroutines.CoroutineDispatcher

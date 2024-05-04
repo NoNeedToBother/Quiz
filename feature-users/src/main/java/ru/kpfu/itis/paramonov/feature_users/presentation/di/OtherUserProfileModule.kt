@@ -9,6 +9,8 @@ import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.GetUserUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.GetFriendStatusUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.SendFriendRequestUseCase
 import ru.kpfu.itis.paramonov.feature_users.presentation.viewmodel.OtherUserProfileViewModel
 
 @Module(
@@ -27,10 +29,14 @@ class OtherUserProfileModule {
     @IntoMap
     @ViewModelKey(OtherUserProfileViewModel::class)
     fun provideQuestionSettingsViewModel(
-        getUserUseCase: GetUserUseCase
+        getUserUseCase: GetUserUseCase,
+        sendFriendRequestUseCase: SendFriendRequestUseCase,
+        getFriendStatusUseCase: GetFriendStatusUseCase
     ): ViewModel {
         return OtherUserProfileViewModel(
-            getUserUseCase = getUserUseCase
+            getUserUseCase = getUserUseCase,
+            sendFriendRequestUseCase = sendFriendRequestUseCase,
+            getFriendStatusUseCase = getFriendStatusUseCase
         )
     }
 }

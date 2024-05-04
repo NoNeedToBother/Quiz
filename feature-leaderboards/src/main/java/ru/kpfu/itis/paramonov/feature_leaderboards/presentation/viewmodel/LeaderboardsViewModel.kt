@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
+import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetFriendsLeaderboardUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGameModeUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGlobalLeaderboardUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments.LeaderboardFragment
@@ -13,6 +14,7 @@ import ru.kpfu.itis.paramonov.navigation.UserRouter
 
 class LeaderboardsViewModel(
     private val getGlobalLeaderboardUseCase: GetGlobalLeaderboardUseCase,
+    private val getFriendsLeaderboardUseCase: GetFriendsLeaderboardUseCase,
     private val getGameModeUseCase: GetGameModeUseCase,
     private val userRouter: UserRouter
 ): BaseViewModel() {
@@ -55,7 +57,19 @@ class LeaderboardsViewModel(
     }
 
     private fun getFriendsLeaderboardOnStart(max: Int) {
-
+        viewModelScope.launch {
+            try {
+                val leaderboard = getFriendsLeaderboardUseCase.invoke(
+                    gameModeUiModel = getGameModeUseCase.invoke(),
+                    difficultyUiModel = null,
+                    categoryUiModel = null,
+                    max = max, afterScore = null
+                )
+                _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
+            } catch (ex: Throwable) {
+                _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Failure(ex)
+            }
+        }
     }
 
     fun getDataFlow(type: LeaderboardFragment.LeaderboardType): StateFlow<LeaderboardDataResult?> {
@@ -65,7 +79,14 @@ class LeaderboardsViewModel(
         }
     }
 
-    fun loadNextResults(max: Int, startAfter: Double) {
+    fun loadNextResults(type: LeaderboardFragment.LeaderboardType, max: Int, startAfter: Double) {
+        when(type) {
+            LeaderboardFragment.LeaderboardType.GLOBAL -> loadNextGlobalResults(max, startAfter)
+            LeaderboardFragment.LeaderboardType.FRIENDS -> {}
+        }
+    }
+
+    private fun loadNextGlobalResults(max: Int, startAfter: Double) {
         viewModelScope.launch {
             try {
                 val leaderboard = getGlobalLeaderboardUseCase.invoke(

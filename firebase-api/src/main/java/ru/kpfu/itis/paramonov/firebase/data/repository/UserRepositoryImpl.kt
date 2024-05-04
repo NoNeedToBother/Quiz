@@ -170,16 +170,58 @@ class UserRepositoryImpl(
             getUser(id)?.let { to ->
                 val requestsFrom = to.friendRequestFromList.toMutableList()
                 getCurrentUser()?.let {from ->
-                    requestsFrom.add(from.id)
-                    val toDoc = database.collection(USERS_COLLECTION_NAME).document(to.id)
-                    val updates = mutableMapOf(DB_REQUESTS_FIELD to requestsFrom)
-                    toDoc.set(updates, SetOptions.mergeFields(DB_REQUESTS_FIELD)).waitResult()
+                    if (!from.friendIdList.contains(to.id) &&
+                        !from.friendRequestFromList.contains(to.id)) {
+                        requestsFrom.add(from.id)
+                        val toDoc = database.collection(USERS_COLLECTION_NAME).document(to.id)
+                        val updates = mapOf(DB_REQUESTS_FIELD to requestsFrom)
+                        toDoc.set(updates, SetOptions.mergeFields(DB_REQUESTS_FIELD))
+                            .waitResult()
+                    }
                 } ?: throw FriendRequestException(
                     resourceManager.getString(R.string.friend_req_fail)
                 )
             } ?: throw FriendRequestException(
                 resourceManager.getString(R.string.friend_req_fail)
             )
+        }
+    }
+
+    override suspend fun acceptFriendRequest(id: String) {
+        withContext(dispatcher) {
+            getCurrentUser()?.let { to ->
+                getUser(id)?.let { from ->
+                    if (to.friendRequestFromList.contains(id) && !to.friendIdList.contains(id)) {
+                        val requestsFrom = to.friendRequestFromList.toMutableList().apply { remove(from.id) }
+                        val toFriends = to.friendIdList.toMutableList().apply { add(from.id) }
+                        val fromFriends = to.friendIdList.toMutableList().apply { add(to.id) }
+                        val fromDoc = database.collection(USERS_COLLECTION_NAME).document(from.id)
+                        val toDoc = database.collection(USERS_COLLECTION_NAME).document(to.id)
+
+                        val fromUpdates = mapOf(DB_FRIENDS_FIELD to fromFriends)
+                        val toUpdates = mapOf(DB_REQUESTS_FIELD to requestsFrom, DB_FRIENDS_FIELD to toFriends)
+                        val taskTo = toDoc.set(toUpdates, SetOptions.mergeFields(DB_REQUESTS_FIELD, DB_FRIENDS_FIELD))
+                        val taskFrom = fromDoc.set(fromUpdates, SetOptions.mergeFields(DB_FRIENDS_FIELD))
+                        taskTo.waitResult()
+                        taskFrom.waitResult()
+                    }
+                }
+            }
+        }
+    }
+
+    override suspend fun denyFriendRequest(id: String) {
+        withContext(dispatcher) {
+            getCurrentUser()?.let { to ->
+                getUser(id)?.let { from ->
+                    if (to.friendRequestFromList.contains(id) && !to.friendIdList.contains(id)) {
+                        val requestsFrom = to.friendRequestFromList.toMutableList().apply { remove(from.id) }
+                        val toDoc = database.collection(USERS_COLLECTION_NAME).document(to.id)
+                        val toUpdates = mapOf(DB_REQUESTS_FIELD to requestsFrom)
+                        toDoc.set(toUpdates, SetOptions.mergeFields(DB_REQUESTS_FIELD)).waitResult()
+                    }
+                }
+            }
         }
     }
 

@@ -5,11 +5,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.feature_users.domain.exception.IncorrectUserDataException
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.ChangeCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.ConfirmCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.LogoutUserUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.AcceptFriendRequestUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.DenyFriendRequestUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.GetFriendRequestsUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.SaveProfilePictureUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.SaveUserSettingsUseCase
 import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.dialogs.ProfileSettingsDialogFragment
@@ -22,6 +26,9 @@ class ProfileViewModel(
     private val saveUserSettingsUseCase: SaveUserSettingsUseCase,
     private val changeCredentialsUseCase: ChangeCredentialsUseCase,
     private val confirmCredentialsUseCase: ConfirmCredentialsUseCase,
+    private val getFriendRequestsUseCase: GetFriendRequestsUseCase,
+    private val acceptFriendRequestUseCase: AcceptFriendRequestUseCase,
+    private val denyFriendRequestUseCase: DenyFriendRequestUseCase,
     private val authenticationRouter: AuthenticationRouter
 ): BaseProfileViewModel() {
 
@@ -36,6 +43,10 @@ class ProfileViewModel(
     private val _processingCredentialEvents = MutableStateFlow(false)
 
     val processingCredentialEvents: StateFlow<Boolean> get() = _processingCredentialEvents
+
+    private val _friendRequestsDataFlow = MutableStateFlow<FriendRequestResult?>(null)
+
+    val friendRequestsDataFlow: StateFlow<FriendRequestResult?> get() = _friendRequestsDataFlow
 
     fun getCurrentUser() {
         viewModelScope.launch {
@@ -109,6 +120,44 @@ class ProfileViewModel(
             logoutUserUseCase.invoke {
                 authenticationRouter.goToSignIn()
             }
+        }
+    }
+
+    fun getFriendRequests() {
+        viewModelScope.launch {
+            try {
+                val requests = getFriendRequestsUseCase.invoke()
+                _friendRequestsDataFlow.value = FriendRequestResult.Success(requests)
+                _friendRequestsDataFlow.value = null
+            } catch (ex: Throwable) {
+                _friendRequestsDataFlow.value = FriendRequestResult.Failure(ex)
+            }
+        }
+    }
+
+    fun acceptFriendRequest(id: String) {
+        viewModelScope.launch {
+            try {
+                acceptFriendRequestUseCase.invoke(id)
+            } catch (_: Throwable) {}
+        }
+    }
+
+    fun denyFriendRequest(id: String) {
+        viewModelScope.launch {
+            try {
+                denyFriendRequestUseCase.invoke(id)
+            } catch (_: Throwable) {}
+        }
+    }
+
+    sealed interface FriendRequestResult: Result {
+        class Success(private val result: List<UserModel>): Result.Success<List<UserModel>>, FriendRequestResult {
+            override fun getValue(): List<UserModel> = result
+        }
+
+        class Failure(private val ex: Throwable): Result.Failure, FriendRequestResult {
+            override fun getException(): Throwable = ex
         }
     }
 }

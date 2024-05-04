@@ -24,4 +24,9 @@
     <string name="credentials_change_failed">Set correct credentials to change them successfully</string>
     <string name="incorrect_other_user_data">Failed to get user data</string>
     <string name="add_friend">Add friend</string>
+    <string name="is_friend">This user is already your friend</string>
+    <string name="request_sent">You already sent request</string>
+    <string name="check_requests">Check requests</string>
+    <string name="get_req_fail">Failed to get friend requests</string>
+    <string name="requests">Requests</string>
 </resources>

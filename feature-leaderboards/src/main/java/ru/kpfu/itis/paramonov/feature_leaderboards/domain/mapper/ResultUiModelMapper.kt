@@ -11,6 +11,7 @@ class ResultUiModelMapper @Inject constructor(
 ): ModelMapper<Result, ResultUiModel> {
     override fun map(model: Result): ResultUiModel {
         return ResultUiModel(
+            id = model.id ?: "",
             user = userUiModelMapper.map(model.user),
             time = model.time, correct = model.correct,
             total = model.total, score = model.score,

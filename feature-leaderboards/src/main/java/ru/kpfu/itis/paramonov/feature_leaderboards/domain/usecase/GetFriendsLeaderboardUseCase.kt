@@ -11,7 +11,7 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiMo
 import ru.kpfu.itis.paramonov.firebase.domain.repository.ResultRepository
 import javax.inject.Inject
 
-class GetGlobalLeaderboardUseCase @Inject constructor(
+class GetFriendsLeaderboardUseCase @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val resultRepository: ResultRepository,
     private val resultUiModelMapper: ResultUiModelMapper,
@@ -26,7 +26,7 @@ class GetGlobalLeaderboardUseCase @Inject constructor(
     ): List<ResultUiModel> {
         return withContext(dispatcher) {
             val results = mutableListOf<ResultUiModel>()
-            resultRepository.getGlobalResults(
+            resultRepository.getFriendsResults(
                 gameMode = questionSettingsApiModelMapper.mapGameMode(gameModeUiModel),
                 difficulty = difficultyUiModel?.let {
                     questionSettingsApiModelMapper.mapDifficulty(it)

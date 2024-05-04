@@ -20,10 +20,13 @@ class Result(
         get() = _score as Double
         private set
 
+    var id: String? = null
+        private set
 
-    internal constructor(user: FirebaseUser, time: Int, correct: Int, total: Int, score: Double,
+    internal constructor(id: String, user: FirebaseUser, time: Int, correct: Int, total: Int, score: Double,
                          difficulty: Difficulty, category: Category, gameMode: GameMode):
             this(user, time, correct, total, difficulty, category, gameMode) {
-                _score = score
-            }
+        this.id = id
+        _score = score
+    }
 }

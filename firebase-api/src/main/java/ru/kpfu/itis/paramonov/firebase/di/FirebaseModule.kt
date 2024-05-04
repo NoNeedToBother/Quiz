@@ -13,9 +13,11 @@ import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
 import ru.kpfu.itis.paramonov.firebase.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.handler.SignInExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.data.repository.AuthenticationRepositoryImpl
+import ru.kpfu.itis.paramonov.firebase.data.repository.FriendRepositoryImpl
 import ru.kpfu.itis.paramonov.firebase.data.repository.ResultRepositoryImpl
 import ru.kpfu.itis.paramonov.firebase.data.repository.UserRepositoryImpl
 import ru.kpfu.itis.paramonov.firebase.domain.repository.AuthenticationRepository
+import ru.kpfu.itis.paramonov.firebase.domain.repository.FriendRepository
 import ru.kpfu.itis.paramonov.firebase.domain.repository.ResultRepository
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 
@@ -35,7 +37,6 @@ class FirebaseModule {
     @Provides
     fun userRepositoryImpl(
         firebaseAuth: FirebaseAuth,
-        //firebaseStorage: FirebaseStorage,
         dispatcher: CoroutineDispatcher,
         resourceManager: ResourceManager
     ): UserRepositoryImpl {
@@ -47,9 +48,6 @@ class FirebaseModule {
 
     @Provides
     fun firebaseAuth(): FirebaseAuth = Firebase.auth
-
-    //@Provides
-    //fun firebaseStorage(): FirebaseStorage = Firebase.storage
 
     @Provides
     fun resultRepositoryImpl(
@@ -83,4 +81,20 @@ class FirebaseModule {
     fun authenticationRepository(
         impl: AuthenticationRepositoryImpl
     ): AuthenticationRepository = impl
+
+    @Provides
+    fun friendRepository(
+        impl: FriendRepositoryImpl
+    ): FriendRepository = impl
+
+    @Provides
+    fun friendRepositoryImpl(
+        dispatcher: CoroutineDispatcher,
+        resourceManager: ResourceManager,
+        userRepository: UserRepository
+    ): FriendRepositoryImpl {
+        return FriendRepositoryImpl(
+            Firebase.firestore, dispatcher, resourceManager, userRepository
+        )
+    }
 }

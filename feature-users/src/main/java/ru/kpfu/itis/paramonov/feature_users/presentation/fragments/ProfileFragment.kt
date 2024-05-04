@@ -80,6 +80,7 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
 
     override fun observeData() {
         viewModel.getCurrentUser()
+        viewModel.subscribeToProfileUpdates()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
                 launch {

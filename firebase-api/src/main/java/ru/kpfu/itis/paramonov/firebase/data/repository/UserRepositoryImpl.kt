@@ -1,20 +1,25 @@
 package ru.kpfu.itis.paramonov.firebase.data.repository
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.CredentialException
-import ru.kpfu.itis.paramonov.firebase.data.exceptions.FriendRequestException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserDataException
 import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserNotAuthorizedException
 import ru.kpfu.itis.paramonov.firebase.data.utils.UpdateKeys
@@ -165,63 +170,27 @@ class UserRepositoryImpl(
         } else null
     }
 
-    override suspend fun sendFriendRequest(id: String) {
-        withContext(dispatcher) {
-            getUser(id)?.let { to ->
-                val requestsFrom = to.friendRequestFromList.toMutableList()
-                getCurrentUser()?.let {from ->
-                    if (!from.friendIdList.contains(to.id) &&
-                        !from.friendRequestFromList.contains(to.id)) {
-                        requestsFrom.add(from.id)
-                        val toDoc = database.collection(USERS_COLLECTION_NAME).document(to.id)
-                        val updates = mapOf(DB_REQUESTS_FIELD to requestsFrom)
-                        toDoc.set(updates, SetOptions.mergeFields(DB_REQUESTS_FIELD))
-                            .waitResult()
+    override suspend fun subscribeToProfileUpdates(): Flow<FirebaseUser> {
+        return withContext(dispatcher) {
+            getCurrentUser()?.let { user ->
+                callbackFlow {
+                    val listener =
+                        EventListener<DocumentSnapshot> { value, _ ->
+                            value?.let {
+                                launch {
+                                    send(value.getUser())
+                                    Log.i("a", value.getUser().toString())
+                                }
+                            }
+                        }
+                    val registration = database.collection(USERS_COLLECTION_NAME).document(user.id).addSnapshotListener(listener)
+                    awaitClose {
+                        registration.remove()
                     }
-                } ?: throw FriendRequestException(
-                    resourceManager.getString(R.string.friend_req_fail)
-                )
-            } ?: throw FriendRequestException(
-                resourceManager.getString(R.string.friend_req_fail)
+                }
+            } ?: throw UserNotAuthorizedException(
+                resourceManager.getString(R.string.not_authorized)
             )
-        }
-    }
-
-    override suspend fun acceptFriendRequest(id: String) {
-        withContext(dispatcher) {
-            getCurrentUser()?.let { to ->
-                getUser(id)?.let { from ->
-                    if (to.friendRequestFromList.contains(id) && !to.friendIdList.contains(id)) {
-                        val requestsFrom = to.friendRequestFromList.toMutableList().apply { remove(from.id) }
-                        val toFriends = to.friendIdList.toMutableList().apply { add(from.id) }
-                        val fromFriends = to.friendIdList.toMutableList().apply { add(to.id) }
-                        val fromDoc = database.collection(USERS_COLLECTION_NAME).document(from.id)
-                        val toDoc = database.collection(USERS_COLLECTION_NAME).document(to.id)
-
-                        val fromUpdates = mapOf(DB_FRIENDS_FIELD to fromFriends)
-                        val toUpdates = mapOf(DB_REQUESTS_FIELD to requestsFrom, DB_FRIENDS_FIELD to toFriends)
-                        val taskTo = toDoc.set(toUpdates, SetOptions.mergeFields(DB_REQUESTS_FIELD, DB_FRIENDS_FIELD))
-                        val taskFrom = fromDoc.set(fromUpdates, SetOptions.mergeFields(DB_FRIENDS_FIELD))
-                        taskTo.waitResult()
-                        taskFrom.waitResult()
-                    }
-                }
-            }
-        }
-    }
-
-    override suspend fun denyFriendRequest(id: String) {
-        withContext(dispatcher) {
-            getCurrentUser()?.let { to ->
-                getUser(id)?.let { from ->
-                    if (to.friendRequestFromList.contains(id) && !to.friendIdList.contains(id)) {
-                        val requestsFrom = to.friendRequestFromList.toMutableList().apply { remove(from.id) }
-                        val toDoc = database.collection(USERS_COLLECTION_NAME).document(to.id)
-                        val toUpdates = mapOf(DB_REQUESTS_FIELD to requestsFrom)
-                        toDoc.set(toUpdates, SetOptions.mergeFields(DB_REQUESTS_FIELD)).waitResult()
-                    }
-                }
-            }
         }
     }
 

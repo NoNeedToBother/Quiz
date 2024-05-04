@@ -12,6 +12,7 @@ import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.Chan
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.ConfirmCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.LogoutUserUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.SubscribeToProfileUpdatesUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.AcceptFriendRequestUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.DenyFriendRequestUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.GetFriendRequestsUseCase
@@ -45,6 +46,7 @@ class ProfileModule {
         getFriendRequestsUseCase: GetFriendRequestsUseCase,
         acceptFriendRequestUseCase: AcceptFriendRequestUseCase,
         denyFriendRequestUseCase: DenyFriendRequestUseCase,
+        subscribeToProfileUpdatesUseCase: SubscribeToProfileUpdatesUseCase,
         authenticationRouter: AuthenticationRouter
     ): ViewModel {
         return ProfileViewModel(
@@ -57,7 +59,8 @@ class ProfileModule {
             confirmCredentialsUseCase = confirmCredentialsUseCase,
             getFriendRequestsUseCase = getFriendRequestsUseCase,
             acceptFriendRequestUseCase = acceptFriendRequestUseCase,
-            denyFriendRequestUseCase = denyFriendRequestUseCase
+            denyFriendRequestUseCase = denyFriendRequestUseCase,
+            subscribeToProfileUpdatesUseCase = subscribeToProfileUpdatesUseCase
         )
     }
 }

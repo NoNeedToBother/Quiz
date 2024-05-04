@@ -2,17 +2,17 @@ package ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
+import ru.kpfu.itis.paramonov.firebase.domain.repository.FriendRepository
 import javax.inject.Inject
 
 class DenyFriendRequestUseCase @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
-    private val userRepository: UserRepository
+    private val friendRepository: FriendRepository
 ) {
 
     suspend operator fun invoke(id: String) {
         withContext(dispatcher) {
-            userRepository.denyFriendRequest(id)
+            friendRepository.denyFriendRequest(id)
         }
     }
 }

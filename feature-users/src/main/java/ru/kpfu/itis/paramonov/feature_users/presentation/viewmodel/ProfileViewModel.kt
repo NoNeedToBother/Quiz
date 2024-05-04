@@ -11,6 +11,7 @@ import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.Chan
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.ConfirmCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.GetCurrentUserUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.LogoutUserUseCase
+import ru.kpfu.itis.paramonov.feature_users.domain.usecase.SubscribeToProfileUpdatesUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.AcceptFriendRequestUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.DenyFriendRequestUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.GetFriendRequestsUseCase
@@ -29,6 +30,7 @@ class ProfileViewModel(
     private val getFriendRequestsUseCase: GetFriendRequestsUseCase,
     private val acceptFriendRequestUseCase: AcceptFriendRequestUseCase,
     private val denyFriendRequestUseCase: DenyFriendRequestUseCase,
+    private val subscribeToProfileUpdatesUseCase: SubscribeToProfileUpdatesUseCase,
     private val authenticationRouter: AuthenticationRouter
 ): BaseProfileViewModel() {
 
@@ -148,6 +150,14 @@ class ProfileViewModel(
             try {
                 denyFriendRequestUseCase.invoke(id)
             } catch (_: Throwable) {}
+        }
+    }
+
+    fun subscribeToProfileUpdates() {
+        viewModelScope.launch {
+            subscribeToProfileUpdatesUseCase.invoke().collect {
+                _userDataFlow.value = UserDataResult.Success(it)
+            }
         }
     }
 

@@ -11,6 +11,7 @@ import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGameModeUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGlobalLeaderboardUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel.LeaderboardsViewModel
+import ru.kpfu.itis.paramonov.navigation.UserRouter
 
 @Module(
     includes = [
@@ -29,11 +30,13 @@ class LeaderboardsModule {
     @ViewModelKey(LeaderboardsViewModel::class)
     fun provideGlobalLeaderboardViewModel(
         getGlobalLeaderboardUseCase: GetGlobalLeaderboardUseCase,
-        getGameModeUseCase: GetGameModeUseCase
+        getGameModeUseCase: GetGameModeUseCase,
+        userRouter: UserRouter
     ): ViewModel {
         return LeaderboardsViewModel(
             getGlobalLeaderboardUseCase = getGlobalLeaderboardUseCase,
-            getGameModeUseCase = getGameModeUseCase
+            getGameModeUseCase = getGameModeUseCase,
+            userRouter = userRouter
         )
     }
 }

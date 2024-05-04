@@ -19,7 +19,6 @@ import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserNotAuthorizedExceptio
 import ru.kpfu.itis.paramonov.firebase.data.utils.UpdateKeys
 import ru.kpfu.itis.paramonov.firebase.data.utils.waitResult
 import java.lang.NullPointerException
-import java.util.Optional
 
 class UserRepositoryImpl(
     private val auth: FirebaseAuth,
@@ -55,7 +54,11 @@ class UserRepositoryImpl(
                 val result = userDocument.set(updates, SetOptions.mergeFields(pairs.map {
                     pair -> pair.first
                 })).waitResult()
-                if (result.isSuccessful) getCurrentUser().get()
+                if (result.isSuccessful) {
+                    getCurrentUser() ?: throw UserDataException(
+                        resourceManager.getString(R.string.update_failed)
+                    )
+                }
                 else throw UserDataException(
                     resourceManager.getString(R.string.update_failed)
                 )
@@ -140,26 +143,26 @@ class UserRepositoryImpl(
         auth.signOut()
     }
 
-    override suspend fun getCurrentUser(): Optional<FirebaseUser> {
+    override suspend fun getCurrentUser(): FirebaseUser? {
         return auth.currentUser?.run {
             getUser(uid)
-        } ?: Optional.empty()
+        }
     }
 
-    override suspend fun getUser(id: String): Optional<FirebaseUser> {
+    override suspend fun getUser(id: String): FirebaseUser? {
         val data = withContext(dispatcher) {
             database.collection(USERS_COLLECTION_NAME).document(id)
                 .get().waitResult()
         }
         return if (data.isSuccessful) {
             try {
-                Optional.of(data.result.getUser())
+                data.result.getUser()
             } catch (ex: NullPointerException) {
                 throw UserDataException(
                     resourceManager.getString(R.string.corrupted_data)
                 )
             }
-        } else Optional.empty()
+        } else null
     }
 
     private fun DocumentSnapshot.getUser(): FirebaseUser {

@@ -88,7 +88,7 @@ class ProfileViewModel(
     fun saveUserSettings(settings: Map<String, String>) {
         val map = mutableMapOf<String, String>()
         for (setting in settings) {
-            val key = getKey(setting.key) ?: ""
+            val key = getProfileSettingsUpdateKey(setting.key) ?: ""
             map[key] = setting.value
         }
         viewModelScope.launch {
@@ -96,7 +96,7 @@ class ProfileViewModel(
         }
     }
 
-    private fun getKey(dialogKey: String): String? {
+    private fun getProfileSettingsUpdateKey(dialogKey: String): String? {
         return when(dialogKey) {
             ProfileSettingsDialogFragment.USERNAME_KEY -> SaveUserSettingsUseCase.USERNAME_KEY
             ProfileSettingsDialogFragment.INFO_KEY -> SaveUserSettingsUseCase.INFO_KEY

@@ -5,7 +5,7 @@ buildscript {
         versionCode = 1
 
         compileSdkVersion = 34
-        minSdkVersion = 24
+        minSdkVersion = 21
         targetSdkVersion = 34
 
         daggerVersion = '2.49'

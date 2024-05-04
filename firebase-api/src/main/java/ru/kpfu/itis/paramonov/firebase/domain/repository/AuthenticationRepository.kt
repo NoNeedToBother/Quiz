@@ -1,7 +1,6 @@
 package ru.kpfu.itis.paramonov.firebase.domain.repository
 
 import ru.kpfu.itis.paramonov.firebase.domain.model.FirebaseUser
-import java.util.Optional
 
 interface AuthenticationRepository {
 
@@ -9,5 +8,5 @@ interface AuthenticationRepository {
 
     suspend fun authenticateUser(email: String, password: String): FirebaseUser
 
-    suspend fun checkUserIsAuthenticated(): Optional<FirebaseUser>
+    suspend fun checkUserIsAuthenticated(): FirebaseUser?
 }

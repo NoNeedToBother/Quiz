@@ -9,10 +9,12 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGameModeUse
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGlobalLeaderboardUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments.LeaderboardFragment
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiModel
+import ru.kpfu.itis.paramonov.navigation.UserRouter
 
 class LeaderboardsViewModel(
     private val getGlobalLeaderboardUseCase: GetGlobalLeaderboardUseCase,
-    private val getGameModeUseCase: GetGameModeUseCase
+    private val getGameModeUseCase: GetGameModeUseCase,
+    private val userRouter: UserRouter
 ): BaseViewModel() {
 
     private val _globalLeaderboardDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
@@ -22,6 +24,12 @@ class LeaderboardsViewModel(
     private val _friendsLeaderboardDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
 
     val friendsLeaderboardDataFlow: StateFlow<LeaderboardDataResult?> get() = _friendsLeaderboardDataFlow
+
+    fun navigateToUser(id: String) {
+        viewModelScope.launch {
+            userRouter.goToUser(id)
+        }
+    }
 
     fun getResultsOnStart(type: LeaderboardFragment.LeaderboardType, max: Int) {
         when(type) {

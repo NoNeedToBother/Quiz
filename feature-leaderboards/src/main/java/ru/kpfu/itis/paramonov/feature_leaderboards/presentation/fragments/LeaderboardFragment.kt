@@ -46,7 +46,7 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
     }
 
     private fun onResultClicked(id: String) {
-
+        viewModel.navigateToUser(id)
     }
 
     private fun initRecyclerView() {

@@ -46,8 +46,8 @@ class RegisterViewModel(
         viewModelScope.launch {
             try {
                 val user = checkUserIsAuthenticatedUseCase.invoke()
-                if (user.isPresent) {
-                    _userDataFlow.value = UserDataResult.Success(user.get())
+                user?.let {
+                    _userDataFlow.value = UserDataResult.Success(it)
                     mainMenuRouter.goToMainMenu()
                 }
             } catch (ex: Throwable) {

@@ -119,8 +119,9 @@ class ResultRepositoryImpl(
         val difficulty = data?.get(DB_DIFFICULTY_FIELD) as String
         val category = data?.get(DB_CATEGORY_FIELD) as String
         val gameMode = data?.get(DB_GAME_MODE_FIELD) as String
+        userRepository.getUser(userId) ?: throw NullPointerException()
         return Result(
-            user = userRepository.getUser(userId).get(),
+            user = userRepository.getUser(userId)!!,
             time = time, correct = correct, total = total, score = score,
             difficulty = Difficulty.valueOf(difficulty),
             category = Category.valueOf(category),

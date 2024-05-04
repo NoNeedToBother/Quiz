@@ -10,24 +10,25 @@ import ru.kpfu.itis.paramonov.feature_users.domain.mapper.UserModelMapper
 import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
 import javax.inject.Inject
 
-class GetCurrentUserUseCase @Inject constructor(
+class GetUserUseCase @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val repository: UserRepository,
     private val mapper: UserModelMapper,
     private val resourceManager: ResourceManager
 ) {
-    suspend fun invoke(): UserModel {
+
+    suspend operator fun invoke(id: String): UserModel {
         return withContext(dispatcher) {
             try {
-                val user = repository.getCurrentUser()
+                val user = repository.getUser(id)
                 user?.let {
                     mapper.map(it)
                 } ?: throw IncorrectUserDataException(
-                    resourceManager.getString(R.string.incorrect_user_data)
+                    resourceManager.getString(R.string.incorrect_other_user_data)
                 )
             } catch (ex: Throwable) {
                 throw IncorrectUserDataException(
-                    resourceManager.getString(R.string.incorrect_user_data)
+                    resourceManager.getString(R.string.incorrect_other_user_data)
                 )
             }
         }

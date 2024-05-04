@@ -19,7 +19,7 @@ import ru.kpfu.itis.paramonov.quiz.presentation.viewmodel.MainViewModel
 import javax.inject.Inject
 
 class MainActivity: AppCompatActivity(R.layout.activity_main) {
-    lateinit var mainComponent: MainComponent
+    private lateinit var mainComponent: MainComponent
 
     @Inject
     lateinit var viewModel: MainViewModel
@@ -69,7 +69,6 @@ class MainActivity: AppCompatActivity(R.layout.activity_main) {
     }
 
     override fun onDestroy() {
-        //viewModel.logoutUser()
         navController?.let {
             navigator.detachNavController(it)
         }

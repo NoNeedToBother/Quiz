@@ -3,6 +3,7 @@ package ru.kpfu.itis.paramonov.feature_users.di
 import dagger.BindsInstance
 import dagger.Component
 import ru.kpfu.itis.paramonov.common_android.di.CommonApi
+import ru.kpfu.itis.paramonov.feature_users.presentation.di.OtherUserProfileComponent
 import ru.kpfu.itis.paramonov.feature_users.presentation.di.ProfileComponent
 import ru.kpfu.itis.paramonov.firebase.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
@@ -17,6 +18,8 @@ import ru.kpfu.itis.paramonov.quiz.di.scopes.FeatureScope
 interface FeatureUsersComponent {
 
     fun profileComponentFactory(): ProfileComponent.Factory
+
+    fun otherUserProfileComponentFactory(): OtherUserProfileComponent.Factory
 
     @Component.Builder
     interface Builder {

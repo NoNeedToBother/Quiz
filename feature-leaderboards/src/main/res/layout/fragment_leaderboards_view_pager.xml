@@ -8,8 +8,16 @@
         android:id="@+id/tl_labels"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_marginHorizontal="12dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabMode="fixed"/>
+        app:tabMode="fixed"
+        android:background="@drawable/tab_bg"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/leaderboard_tab_selected_color"
+        app:tabBackground="@drawable/leaderboard_tab_color_selector"
+        app:tabIndicator="@null"
+        app:tabIndicatorColor="@color/transparent"
+        />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_leaderboards"

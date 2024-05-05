@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="leaderboard_tab_color">#7FF1D7</color>
-    <color name="leaderboard_tab_selected_color">#24C39F</color>
+    <color name="leaderboard_color">#7FF1D7</color>
+    <color name="leaderboard_darker_color">#24C39F</color>
 </resources>

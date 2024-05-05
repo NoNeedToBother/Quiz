@@ -69,11 +69,16 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val lastItem = layoutManager.findLastVisibleItemPosition()
-                    if (lastItem >= layoutManager.itemCount - 1
-                        && currentResultCount <= LEADERBOARD_ABSOLUTE_MAX) {
-                        viewModel.loadNextResults(type, LEADERBOARD_MAX_AT_ONCE,
-                            (adapter as ListAdapter<ResultUiModel, *>).currentList[lastItem].score)
+                    if (layoutManager.itemCount > 0) {
+                        val lastItem = layoutManager.findLastVisibleItemPosition()
+                        if (lastItem >= layoutManager.itemCount - 1
+                            && currentResultCount <= LEADERBOARD_ABSOLUTE_MAX
+                        ) {
+                            viewModel.loadNextResults(
+                                type, LEADERBOARD_MAX_AT_ONCE,
+                                (adapter as ListAdapter<ResultUiModel, *>).currentList[lastItem].score
+                            )
+                        }
                     }
                 }
             })
@@ -88,6 +93,18 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
                 launch {
                     collectResultData()
                 }
+                launch {
+                    collectClearingLeaderboard()
+                }
+            }
+        }
+    }
+
+    private suspend fun collectClearingLeaderboard() {
+        viewModel.clearLeaderboardFlow.collect {
+            if (it) {
+                adapter?.submitList(null)
+                viewModel.getResultsAfterCleared(type, LEADERBOARD_MAX_AT_ONCE)
             }
         }
     }

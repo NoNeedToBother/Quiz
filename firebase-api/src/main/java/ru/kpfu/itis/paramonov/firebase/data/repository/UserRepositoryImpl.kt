@@ -1,7 +1,6 @@
 package ru.kpfu.itis.paramonov.firebase.data.repository
 
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -179,7 +178,6 @@ class UserRepositoryImpl(
                             value?.let {
                                 launch {
                                     send(value.getUser())
-                                    Log.i("a", value.getUser().toString())
                                 }
                             }
                         }

@@ -1,9 +1,12 @@
 package ru.kpfu.itis.paramonov.feature_users.presentation.fragments
 
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.net.Uri
+import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -13,6 +16,7 @@ import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_users.R
 import ru.kpfu.itis.paramonov.feature_users.databinding.FragmentProfileBinding
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersComponent
@@ -181,6 +185,12 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
             )
             loadProfilePicture(user.profilePictureUrl)
             fabChangePfp.show()
+            with(user.friendRequestFromList) {
+                if (isNotEmpty()) {
+                    ctvRequests.show()
+                    ctvRequests.text = size.toString()
+                }
+            }
         }
     }
 
@@ -269,6 +279,20 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
         with(binding) {
             ivSettings.setOnClickListener {
                 popupMenu.show()
+                popupMenu.setOnDismissListener {
+                    ivSettings.apply {
+                        setImageDrawable(
+                            AppCompatResources.getDrawable(requireContext(), R.drawable.reverse_settings_anim)
+                        )
+                        (drawable as AnimatedVectorDrawable).start()
+                    }
+                }
+                (it as ImageView).apply {
+                    setImageDrawable(
+                        AppCompatResources.getDrawable(requireContext(), R.drawable.settings_anim)
+                    )
+                    (drawable as AnimatedVectorDrawable).start()
+                }
             }
         }
     }

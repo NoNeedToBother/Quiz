@@ -29,4 +29,6 @@
     <string name="check_requests">Check requests</string>
     <string name="get_req_fail">Failed to get friend requests</string>
     <string name="requests">Requests</string>
+    <string name="password_confirm_password_not_match">Password and confirm password fields are not the same</string>
+    <string name="dialog_incorrect_user_data">Incorrect user data changes</string>
 </resources>

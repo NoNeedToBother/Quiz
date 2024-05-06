@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Filter
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.items.DifficultyItem
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewholder.settings.DifficultyItemViewHolder
@@ -39,4 +40,6 @@ class DifficultyArrayAdapter(
 
         return view
     }
+
+    override fun getFilter(): Filter = DummyFilter()
 }

@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,6 +54,12 @@ class LeaderboardsViewModel(
         }
     }
 
+    fun onLeaderboardCleared() {
+        viewModelScope.launch {
+            _clearLeaderboardFlow.value = false
+        }
+    }
+
     fun saveSettings(category: CategoryUiModel?, difficulty: DifficultyUiModel?, gameMode: GameModeUiModel) {
         viewModelScope.launch {
             _settingsDataFlow.value = SettingUiModel(
@@ -78,6 +85,7 @@ class LeaderboardsViewModel(
     private fun getFriendsLeaderboardAfterCleared(max: Int) {
         viewModelScope.launch {
             try {
+                Log.i("a", _settingsDataFlow.value?.difficulty?.name ?: "Y")
                 val leaderboard = getFriendsLeaderboardUseCase.invoke(
                     gameModeUiModel = _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke(),
                     difficultyUiModel = _settingsDataFlow.value?.difficulty,

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Filter
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.items.GameModeItem
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewholder.settings.GameModeItemViewHolder
@@ -38,4 +39,6 @@ class GameModeArrayAdapter(ctx: Context,
 
         return view
     }
+
+    override fun getFilter(): Filter = DummyFilter()
 }

@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.firebase.data.repository
 
-import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -63,10 +62,6 @@ class ResultRepositoryImpl(
         val task = query.orderBy(DB_SCORE_FIELD, Query.Direction.DESCENDING)
             .limit(max.toLong())
             .get()
-            .addOnFailureListener {
-                Log.i("a", it.message.toString())
-                Log.i("b", it.stackTraceToString())
-            }
             .waitResult()
 
         return if (task.isSuccessful) {

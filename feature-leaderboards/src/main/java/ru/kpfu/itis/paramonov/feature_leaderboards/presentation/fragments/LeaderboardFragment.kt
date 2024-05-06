@@ -104,6 +104,7 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
         viewModel.clearLeaderboardFlow.collect {
             if (it) {
                 adapter?.submitList(null)
+                viewModel.onLeaderboardCleared()
                 viewModel.getResultsAfterCleared(type, LEADERBOARD_MAX_AT_ONCE)
             }
         }

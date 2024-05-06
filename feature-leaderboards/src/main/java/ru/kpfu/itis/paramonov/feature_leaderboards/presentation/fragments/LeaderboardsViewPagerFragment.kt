@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments
 
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -63,12 +62,8 @@ class LeaderboardsViewPagerFragment: BaseFragment(R.layout.fragment_leaderboards
             val bottomSheet = clSettings.findViewById<ConstraintLayout>(R.id.bottom_sheet_container)
             val btnSave = bottomSheet.findViewById<MaterialButton>(R.id.btn_save)
             btnSave.setOnClickListener {
+                saveSettings()
                 viewModel.clearLeaderboards()
-                try {
-                    saveSettings()
-                } catch (ex: Exception) {
-                    Log.i("a", ex.javaClass.name)
-                }
             }
         }
     }

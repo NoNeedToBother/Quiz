@@ -11,3 +11,9 @@ enum class CategoryUiModel {
 enum class GameModeUiModel  {
     BLITZ,
 }
+
+data class SettingUiModel(
+    val difficulty: DifficultyUiModel?,
+    val category: CategoryUiModel?,
+    val gameMode: GameModeUiModel
+)

@@ -10,4 +10,33 @@
     <string name="res_difficulty">Difficulty: %s</string>
     <string name="res_category">Category: %s</string>
     <string name="res_game_mode">Game mode: %s</string>
+    <string name="game_mode">Game mode</string>
+    <string name="category">Category</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="save">Save</string>
+
+    <string-array name="leaderboard_difficulties">
+        <item>Any</item>
+        <item>EASY</item>
+        <item>MEDIUM</item>
+        <item>HARD</item>
+    </string-array>
+
+    <string-array name="leaderboard_categories">
+        <item>Any</item>
+        <item>General</item>
+        <item>Book</item>
+        <item>Film</item>
+        <item>Music</item>
+        <item>TV</item>
+        <item>Video_games</item>
+        <item>Sports</item>
+        <item>Geography</item>
+        <item>History</item>
+        <item>Animals</item>
+    </string-array>
+
+    <string-array name="leaderbaord_game_modes">
+        <item>Blitz</item>
+    </string-array>
 </resources>

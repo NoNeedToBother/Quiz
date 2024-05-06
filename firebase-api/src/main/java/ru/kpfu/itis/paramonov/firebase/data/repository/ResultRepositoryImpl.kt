@@ -61,7 +61,8 @@ class ResultRepositoryImpl(
     private suspend fun executeResultQueryAndGetResult(query: Query, max: Int): List<Result> {
         val task = query.orderBy(DB_SCORE_FIELD, Query.Direction.DESCENDING)
             .limit(max.toLong())
-            .get().waitResult()
+            .get()
+            .waitResult()
 
         return if (task.isSuccessful) {
             val res = mutableListOf<Result>()

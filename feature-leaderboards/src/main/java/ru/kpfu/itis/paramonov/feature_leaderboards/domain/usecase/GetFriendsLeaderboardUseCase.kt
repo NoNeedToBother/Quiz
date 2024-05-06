@@ -29,7 +29,7 @@ class GetFriendsLeaderboardUseCase @Inject constructor(
             resultRepository.getFriendsResults(
                 gameMode = questionSettingsApiModelMapper.mapGameMode(gameModeUiModel),
                 difficulty = difficultyUiModel?.let {
-                    questionSettingsApiModelMapper.mapDifficulty(it)
+                     questionSettingsApiModelMapper.mapDifficulty(it)
                 },
                 category = categoryUiModel?.let {
                     questionSettingsApiModelMapper.mapCategory(it)

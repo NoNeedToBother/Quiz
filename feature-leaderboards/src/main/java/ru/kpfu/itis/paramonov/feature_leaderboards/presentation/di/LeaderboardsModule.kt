@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
+import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetDifficultyUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetFriendsLeaderboardUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGameModeUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGlobalLeaderboardUseCase
@@ -33,12 +34,14 @@ class LeaderboardsModule {
         getGlobalLeaderboardUseCase: GetGlobalLeaderboardUseCase,
         getFriendsLeaderboardUseCase: GetFriendsLeaderboardUseCase,
         getGameModeUseCase: GetGameModeUseCase,
+        getDifficultyUseCase: GetDifficultyUseCase,
         userRouter: UserRouter
     ): ViewModel {
         return LeaderboardsViewModel(
             getGlobalLeaderboardUseCase = getGlobalLeaderboardUseCase,
             getFriendsLeaderboardUseCase = getFriendsLeaderboardUseCase,
             getGameModeUseCase = getGameModeUseCase,
+            getDifficultyUseCase = getDifficultyUseCase,
             userRouter = userRouter
         )
     }

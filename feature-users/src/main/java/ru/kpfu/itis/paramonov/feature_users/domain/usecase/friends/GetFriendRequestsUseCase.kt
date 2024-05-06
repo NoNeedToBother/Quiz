@@ -6,8 +6,8 @@ import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.feature_users.R
 import ru.kpfu.itis.paramonov.feature_users.domain.mapper.UserUiModelMapper
-import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserDataException
-import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
+import ru.kpfu.itis.paramonov.firebase.external.domain.exceptions.UserDataException
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
 import javax.inject.Inject
 
 class GetFriendRequestsUseCase @Inject constructor(

@@ -4,10 +4,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionSettingsApiModelMapper
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
-import ru.kpfu.itis.paramonov.local_database_api.domain.model.question.AnswerModel
-import ru.kpfu.itis.paramonov.local_database_api.domain.model.question.QuestionModel
-import ru.kpfu.itis.paramonov.local_database_api.domain.repository.QuestionSettingsRepository
-import ru.kpfu.itis.paramonov.local_database_api.domain.repository.SavedQuestionRepository
+import ru.kpfu.itis.paramonov.local_database_api.external.domain.model.AnswerModel
+import ru.kpfu.itis.paramonov.local_database_api.external.domain.model.QuestionModel
+import ru.kpfu.itis.paramonov.local_database_api.external.domain.repository.QuestionSettingsRepository
+import ru.kpfu.itis.paramonov.local_database_api.external.domain.repository.SavedQuestionRepository
 import javax.inject.Inject
 
 class SaveQuestionsUseCase @Inject constructor(

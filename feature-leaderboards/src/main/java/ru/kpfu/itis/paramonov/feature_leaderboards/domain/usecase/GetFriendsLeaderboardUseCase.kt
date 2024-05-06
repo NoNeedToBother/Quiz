@@ -8,7 +8,7 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.CategoryUi
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.DifficultyUiModel
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.GameModeUiModel
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiModel
-import ru.kpfu.itis.paramonov.firebase.domain.repository.ResultRepository
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.ResultRepository
 import javax.inject.Inject
 
 class GetFriendsLeaderboardUseCase @Inject constructor(

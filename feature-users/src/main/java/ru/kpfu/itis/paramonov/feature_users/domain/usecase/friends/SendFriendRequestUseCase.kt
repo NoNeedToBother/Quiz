@@ -2,7 +2,7 @@ package ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.firebase.domain.repository.FriendRepository
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.FriendRepository
 import javax.inject.Inject
 
 class SendFriendRequestUseCase @Inject constructor(

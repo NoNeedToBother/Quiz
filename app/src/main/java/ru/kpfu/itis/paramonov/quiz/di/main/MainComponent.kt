@@ -3,7 +3,7 @@ package ru.kpfu.itis.paramonov.quiz.di.main
 import androidx.appcompat.app.AppCompatActivity
 import dagger.BindsInstance
 import dagger.Component
-import ru.kpfu.itis.paramonov.common.di.scopes.ScreenScope
+import ru.kpfu.itis.paramonov.common.scopes.ScreenScope
 import ru.kpfu.itis.paramonov.quiz.presentation.ui.MainActivity
 
 @Component(

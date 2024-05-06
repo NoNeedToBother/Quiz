@@ -1,6 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_questions.di
 
-import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
+import ru.kpfu.itis.paramonov.common.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import javax.inject.Inject

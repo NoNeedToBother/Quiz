@@ -51,7 +51,7 @@ class ResultViewHolder(
     private fun hideTimeAndRatio() {
         binding.llTimeRatio.clearAnimation()
         with(binding.llTimeRatio) {
-            playAnimation(this, R.anim.fade_anim, -12f, 250) {
+            playAnimation(this, R.anim.fade_anim, -24f, 500) {
                 this.gone()
             }
         }
@@ -60,7 +60,7 @@ class ResultViewHolder(
     private fun hideSettings() {
         binding.llSettings.clearAnimation()
         with(binding.llSettings) {
-            playAnimation(this, R.anim.fade_anim, -24f, 500) {
+            playAnimation(this, R.anim.fade_anim, -12f, 250) {
                 this.gone()
             }
         }
@@ -69,14 +69,14 @@ class ResultViewHolder(
     private fun showTimeAndRatio() {
         with(binding.llTimeRatio) {
             show()
-            playAnimation(this, R.anim.show_anim_faster, 10f, 250)
+            playAnimation(this, R.anim.show_anim_slower, 22f, 500)
         }
     }
 
     private fun showSettings() {
         with(binding.llSettings) {
             show()
-            playAnimation(this, R.anim.show_anim_slower, 22f, 500)
+            playAnimation(this, R.anim.show_anim_faster, 10f, 250)
         }
     }
 

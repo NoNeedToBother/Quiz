@@ -2,13 +2,13 @@ package ru.kpfu.itis.paramonov.feature_authentication.di
 
 import dagger.BindsInstance
 import dagger.Component
-import ru.kpfu.itis.paramonov.common_android.di.CommonApi
+import ru.kpfu.itis.paramonov.common.api.CommonApi
 import ru.kpfu.itis.paramonov.feature_authentication.presentation.registration.di.RegistrationComponent
 import ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in.di.SigningInComponent
-import ru.kpfu.itis.paramonov.firebase.domain.api.FirebaseApi
+import ru.kpfu.itis.paramonov.firebase.external.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
-import ru.kpfu.itis.paramonov.quiz.di.scopes.FeatureScope
+import ru.kpfu.itis.paramonov.common.scopes.FeatureScope
 
 @Component(
     dependencies = [

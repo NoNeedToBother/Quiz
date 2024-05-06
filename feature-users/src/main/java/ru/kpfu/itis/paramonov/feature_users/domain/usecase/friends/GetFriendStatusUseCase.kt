@@ -5,8 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.feature_users.R
 import ru.kpfu.itis.paramonov.feature_users.presentation.model.FriendStatusUiModel
-import ru.kpfu.itis.paramonov.firebase.data.exceptions.UserDataException
-import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
+import ru.kpfu.itis.paramonov.firebase.external.domain.exceptions.UserDataException
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
 import javax.inject.Inject
 
 class GetFriendStatusUseCase @Inject constructor(

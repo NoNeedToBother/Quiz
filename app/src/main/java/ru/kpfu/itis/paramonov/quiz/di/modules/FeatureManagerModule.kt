@@ -4,7 +4,7 @@ import ru.kpfu.itis.paramonov.quiz.di.dependencies.FeatureHolderManager
 import dagger.Module
 import dagger.Provides
 import ru.kpfu.itis.paramonov.common_android.di.FeatureApiHolder
-import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
+import ru.kpfu.itis.paramonov.common.scopes.ApplicationScope
 
 @Module
 class FeatureManagerModule {

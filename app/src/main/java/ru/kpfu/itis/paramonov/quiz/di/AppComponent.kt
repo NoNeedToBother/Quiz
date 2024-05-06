@@ -4,8 +4,9 @@ import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentHolderModule
 import dagger.BindsInstance
 import dagger.Component
 import ru.kpfu.itis.paramonov.quiz.di.modules.CommonModule
-import ru.kpfu.itis.paramonov.common_android.di.CommonApi
-import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
+import ru.kpfu.itis.paramonov.common.api.CommonApi
+import ru.kpfu.itis.paramonov.common.api.ContextApi
+import ru.kpfu.itis.paramonov.common.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.quiz.App
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesModule
 import ru.kpfu.itis.paramonov.quiz.di.main.MainDependencies
@@ -24,7 +25,7 @@ import ru.kpfu.itis.paramonov.quiz.di.modules.NavigationModule
         FeatureManagerModule::class,
     ],
 )
-interface AppComponent: CommonApi, MainDependencies {
+interface AppComponent: CommonApi, MainDependencies, ContextApi {
     @Component.Builder
     interface Builder {
         @BindsInstance

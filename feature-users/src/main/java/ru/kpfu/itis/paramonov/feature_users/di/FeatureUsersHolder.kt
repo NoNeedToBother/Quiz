@@ -1,6 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_users.di
 
-import ru.kpfu.itis.paramonov.common.di.scopes.ApplicationScope
+import ru.kpfu.itis.paramonov.common.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import javax.inject.Inject
 

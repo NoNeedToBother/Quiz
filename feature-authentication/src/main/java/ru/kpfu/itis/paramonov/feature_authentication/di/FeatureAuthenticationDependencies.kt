@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.feature_authentication.di
 
 import kotlinx.coroutines.CoroutineDispatcher
-import ru.kpfu.itis.paramonov.firebase.domain.repository.AuthenticationRepository
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.AuthenticationRepository
 
 interface FeatureAuthenticationDependencies {
 

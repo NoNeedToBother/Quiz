@@ -2,7 +2,7 @@ package ru.kpfu.itis.paramonov.feature_leaderboards.domain.mapper
 
 import ru.kpfu.itis.paramonov.common.mapper.ModelMapper
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiModel
-import ru.kpfu.itis.paramonov.firebase.domain.model.Result
+import ru.kpfu.itis.paramonov.firebase.external.domain.model.Result
 import javax.inject.Inject
 
 class ResultUiModelMapper @Inject constructor(

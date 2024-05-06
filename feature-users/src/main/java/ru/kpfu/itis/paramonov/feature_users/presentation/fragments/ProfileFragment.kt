@@ -185,6 +185,7 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
             )
             loadProfilePicture(user.profilePictureUrl)
             fabChangePfp.show()
+            btnRequests.show()
             with(user.friendRequestFromList) {
                 if (isNotEmpty()) {
                     ctvRequests.show()

@@ -3,7 +3,7 @@ package ru.kpfu.itis.paramonov.feature_questions.domain.mapper
 import ru.kpfu.itis.paramonov.common.mapper.ModelMapper
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerDataUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
-import ru.kpfu.itis.paramonov.question_api.domain.model.QuestionDomainModel
+import ru.kpfu.itis.paramonov.question_api.external.domain.model.QuestionDomainModel
 import javax.inject.Inject
 
 class QuestionUiModelMapper @Inject constructor(): ModelMapper<QuestionDomainModel, List<QuestionDataUiModel>> {

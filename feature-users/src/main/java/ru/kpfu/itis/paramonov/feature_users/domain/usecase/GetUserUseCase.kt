@@ -7,7 +7,7 @@ import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.feature_users.R
 import ru.kpfu.itis.paramonov.feature_users.domain.exception.IncorrectUserDataException
 import ru.kpfu.itis.paramonov.feature_users.domain.mapper.UserUiModelMapper
-import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
 import javax.inject.Inject
 
 class GetUserUseCase @Inject constructor(

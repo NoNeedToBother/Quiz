@@ -6,7 +6,7 @@ import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionSettingsAp
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.CategoryUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.DifficultyUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.GameModeUiModel
-import ru.kpfu.itis.paramonov.local_database_api.domain.repository.QuestionSettingsRepository
+import ru.kpfu.itis.paramonov.local_database_api.external.domain.repository.QuestionSettingsRepository
 import javax.inject.Inject
 
 class SaveQuestionSettingsUseCase @Inject constructor(

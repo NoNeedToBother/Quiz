@@ -6,9 +6,9 @@ import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionSettingsAp
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.CategoryUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.DifficultyUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.GameModeUiModel
-import ru.kpfu.itis.paramonov.firebase.domain.model.Result
-import ru.kpfu.itis.paramonov.firebase.domain.repository.ResultRepository
-import ru.kpfu.itis.paramonov.firebase.domain.repository.UserRepository
+import ru.kpfu.itis.paramonov.firebase.external.domain.model.Result
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.ResultRepository
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
 import javax.inject.Inject
 
 class SaveResultsUseCase @Inject constructor(

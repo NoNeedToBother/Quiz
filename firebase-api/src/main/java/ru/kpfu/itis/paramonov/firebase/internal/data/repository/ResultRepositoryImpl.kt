@@ -105,6 +105,10 @@ internal class ResultRepositoryImpl(
         }
     }
 
+    override suspend fun getMaxScore(): Double {
+        return MAX_SCORE.toDouble()
+    }
+
     private fun getStandardQuery(
         gameMode: GameMode,
         difficulty: Difficulty?,

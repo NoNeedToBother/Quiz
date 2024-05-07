@@ -9,7 +9,7 @@ import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionSettin
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveQuestionsUseCase
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.SaveResultsUseCase
-import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments.ResultsFragment
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments.ResultFragment
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
@@ -81,13 +81,13 @@ class QuestionsViewModel(
                 )
                 mainMenuRouter.popToMainMenu()
                 questionsRouter.goToQuestionResults(
-                    ResultsFragment.ARGS_DIFFICULTY_KEY to settings.difficulty.name.normalizeEnumName(),
-                    ResultsFragment.ARGS_CATEGORY_KEY to settings.category.name.normalizeEnumName(),
-                    ResultsFragment.ARGS_GAME_MODE_KEY to settings.gameMode.name.normalizeEnumName(),
-                    ResultsFragment.ARGS_TIME_KEY to time,
-                    ResultsFragment.ARGS_CORRECT_AMOUNT_KEY to correct,
-                    ResultsFragment.ARGS_TOTAL_AMOUNT_KEY to total,
-                    ResultsFragment.ARGS_SCORE_KEY to score
+                    ResultFragment.ARGS_DIFFICULTY_KEY to settings.difficulty.name.normalizeEnumName(),
+                    ResultFragment.ARGS_CATEGORY_KEY to settings.category.name.normalizeEnumName(),
+                    ResultFragment.ARGS_GAME_MODE_KEY to settings.gameMode.name.normalizeEnumName(),
+                    ResultFragment.ARGS_TIME_KEY to time,
+                    ResultFragment.ARGS_CORRECT_AMOUNT_KEY to correct,
+                    ResultFragment.ARGS_TOTAL_AMOUNT_KEY to total,
+                    ResultFragment.ARGS_SCORE_KEY to score
                 )
             } catch (ex: Throwable) {
                 _questionsDataFlow.value = QuestionDataResult.Failure(ex)

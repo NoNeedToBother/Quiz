@@ -13,6 +13,7 @@ import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import ru.kpfu.itis.paramonov.question_api.external.domain.api.QuestionApi
 import ru.kpfu.itis.paramonov.common.scopes.FeatureScope
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.di.ResultComponent
 
 @Component(
     dependencies = [
@@ -28,6 +29,8 @@ interface FeatureQuestionsComponent {
     fun trainingQuestionsComponentFactory(): TrainingQuestionsComponent.Factory
 
     fun trainingQuestionSettingsComponentFactory(): TrainingQuestionSettingsComponent.Factory
+
+    fun resultComponentFactory(): ResultComponent.Factory
 
     @Component.Builder
     interface Builder {

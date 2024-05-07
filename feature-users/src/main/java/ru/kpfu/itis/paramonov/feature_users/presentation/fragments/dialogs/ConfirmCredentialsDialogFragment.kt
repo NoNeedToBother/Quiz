@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import ru.kpfu.itis.paramonov.feature_users.R
@@ -24,25 +25,33 @@ class ConfirmCredentialsDialogFragment: DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
-            .setView(layoutInflater.inflate(R.layout.fragment_confirm_credentials_dialog, null).apply {
-                etEmail = findViewById(R.id.et_email)
-                etPassword = findViewById(R.id.et_password)
-            })
+            .setView(initView())
             .setTitle(getString(R.string.confirm_credentials))
             .setPositiveButton(R.string.confirm_dialog_pos) { _, _ ->
-                onDismiss = null
-                val password = etPassword?.text?.let {
-                    if (it.isNotEmpty()) it.toString()
-                    else null
-                }
-                val email = etEmail?.text?.let {
-                    if (it.isNotEmpty()) it.toString()
-                    else null
-                }
-                onPositivePressed?.onCredentialsChanged(password = password, email = email)
+                setPositiveButton()
             }
             .setNegativeButton(R.string.confirm_dialog_neg) { _, _ -> }
             .create()
+    }
+
+    private fun setPositiveButton() {
+        onDismiss = null
+        val password = etPassword?.text?.let {
+            if (it.isNotEmpty()) it.toString()
+            else null
+        }
+        val email = etEmail?.text?.let {
+            if (it.isNotEmpty()) it.toString()
+            else null
+        }
+        onPositivePressed?.onCredentialsChanged(password = password, email = email)
+    }
+
+    private fun initView(): View {
+        return layoutInflater.inflate(R.layout.fragment_confirm_credentials_dialog, null).apply {
+            etEmail = findViewById(R.id.et_email)
+            etPassword = findViewById(R.id.et_password)
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

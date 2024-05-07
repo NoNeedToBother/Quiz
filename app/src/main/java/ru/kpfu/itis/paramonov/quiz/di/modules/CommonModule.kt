@@ -9,6 +9,8 @@ import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
 import ru.kpfu.itis.paramonov.quiz.utils.DateTimeParserImpl
 import ru.kpfu.itis.paramonov.common.utils.HtmlDecoder
+import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
 import ru.kpfu.itis.paramonov.quiz.utils.ResourceManagerImpl
 import ru.kpfu.itis.paramonov.quiz.utils.HtmlDecoderImpl
 
@@ -37,4 +39,12 @@ class CommonModule {
 
     @Provides
     fun dateTimeParser(impl: DateTimeParserImpl): DateTimeParser = impl
+
+    @Provides
+    fun passwordValidator(
+        resourceManager: ResourceManager): PasswordValidator = PasswordValidator(resourceManager)
+
+    @Provides
+    fun usernameValidator(
+        resourceManager: ResourceManager): UsernameValidator = UsernameValidator(resourceManager)
 }

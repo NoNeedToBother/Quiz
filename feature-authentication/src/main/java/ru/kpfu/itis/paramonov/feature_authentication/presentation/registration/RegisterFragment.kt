@@ -1,11 +1,14 @@
 package ru.kpfu.itis.paramonov.feature_authentication.presentation.registration
 
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.common_android.utils.gone
@@ -24,6 +27,12 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
     @Inject
     lateinit var viewModel: RegisterViewModel
 
+    @Inject
+    lateinit var usernameValidator: UsernameValidator
+
+    @Inject
+    lateinit var passwordValidator: PasswordValidator
+
     override fun inject() {
         FeatureUtils.getFeature<FeatureAuthenticationComponent>(this, FeatureAuthenticationDependencies::class.java)
             .registrationComponentFactory()
@@ -33,6 +42,7 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
 
     override fun initView() {
         setOnClickListeners()
+        addTextChangedListeners()
     }
 
     override fun observeData() {
@@ -105,6 +115,32 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
 
             btnGoSignIn.setOnClickListener {
                 viewModel.goToSignIn()
+            }
+        }
+    }
+
+    private fun addTextChangedListeners() {
+        with(binding) {
+            etUsername.addTextChangedListener {
+                it?.let {  username ->
+                    if (!usernameValidator.validate(username.toString()))
+                        tilUsername.error = usernameValidator.getMessage()
+                    else tilUsername.error = null
+                }
+            }
+            etPassword.addTextChangedListener {
+                it?.let { password ->
+                    if (!passwordValidator.validate(password.toString()))
+                        tilPassword.error = passwordValidator.getMessage()
+                    else tilPassword.error = null
+                }
+            }
+            etConfirmPassword.addTextChangedListener {
+                it?.let { password ->
+                    if (!passwordValidator.validate(password.toString()))
+                        tilConfirmPassword.error = passwordValidator.getMessage()
+                    else tilConfirmPassword.error = null
+                }
             }
         }
     }

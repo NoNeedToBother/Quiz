@@ -10,6 +10,8 @@ import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
+import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
 import ru.kpfu.itis.paramonov.firebase.internal.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.internal.data.handler.SignInExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.internal.data.repository.AuthenticationRepositoryImpl
@@ -38,9 +40,18 @@ internal class FirebaseModule {
     fun userRepositoryImpl(
         firebaseAuth: FirebaseAuth,
         dispatcher: CoroutineDispatcher,
-        resourceManager: ResourceManager
+        resourceManager: ResourceManager,
+        passwordValidator: PasswordValidator,
+        usernameValidator: UsernameValidator
     ): UserRepositoryImpl {
-        return UserRepositoryImpl(firebaseAuth, Firebase.firestore, Firebase.storage, dispatcher, resourceManager)
+        return UserRepositoryImpl(
+            auth = firebaseAuth,
+            database = Firebase.firestore,
+            storage = Firebase.storage,
+            dispatcher = dispatcher,
+            resourceManager = resourceManager,
+            passwordValidator = passwordValidator,
+            usernameValidator = usernameValidator)
     }
 
     @Provides
@@ -71,10 +82,20 @@ internal class FirebaseModule {
         signInExceptionHandler: SignInExceptionHandler,
         resourceManager: ResourceManager,
         userRepository: UserRepository,
-        dateTimeParser: DateTimeParser
+        dateTimeParser: DateTimeParser,
+        passwordValidator: PasswordValidator,
+        usernameValidator: UsernameValidator
     ): AuthenticationRepositoryImpl {
-        return AuthenticationRepositoryImpl(firebaseAuth, dispatcher, registerExceptionHandler,
-            signInExceptionHandler, resourceManager, userRepository, dateTimeParser)
+        return AuthenticationRepositoryImpl(
+            auth = firebaseAuth,
+            dispatcher = dispatcher,
+            registerExceptionHandler = registerExceptionHandler,
+            signInExceptionHandler = signInExceptionHandler,
+            resourceManager = resourceManager,
+            userRepository = userRepository,
+            dateTimeParser = dateTimeParser,
+            passwordValidator = passwordValidator,
+            usernameValidator = usernameValidator)
     }
 
     @Provides

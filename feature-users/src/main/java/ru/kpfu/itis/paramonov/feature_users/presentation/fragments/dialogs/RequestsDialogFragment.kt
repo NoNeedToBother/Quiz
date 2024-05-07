@@ -32,7 +32,6 @@ class RequestsDialogFragment : DialogFragment() {
             )
             .setTitle(R.string.requests)
             .create()
-
     }
 
     private fun onViewSet(view: View) {

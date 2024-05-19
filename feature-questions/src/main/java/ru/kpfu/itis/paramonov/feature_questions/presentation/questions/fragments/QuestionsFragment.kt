@@ -1,13 +1,10 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
-import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionsBinding
@@ -47,39 +44,31 @@ class QuestionsFragment: BaseFragment(R.layout.fragment_questions) {
     override fun observeData() {
         viewModel.getQuestions()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                launch {
-                    collectQuestionsData()
-                }
-                launch {
-                    collectTimerData()
-                }
-            }
+        viewModel.currentTimeFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectTimerData(it)
+        }
+        viewModel.questionsDataFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectQuestionsData(it)
         }
     }
 
-    private suspend fun collectTimerData() {
-        viewModel.currentTimeFlow.collect { time ->
-            with(binding) {
-                swvClock.time = time
-                val min = time / 60
-                val sec = time % 60
-                if (min > 0) tvTime.text = getString(R.string.clock_time_with_min, min, sec)
-                else tvTime.text = getString(R.string.clock_time, sec)
-            }
+    private fun collectTimerData(time: Int) {
+        with(binding) {
+            swvClock.time = time
+            val min = time / 60
+            val sec = time % 60
+            if (min > 0) tvTime.text = getString(R.string.clock_time_with_min, min, sec)
+            else tvTime.text = getString(R.string.clock_time, sec)
         }
     }
 
-    private suspend fun collectQuestionsData() {
-        viewModel.questionsDataFlow.collect { result ->
-            result?.let {
-                when(it) {
-                    is BaseQuestionsViewModel.QuestionDataResult.Success ->
-                        onGetQuestionsSuccess(it.getValue())
-                    is BaseQuestionsViewModel.QuestionDataResult.Failure ->
-                        onGetQuestionsFail(it.getException())
-                }
+    private fun collectQuestionsData(result: BaseQuestionsViewModel.QuestionDataResult?) {
+        result?.let {
+            when(it) {
+                is BaseQuestionsViewModel.QuestionDataResult.Success ->
+                    onGetQuestionsSuccess(it.getValue())
+                is BaseQuestionsViewModel.QuestionDataResult.Failure ->
+                    onGetQuestionsFail(it.getException())
             }
         }
     }

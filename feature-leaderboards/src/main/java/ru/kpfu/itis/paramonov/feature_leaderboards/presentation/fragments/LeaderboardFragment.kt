@@ -1,16 +1,14 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments
 
 import androidx.core.os.bundleOf
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.common_android.utils.collect
+import ru.kpfu.itis.paramonov.common_android.utils.gone
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.FragmentLeaderboardBinding
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.adapter.LeaderboardResultAdapter
@@ -88,35 +86,30 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
     override fun observeData() {
         viewModel.getResultsOnStart(type, LEADERBOARD_MAX_AT_ONCE)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                launch {
-                    collectResultData()
-                }
-                launch {
-                    collectClearingLeaderboard()
-                }
+        viewModel.getDataFlow(type)
+            .collect(lifecycleOwner = viewLifecycleOwner) {
+                collectResultData(it)
             }
+
+        viewModel.clearLeaderboardFlow
+            .collect(lifecycleOwner = viewLifecycleOwner) {
+                collectClearingLeaderboard(it)
+            }
+    }
+
+    private fun collectClearingLeaderboard(cleared: Boolean) {
+        if (cleared) {
+            adapter?.submitList(null)
+            viewModel.onLeaderboardCleared()
+            viewModel.getResultsAfterCleared(type, LEADERBOARD_MAX_AT_ONCE)
         }
     }
 
-    private suspend fun collectClearingLeaderboard() {
-        viewModel.clearLeaderboardFlow.collect {
-            if (it) {
-                adapter?.submitList(null)
-                viewModel.onLeaderboardCleared()
-                viewModel.getResultsAfterCleared(type, LEADERBOARD_MAX_AT_ONCE)
-            }
-        }
-    }
-
-    private suspend fun collectResultData() {
-        viewModel.getDataFlow(type).collect {
-            it?.let {
-                when (it) {
-                    is LeaderboardsViewModel.LeaderboardDataResult.Success -> addResults(it.getValue())
-                    is LeaderboardsViewModel.LeaderboardDataResult.Failure -> onGetResultsFail(it.getException())
-                }
+    private fun collectResultData(result: LeaderboardsViewModel.LeaderboardDataResult?) {
+        result?.let {
+            when (result) {
+                is LeaderboardsViewModel.LeaderboardDataResult.Success -> addResults(result.getValue())
+                is LeaderboardsViewModel.LeaderboardDataResult.Failure -> onGetResultsFail(result.getException())
             }
         }
     }
@@ -129,6 +122,7 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
     }
 
     private fun addResults(results: List<ResultUiModel>) {
+        binding.layoutProceeding.root.gone()
         val adapterList = adapter?.currentList ?: mutableListOf()
         var newList: MutableList<ResultUiModel> = ArrayList(adapterList)
         newList.addAll(results)

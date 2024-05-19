@@ -1,13 +1,10 @@
 package ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
-import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.common_android.utils.gone
 import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_authentication.R
@@ -37,42 +34,34 @@ class SignInFragment: BaseFragment(R.layout.fragment_sign_in) {
 
     override fun observeData() {
         viewModel.checkCurrentUser()
+        viewModel.userDataFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectUserData(it)
+        }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                launch {
-                    collectUserData()
-                }
-                launch {
-                    checkSigningInProceeding()
-                }
+        viewModel.signInProceedingFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            checkSigningInProceeding(it)
+        }
+    }
+
+    private fun checkSigningInProceeding(proceeding: Boolean) {
+        with(binding) {
+            if (proceeding) {
+                layoutBase.gone()
+                layoutProceeding.root.show()
+            } else {
+                layoutBase.show()
+                layoutProceeding.root.gone()
             }
         }
     }
 
-    private suspend fun checkSigningInProceeding() {
-        viewModel.signInProceedingFlow.collect {
-            with(binding) {
-                if (it) {
-                    layoutBase.gone()
-                    layoutProceeding.show()
-                } else {
-                    layoutBase.show()
-                    layoutProceeding.gone()
-                }
-            }
-        }
-    }
-
-    private suspend fun collectUserData() {
-        viewModel.userDataFlow.collect { result ->
-            result?.run {
-                when (this) {
-                    is SignInViewModel.UserDataResult.Success ->
-                        onSigningInSuccess(getValue())
-                    is SignInViewModel.UserDataResult.Failure ->
-                        onSigningInFail(getException())
-                }
+    private fun collectUserData(result: SignInViewModel.UserDataResult?) {
+        result?.run {
+            when (this) {
+                is SignInViewModel.UserDataResult.Success ->
+                    onSigningInSuccess(getValue())
+                is SignInViewModel.UserDataResult.Failure ->
+                    onSigningInFail(getException())
             }
         }
     }

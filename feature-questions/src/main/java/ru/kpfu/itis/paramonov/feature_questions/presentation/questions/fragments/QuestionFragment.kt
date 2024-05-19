@@ -1,12 +1,10 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments
 
 import androidx.core.os.bundleOf
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.launch
+import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_questions.R
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel
 import javax.inject.Inject
 
@@ -24,22 +22,17 @@ class QuestionFragment: BaseQuestionFragment<QuestionsViewModel>() {
     }
 
     override fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                launch {
-                    collectQuestionData()
-                }
-                launch {
-                    collectProceedingData()
-                }
-            }
+        val position = requireArguments().getInt(POS_KEY)
+        viewModel.getQuestionFlow(position).collect(lifecycleOwner = viewLifecycleOwner) {
+            collectQuestionData(it)
+        }
+        viewModel.resultProceedingFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectProceedingData(it)
         }
     }
 
-    private suspend fun collectProceedingData() {
-        viewModel.resultProceedingFlow.collect {
-            binding.tvInfo.isEnabled = !it
-        }
+    private fun collectProceedingData(proceeding: Boolean) {
+        binding.tvInfo.isEnabled = !proceeding
     }
 
     override fun onAnswerChosen(chosenPos: Int) {
@@ -47,13 +40,10 @@ class QuestionFragment: BaseQuestionFragment<QuestionsViewModel>() {
         viewModel.updateChosenAnswers(pos, chosenPos)
     }
 
-    override suspend fun collectQuestionData() {
-        val position = requireArguments().getInt(POS_KEY)
-        viewModel.getQuestionFlow(position).collect { data ->
-            with(binding) {
-                tvText.text = data.text
-                adapter?.submitList(data.answers)
-            }
+    override fun collectQuestionData(data: QuestionDataUiModel) {
+        with(binding) {
+            tvText.text = data.text
+            adapter?.submitList(data.answers)
         }
     }
 

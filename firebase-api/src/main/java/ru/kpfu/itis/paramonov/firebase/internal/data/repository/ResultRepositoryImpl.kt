@@ -53,8 +53,13 @@ internal class ResultRepositoryImpl(
                 category = category, afterScore = afterScore
             )
             val friendList = userRepository.getCurrentUser()?.friendIdList ?: listOf()
-            query = query.whereIn(DB_USER_ID_FIELD, friendList)
-            executeResultQueryAndGetResult(query, max)
+            if (friendList.isEmpty()) {
+                listOf()
+            }
+            else {
+                query = query.whereIn(DB_USER_ID_FIELD, friendList)
+                executeResultQueryAndGetResult(query, max)
+            }
         }
     }
 

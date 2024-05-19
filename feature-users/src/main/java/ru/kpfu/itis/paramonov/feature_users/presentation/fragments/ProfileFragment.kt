@@ -7,15 +7,12 @@ import android.widget.PopupMenu
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_users.R
 import ru.kpfu.itis.paramonov.feature_users.databinding.FragmentProfileBinding
@@ -85,39 +82,34 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
     override fun observeData() {
         viewModel.getCurrentUser()
         viewModel.subscribeToProfileUpdates()
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                launch {
-                    collectUserData()
-                }
-                launch {
-                    collectConfirmCredentialsData()
-                }
-                launch {
-                    collectChangeCredentialsErrors()
-                }
-                launch {
-                    collectProcessingCredentialEvents()
-                }
-                launch {
-                    collectRequestsData()
-                }
-            }
+
+        viewModel.userDataFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectUserData(it)
+        }
+        viewModel.confirmCredentialsFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectConfirmCredentialsData(it)
+        }
+        viewModel.changeCredentialsErrorFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectChangeCredentialsErrors(it)
+        }
+        viewModel.friendRequestsDataFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectRequestsData(it)
+        }
+        viewModel.processingCredentialEvents.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectProcessingCredentialEvents(it)
         }
     }
 
-    private suspend fun collectRequestsData() {
-        viewModel.friendRequestsDataFlow.collect {
-            it?.let {
-                when(it) {
-                    is ProfileViewModel.FriendRequestResult.Success -> onRequestsDataReceived(it.getValue())
-                    is ProfileViewModel.FriendRequestResult.Failure ->
-                        showErrorBottomSheetDialog(
-                            getString(ru.kpfu.itis.paramonov.common_android.R.string.empty),
-                            it.getException().message ?:
-                            getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
-                        )
-                }
+    private fun collectRequestsData(requests: ProfileViewModel.FriendRequestResult?) {
+        requests?.let {
+            when(it) {
+                is ProfileViewModel.FriendRequestResult.Success -> onRequestsDataReceived(it.getValue())
+                is ProfileViewModel.FriendRequestResult.Failure ->
+                    showErrorBottomSheetDialog(
+                        getString(ru.kpfu.itis.paramonov.common_android.R.string.empty),
+                        it.getException().message ?:
+                        getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
+                    )
             }
         }
     }
@@ -135,43 +127,35 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
             .show(childFragmentManager, RequestsDialogFragment.REQUESTS_DIALOG_TAG)
     }
 
-    private suspend fun collectProcessingCredentialEvents() {
-        viewModel.processingCredentialEvents.collect {
-            setChangeCredentialMenuItemEnabled(!it)
+    private fun collectProcessingCredentialEvents(processing: Boolean) {
+        setChangeCredentialMenuItemEnabled(!processing)
+    }
+
+    private fun collectChangeCredentialsErrors(ex: Throwable?) {
+        ex?.let {
+            showErrorBottomSheetDialog(
+                getString(R.string.dialog_incorrect_credentials),
+                getString(R.string.credentials_change_failed)
+            )
         }
     }
 
-    private suspend fun collectChangeCredentialsErrors() {
-        viewModel.changeCredentialsErrorFlow.collect {
-            it?.let {
-                showErrorBottomSheetDialog(
-                    getString(R.string.dialog_incorrect_credentials),
-                    getString(R.string.credentials_change_failed)
+    private fun collectConfirmCredentialsData(confirm: Boolean?) {
+        confirm?.let {
+            if (confirm) onCredentialsConfirmed()
+            else onConfirmCredentialsFailed()
+        }
+    }
+
+    private fun collectUserData(result: BaseProfileViewModel.UserDataResult?) {
+        result?.let {
+            when(result) {
+                is BaseProfileViewModel.UserDataResult.Success -> showUserInfo(result.getValue())
+                is BaseProfileViewModel.UserDataResult.Failure -> showErrorBottomSheetDialog(
+                    getString(R.string.user_data_fail_title),
+                    result.getException().message ?:
+                    getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
                 )
-            }
-        }
-    }
-
-    private suspend fun collectConfirmCredentialsData() {
-        viewModel.confirmCredentialsFlow.collect {
-            it?.let {
-                if (it) onCredentialsConfirmed()
-                else onConfirmCredentialsFailed()
-            }
-        }
-    }
-
-    private suspend fun collectUserData() {
-        viewModel.userDataFlow.collect {
-            it?.let {  result ->
-                when(result) {
-                    is BaseProfileViewModel.UserDataResult.Success -> showUserInfo(result.getValue())
-                    is BaseProfileViewModel.UserDataResult.Failure -> showErrorBottomSheetDialog(
-                        getString(R.string.user_data_fail_title),
-                        result.getException().message ?:
-                        getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
-                    )
-                }
             }
         }
     }

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.common_android.utils.emitException
 import ru.kpfu.itis.paramonov.feature_users.domain.exception.IncorrectUserDataException
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.ChangeCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.profile_settings.ConfirmCredentialsUseCase
@@ -56,10 +57,10 @@ class ProfileViewModel(
                 val user = getCurrentUserUseCase.invoke()
                 _userDataFlow.value = UserDataResult.Success(user)
             } catch (ex: IncorrectUserDataException) {
-                _userDataFlow.value = UserDataResult.Failure(ex)
+                _userDataFlow.emitException(UserDataResult.Failure(ex))
                 authenticationRouter.goToSignIn()
             } catch (ex: Throwable) {
-                _userDataFlow.value = UserDataResult.Failure(ex)
+                _userDataFlow.emitException(UserDataResult.Failure(ex))
             }
         }
     }
@@ -71,8 +72,7 @@ class ProfileViewModel(
                 changeCredentialsUseCase.invoke(email = email, password = password)
                 logout()
             } catch (ex: Throwable) {
-                _changeCredentialsErrorFlow.value = ex
-                _changeCredentialsErrorFlow.value = null
+                _changeCredentialsErrorFlow.emitException(ex)
             }
             _processingCredentialEvents.value = false
         }
@@ -132,7 +132,7 @@ class ProfileViewModel(
                 _friendRequestsDataFlow.value = FriendRequestResult.Success(requests)
                 _friendRequestsDataFlow.value = null
             } catch (ex: Throwable) {
-                _friendRequestsDataFlow.value = FriendRequestResult.Failure(ex)
+                _friendRequestsDataFlow.emitException(FriendRequestResult.Failure(ex))
             }
         }
     }

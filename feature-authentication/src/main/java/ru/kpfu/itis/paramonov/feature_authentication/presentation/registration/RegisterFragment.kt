@@ -1,13 +1,10 @@
 package ru.kpfu.itis.paramonov.feature_authentication.presentation.registration
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
-import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.common_android.utils.gone
 import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_authentication.R
@@ -37,42 +34,35 @@ class RegisterFragment: BaseFragment(R.layout.fragment_register) {
 
     override fun observeData() {
         viewModel.checkCurrentUser()
+        viewModel.userDataFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectUserData(it)
+        }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                launch {
-                    collectUserData()
-                }
-                launch {
-                    checkRegisterProceeding()
-                }
+        viewModel.registerProceedingFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            checkRegisterProceeding(it)
+        }
+
+    }
+
+    private fun checkRegisterProceeding(proceeding: Boolean) {
+        with(binding) {
+            if (proceeding) {
+                layoutBase.gone()
+                layoutProceeding.root.show()
+            } else {
+                layoutBase.show()
+                layoutProceeding.root.gone()
             }
         }
     }
 
-    private suspend fun checkRegisterProceeding() {
-        viewModel.registerProceedingFlow.collect {
-            with(binding) {
-                if (it) {
-                    layoutBase.gone()
-                    layoutProceeding.show()
-                } else {
-                    layoutBase.show()
-                    layoutProceeding.gone()
-                }
-            }
-        }
-    }
-
-    private suspend fun collectUserData() {
-        viewModel.userDataFlow.collect { result ->
-            result?.run {
-                when (this) {
-                    is RegisterViewModel.UserDataResult.Success ->
-                        onRegistrationSuccess(getValue())
-                    is RegisterViewModel.UserDataResult.Failure ->
-                        onRegistrationFail(getException())
-                }
+    private fun collectUserData(result: RegisterViewModel.UserDataResult?) {
+        result?.run {
+            when (this) {
+                is RegisterViewModel.UserDataResult.Success ->
+                    onRegistrationSuccess(getValue())
+                is RegisterViewModel.UserDataResult.Failure ->
+                    onRegistrationFail(getException())
             }
         }
     }

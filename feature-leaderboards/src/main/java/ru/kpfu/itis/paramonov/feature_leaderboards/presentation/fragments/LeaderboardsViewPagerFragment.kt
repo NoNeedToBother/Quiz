@@ -4,18 +4,15 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.common.utils.toEnumName
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.FragmentLeaderboardsViewPagerBinding
 import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsComponent
@@ -28,6 +25,7 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.di.LeaderboardsC
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.CategoryUiModel
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.DifficultyUiModel
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.GameModeUiModel
+import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.SettingUiModel
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.items.CategoryItem
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.items.DifficultyItem
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.items.GameModeItem
@@ -179,29 +177,25 @@ class LeaderboardsViewPagerFragment: BaseFragment(R.layout.fragment_leaderboards
     }
 
     override fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                collectSettingsData()
-            }
+        viewModel.settingsDataFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectSettingsData(it)
         }
     }
 
-    private suspend fun collectSettingsData() {
-        viewModel.settingsDataFlow.collect {
-            it?.let {  model ->
-                with(binding) {
-                    val bottomSheet =
-                        clSettings.findViewById<ConstraintLayout>(R.id.bottom_sheet_container)
-                    val tvCategories =
-                        bottomSheet.findViewById<MaterialAutoCompleteTextView>(R.id.tv_categories)
-                    val tvDifficulties =
-                        bottomSheet.findViewById<MaterialAutoCompleteTextView>(R.id.tv_difficulties)
-                    val tvGameModes =
-                        bottomSheet.findViewById<MaterialAutoCompleteTextView>(R.id.tv_game_modes)
-                    tvCategories.setText(model.category?.name?.normalizeEnumName() ?: "Any", false)
-                    tvDifficulties.setText(model.difficulty?.name?.normalizeEnumName() ?: "Any", false)
-                    tvGameModes.setText(model.gameMode.name.normalizeEnumName(), false)
-                }
+    private fun collectSettingsData(model: SettingUiModel?) {
+        model?.let {
+            with(binding) {
+                val bottomSheet =
+                    clSettings.findViewById<ConstraintLayout>(R.id.bottom_sheet_container)
+                val tvCategories =
+                    bottomSheet.findViewById<MaterialAutoCompleteTextView>(R.id.tv_categories)
+                val tvDifficulties =
+                    bottomSheet.findViewById<MaterialAutoCompleteTextView>(R.id.tv_difficulties)
+                val tvGameModes =
+                    bottomSheet.findViewById<MaterialAutoCompleteTextView>(R.id.tv_game_modes)
+                tvCategories.setText(model.category?.name?.normalizeEnumName() ?: "Any", false)
+                tvDifficulties.setText(model.difficulty?.name?.normalizeEnumName() ?: "Any", false)
+                tvGameModes.setText(model.gameMode.name.normalizeEnumName(), false)
             }
         }
     }

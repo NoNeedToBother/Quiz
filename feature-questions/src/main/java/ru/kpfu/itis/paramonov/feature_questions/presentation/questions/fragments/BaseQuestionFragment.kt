@@ -8,6 +8,7 @@ import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionBinding
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.AnswerAdapter
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.diffutil.AnswerDataDiffUtilCallback
+import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.BaseQuestionsViewModel
 import javax.inject.Inject
 
@@ -45,7 +46,7 @@ abstract class BaseQuestionFragment<VM: BaseQuestionsViewModel>: BaseFragment(R.
 
     abstract fun onAnswerChosen(chosenPos: Int)
 
-    abstract suspend fun collectQuestionData()
+    abstract fun collectQuestionData(data: QuestionDataUiModel)
 
     companion object {
         const val POS_KEY = "pos"

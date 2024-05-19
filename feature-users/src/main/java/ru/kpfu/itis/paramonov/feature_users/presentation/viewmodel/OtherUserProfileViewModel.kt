@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.paramonov.common_android.utils.emitException
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.GetUserUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.GetFriendStatusUseCase
 import ru.kpfu.itis.paramonov.feature_users.domain.usecase.friends.SendFriendRequestUseCase
@@ -29,7 +30,7 @@ class OtherUserProfileViewModel(
                 val user = getUserUseCase.invoke(id)
                 _userDataFlow.value = UserDataResult.Success(user)
             } catch (ex: Throwable) {
-                _userDataFlow.value = UserDataResult.Failure(ex)
+                _userDataFlow.emitException(UserDataResult.Failure(ex))
             }
         }
     }
@@ -39,8 +40,7 @@ class OtherUserProfileViewModel(
             try {
                 sendFriendRequestUseCase.invoke(id)
             } catch (ex: Throwable) {
-                _sendFriendRequestErrorFlow.value = ex
-                _sendFriendRequestErrorFlow.value = null
+                _sendFriendRequestErrorFlow.emitException(ex)
             }
         }
     }
@@ -51,7 +51,7 @@ class OtherUserProfileViewModel(
                 val friendStatus = getFriendStatusUseCase.invoke(id)
                 _friendStatusDataFlow.value = FriendStatusDataResult.Success(friendStatus)
             } catch (ex: Throwable) {
-                _friendStatusDataFlow.value = FriendStatusDataResult.Failure(ex)
+                _friendStatusDataFlow.emitException(FriendStatusDataResult.Failure(ex))
             }
         }
     }

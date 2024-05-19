@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
+import ru.kpfu.itis.paramonov.common_android.utils.emitException
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetDifficultyUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetFriendsLeaderboardUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGameModeUseCase
@@ -108,7 +109,7 @@ class LeaderboardsViewModel(
                 if (checkLeaderboard(leaderboard))
                     _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Failure(ex)
+                _friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }
@@ -125,7 +126,7 @@ class LeaderboardsViewModel(
                 if (checkLeaderboard(leaderboard))
                     _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _globalLeaderboardDataFlow.value = LeaderboardDataResult.Failure(ex)
+                _globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }
@@ -143,7 +144,7 @@ class LeaderboardsViewModel(
                 if (checkLeaderboard(leaderboard))
                     _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _globalLeaderboardDataFlow.value = LeaderboardDataResult.Failure(ex)
+                _globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }
@@ -160,7 +161,7 @@ class LeaderboardsViewModel(
                 if (checkLeaderboard(leaderboard))
                     _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Failure(ex)
+                _friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }
@@ -199,7 +200,7 @@ class LeaderboardsViewModel(
                 if (checkLeaderboard(leaderboard))
                     _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Failure(ex)
+                _friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }
@@ -216,7 +217,7 @@ class LeaderboardsViewModel(
                 if (checkLeaderboard(leaderboard))
                     _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _globalLeaderboardDataFlow.value = LeaderboardDataResult.Failure(ex)
+                _globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }

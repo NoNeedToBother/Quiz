@@ -11,4 +11,9 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <include layout="@layout/layout_proceeding"
+        android:id="@+id/layout_proceeding"
+        android:visibility="visible">
+    </include>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

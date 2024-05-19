@@ -39,9 +39,9 @@ class ProfileViewModel(
 
     val confirmCredentialsFlow: StateFlow<Boolean?> get() = _confirmCredentialsFlow
 
-    private val _changeCredentialsErrorFlow = MutableStateFlow<Throwable?>(null)
+    private val _changeUserDataErrorFlow = MutableStateFlow<Throwable?>(null)
 
-    val changeCredentialsErrorFlow: StateFlow<Throwable?> get() = _changeCredentialsErrorFlow
+    val changeUserDataErrorFlow: StateFlow<Throwable?> get() = _changeUserDataErrorFlow
 
     private val _processingCredentialEvents = MutableStateFlow(false)
 
@@ -72,7 +72,7 @@ class ProfileViewModel(
                 changeCredentialsUseCase.invoke(email = email, password = password)
                 logout()
             } catch (ex: Throwable) {
-                _changeCredentialsErrorFlow.emitException(ex)
+                _changeUserDataErrorFlow.emitException(ex)
             }
             _processingCredentialEvents.value = false
         }
@@ -94,7 +94,11 @@ class ProfileViewModel(
 
     fun saveProfilePicture(uri: Uri) {
         viewModelScope.launch {
-            saveProfilePictureUseCase.invoke(uri)
+            try {
+                saveProfilePictureUseCase.invoke(uri)
+            } catch (ex: Throwable) {
+                _changeUserDataErrorFlow.emitException(ex)
+            }
         }
     }
 
@@ -105,7 +109,11 @@ class ProfileViewModel(
             map[key] = setting.value
         }
         viewModelScope.launch {
-            saveUserSettingsUseCase.invoke(settings)
+            try {
+                saveUserSettingsUseCase.invoke(settings)
+            } catch (ex: Throwable) {
+                _changeUserDataErrorFlow.emitException(ex)
+            }
         }
     }
 
@@ -130,9 +138,10 @@ class ProfileViewModel(
             try {
                 val requests = getFriendRequestsUseCase.invoke()
                 _friendRequestsDataFlow.value = FriendRequestResult.Success(requests)
-                _friendRequestsDataFlow.value = null
             } catch (ex: Throwable) {
-                _friendRequestsDataFlow.emitException(FriendRequestResult.Failure(ex))
+                _friendRequestsDataFlow.value = FriendRequestResult.Failure(ex)
+            } finally {
+                _friendRequestsDataFlow.value = null
             }
         }
     }

@@ -15,7 +15,7 @@ internal class RegistrationExceptionHandler(
     override fun handle(ex: Throwable): Throwable {
         return when(ex) {
             is FirebaseAuthWeakPasswordException -> RegisterException(
-                resourceManager.getString(R.string.weak_password)
+                resourceManager.getString(ru.kpfu.itis.paramonov.common.R.string.weak_password)
             )
             is FirebaseAuthInvalidCredentialsException -> RegisterException(
                 resourceManager.getString(R.string.invalid_email)

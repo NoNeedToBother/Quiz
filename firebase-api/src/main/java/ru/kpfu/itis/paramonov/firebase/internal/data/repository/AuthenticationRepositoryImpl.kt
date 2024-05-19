@@ -5,7 +5,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
+import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
+import ru.kpfu.itis.paramonov.common.validators.Validator
 import ru.kpfu.itis.paramonov.firebase.R
+import ru.kpfu.itis.paramonov.firebase.external.domain.exceptions.CredentialException
 import ru.kpfu.itis.paramonov.firebase.external.domain.exceptions.RegisterException
 import ru.kpfu.itis.paramonov.firebase.external.domain.exceptions.SignInException
 import ru.kpfu.itis.paramonov.firebase.internal.data.handler.RegistrationExceptionHandler
@@ -23,7 +27,9 @@ internal class AuthenticationRepositoryImpl(
     private val signInExceptionHandler: SignInExceptionHandler,
     private val resourceManager: ResourceManager,
     private val userRepository: UserRepository,
-    private val dateTimeParser: DateTimeParser
+    private val dateTimeParser: DateTimeParser,
+    private val passwordValidator: PasswordValidator,
+    private val usernameValidator: UsernameValidator
 ): AuthenticationRepository {
 
     override suspend fun registerUser
@@ -32,9 +38,8 @@ internal class AuthenticationRepositoryImpl(
                  password: String,
                  confirmPassword: String
     ): FirebaseUser {
-        if (!checkPassword(password)) throw RegisterException(
-            resourceManager.getString(R.string.weak_password)
-        )
+        validateRegistrationParameter(passwordValidator, password)
+        validateRegistrationParameter(usernameValidator, username)
         if (confirmPassword != password) throw RegisterException(
             resourceManager.getString(R.string.passwords_not_match)
         )
@@ -87,19 +92,13 @@ internal class AuthenticationRepositoryImpl(
         return userRepository.getCurrentUser()
     }
 
-    private fun checkPassword(password: String): Boolean {
-        var hasDigit = false
-        var hasUpperCase = false
-        var hasLowerCase = false
-        for (letter in password) {
-            if (letter.isDigit()) hasDigit = true
-            if (letter.isLowerCase()) hasLowerCase = true
-            if (letter.isUpperCase()) hasUpperCase = true
-        }
-        return hasDigit && hasUpperCase && hasLowerCase
-    }
-
     private fun getDefaultInfo(username: String): String = String.format(DEFAULT_INFO, username)
+
+    private fun validateRegistrationParameter(validator: Validator, param: String) {
+        if (!validator.validate(param)) throw CredentialException(
+            validator.getRequirements()
+        )
+    }
 
     companion object {
         private const val DEFAULT_PROFILE_PICTURE_URL =

@@ -1,22 +1,23 @@
 package ru.kpfu.itis.paramonov.feature_questions.di
 
 import ru.kpfu.itis.paramonov.common.scopes.ApplicationScope
+import ru.kpfu.itis.paramonov.common_android.di.FeatureApiHolder
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import javax.inject.Inject
 
 @ApplicationScope
 class FeatureQuestionsHolder @Inject constructor(
-    dependenciesContainer: FeatureQuestionsDependenciesContainer,
+    private val dependenciesContainer: FeatureQuestionsDependenciesContainer,
     private val mainMenuRouter: MainMenuRouter,
     private val questionsRouter: QuestionsRouter
-): FeatureQuestionsApiHolder(dependenciesContainer){
+): FeatureApiHolder(dependenciesContainer){
     override fun initializeDependencies(): Any {
         val featureQuestionsDependencies = DaggerFeatureQuestionsComponent_FeatureQuestionsDependenciesComponent.builder()
             .commonApi(commonApi())
-            .localDatabaseApi(localDatabaseApi())
-            .questionApi(questionApi())
-            .firebaseApi(firebaseApi())
+            .localDatabaseApi(dependenciesContainer.localDatabaseApi())
+            .questionApi(dependenciesContainer.questionApi())
+            .firebaseApi(dependenciesContainer.firebaseApi())
             .build()
         return DaggerFeatureQuestionsComponent.builder()
             .dependencies(featureQuestionsDependencies)

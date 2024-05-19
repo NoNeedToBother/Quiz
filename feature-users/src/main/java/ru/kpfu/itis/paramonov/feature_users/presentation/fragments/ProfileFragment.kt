@@ -10,6 +10,8 @@ import androidx.appcompat.content.res.AppCompatResources
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.common_android.utils.collect
@@ -33,6 +35,12 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
 
     @Inject
     lateinit var viewModel: ProfileViewModel
+
+    @Inject
+    lateinit var usernameValidator: UsernameValidator
+
+    @Inject
+    lateinit var passwordValidator: PasswordValidator
 
     override fun inject() {
         FeatureUtils.getFeature<FeatureUsersComponent>(this, FeatureUsersDependencies::class.java)
@@ -184,6 +192,7 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
             .setOnPositivePressed {
                 viewModel.saveUserSettings(it)
             }
+            .setUsernameValidator(usernameValidator)
             .build()
             .show(childFragmentManager, ProfileSettingsDialogFragment.SETTINGS_DIALOG_TAG)
     }
@@ -226,13 +235,30 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
     private fun onCredentialsConfirmed() {
         ProfileCredentialsDialogFragment.builder()
             .setOnPositivePressed(object : ProfileCredentialsDialogFragment.OnCredentialsChangedListener {
-                override fun onCredentialsChanged(email: String?, password: String?) {
-                    viewModel.changeCredentials(email, password)
+                override fun onCredentialsChanged(
+                    email: String?,
+                    password: String?,
+                    confirmPassword: String?
+                ) {
+                    if (password != null && confirmPassword != null) {
+                        if (password == confirmPassword) viewModel.changeCredentials(email, password)
+                        else showErrorBottomSheetDialog(
+                            getString(R.string.dialog_incorrect_credentials),
+                            getString(R.string.password_confirm_password_not_match)
+                        )
+                    }
+                    else if (password == null && confirmPassword == null) {
+                        viewModel.changeCredentials(email, null)
+                    } else showErrorBottomSheetDialog(
+                        getString(R.string.credentials_change_failed),
+                        getString(R.string.dialog_incorrect_credentials)
+                    )
                 }
             })
             .setOnDismiss {
                 onDialogDismiss()
             }
+            .setPasswordValidator(passwordValidator)
             .build()
             .show(childFragmentManager, ProfileCredentialsDialogFragment.CREDENTIALS_DIALOG_TAG)
     }

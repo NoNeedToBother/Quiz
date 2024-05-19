@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
+import ru.kpfu.itis.paramonov.common.validators.Validator
 import ru.kpfu.itis.paramonov.firebase.external.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R
@@ -30,7 +33,9 @@ internal class UserRepositoryImpl(
     private val database: FirebaseFirestore,
     private val storage: FirebaseStorage,
     private val dispatcher: CoroutineDispatcher,
-    private val resourceManager: ResourceManager
+    private val resourceManager: ResourceManager,
+    private val passwordValidator: PasswordValidator,
+    private val usernameValidator: UsernameValidator
 ): UserRepository {
 
     override suspend fun updateUser(vararg pairs: Pair<String, Any>): FirebaseUser {
@@ -43,7 +48,12 @@ internal class UserRepositoryImpl(
 
                 when(key) {
                     UpdateKeys.UPDATE_ID_KEY -> updates[DB_ID_FIELD] = value
-                    UpdateKeys.UPDATE_USERNAME_KEY -> updates[DB_USERNAME_FIELD] = value
+                    UpdateKeys.UPDATE_USERNAME_KEY -> {
+                        (value as String).let { u ->
+                            validateParameter(usernameValidator, u)
+                            updates[DB_USERNAME_FIELD] = u
+                        }
+                    }
                     UpdateKeys.UPDATE_PROFILE_PICTURE_KEY -> {
                         updates[DB_PROFILE_PICTURE_FIELD] = when(value) {
                             is Uri -> processProfilePictureUri(it.uid, value)
@@ -72,7 +82,14 @@ internal class UserRepositoryImpl(
         )
     }
 
+    private fun validateParameter(validator: Validator, param: String) {
+        if (!validator.validate(param)) throw UserDataException(
+            validator.getRequirements()
+        )
+    }
+
     override suspend fun updateCredentials(email: String?, password: String?) {
+        password?.let { validateParameter(passwordValidator, it) }
         withContext(dispatcher) {
             val onFailure: () -> Unit = {
                 throw CredentialException(resourceManager.getString(R.string.credential_update_failed))
@@ -177,7 +194,9 @@ internal class UserRepositoryImpl(
                         EventListener<DocumentSnapshot> { value, _ ->
                             value?.let {
                                 launch {
-                                    send(value.getUser())
+                                    try {
+                                        send(value.getUser())
+                                    } catch (_: Throwable) {}
                                 }
                             }
                         }

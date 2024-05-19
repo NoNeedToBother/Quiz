@@ -211,6 +211,31 @@ internal class UserRepositoryImpl(
         }
     }
 
+    override suspend fun findByUsername(username: String, limit: Int): List<FirebaseUser> {
+        return withContext(dispatcher) {
+            val result = database.collection(USERS_COLLECTION_NAME)
+                .orderBy("username")
+                .startAt(username)
+                .endAt("$username~")
+                .get()
+                .waitResult()
+            if (result.isSuccessful) {
+                val res = mutableListOf<FirebaseUser>()
+                val documents = result.result.documents
+                for (doc in documents) {
+                    try {
+                        res.add(doc.getUser())
+                    } catch (_: Throwable) {}
+                }
+                res
+            } else {
+                throw UserDataException(
+                    resourceManager.getString(R.string.find_users_error)
+                )
+            }
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     private fun DocumentSnapshot.getUser(): FirebaseUser {
         val id = data?.get(DB_ID_FIELD) as String

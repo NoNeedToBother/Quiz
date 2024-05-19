@@ -6,4 +6,5 @@ import ru.kpfu.itis.paramonov.firebase.external.domain.api.FirebaseApi
 interface FeatureUsersDependenciesContainer: FeatureContainer {
 
     fun firebaseApi(): FirebaseApi
+
 }

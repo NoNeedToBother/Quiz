@@ -10,6 +10,7 @@ import ru.kpfu.itis.paramonov.firebase.external.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependenciesContainer
+import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependenciesContainer
 import ru.kpfu.itis.paramonov.firebase.external.di.DaggerFirebaseComponent
 import ru.kpfu.itis.paramonov.firebase.external.di.DaggerFirebaseComponent_FirebaseDependenciesComponent
@@ -27,8 +28,8 @@ import ru.kpfu.itis.paramonov.question_api.external.di.QuestionsComponent
 import javax.inject.Inject
 
 class App: Application(), FeatureContainer, FeatureAuthenticationDependenciesContainer,
-    FeatureQuestionsDependenciesContainer, FeatureUsersDependenciesContainer,
-    FeatureLeaderboardsDependenciesContainer {
+    FeatureQuestionsDependenciesContainer, FeatureProfilesDependenciesContainer,
+    FeatureLeaderboardsDependenciesContainer, FeatureUsersDependenciesContainer {
     @Inject
     lateinit var featureHolderManager: FeatureHolderManager
 

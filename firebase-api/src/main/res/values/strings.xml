@@ -20,4 +20,5 @@
     <string name="incorrect_credentials">Incorrect credentials</string>
     <string name="result_data_failed">Couldn\'t get result data, try again later</string>
     <string name="friend_req_fail">Unable to send friend request</string>
+    <string name="find_users_error">Failed when trying to find users</string>
 </resources>

@@ -17,4 +17,6 @@ interface UserRepository {
     suspend fun getUser(id: String): FirebaseUser?
 
     suspend fun subscribeToProfileUpdates(): Flow<FirebaseUser>
+
+    suspend fun findByUsername(username: String, limit: Int): List<FirebaseUser>
 }

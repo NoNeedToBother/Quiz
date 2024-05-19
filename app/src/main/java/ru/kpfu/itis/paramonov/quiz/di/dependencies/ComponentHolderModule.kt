@@ -16,6 +16,9 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsHolder
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsHolder
+import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesDependencies
+import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesDependenciesContainer
+import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesHolder
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependencies
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersHolder
@@ -38,11 +41,15 @@ interface ComponentHolderModule {
 
     @ApplicationScope
     @Binds
-    fun featureUsersDependenciesContainer(application: App): FeatureUsersDependenciesContainer
+    fun featureProfilesDependenciesContainer(application: App): FeatureProfilesDependenciesContainer
 
     @ApplicationScope
     @Binds
     fun featureLeaderboardsDependenciesContainer(application: App): FeatureLeaderboardsDependenciesContainer
+
+    @ApplicationScope
+    @Binds
+    fun featureUsersDependenciesContainer(application: App): FeatureUsersDependenciesContainer
 
     @ApplicationScope
     @Binds
@@ -58,13 +65,19 @@ interface ComponentHolderModule {
 
     @ApplicationScope
     @Binds
-    @ClassKey(FeatureUsersDependencies::class)
+    @ClassKey(FeatureProfilesDependencies::class)
     @IntoMap
-    fun usersFeatureHolder(usersFeatureHolder: FeatureUsersHolder): FeatureApiHolder
+    fun profilesFeatureHolder(profilesFeatureHolder: FeatureProfilesHolder): FeatureApiHolder
 
     @ApplicationScope
     @Binds
     @ClassKey(FeatureLeaderboardsDependencies::class)
     @IntoMap
     fun leaderboardsFeatureHolder(leaderboardsFeatureHolder: FeatureLeaderboardsHolder): FeatureApiHolder
+
+    @ApplicationScope
+    @Binds
+    @ClassKey(FeatureUsersDependencies::class)
+    @IntoMap
+    fun usersFeatureHolder(usersFeatureHolder: FeatureUsersHolder): FeatureApiHolder
 }

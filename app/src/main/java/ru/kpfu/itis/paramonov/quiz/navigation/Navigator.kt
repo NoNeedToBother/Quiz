@@ -5,7 +5,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import ru.kpfu.itis.paramonov.common.exception.UnsupportedArgumentException
-import ru.kpfu.itis.paramonov.feature_users.presentation.fragments.OtherUserProfileFragment
+import ru.kpfu.itis.paramonov.feature_profiles.presentation.fragments.OtherUserProfileFragment
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter

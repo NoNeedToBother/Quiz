@@ -1,11 +1,12 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
-import ru.kpfu.itis.paramonov.common_android.utils.emitException
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetDifficultyUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetFriendsLeaderboardUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGameModeUseCase
@@ -18,7 +19,7 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiMo
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.SettingUiModel
 import ru.kpfu.itis.paramonov.navigation.UserRouter
 
-class LeaderboardsViewModel(
+class LeaderboardViewModel(
     private val getGlobalLeaderboardUseCase: GetGlobalLeaderboardUseCase,
     private val getFriendsLeaderboardUseCase: GetFriendsLeaderboardUseCase,
     private val getGameModeUseCase: GetGameModeUseCase,
@@ -26,13 +27,21 @@ class LeaderboardsViewModel(
     private val userRouter: UserRouter
 ): BaseViewModel() {
 
-    private val _globalLeaderboardDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
+    /*private val _globalLeaderboardDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
 
     private val globalLeaderboardDataFlow: StateFlow<LeaderboardDataResult?> get() = _globalLeaderboardDataFlow
 
     private val _friendsLeaderboardDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
 
-    private val friendsLeaderboardDataFlow: StateFlow<LeaderboardDataResult?> get() = _friendsLeaderboardDataFlow
+    private val friendsLeaderboardDataFlow: StateFlow<LeaderboardDataResult?> get() = _friendsLeaderboardDataFlow*/
+
+    private var globalLeaderboardDataFlow: StateFlow<PagingData<ResultUiModel>>? = null
+
+    //private val globalLeaderboardDataFlow: StateFlow<LeaderboardDataResult?> get() = _globalLeaderboardDataFlow
+
+    //private val _friendsLeaderboardDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
+
+    private var friendsLeaderboardDataFlow: StateFlow<PagingData<ResultUiModel>>? = null
 
     private val _settingsDataFlow = MutableStateFlow<SettingUiModel?>(null)
 
@@ -68,21 +77,22 @@ class LeaderboardsViewModel(
         }
     }
 
-    fun getResultsOnStart(type: LeaderboardFragment.LeaderboardType, max: Int) {
+    fun getResultsOnStart(type: LeaderboardFragment.LeaderboardType) {
         when(type) {
-            LeaderboardFragment.LeaderboardType.GLOBAL -> getGlobalLeaderboardOnStart(max)
-            LeaderboardFragment.LeaderboardType.FRIENDS -> getFriendsLeaderboardOnStart(max)
+            LeaderboardFragment.LeaderboardType.GLOBAL -> getGlobalLeaderboardOnStart()
+            LeaderboardFragment.LeaderboardType.FRIENDS -> getFriendsLeaderboardOnStart()
         }
     }
 
-    fun getResultsAfterCleared(type: LeaderboardFragment.LeaderboardType, max: Int) {
+    fun getResultsAfterCleared(type: LeaderboardFragment.LeaderboardType) {
         when(type) {
-            LeaderboardFragment.LeaderboardType.GLOBAL -> getGlobalLeaderboardAfterCleared(max)
-            LeaderboardFragment.LeaderboardType.FRIENDS -> getFriendsLeaderboardAfterCleared(max)
+            LeaderboardFragment.LeaderboardType.GLOBAL -> getGlobalLeaderboardAfterCleared()
+            LeaderboardFragment.LeaderboardType.FRIENDS -> getFriendsLeaderboardAfterCleared()
         }
     }
 
-    private fun checkLeaderboard(results: List<ResultUiModel>): Boolean {
+    /*private fun checkLeaderboard(results: PagingData<ResultUiModel>): Boolean {
+
         if (results.isEmpty()) return true
         val currentSettings = _settingsDataFlow.value
         val result = results[0]
@@ -96,72 +106,76 @@ class LeaderboardsViewModel(
             }
         }
         return true
-    }
-    private fun getFriendsLeaderboardAfterCleared(max: Int) {
+    }*/
+    private fun getFriendsLeaderboardAfterCleared() {
         viewModelScope.launch {
             try {
-                val leaderboard = getFriendsLeaderboardUseCase.invoke(
+                val leaderboardFlow = getFriendsLeaderboardUseCase.invoke(
                     gameModeUiModel = _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke(),
                     difficultyUiModel = _settingsDataFlow.value?.difficulty,
                     categoryUiModel = _settingsDataFlow.value?.category,
-                    max = max, afterScore = null
+                    afterScore = null, scope = viewModelScope
                 )
-                if (checkLeaderboard(leaderboard))
-                    _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
+                friendsLeaderboardDataFlow = leaderboardFlow
+                //if (checkLeaderboard(leaderboard))
+                //    _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
+                //_friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }
 
-    private fun getGlobalLeaderboardAfterCleared(max: Int) {
+    private fun getGlobalLeaderboardAfterCleared() {
         viewModelScope.launch {
             try {
-                val leaderboard = getGlobalLeaderboardUseCase.invoke(
+                val leaderboardFlow = getGlobalLeaderboardUseCase.invoke(
                     gameModeUiModel = _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke(),
                     difficultyUiModel = _settingsDataFlow.value?.difficulty,
                     categoryUiModel = _settingsDataFlow.value?.category,
-                    max = max, afterScore = null
+                    afterScore = null, scope = viewModelScope
                 )
-                if (checkLeaderboard(leaderboard))
-                    _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
+                globalLeaderboardDataFlow = leaderboardFlow
+                //if (checkLeaderboard(leaderboard))
+                //    _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
+                //_globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }
 
-    private fun getGlobalLeaderboardOnStart(max: Int) {
+    private fun getGlobalLeaderboardOnStart() {
         viewModelScope.launch {
             sendInitialSettingData()
             try {
-                val leaderboard = getGlobalLeaderboardUseCase.invoke(
+                val leaderboardFlow = getGlobalLeaderboardUseCase.invoke(
                     gameModeUiModel = _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke(),
                     difficultyUiModel = _settingsDataFlow.value?.difficulty ?: getDifficultyUseCase.invoke(),
                     categoryUiModel = _settingsDataFlow.value?.category,
-                    max = max, afterScore = null
+                    afterScore = null, scope = viewModelScope
                 )
-                if (checkLeaderboard(leaderboard))
-                    _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
+                globalLeaderboardDataFlow = leaderboardFlow
+                //if (checkLeaderboard(leaderboard))
+                //    _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
+                //_globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }
 
-    private fun getFriendsLeaderboardOnStart(max: Int) {
+    private fun getFriendsLeaderboardOnStart() {
         viewModelScope.launch {
             try {
-                val leaderboard = getFriendsLeaderboardUseCase.invoke(
+                val leaderboardFlow = getFriendsLeaderboardUseCase.invoke(
                     gameModeUiModel = _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke(),
                     difficultyUiModel = _settingsDataFlow.value?.difficulty ?: getDifficultyUseCase.invoke(),
                     categoryUiModel = _settingsDataFlow.value?.category,
-                    max = max, afterScore = null
+                    afterScore = null, scope = viewModelScope
                 )
-                if (checkLeaderboard(leaderboard))
-                    _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
+                friendsLeaderboardDataFlow = leaderboardFlow
+                //if (checkLeaderboard(leaderboard))
+                //    _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
+                //_friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }
@@ -174,45 +188,45 @@ class LeaderboardsViewModel(
         )
     }
 
-    fun getDataFlow(type: LeaderboardFragment.LeaderboardType): StateFlow<LeaderboardDataResult?> {
+    fun getDataFlow(type: LeaderboardFragment.LeaderboardType): Flow<PagingData<ResultUiModel>>? {
         return when(type) {
             LeaderboardFragment.LeaderboardType.GLOBAL -> globalLeaderboardDataFlow
             LeaderboardFragment.LeaderboardType.FRIENDS -> friendsLeaderboardDataFlow
         }
     }
 
-    fun loadNextResults(type: LeaderboardFragment.LeaderboardType, max: Int, startAfter: Double) {
+    /*fun loadNextResults(type: LeaderboardFragment.LeaderboardType, startAfter: Double) {
         when(type) {
-            LeaderboardFragment.LeaderboardType.GLOBAL -> loadNextGlobalResults(max, startAfter)
-            LeaderboardFragment.LeaderboardType.FRIENDS -> loadNextFriendsResults(max, startAfter)
+            LeaderboardFragment.LeaderboardType.GLOBAL -> loadNextGlobalResults(startAfter)
+            LeaderboardFragment.LeaderboardType.FRIENDS -> loadNextFriendsResults(startAfter)
         }
     }
 
-    private fun loadNextFriendsResults(max: Int, startAfter: Double) {
+    private fun loadNextFriendsResults(startAfter: Double) {
         viewModelScope.launch {
             try {
                 val leaderboard = getFriendsLeaderboardUseCase.invoke(
                     gameModeUiModel = _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke(),
                     difficultyUiModel = _settingsDataFlow.value?.difficulty,
                     categoryUiModel = _settingsDataFlow.value?.category,
-                    max = max, afterScore = startAfter
+                    afterScore = startAfter
                 )
-                if (checkLeaderboard(leaderboard))
-                    _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
+                //if (checkLeaderboard(leaderboard))
+                //    _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
             } catch (ex: Throwable) {
-                _friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
+                //_friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
     }
 
-    private fun loadNextGlobalResults(max: Int, startAfter: Double) {
+    private fun loadNextGlobalResults(startAfter: Double) {
         viewModelScope.launch {
             try {
                 val leaderboard = getGlobalLeaderboardUseCase.invoke(
                     gameModeUiModel = _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke(),
                     difficultyUiModel = _settingsDataFlow.value?.difficulty,
                     categoryUiModel = _settingsDataFlow.value?.category,
-                    max = max, afterScore = startAfter
+                    afterScore = startAfter
                 )
                 if (checkLeaderboard(leaderboard))
                     _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
@@ -220,7 +234,7 @@ class LeaderboardsViewModel(
                 _globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
             }
         }
-    }
+    }*/
 
     sealed interface LeaderboardDataResult: Result {
         class Success(private val result: List<ResultUiModel>): LeaderboardDataResult,

@@ -12,7 +12,7 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetDifficultyU
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetFriendsLeaderboardUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGameModeUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGlobalLeaderboardUseCase
-import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel.LeaderboardsViewModel
+import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel.LeaderboardViewModel
 import ru.kpfu.itis.paramonov.navigation.UserRouter
 
 @Module(
@@ -23,13 +23,13 @@ import ru.kpfu.itis.paramonov.navigation.UserRouter
 class LeaderboardsModule {
 
     @Provides
-    fun globalLeaderboardViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): LeaderboardsViewModel {
-        return ViewModelProvider(fragment, factory)[LeaderboardsViewModel::class.java]
+    fun globalLeaderboardViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): LeaderboardViewModel {
+        return ViewModelProvider(fragment, factory)[LeaderboardViewModel::class.java]
     }
 
     @Provides
     @IntoMap
-    @ViewModelKey(LeaderboardsViewModel::class)
+    @ViewModelKey(LeaderboardViewModel::class)
     fun provideGlobalLeaderboardViewModel(
         getGlobalLeaderboardUseCase: GetGlobalLeaderboardUseCase,
         getFriendsLeaderboardUseCase: GetFriendsLeaderboardUseCase,
@@ -37,7 +37,7 @@ class LeaderboardsModule {
         getDifficultyUseCase: GetDifficultyUseCase,
         userRouter: UserRouter
     ): ViewModel {
-        return LeaderboardsViewModel(
+        return LeaderboardViewModel(
             getGlobalLeaderboardUseCase = getGlobalLeaderboardUseCase,
             getFriendsLeaderboardUseCase = getFriendsLeaderboardUseCase,
             getGameModeUseCase = getGameModeUseCase,

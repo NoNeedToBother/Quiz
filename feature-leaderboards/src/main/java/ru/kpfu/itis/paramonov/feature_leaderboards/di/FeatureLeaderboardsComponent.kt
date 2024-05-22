@@ -10,6 +10,9 @@ import ru.kpfu.itis.paramonov.navigation.UserRouter
 import ru.kpfu.itis.paramonov.common.scopes.FeatureScope
 
 @Component(
+    modules = [
+        FeatureLeaderboardsModule::class
+    ],
     dependencies = [
         FeatureLeaderboardsDependencies::class
     ]

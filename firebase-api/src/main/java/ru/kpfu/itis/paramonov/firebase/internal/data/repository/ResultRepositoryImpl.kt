@@ -28,7 +28,6 @@ internal class ResultRepositoryImpl(
         gameMode: GameMode,
         difficulty: Difficulty?,
         category: Category?,
-        max: Int,
         afterScore: Double?
     ): List<Result> {
         return withContext(dispatcher) {
@@ -36,7 +35,7 @@ internal class ResultRepositoryImpl(
                 gameMode = gameMode, difficulty = difficulty,
                 category = category, afterScore = afterScore
             )
-            executeResultQueryAndGetResult(query, max)
+            executeResultQueryAndGetResult(query)
         }
     }
 
@@ -44,7 +43,6 @@ internal class ResultRepositoryImpl(
         gameMode: GameMode,
         difficulty: Difficulty?,
         category: Category?,
-        max: Int,
         afterScore: Double?
     ): List<Result> {
         return withContext(dispatcher) {
@@ -58,14 +56,14 @@ internal class ResultRepositoryImpl(
             }
             else {
                 query = query.whereIn(DB_USER_ID_FIELD, friendList)
-                executeResultQueryAndGetResult(query, max)
+                executeResultQueryAndGetResult(query)
             }
         }
     }
 
-    private suspend fun executeResultQueryAndGetResult(query: Query, max: Int): List<Result> {
+    private suspend fun executeResultQueryAndGetResult(query: Query): List<Result> {
         val task = query.orderBy(DB_SCORE_FIELD, Query.Direction.DESCENDING)
-            .limit(max.toLong())
+            .limit(PAGE_SIZE.toLong())
             .get()
             .waitResult()
 
@@ -185,5 +183,7 @@ internal class ResultRepositoryImpl(
 
         private const val BLITZ_FACTOR = (1).toDouble() / 10 / 5
         private const val MAX_SCORE = 10
+
+        private const val PAGE_SIZE = 5
     }
 }

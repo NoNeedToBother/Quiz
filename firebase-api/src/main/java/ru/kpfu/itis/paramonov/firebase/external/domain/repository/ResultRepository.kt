@@ -10,13 +10,13 @@ interface ResultRepository {
     suspend fun getGlobalResults(gameMode: GameMode,
                                  difficulty: Difficulty?,
                                  category: Category?,
-                                 max: Int, afterScore: Double?
+                                 afterScore: Double?
     ): List<Result>
 
     suspend fun getFriendsResults(gameMode: GameMode,
                                   difficulty: Difficulty?,
                                   category: Category?,
-                                  max: Int, afterScore: Double?
+                                  afterScore: Double?
     ): List<Result>
 
     suspend fun save(result: Result): Double

@@ -5,7 +5,7 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiMo
 
 class ResultDiffUtilCallback: DiffUtil.ItemCallback<ResultUiModel>() {
     override fun areItemsTheSame(oldItem: ResultUiModel, newItem: ResultUiModel): Boolean {
-        return oldItem == newItem
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: ResultUiModel, newItem: ResultUiModel): Boolean {

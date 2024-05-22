@@ -1,35 +1,35 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments
 
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.utils.collect
-import ru.kpfu.itis.paramonov.common_android.utils.gone
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.FragmentLeaderboardBinding
-import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.adapter.LeaderboardResultAdapter
+import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.adapter.LeaderboardResultPagingAdapter
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.adapter.diffutil.ResultDiffUtilCallback
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiModel
-import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel.LeaderboardsViewModel
+import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel.LeaderboardViewModel
 import javax.inject.Inject
 
 class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
 
     private val binding: FragmentLeaderboardBinding by viewBinding(FragmentLeaderboardBinding::bind)
 
-    private var adapter: LeaderboardResultAdapter? = null
+    private var adapter: LeaderboardResultPagingAdapter? = null
 
     @Inject
-    lateinit var viewModel: LeaderboardsViewModel
+    lateinit var viewModel: LeaderboardViewModel
 
     @Inject
     lateinit var resourceManager: ResourceManager
-
-    private var currentResultCount = 0
 
     private val type: LeaderboardType get() {
         return LeaderboardType.valueOf(requireArguments().getString(TYPE_KEY)
@@ -51,18 +51,16 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
 
     private fun initRecyclerView() {
         with(binding) {
-            val adapter = LeaderboardResultAdapter(
+            val adapter = LeaderboardResultPagingAdapter(
                 ResultDiffUtilCallback(), resourceManager, ::onResultClicked)
             this@LeaderboardFragment.adapter = adapter
             rvResults.adapter = adapter
             val layoutManager = LinearLayoutManager(requireContext())
             rvResults.layoutManager = layoutManager
-            addLastElementRecyclerViewListener()
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun addLastElementRecyclerViewListener() {
+    /*private fun addLastElementRecyclerViewListener() {
         with(binding.rvResults) {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -70,46 +68,47 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
                     if (layoutManager.itemCount > 0) {
                         val lastItem = layoutManager.findLastVisibleItemPosition()
                         if (lastItem >= layoutManager.itemCount - 1
-                            && currentResultCount <= LEADERBOARD_ABSOLUTE_MAX
+                           && currentResultCount <= LEADERBOARD_ABSOLUTE_MAX
                         ) {
-                            viewModel.loadNextResults(
-                                type, LEADERBOARD_MAX_AT_ONCE,
-                                (adapter as ListAdapter<ResultUiModel, *>).currentList[lastItem].score
-                            )
+                            (adapter as LeaderboardResultPagingAdapter).peek(lastItem)?.let {  last ->
+                                viewModel.loadNextResults(type, last.score)
+                            }
                         }
                     }
                 }
             })
         }
-    }
+    }*/
 
     override fun observeData() {
-        viewModel.getResultsOnStart(type, LEADERBOARD_MAX_AT_ONCE)
+        viewModel.getResultsOnStart(type)
 
-        viewModel.getDataFlow(type)
-            .collect(lifecycleOwner = viewLifecycleOwner) {
-                collectResultData(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
+                viewModel.getDataFlow(type)?.collectLatest {
+                    adapter?.submitData(it)
+                }
             }
+        }
 
         viewModel.clearLeaderboardFlow
             .collect(lifecycleOwner = viewLifecycleOwner) {
                 collectClearingLeaderboard(it)
             }
-    }
+        }
 
     private fun collectClearingLeaderboard(cleared: Boolean) {
         if (cleared) {
-            adapter?.submitList(null)
             viewModel.onLeaderboardCleared()
-            viewModel.getResultsAfterCleared(type, LEADERBOARD_MAX_AT_ONCE)
+            viewModel.getResultsAfterCleared(type)
         }
     }
 
-    private fun collectResultData(result: LeaderboardsViewModel.LeaderboardDataResult?) {
+    private fun collectResultData(result: LeaderboardViewModel.LeaderboardDataResult?) {
         result?.let {
             when (result) {
-                is LeaderboardsViewModel.LeaderboardDataResult.Success -> addResults(result.getValue())
-                is LeaderboardsViewModel.LeaderboardDataResult.Failure -> onGetResultsFail(result.getException())
+                is LeaderboardViewModel.LeaderboardDataResult.Success -> addResults(result.getValue())
+                is LeaderboardViewModel.LeaderboardDataResult.Failure -> onGetResultsFail(result.getException())
             }
         }
     }
@@ -122,7 +121,8 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
     }
 
     private fun addResults(results: List<ResultUiModel>) {
-        binding.layoutProceeding.root.gone()
+        //binding.layoutProceeding.root.gone()
+        /*adapter?.
         val adapterList = adapter?.currentList ?: mutableListOf()
         var newList: MutableList<ResultUiModel> = ArrayList(adapterList)
         newList.addAll(results)
@@ -130,7 +130,7 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
             it.score
         })
         currentResultCount = newList.size
-        adapter?.submitList(newList)
+        adapter?.submitList(newList)*/
     }
 
     enum class LeaderboardType {
@@ -143,8 +143,6 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
         fun newInstance(type: LeaderboardType): LeaderboardFragment = LeaderboardFragment().apply {
             arguments = bundleOf(TYPE_KEY to type.name)
         }
-
-        private const val LEADERBOARD_MAX_AT_ONCE = 10
 
         private const val LEADERBOARD_ABSOLUTE_MAX = 500
     }

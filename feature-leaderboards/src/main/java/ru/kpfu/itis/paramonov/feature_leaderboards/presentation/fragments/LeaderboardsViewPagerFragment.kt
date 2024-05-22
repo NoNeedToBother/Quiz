@@ -29,7 +29,7 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.SettingUiM
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.items.CategoryItem
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.items.DifficultyItem
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.items.GameModeItem
-import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel.LeaderboardsViewModel
+import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel.LeaderboardViewModel
 import javax.inject.Inject
 
 class LeaderboardsViewPagerFragment: BaseFragment(R.layout.fragment_leaderboards_view_pager) {
@@ -39,7 +39,7 @@ class LeaderboardsViewPagerFragment: BaseFragment(R.layout.fragment_leaderboards
     lateinit var leaderboardsComponent: LeaderboardsComponent
 
     @Inject
-    lateinit var viewModel: LeaderboardsViewModel
+    lateinit var viewModel: LeaderboardViewModel
 
     override fun inject() {
         leaderboardsComponent =

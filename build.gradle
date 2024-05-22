@@ -52,6 +52,9 @@ buildscript {
 
         glideVersion = "4.16.0"
         glide = "com.github.bumptech.glide:glide:$glideVersion"
+
+        pagingVersion = "3.3.0"
+        paging = "androidx.paging:paging-runtime:$pagingVersion"
     }
 
     repositories {

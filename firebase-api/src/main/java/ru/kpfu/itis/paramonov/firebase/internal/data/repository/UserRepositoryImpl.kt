@@ -211,12 +211,13 @@ internal class UserRepositoryImpl(
         }
     }
 
-    override suspend fun findByUsername(username: String, limit: Int): List<FirebaseUser> {
+    override suspend fun findByUsername(username: String): List<FirebaseUser> {
         return withContext(dispatcher) {
             val result = database.collection(USERS_COLLECTION_NAME)
                 .orderBy("username")
                 .startAt(username)
                 .endAt("$username~")
+                .limit(FIND_USER_LIMIT.toLong())
                 .get()
                 .waitResult()
             if (result.isSuccessful) {
@@ -261,5 +262,6 @@ internal class UserRepositoryImpl(
         private const val DB_REQUESTS_FIELD = "requestsFrom"
 
         private const val PROFILE_PICTURE_STORAGE_REF = "profiles/%s.png"
+        private const val FIND_USER_LIMIT = 10
     }
 }

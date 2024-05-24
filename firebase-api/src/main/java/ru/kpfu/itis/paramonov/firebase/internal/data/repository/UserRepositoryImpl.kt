@@ -190,12 +190,10 @@ internal class UserRepositoryImpl(
         return withContext(dispatcher) {
             getCurrentUser()?.let { user ->
                 callbackFlow {
-                    val listener =
-                        EventListener<DocumentSnapshot> { value, _ ->
+                    val listener = EventListener<DocumentSnapshot> { value, _ ->
                             value?.let {
                                 launch {
-                                    try {
-                                        send(value.getUser())
+                                    try { send(value.getUser())
                                     } catch (_: Throwable) {}
                                 }
                             }
@@ -211,14 +209,21 @@ internal class UserRepositoryImpl(
         }
     }
 
-    override suspend fun findByUsername(username: String, limit: Int): List<FirebaseUser> {
+    override suspend fun findByUsername(username: String, max: Int, lastId: String?): List<FirebaseUser> {
         return withContext(dispatcher) {
-            val result = database.collection(USERS_COLLECTION_NAME)
-                .orderBy("username")
-                .startAt(username)
-                .endAt("$username~")
+            var query = database.collection(USERS_COLLECTION_NAME)
+                .orderBy(DB_ID_FIELD)
+                .whereGreaterThanOrEqualTo(DB_USERNAME_FIELD, username)
+                .whereLessThanOrEqualTo(DB_USERNAME_FIELD, "$username~")
+            lastId?.let {
+                query = query
+                    .whereGreaterThan(DB_ID_FIELD, it)
+            }
+            val result = query
+                .limit(max.toLong())
                 .get()
                 .waitResult()
+
             if (result.isSuccessful) {
                 val res = mutableListOf<FirebaseUser>()
                 val documents = result.result.documents

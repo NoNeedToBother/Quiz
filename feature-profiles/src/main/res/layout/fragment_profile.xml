@@ -6,27 +6,27 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_settings"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="@dimen/profile_settings_size"
+        android:layout_height="@dimen/profile_settings_size"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/settings_anim"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginTop="@dimen/extra_small_margin"
+        android:layout_marginHorizontal="@dimen/small_margin"
         />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_profile_picture"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="@dimen/profile_picture_size"
+        android:layout_height="@dimen/profile_picture_size"
         app:shapeAppearanceOverlay="@style/circleImageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="@dimen/small_margin"/>
 
     <androidx.constraintlayout.widget.Guideline
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_size"
         android:layout_height="wrap_content"
         android:orientation="vertical"/>
 
@@ -38,8 +38,8 @@
         app:layout_constraintBottom_toBottomOf="@id/iv_profile_picture"
         android:backgroundTint="@color/fab_change_photo_color"
         android:src="@drawable/photo"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginTop="@dimen/extra_small_margin"
+        android:layout_marginStart="@dimen/extra_small_margin"
         android:contentDescription="@string/submit_photo"
         android:visibility="gone"/>
 
@@ -49,8 +49,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/iv_profile_picture"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_marginTop="12dp"
-        android:layout_marginHorizontal="80dp">
+        android:layout_marginTop="@dimen/extra_small_margin"
+        android:layout_marginHorizontal="@dimen/profile_default_margin_horizontal">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_username"
             android:layout_width="match_parent"
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/til_username"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_marginHorizontal="80dp">
+        android:layout_marginHorizontal="@dimen/profile_default_margin_horizontal">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_registration_date"
             android:layout_width="match_parent"
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/til_registration_date"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_marginHorizontal="40dp">
+        android:layout_marginHorizontal="@dimen/profile_info_margin_horizontal">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_info"
             android:layout_width="match_parent"
@@ -96,14 +96,14 @@
         android:id="@+id/btn_requests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="80dp"
+        android:layout_marginHorizontal="@dimen/profile_default_margin_horizontal"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/check_requests"
         android:visibility="gone"
-        android:layout_marginBottom="68dp"/>
+        android:layout_marginBottom="@dimen/profile_requests_margin_bottom"/>
 
     <ru.kpfu.itis.paramonov.common_android.ui.views.CircleTextView
         android:id="@+id/ctv_requests"
@@ -112,7 +112,7 @@
         app:color="@color/red"
         app:layout_constraintTop_toTopOf="@id/btn_requests"
         app:layout_constraintEnd_toEndOf="@id/btn_requests"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/extra_small_margin"
         android:textColor="@color/white"
         android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

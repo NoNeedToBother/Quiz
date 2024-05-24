@@ -4,6 +4,7 @@ import dagger.BindsInstance
 import dagger.Component
 import ru.kpfu.itis.paramonov.common.api.CommonApi
 import ru.kpfu.itis.paramonov.common.scopes.FeatureScope
+import ru.kpfu.itis.paramonov.feature_users.presentation.di.SearchUsersComponent
 import ru.kpfu.itis.paramonov.firebase.external.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.navigation.UserRouter
 
@@ -14,6 +15,8 @@ import ru.kpfu.itis.paramonov.navigation.UserRouter
 )
 @FeatureScope
 interface FeatureUsersComponent {
+
+    fun searchUsersComponentFactory(): SearchUsersComponent.Factory
 
     @Component.Builder
     interface Builder {

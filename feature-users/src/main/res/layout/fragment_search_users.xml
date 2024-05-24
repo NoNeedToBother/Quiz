@@ -3,21 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginHorizontal="@dimen/small_margin">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:labelFor="@id/sv_username"
         android:text="@string/search_users"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="@dimen/search_users_fragment_margin_top"/>
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/sv_username"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_marginHorizontal="24dp"
+        android:layout_height="@dimen/search_view_height"
         android:background="@drawable/search_view_bg"
         app:queryHint="@string/search_users"
         app:iconifiedByDefault="false"
@@ -27,6 +26,6 @@
         android:id="@+id/rv_users"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="24dp"/>
+        android:layout_marginTop="@dimen/search_users_fragment_margin_top"/>
 
 </LinearLayout>

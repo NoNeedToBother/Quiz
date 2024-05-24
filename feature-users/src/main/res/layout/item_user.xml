@@ -11,18 +11,18 @@
         app:shapeAppearanceOverlay="@style/circleImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginVertical="24dp"
-        android:layout_marginHorizontal="24dp"/>
+        android:layout_marginVertical="@dimen/small_margin"
+        android:layout_marginHorizontal="@dimen/small_margin"/>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_size"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@+id/iv_profile_picture"
         app:layout_constraintBottom_toBottomOf="@id/iv_profile_picture"
         app:layout_constraintStart_toEndOf="@id/iv_profile_picture"
         app:layout_constraintEnd_toEndOf="parent"
         android:orientation="vertical"
-        android:layout_marginHorizontal="16dp">
+        android:layout_marginHorizontal="@dimen/extra_small_margin">
 
         <TextView
             android:id="@+id/tv_username"
@@ -37,7 +37,6 @@
             android:id="@+id/tv_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_weight="2"
             android:layout_marginStart="4dp"/>
     </LinearLayout>

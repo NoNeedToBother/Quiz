@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialog_margin_horizontal">44dp</dimen>
+    <dimen name="dialog_margin_top">12dp</dimen>
+    <dimen name="profile_picture_size">200dp</dimen>
+    <dimen name="profile_settings_size">44dp</dimen>
+    <dimen name="profile_default_margin_horizontal">80dp</dimen>
+    <dimen name="profile_info_margin_horizontal">40dp</dimen>
+    <dimen name="profile_requests_margin_bottom">68dp</dimen>
+    <dimen name="dialog_credentials_warning_margin_horizontal">68dp</dimen>
+    <dimen name="dialog_requests_button_size">40dp</dimen>
+</resources>

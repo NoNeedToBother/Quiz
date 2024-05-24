@@ -8,7 +8,7 @@
         android:id="@+id/tl_labels"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="12dp"
+        android:layout_marginHorizontal="@dimen/extra_small_margin"
         app:layout_constraintTop_toTopOf="parent"
         app:tabMode="fixed"
         android:background="@drawable/tab_bg"
@@ -22,10 +22,10 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_leaderboards"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/zero_size"
         app:layout_constraintTop_toBottomOf="@+id/tl_labels"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/setting_sheet_peek_height"/>
+        android:layout_marginBottom="@dimen/settings_sheet_peek_height"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/cl_settings"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="MainMenuItem">
-        <item name="android:textSize">52sp</item>
+        <item name="android:textSize">@dimen/main_menu_button_text_size</item>
         <item name="android:fontFamily">@font/stardos_stencil_bold</item>
         <item name="android:textColor">@color/black</item>
     </style>

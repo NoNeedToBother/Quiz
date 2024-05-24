@@ -209,17 +209,18 @@ internal class UserRepositoryImpl(
         }
     }
 
-    override suspend fun findByUsername(username: String, lastId: String?): List<FirebaseUser> {
+    override suspend fun findByUsername(username: String, max: Int, lastId: String?): List<FirebaseUser> {
         return withContext(dispatcher) {
             var query = database.collection(USERS_COLLECTION_NAME)
                 .orderBy(DB_ID_FIELD)
                 .whereGreaterThanOrEqualTo(DB_USERNAME_FIELD, username)
+                .whereLessThanOrEqualTo(DB_USERNAME_FIELD, "$username~")
             lastId?.let {
                 query = query
                     .whereGreaterThan(DB_ID_FIELD, it)
             }
             val result = query
-                .limit(FIND_USER_LIMIT.toLong())
+                .limit(max.toLong())
                 .get()
                 .waitResult()
 
@@ -265,6 +266,5 @@ internal class UserRepositoryImpl(
         private const val DB_REQUESTS_FIELD = "requestsFrom"
 
         private const val PROFILE_PICTURE_STORAGE_REF = "profiles/%s.png"
-        private const val FIND_USER_LIMIT = 2
     }
 }

@@ -13,9 +13,9 @@ class SearchUsersUseCase @Inject constructor(
     private val userUiModelMapper: UserUiModelMapper
 ) {
 
-    suspend operator fun invoke(username: String, lastId: String?): List<UserModel> {
+    suspend operator fun invoke(username: String, max: Int, lastId: String?): List<UserModel> {
         return withContext(dispatcher) {
-            userRepository.findByUsername(username, lastId)
+            userRepository.findByUsername(username, max, lastId)
                 .map {
                     user -> userUiModelMapper.map(user)
                 }

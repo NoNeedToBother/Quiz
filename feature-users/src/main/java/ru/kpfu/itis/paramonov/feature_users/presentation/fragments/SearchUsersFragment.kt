@@ -62,7 +62,7 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
                     }
                     lastTime = currentTime
                     timer.schedule(timerTask {
-                        viewModel.searchUsers(it, null)
+                        viewModel.searchUsers(it, MAX_USER_AMOUNT, null)
                     }, MIN_TIME_BETWEEN_REGISTERING)
                 }
                 return true
@@ -95,7 +95,7 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
                         val lastItemPos = layoutManager.findLastVisibleItemPosition()
                         val lastItem = (adapter as ListAdapter<UserModel, *>).currentList[lastItemPos]
                         if (lastItemPos >= layoutManager.itemCount - 1) {
-                            viewModel.loadNextUsers(lastItem.username, lastItem.id)
+                            viewModel.loadNextUsers(lastItem.username, MAX_USER_AMOUNT,  lastItem.id)
                         }
                     }
                 }
@@ -151,7 +151,6 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
     }
 
     private fun onSearchUsersSuccess(users: List<UserModel>) {
-        adapter?.submitList(null)
         adapter?.submitList(users)
     }
 
@@ -163,7 +162,7 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
     }
 
     companion object {
-        private const val MAX_USER_AMOUNT = 2
+        private const val MAX_USER_AMOUNT = 15
 
         private const val MIN_TIME_BETWEEN_REGISTERING = 400L
 

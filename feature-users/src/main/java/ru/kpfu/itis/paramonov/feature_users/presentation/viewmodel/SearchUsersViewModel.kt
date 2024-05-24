@@ -23,10 +23,10 @@ class SearchUsersViewModel(
 
     val searchUsersPagingFlow: StateFlow<SearchUsersResult?> get() = _searchUsersPagingFlow
 
-    fun searchUsers(username: String, lastId: String?) {
+    fun searchUsers(username: String, max: Int, lastId: String?) {
         viewModelScope.launch {
             try {
-                val users = searchUsersUseCase.invoke(username, lastId)
+                val users = searchUsersUseCase.invoke(username, max, lastId)
                 _searchUsersFlow.value = SearchUsersResult.Success(users)
             } catch (ex: Throwable) {
                 _searchUsersFlow.emitException(
@@ -36,10 +36,10 @@ class SearchUsersViewModel(
         }
     }
 
-    fun loadNextUsers(username: String, lastId: String) {
+    fun loadNextUsers(username: String, max: Int, lastId: String) {
         viewModelScope.launch {
             try {
-                val users = searchUsersUseCase.invoke(username, lastId)
+                val users = searchUsersUseCase.invoke(username, max, lastId)
                 _searchUsersPagingFlow.value = SearchUsersResult.Success(users)
             } catch (ex: Throwable) {
                 _searchUsersPagingFlow.emitException(

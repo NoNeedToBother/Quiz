@@ -18,5 +18,5 @@ interface UserRepository {
 
     suspend fun subscribeToProfileUpdates(): Flow<FirebaseUser>
 
-    suspend fun findByUsername(username: String): List<FirebaseUser>
+    suspend fun findByUsername(username: String, lastId: String?): List<FirebaseUser>
 }

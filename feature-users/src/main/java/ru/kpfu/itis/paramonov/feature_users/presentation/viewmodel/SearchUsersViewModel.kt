@@ -17,15 +17,32 @@ class SearchUsersViewModel(
 
     private val _searchUsersFlow = MutableStateFlow<SearchUsersResult?>(null)
 
-    val searchUsersFLow: StateFlow<SearchUsersResult?> get() = _searchUsersFlow
+    val searchUsersFlow: StateFlow<SearchUsersResult?> get() = _searchUsersFlow
 
-    fun searchUsers(username: String) {
+    private val _searchUsersPagingFlow = MutableStateFlow<SearchUsersResult?>(null)
+
+    val searchUsersPagingFlow: StateFlow<SearchUsersResult?> get() = _searchUsersPagingFlow
+
+    fun searchUsers(username: String, lastId: String?) {
         viewModelScope.launch {
             try {
-                val users = searchUsersUseCase.invoke(username)
+                val users = searchUsersUseCase.invoke(username, lastId)
                 _searchUsersFlow.value = SearchUsersResult.Success(users)
             } catch (ex: Throwable) {
                 _searchUsersFlow.emitException(
+                    SearchUsersResult.Failure(ex)
+                )
+            }
+        }
+    }
+
+    fun loadNextUsers(username: String, lastId: String) {
+        viewModelScope.launch {
+            try {
+                val users = searchUsersUseCase.invoke(username, lastId)
+                _searchUsersPagingFlow.value = SearchUsersResult.Success(users)
+            } catch (ex: Throwable) {
+                _searchUsersPagingFlow.emitException(
                     SearchUsersResult.Failure(ex)
                 )
             }

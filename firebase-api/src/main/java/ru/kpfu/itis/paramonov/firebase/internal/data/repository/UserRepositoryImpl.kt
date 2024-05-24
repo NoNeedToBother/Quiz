@@ -190,12 +190,10 @@ internal class UserRepositoryImpl(
         return withContext(dispatcher) {
             getCurrentUser()?.let { user ->
                 callbackFlow {
-                    val listener =
-                        EventListener<DocumentSnapshot> { value, _ ->
+                    val listener = EventListener<DocumentSnapshot> { value, _ ->
                             value?.let {
                                 launch {
-                                    try {
-                                        send(value.getUser())
+                                    try { send(value.getUser())
                                     } catch (_: Throwable) {}
                                 }
                             }
@@ -211,15 +209,20 @@ internal class UserRepositoryImpl(
         }
     }
 
-    override suspend fun findByUsername(username: String): List<FirebaseUser> {
+    override suspend fun findByUsername(username: String, lastId: String?): List<FirebaseUser> {
         return withContext(dispatcher) {
-            val result = database.collection(USERS_COLLECTION_NAME)
-                .orderBy("username")
-                .startAt(username)
-                .endAt("$username~")
+            var query = database.collection(USERS_COLLECTION_NAME)
+                .orderBy(DB_ID_FIELD)
+                .whereGreaterThanOrEqualTo(DB_USERNAME_FIELD, username)
+            lastId?.let {
+                query = query
+                    .whereGreaterThan(DB_ID_FIELD, it)
+            }
+            val result = query
                 .limit(FIND_USER_LIMIT.toLong())
                 .get()
                 .waitResult()
+
             if (result.isSuccessful) {
                 val res = mutableListOf<FirebaseUser>()
                 val documents = result.result.documents
@@ -262,6 +265,6 @@ internal class UserRepositoryImpl(
         private const val DB_REQUESTS_FIELD = "requestsFrom"
 
         private const val PROFILE_PICTURE_STORAGE_REF = "profiles/%s.png"
-        private const val FIND_USER_LIMIT = 10
+        private const val FIND_USER_LIMIT = 2
     }
 }

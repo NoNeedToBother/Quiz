@@ -20,4 +20,6 @@ interface ResultRepository {
     ): List<Result>
 
     suspend fun save(result: Result): Double
+
+    suspend fun getMaxScore(): Double
 }

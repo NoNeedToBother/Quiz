@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="strokeColor" format="color"/>
+
     <declare-styleable name="StopwatchView">
         <attr name="time" format="integer"/>
-        <attr name="strokeColor" format="color"/>
+        <attr name="strokeColor"/>
         <attr name="android:fillColor" format="color"/>
     </declare-styleable>
 
@@ -10,4 +12,11 @@
         <attr name="color" format="color"/>
     </declare-styleable>
 
+    <declare-styleable name="GraphView">
+        <attr name="graphStrokeColor" format="color"/>
+        <attr name="graphStrokeWidth" format="dimension"/>
+        <attr name="dotColor" format="color"/>
+        <attr name="graphFillColor" format="color"/>
+        <attr name="gradient" format="boolean"/>
+    </declare-styleable>
 </resources>

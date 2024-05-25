@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.graphics.withSave
 import ru.kpfu.itis.paramonov.common_android.R
 import ru.kpfu.itis.paramonov.common_android.utils.toPx
 import kotlin.math.PI
@@ -51,14 +52,11 @@ class StopwatchView @JvmOverloads constructor(
     init {
         attrs?.let {
             context.obtainStyledAttributes(attrs, R.styleable.StopwatchView).apply {
-                try {
-                    time = getInt(R.styleable.StopwatchView_time, 0)
-                    strokePaint.color = getColor(R.styleable.StopwatchView_strokeColor, Color.BLACK)
-                    arrowPaint.color = getColor(R.styleable.StopwatchView_strokeColor, Color.BLACK)
-                    fillPaint.color = getColor(R.styleable.StopwatchView_android_fillColor, Color.GRAY)
-                } finally {
-                    recycle()
-                }
+                time = getInt(R.styleable.StopwatchView_time, 0)
+                strokePaint.color = getColor(R.styleable.StopwatchView_strokeColor, Color.BLACK)
+                arrowPaint.color = getColor(R.styleable.StopwatchView_strokeColor, Color.BLACK)
+                fillPaint.color = getColor(R.styleable.StopwatchView_android_fillColor, Color.GRAY)
+                recycle()
             }
 
         }
@@ -102,21 +100,21 @@ class StopwatchView @JvmOverloads constructor(
             lineTo(currentX, currentY)
             close()
         }
-        canvas.save()
-        canvas.clipPath(path)
-        canvas.drawCircle(center, center, radius, fillPaint)
-        canvas.restore()
+        canvas.withSave {
+            canvas.clipPath(path)
+            canvas.drawCircle(center, center, radius, fillPaint)
+        }
 
         canvas.drawCircle(center, center, radius, strokePaint)
-        drawClockMarks(canvas)
+        canvas.drawClockMarks()
         canvas.drawLine(center, center, currentX, currentY, arrowPaint)
     }
 
-    private fun drawClockMarks(canvas: Canvas) {
-        canvas.drawLine(center, 0f, center, 2 * radius * CLOCK_MARK_RADIUS_PORTION, arrowPaint)
-        canvas.drawLine( 2 * center, center, 2 * center * (1 - CLOCK_MARK_RADIUS_PORTION), center, arrowPaint)
-        canvas.drawLine(center, 2 * center, center, 2 * center * (1 - CLOCK_MARK_RADIUS_PORTION), arrowPaint)
-        canvas.drawLine(0f, center, 2 * radius * CLOCK_MARK_RADIUS_PORTION, center, arrowPaint)
+    private fun Canvas.drawClockMarks() {
+        drawLine(center, 0f, center, 2 * radius * CLOCK_MARK_RADIUS_PORTION, arrowPaint)
+        drawLine( 2 * center, center, 2 * center * (1 - CLOCK_MARK_RADIUS_PORTION), center, arrowPaint)
+        drawLine(center, 2 * center, center, 2 * center * (1 - CLOCK_MARK_RADIUS_PORTION), arrowPaint)
+        drawLine(0f, center, 2 * radius * CLOCK_MARK_RADIUS_PORTION, center, arrowPaint)
     }
 
     override fun onSaveInstanceState(): Parcelable {

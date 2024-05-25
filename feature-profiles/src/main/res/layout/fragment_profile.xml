@@ -92,6 +92,14 @@
             android:textAlignment="center"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ru.kpfu.itis.paramonov.common_android.ui.views.GraphView
+        android:id="@+id/gv_"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toBottomOf="@id/til_info"
+        app:layout_constraintBottom_toTopOf="@id/btn_requests"
+        />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_requests"
         android:layout_width="match_parent"

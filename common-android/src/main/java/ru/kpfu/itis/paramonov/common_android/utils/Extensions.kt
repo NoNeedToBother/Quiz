@@ -47,3 +47,8 @@ fun Fragment.startPostponedTransition() {
         startPostponedEnterTransition()
     }
 }
+
+fun View.setAndUpdate(action: () -> Unit) {
+    action.invoke()
+    invalidate()
+}

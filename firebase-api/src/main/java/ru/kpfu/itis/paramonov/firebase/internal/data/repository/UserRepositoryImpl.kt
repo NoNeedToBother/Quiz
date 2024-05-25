@@ -180,10 +180,27 @@ internal class UserRepositoryImpl(
                 data.result.getUser()
             } catch (ex: NullPointerException) {
                 throw UserDataException(
-                    resourceManager.getString(R.string.corrupted_data)
+                    resourceManager.getString(R.string.fail_read_user_data)
                 )
             }
         } else null
+    }
+
+    override suspend fun getFriends(offset: Int, max: Int): List<FirebaseUser> {
+        return withContext(dispatcher) {
+            val user = getCurrentUser() ?: throw UserDataException(
+                resourceManager.getString(R.string.fail_read_user_data)
+            )
+            val friendIdList = user.friendIdList
+            if (offset > friendIdList.size) return@withContext listOf()
+            val last = if (offset + max > friendIdList.size) friendIdList.size else offset + max
+            val friendIdListWithOffset = friendIdList.subList(offset, last)
+            val result = mutableListOf<FirebaseUser>()
+            friendIdListWithOffset.forEach { id ->
+                getUser(id)?.let { user -> result.add(user)}
+            }
+            result
+        }
     }
 
     override suspend fun subscribeToProfileUpdates(): Flow<FirebaseUser> {

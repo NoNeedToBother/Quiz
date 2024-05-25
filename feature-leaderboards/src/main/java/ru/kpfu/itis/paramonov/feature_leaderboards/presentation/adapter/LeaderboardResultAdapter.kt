@@ -2,6 +2,7 @@ package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.ItemResultBinding
@@ -12,7 +13,7 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewholder.Resul
 class LeaderboardResultAdapter(
     diffUtilCallback: ResultDiffUtilCallback,
     private val resourceManager: ResourceManager,
-    private val onResultClicked: (String) -> Unit
+    private val onResultClicked: (String, ImageView) -> Unit
 ): ListAdapter<ResultUiModel, ResultViewHolder>(diffUtilCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
         return ResultViewHolder(

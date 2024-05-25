@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewmodel
 
+import android.widget.ImageView
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,9 +43,11 @@ class LeaderboardsViewModel(
 
     val clearLeaderboardFlow: StateFlow<Boolean> get() = _clearLeaderboardFlow
 
-    fun navigateToUser(id: String) {
+    fun navigateToUser(id: String, sharedView: ImageView) {
         viewModelScope.launch {
-            userRouter.goToUser(id)
+            userRouter.withSharedView(sharedView) {
+                goToUser(id)
+            }
         }
     }
 

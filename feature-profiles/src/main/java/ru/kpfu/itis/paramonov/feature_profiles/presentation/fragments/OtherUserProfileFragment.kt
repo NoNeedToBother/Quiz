@@ -1,8 +1,14 @@
 package ru.kpfu.itis.paramonov.feature_profiles.presentation.fragments
 
+import android.os.Bundle
+import android.transition.ChangeBounds
+import android.transition.ChangeTransform
+import android.transition.Transition
+import android.transition.TransitionSet
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.ViewCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
@@ -12,6 +18,7 @@ import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.common_android.utils.gone
 import ru.kpfu.itis.paramonov.common_android.utils.show
+import ru.kpfu.itis.paramonov.common_android.utils.startPostponedTransition
 import ru.kpfu.itis.paramonov.feature_profiles.R
 import ru.kpfu.itis.paramonov.feature_profiles.databinding.FragmentProfileOtherUserBinding
 import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesComponent
@@ -30,6 +37,8 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
         return args.getString(USER_ID_KEY)
     }
 
+    private val transitionName = arguments?.getString(SHARED_ELEMENT_TRANSITION_NAME_KEY)
+
     @Inject
     lateinit var viewModel: OtherUserProfileViewModel
 
@@ -40,7 +49,28 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
             .inject(this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = getSharedElementTransition()
+        sharedElementReturnTransition = getSharedElementTransition()
+    }
+
     override fun initView() {
+        showSharedElementTransition()
+    }
+
+    private fun showSharedElementTransition() {
+        postponeEnterTransition()
+        transitionName?.let {
+            ViewCompat.setTransitionName(binding.ivProfilePicture, it)
+        }
+    }
+
+    private fun getSharedElementTransition(): Transition {
+        return TransitionSet()
+            .setOrdering(TransitionSet.ORDERING_TOGETHER)
+            .addTransition(ChangeBounds())
+            .addTransition(ChangeTransform())
     }
 
     override fun observeData() {
@@ -113,6 +143,7 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
                 getString(R.string.registration_date, user.dateRegistered)
             )
             loadProfilePicture(user.profilePictureUrl)
+            startPostponedTransition()
         }
     }
 
@@ -127,5 +158,8 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
 
     companion object {
         const val USER_ID_KEY = "id"
+        const val SHARED_ELEMENT_TRANSITION_NAME_KEY = "profile_picture_key"
+
+        const val PROFILE_PICTURE_TRANSITION_NAME = "profile_picture"
     }
 }

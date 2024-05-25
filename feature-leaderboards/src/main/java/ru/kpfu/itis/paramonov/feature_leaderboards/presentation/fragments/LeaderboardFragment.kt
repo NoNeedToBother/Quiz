@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments
 
+import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -9,6 +10,7 @@ import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.common_android.utils.gone
+import ru.kpfu.itis.paramonov.common_android.utils.startPostponedTransition
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.FragmentLeaderboardBinding
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.adapter.LeaderboardResultAdapter
@@ -42,11 +44,13 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
     }
 
     override fun initView() {
+        postponeEnterTransition()
         initRecyclerView()
+        startPostponedTransition()
     }
 
-    private fun onResultClicked(id: String) {
-        viewModel.navigateToUser(id)
+    private fun onResultClicked(id: String, sharedView: ImageView) {
+        viewModel.navigateToUser(id, sharedView)
     }
 
     private fun initRecyclerView() {

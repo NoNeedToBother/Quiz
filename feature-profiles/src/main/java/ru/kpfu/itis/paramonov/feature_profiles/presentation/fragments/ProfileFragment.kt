@@ -16,6 +16,7 @@ import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.common_android.utils.show
+import ru.kpfu.itis.paramonov.common_android.utils.startPostponedTransition
 import ru.kpfu.itis.paramonov.feature_profiles.R
 import ru.kpfu.itis.paramonov.feature_profiles.databinding.FragmentProfileBinding
 import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesComponent
@@ -52,6 +53,7 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
     override fun initView() {
         setOnClickListeners()
         initSettingsMenu()
+        postponeEnterTransition()
     }
 
     private val pickProfilePictureIntent = registerForActivityResult(
@@ -184,6 +186,7 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
                     ctvRequests.text = size.toString()
                 }
             }
+            startPostponedTransition()
         }
     }
 

@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="search_view_height">36dp</dimen>
     <dimen name="small_margin">24dp</dimen>
     <dimen name="extra_small_margin">12dp</dimen>
     <dimen name="medium_margin">32dp</dimen>
+    <dimen name="large_margin">44dp</dimen>
+    <dimen name="extra_large_margin">64dp</dimen>
+
     <dimen name="zero_size">0dp</dimen>
     <dimen name="small_profile_picture_size">60dp</dimen>
-    <dimen name="medium_text_size">24sp</dimen>
 
+    <dimen name="medium_text_size">24sp</dimen>
+    <dimen name="large_text_size">32sp</dimen>
     <dimen name="logo_text_size">92sp</dimen>
-    <dimen name="large_margin">44dp</dimen>
+
+    <dimen name="search_view_height">36dp</dimen>
+    <dimen name="error_bottom_sheet_title_text_size">28sp</dimen>
+    <dimen name="error_bottom_sheet_message_text_size">20sp</dimen>
+    <dimen name="snackbar_message_elevation">20dp</dimen>
 </resources>

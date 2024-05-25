@@ -3,6 +3,9 @@ package ru.kpfu.itis.paramonov.common_android.utils
 import android.content.Context
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -37,4 +40,10 @@ fun <T> Flow<T>.collect(lifecycleOwner: LifecycleOwner, action: suspend (T) -> U
 fun <T> MutableStateFlow<T?>.emitException(value: T) {
     this.value = value
     this.value = null
+}
+
+fun Fragment.startPostponedTransition() {
+    (view?.parent as? ViewGroup?)?.doOnPreDraw {
+        startPostponedEnterTransition()
+    }
 }

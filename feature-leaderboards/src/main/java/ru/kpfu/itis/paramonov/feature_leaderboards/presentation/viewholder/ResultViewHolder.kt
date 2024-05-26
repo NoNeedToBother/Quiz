@@ -3,7 +3,9 @@ package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.viewholder
 import android.animation.ObjectAnimator
 import android.view.View
 import android.view.animation.Animation
+import android.widget.ImageView
 import androidx.annotation.AnimRes
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
@@ -17,7 +19,7 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiMo
 class ResultViewHolder(
     private val binding: ItemResultBinding,
     private val resourceManager: ResourceManager,
-    onResultClicked: (String) -> Unit
+    onResultClicked: (String, ImageView) -> Unit
 ): RecyclerView.ViewHolder(binding.root) {
 
     private var item: ResultUiModel? = null
@@ -38,12 +40,12 @@ class ResultViewHolder(
 
         binding.ivProfilePicture.setOnClickListener {
             item?.let {
-                onResultClicked.invoke(it.user.id)
+                onResultClicked.invoke(it.user.id, binding.ivProfilePicture)
             }
         }
         binding.tvUsername.setOnClickListener {
             item?.let {
-                onResultClicked.invoke(it.user.id)
+                onResultClicked.invoke(it.user.id, binding.ivProfilePicture)
             }
         }
     }
@@ -114,6 +116,7 @@ class ResultViewHolder(
                 R.string.score_default, item.score
             )
             loadImage(item.user.profilePictureUrl)
+            ViewCompat.setTransitionName(ivProfilePicture, "result_profile_picture_${adapterPosition}")
             val min = item.time / 60
             val sec = item.time % 60
             if (min != 0) tvTime.text = resourceManager.getString(
@@ -137,7 +140,7 @@ class ResultViewHolder(
     private fun loadImage(url: String) {
         Glide.with(binding.root)
             .load(url)
-            .placeholder(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
+            //.placeholder(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
             .error(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
             .centerCrop()
             .into(binding.ivProfilePicture)

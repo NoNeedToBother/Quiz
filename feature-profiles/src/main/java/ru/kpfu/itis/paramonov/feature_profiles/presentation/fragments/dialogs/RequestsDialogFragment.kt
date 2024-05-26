@@ -68,7 +68,7 @@ class RequestsDialogFragment : DialogFragment() {
             dialog.onRequestDenied = onRequestDenied
         }
 
-        fun setRequestList(requests: List<UserModel>): Builder = this.apply {
+        fun provideRequestList(requests: List<UserModel>): Builder = this.apply {
             dialog.requests = requests
         }
 

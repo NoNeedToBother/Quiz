@@ -13,7 +13,7 @@
             android:id="@+id/tv_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="@dimen/large_margin"
             style="@style/QuizLogo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,8 +29,8 @@
             app:layout_constraintTop_toBottomOf="@id/tv_logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="64dp"
-            android:layout_marginTop="16dp">
+            android:layout_marginHorizontal="@dimen/extra_large_margin"
+            android:layout_marginTop="@dimen/small_margin">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_username"
@@ -49,8 +49,8 @@
             app:layout_constraintTop_toBottomOf="@id/til_username"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="64dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginHorizontal="@dimen/extra_large_margin"
+            android:layout_marginTop="@dimen/auth_menu_edit_text_margin">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_email"
@@ -69,8 +69,8 @@
             app:layout_constraintTop_toBottomOf="@id/til_email"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="64dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginHorizontal="@dimen/extra_large_margin"
+            android:layout_marginTop="@dimen/auth_menu_edit_text_margin">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_password"
@@ -89,8 +89,8 @@
             app:layout_constraintTop_toBottomOf="@id/til_password"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="64dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginHorizontal="@dimen/extra_large_margin"
+            android:layout_marginTop="@dimen/auth_menu_edit_text_margin">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_confirm_password"
@@ -104,12 +104,12 @@
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="64dp"
+            android:layout_marginHorizontal="@dimen/extra_large_margin"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton.AuthMenu"
             app:layout_constraintBottom_toTopOf="@id/btn_go_sign_in"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="@dimen/medium_margin"
             android:text="@string/register"/>
 
         <com.google.android.material.button.MaterialButton
@@ -121,7 +121,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="68dp"
+            android:layout_marginBottom="@dimen/navigate_button_margin_bottom"
             android:text="@string/go_to_sign_in"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

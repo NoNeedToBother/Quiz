@@ -23,14 +23,14 @@ import ru.kpfu.itis.paramonov.navigation.UserRouter
 class LeaderboardsModule {
 
     @Provides
-    fun globalLeaderboardViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): LeaderboardsViewModel {
+    fun leaderboardViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): LeaderboardsViewModel {
         return ViewModelProvider(fragment, factory)[LeaderboardsViewModel::class.java]
     }
 
     @Provides
     @IntoMap
     @ViewModelKey(LeaderboardsViewModel::class)
-    fun provideGlobalLeaderboardViewModel(
+    fun provideLeaderboardViewModel(
         getGlobalLeaderboardUseCase: GetGlobalLeaderboardUseCase,
         getFriendsLeaderboardUseCase: GetFriendsLeaderboardUseCase,
         getGameModeUseCase: GetGameModeUseCase,

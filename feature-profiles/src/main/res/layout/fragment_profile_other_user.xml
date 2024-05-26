@@ -12,7 +12,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/small_margin"/>
+        android:layout_marginTop="@dimen/small_margin"
+        android:transitionName="@string/profile_picture_transition_name"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_username"
@@ -62,6 +63,19 @@
             android:textColor="@color/black"
             android:textAlignment="center"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_stats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/profile_default_margin_horizontal"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:layout_constraintBottom_toTopOf="@id/btn_add_friend"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/check_stats"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/extra_small_margin"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_friend"

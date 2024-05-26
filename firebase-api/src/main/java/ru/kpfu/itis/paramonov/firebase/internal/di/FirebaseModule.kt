@@ -64,9 +64,15 @@ internal class FirebaseModule {
     fun resultRepositoryImpl(
         dispatcher: CoroutineDispatcher,
         resourceManager: ResourceManager,
-        userRepository: UserRepository
+        userRepository: UserRepository,
+        dateTimeParser: DateTimeParser
     ): ResultRepositoryImpl {
-        return ResultRepositoryImpl(Firebase.firestore, dispatcher, resourceManager, userRepository)
+        return ResultRepositoryImpl(
+            database = Firebase.firestore,
+            dispatcher = dispatcher,
+            resourceManager = resourceManager,
+            userRepository = userRepository,
+            dateTimeParser = dateTimeParser)
     }
 
     @Provides
@@ -115,7 +121,10 @@ internal class FirebaseModule {
         userRepository: UserRepository
     ): FriendRepositoryImpl {
         return FriendRepositoryImpl(
-            Firebase.firestore, dispatcher, resourceManager, userRepository
+            database = Firebase.firestore,
+            dispatcher = dispatcher,
+            resourceManager = resourceManager,
+            userRepository = userRepository
         )
     }
 }

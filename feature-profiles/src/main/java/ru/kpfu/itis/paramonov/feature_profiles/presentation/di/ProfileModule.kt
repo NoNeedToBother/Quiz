@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.common_android.ui.di.viewmodel.ViewModelModule
+import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.GetCurrentUserLastResultsUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.profile_settings.ChangeCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.profile_settings.ConfirmCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.GetCurrentUserUseCase
@@ -36,7 +37,7 @@ class ProfileModule {
     @Provides
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
-    fun provideQuestionSettingsViewModel(
+    fun provideProfileViewModel(
         getCurrentUserUseCase: GetCurrentUserUseCase,
         logoutUserUseCase: LogoutUserUseCase,
         saveProfilePictureUseCase: SaveProfilePictureUseCase,
@@ -47,6 +48,7 @@ class ProfileModule {
         acceptFriendRequestUseCase: AcceptFriendRequestUseCase,
         denyFriendRequestUseCase: DenyFriendRequestUseCase,
         subscribeToProfileUpdatesUseCase: SubscribeToProfileUpdatesUseCase,
+        getCurrentUserLastResultsUseCase: GetCurrentUserLastResultsUseCase,
         authenticationRouter: AuthenticationRouter
     ): ViewModel {
         return ProfileViewModel(
@@ -60,7 +62,8 @@ class ProfileModule {
             getFriendRequestsUseCase = getFriendRequestsUseCase,
             acceptFriendRequestUseCase = acceptFriendRequestUseCase,
             denyFriendRequestUseCase = denyFriendRequestUseCase,
-            subscribeToProfileUpdatesUseCase = subscribeToProfileUpdatesUseCase
+            subscribeToProfileUpdatesUseCase = subscribeToProfileUpdatesUseCase,
+            getCurrentUserLastResultsUseCase = getCurrentUserLastResultsUseCase
         )
     }
 }

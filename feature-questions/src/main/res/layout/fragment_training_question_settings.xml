@@ -7,15 +7,15 @@
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/et_limit"
         android:background="@drawable/edit_text_limit"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
+        android:paddingStart="@dimen/question_limit_text_padding"
+        android:paddingEnd="@dimen/question_limit_text_padding"
         android:textAlignment="textStart"
         android:inputType="number"
         android:text="@string/enter_limit"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_height="@dimen/question_limit_height"
+        android:layout_marginHorizontal="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/extra_large_margin"
         app:layout_constraintTop_toTopOf="parent"
         />
 
@@ -23,12 +23,12 @@
         android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="64dp"
+        android:layout_marginHorizontal="@dimen/extra_large_margin"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton.Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="@dimen/settings_save_button_margin_bottom"
         android:enabled="false"
         android:text="@string/save"/>
 

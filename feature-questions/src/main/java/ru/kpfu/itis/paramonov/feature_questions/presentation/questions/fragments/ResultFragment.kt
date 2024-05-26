@@ -4,13 +4,10 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
-import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentResultBinding
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsComponent
@@ -82,21 +79,16 @@ class ResultFragment: BaseFragment(R.layout.fragment_result) {
 
     override fun observeData() {
         viewModel.getResultScore()
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                collectMaxScoreData()
-            }
+        viewModel.maxScoreFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectMaxScoreData(it)
         }
     }
 
-    private suspend fun collectMaxScoreData() {
-        viewModel.maxScoreFlow.collect {
-            it?.let { maxScore ->
-                val score = requireArguments().getDouble(ARGS_SCORE_KEY)
-                val resultScore = getMaxResultScoreUiModel(score, maxScore)
-                showResultScore(resultScore)
-            }
+    private fun collectMaxScoreData(maxScore: Double?) {
+        maxScore?.let {
+            val score = requireArguments().getDouble(ARGS_SCORE_KEY)
+            val resultScore = getMaxResultScoreUiModel(score, maxScore)
+            showResultScore(resultScore)
         }
     }
 

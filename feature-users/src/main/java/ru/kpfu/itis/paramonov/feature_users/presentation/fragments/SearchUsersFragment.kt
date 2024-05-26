@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_users.presentation.fragments
 
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -9,6 +10,7 @@ import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.common_android.utils.collect
+import ru.kpfu.itis.paramonov.common_android.utils.startPostponedTransition
 import ru.kpfu.itis.paramonov.feature_users.R
 import ru.kpfu.itis.paramonov.feature_users.databinding.FragmentSearchUsersBinding
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersComponent
@@ -42,8 +44,10 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
     }
 
     override fun initView() {
+        postponeEnterTransition()
         initSearchView()
         initRecyclerView()
+        startPostponedTransition()
     }
 
     private fun initSearchView() {
@@ -103,8 +107,8 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
         }
     }
 
-    private fun onUserClicked(user: UserModel) {
-        viewModel.navigateToUser(user.id)
+    private fun onUserClicked(user: UserModel, sharedView: ImageView) {
+        viewModel.navigateToUser(user.id, sharedView)
     }
 
     override fun observeData() {

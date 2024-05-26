@@ -1,9 +1,13 @@
 package ru.kpfu.itis.paramonov.quiz.navigation
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import ru.kpfu.itis.paramonov.common.exception.UnsupportedArgumentException
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.fragments.OtherUserProfileFragment
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
@@ -102,10 +106,36 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter, UserRout
         }
     }
 
+    private var sharedView: View? = null
+
     override fun goToUser(id: String) {
+        val extras = extrasWithSharedView(OtherUserProfileFragment.PROFILE_PICTURE_TRANSITION_NAME) {
+            it is ImageView
+        }
         navController?.navigate(
             R.id.otherUserProfileFragment,
-            bundleOf(OtherUserProfileFragment.USER_ID_KEY to id)
+            bundleOf(OtherUserProfileFragment.USER_ID_KEY to id),
+            null,
+            extras
         )
     }
+
+    override fun withSharedView(sharedView: View, block: UserRouter.() -> Unit) {
+        block.invoke(this.apply {
+            this.sharedView = sharedView
+        })
+    }
+
+    private fun extrasWithSharedView(transitionName: String, condition: (View) -> Boolean, ): FragmentNavigator.Extras? {
+        val extras = sharedView?.let {
+            if (condition.invoke(it)) {
+                FragmentNavigatorExtras(
+                    it to transitionName
+                )
+            } else null
+        }
+        sharedView = null
+        return extras
+    }
+
 }

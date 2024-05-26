@@ -2,6 +2,7 @@ package ru.kpfu.itis.paramonov.feature_users.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.feature_users.databinding.ItemUserBinding
@@ -10,7 +11,7 @@ import ru.kpfu.itis.paramonov.feature_users.presentation.viewholder.UserViewHold
 
 class UserAdapter(
     diffUtilCallback: UserDiffUtilCallback,
-    private val onUserClicked: (UserModel) -> Unit
+    private val onUserClicked: (UserModel, ImageView) -> Unit
 ): ListAdapter<UserModel, UserViewHolder>(diffUtilCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         return UserViewHolder(

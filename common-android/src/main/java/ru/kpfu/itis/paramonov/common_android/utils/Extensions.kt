@@ -3,6 +3,9 @@ package ru.kpfu.itis.paramonov.common_android.utils
 import android.content.Context
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,12 +22,19 @@ fun View.gone() {
     visibility = View.GONE
 }
 
-fun Context.toPx(dp: Float): Float {
+fun Context.dpToPx(dp: Float): Float {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         dp,
         resources.displayMetrics
     )
+}
+
+fun Context.spToPx(sp: Float): Float {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_SP,
+        sp,
+        resources.displayMetrics)
 }
 
 
@@ -37,4 +47,15 @@ fun <T> Flow<T>.collect(lifecycleOwner: LifecycleOwner, action: suspend (T) -> U
 fun <T> MutableStateFlow<T?>.emitException(value: T) {
     this.value = value
     this.value = null
+}
+
+fun Fragment.startPostponedTransition() {
+    (view?.parent as? ViewGroup?)?.doOnPreDraw {
+        startPostponedEnterTransition()
+    }
+}
+
+fun View.setAndUpdate(action: () -> Unit) {
+    action.invoke()
+    invalidate()
 }

@@ -3,13 +3,16 @@ package ru.kpfu.itis.paramonov.common_android.ui.views
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
+import android.graphics.RectF
+import android.graphics.Shader
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.core.graphics.withSave
 import ru.kpfu.itis.paramonov.common_android.R
 import ru.kpfu.itis.paramonov.common_android.utils.setAndUpdate
@@ -27,7 +30,7 @@ class GraphView @JvmOverloads constructor(
     }
     private val graphStrokePaint = Paint().apply {
         color = Color.BLACK
-        strokeWidth = context.toPx(2f)
+        strokeWidth = context.toPx(4f)
         style = Paint.Style.STROKE
     }
     private val dotPaint = Paint().apply {
@@ -35,32 +38,36 @@ class GraphView @JvmOverloads constructor(
         style = Paint.Style.FILL
         xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
     }
-    private var dotSize = ctx.toPx(4f)
+    var dotSize = ctx.toPx(6f)
         set(value) {
             setAndUpdate { field = value }
         }
 
-    private var dotColor
+    var dotColor
         get() = dotPaint.color
         set(value) {
             setAndUpdate { dotPaint.color = value }
         }
-    private var graphStrokeColor
+    var graphStrokeColor
         get() = graphStrokePaint.color
         set(value) {
             setAndUpdate { graphStrokePaint.color = value }
         }
-    private var graphStrokeWidth
+    var graphStrokeWidth
         get() = graphStrokePaint.strokeWidth
         set(value) {
             setAndUpdate { graphStrokePaint.strokeWidth = value }
         }
-    private var graphFillColor
+    var graphFillColor
         get() = fillPaint.color
         set(value) {
             setAndUpdate { fillPaint.color = value }
         }
-    private var gradient = false
+    var graphGradientColor = Color.WHITE
+        set(value) {
+            setAndUpdate { field = value }
+        }
+    var gradient = false
         set(value) {
             setAndUpdate { field = value }
         }
@@ -70,11 +77,15 @@ class GraphView @JvmOverloads constructor(
     init {
         attrs?.let {
             context.obtainStyledAttributes(attrs, R.styleable.GraphView).apply {
-                fillPaint.color = getColor(R.styleable.GraphView_graphFillColor, Color.GRAY)
-                graphStrokePaint.color = getColor(R.styleable.GraphView_graphStrokeColor, Color.BLACK)
-                graphStrokePaint.strokeWidth = getDimension(R.styleable.GraphView_graphStrokeWidth, ctx.toPx(2f))
-                dotPaint.color = getColor(R.styleable.GraphView_dotColor, Color.BLACK)
+                graphFillColor = getColor(R.styleable.GraphView_graphFillColor, Color.GRAY)
+                graphStrokeColor = getColor(R.styleable.GraphView_graphStrokeColor, Color.BLACK)
+                graphStrokeWidth = getDimension(R.styleable.GraphView_graphStrokeWidth, ctx.toPx(2f))
+                dotColor = getColor(R.styleable.GraphView_dotColor, Color.BLACK)
+                dotSize = getDimension(R.styleable.GraphView_dotSize, ctx.toPx(4f))
                 gradient = getBoolean(R.styleable.GraphView_gradient, false)
+                if (gradient) {
+                    graphGradientColor = getColor(R.styleable.GraphView_graphGradientColor, Color.WHITE)
+                }
                 recycle()
             }
         }
@@ -82,7 +93,7 @@ class GraphView @JvmOverloads constructor(
 
     private val xInterval: Double get() {
         return if (dots.isNotEmpty()) {
-            dots[dots.size - 1].x - dots[0].x
+            dots.last().x - dots.first().x
         } else -1.0
     }
 
@@ -94,49 +105,97 @@ class GraphView @JvmOverloads constructor(
 
     private val gridHeight: Float get() {
         return if (dots.isNotEmpty()) {
-            (1 - GRAPH_MARGIN - GRAPH_BOTTOM_MARGIN) * height / yInterval.toFloat()
+            graphHeight / yInterval.toFloat()
         } else -1f
     }
 
     private val gridWidth: Float get() {
         return if (dots.isNotEmpty()) {
-            (1 - 2 * GRAPH_MARGIN) * width / xInterval.toFloat()
+            graphWidth / xInterval.toFloat()
         } else -1f
     }
 
     private val graphOffsetX: Float get() = width * GRAPH_MARGIN
     private val graphOffsetY: Float get() = height * GRAPH_MARGIN
 
+    private val graphHeight: Float get() = (1 - GRAPH_MARGIN - GRAPH_BOTTOM_MARGIN) * height
+
+    private val graphWidth: Float get() = (1 - 2 * GRAPH_MARGIN) * width
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+        val widthSize = MeasureSpec.getSize(widthMeasureSpec)
+        val heightSize = MeasureSpec.getSize(heightMeasureSpec)
+
+        var width = if (widthMode == WRAP_CONTENT || widthMode == MeasureSpec.AT_MOST) widthSize else MeasureSpec.getSize(widthMeasureSpec)
+        var height = if (heightMode == WRAP_CONTENT || heightMode == MeasureSpec.AT_MOST) (width * 9 / 16) else MeasureSpec.getSize(heightMeasureSpec)
+
+        if (widthMode == MeasureSpec.AT_MOST) {
+            width = width.coerceAtMost(widthSize)
+        }
+        if (heightMode == MeasureSpec.AT_MOST) {
+            height = height.coerceAtMost(heightSize)
+        }
+        setMeasuredDimension(width, height)
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.withSave {
-            clipGraphArea()
-            drawGraph()
-        }
+        canvas.drawGraph()
     }
 
     private fun Canvas.drawGraph() {
-        for (dot in dots) {
-            drawCircle(getGraphPositionX(dot.x), getGraphPositionY(dot.y), dotSize, dotPaint)
+        val graphPath = Path()
+        for (i in dots.indices) {
+            val dot = dots[i]
+            val dotPosX = getGraphPositionX(dot.x)
+            val dotPosY = getGraphPositionY(dot.y)
+            if (i == 0) graphPath.moveTo(dotPosX, dotPosY)
+            else graphPath.lineTo(dotPosX, dotPosY)
         }
+        drawPath(graphPath, graphStrokePaint)
+        graphPath.closeGraphPath()
+        withSave {
+            clipPath(graphPath)
+            fillGraph(graphPath)
+        }
+        drawDots()
+    }
+
+    private fun Canvas.fillGraph(path: Path) {
+        if (gradient) {
+            val pathBounds = RectF()
+            path.computeBounds(pathBounds, true)
+            fillPaint.shader = LinearGradient(
+                pathBounds.centerX(), pathBounds.top,
+                pathBounds.centerX(), pathBounds.bottom,
+                intArrayOf(graphFillColor, graphGradientColor),
+                floatArrayOf(0f, 1f), Shader.TileMode.CLAMP)
+        }
+        drawPaint(fillPaint)
+    }
+
+    private fun Canvas.drawDots() {
+        for (dot in dots) {
+            val dotPosX = getGraphPositionX(dot.x)
+            val dotPosY = getGraphPositionY(dot.y)
+            drawCircle(dotPosX, dotPosY, dotSize, dotPaint)
+        }
+    }
+
+    private fun Path.closeGraphPath() {
+        lineTo(getGraphPositionX(dots.last().x), height * (1 - GRAPH_BOTTOM_MARGIN))
+        lineTo(getGraphPositionX(dots.first().x), height * (1 - GRAPH_BOTTOM_MARGIN))
+        close()
     }
 
     private fun getGraphPositionX(x: Double): Float {
-        return x.toFloat() * gridWidth + graphOffsetX
+        return (x - dots[0].x).toFloat() * gridWidth + graphOffsetX
     }
     private fun getGraphPositionY(y: Double): Float {
-        return y.toFloat() * gridHeight + graphOffsetY
-    }
-
-    private fun Canvas.clipGraphArea() {
-        val path = Path().apply {
-            moveTo(width * GRAPH_MARGIN, height * (1 - GRAPH_BOTTOM_MARGIN))
-            lineTo(width * GRAPH_MARGIN, height * GRAPH_MARGIN)
-            lineTo(width * (1 - GRAPH_MARGIN), height * GRAPH_MARGIN)
-            lineTo(width * (1 - GRAPH_MARGIN), height * (1 - GRAPH_BOTTOM_MARGIN))
-            close()
-        }
-        clipPath(path)
+        return graphHeight - (y - dots.min().y).toFloat() * gridHeight + graphOffsetY
     }
 
     fun provideValues(vararg values: Pair<Double, Double>) {
@@ -144,7 +203,6 @@ class GraphView @JvmOverloads constructor(
     }
 
     fun provideValues(values: List<Pair<Double, Double>>) {
-        Log.i("a", values.toString())
         values.sortedBy {
             it.first
         }.forEach {

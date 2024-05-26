@@ -54,7 +54,7 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
         setOnClickListeners()
         initSettingsMenu()
         postponeEnterTransition()
-        binding.gv.provideValues(1.0 to 2.0, 2.0 to 3.0, 3.0 to 4.0)
+        binding.gvStats.provideValues(1.0 to 3.0, 2.0 to 2.0, 3.0 to 4.0, 4.0 to 8.0, 5.0 to 1.0)
     }
 
     private val pickProfilePictureIntent = registerForActivityResult(

@@ -74,7 +74,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/check_stats"
-        android:visibility="gone"
         android:layout_marginBottom="@dimen/extra_small_margin"/>
 
     <com.google.android.material.button.MaterialButton

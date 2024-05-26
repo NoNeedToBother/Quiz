@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_users.presentation.fragments
 
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -66,8 +67,8 @@ class FriendsFragment: BaseFragment(R.layout.fragment_friends) {
         }
     }
 
-    private fun onUserClicked(user: UserModel) {
-        viewModel.navigateToUser(user.id)
+    private fun onUserClicked(user: UserModel, sharedView: View) {
+        viewModel.navigateToUser(user.id, sharedView)
     }
 
     override fun observeData() {

@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_users.presentation.viewmodel
 
+import android.view.View
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,9 +50,11 @@ class FriendsViewModel(
         }
     }
 
-    fun navigateToUser(id: String) {
+    fun navigateToUser(id: String, sharedView: View) {
         viewModelScope.launch {
-            userRouter.goToUser(id)
+            userRouter.withSharedView(sharedView) {
+                goToUser(id)
+            }
         }
     }
 

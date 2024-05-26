@@ -2,4 +2,5 @@
 <resources>
     <string name="search_users">Search users</string>
     <string name="search_users_fail">Failed to search users</string>
+    <string name="your_friends">Your friends</string>
 </resources>

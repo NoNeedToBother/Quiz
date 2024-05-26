@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import androidx.appcompat.widget.AppCompatTextView
 import ru.kpfu.itis.paramonov.common_android.R
-import ru.kpfu.itis.paramonov.common_android.utils.toPx
+import ru.kpfu.itis.paramonov.common_android.utils.dpToPx
 import kotlin.math.max
 
 class CircleTextView @JvmOverloads constructor(
@@ -24,7 +24,7 @@ class CircleTextView @JvmOverloads constructor(
 
     init {
         gravity = Gravity.CENTER
-        setPadding(context.toPx(6f).toInt(), 0, context.toPx(6f).toInt(), 0)
+        setPadding(context.dpToPx(6f).toInt(), 0, context.dpToPx(6f).toInt(), 0)
         attrs?.let {
             context.obtainStyledAttributes(attrs, R.styleable.CircleTextView).apply {
                 try {

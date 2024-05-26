@@ -20,5 +20,7 @@
         <attr name="graphFillColor" format="color"/>
         <attr name="graphGradientColor" format="color"/>
         <attr name="gradient" format="boolean"/>
+        <attr name="labelXAmount" format="integer"/>
+        <attr name="labelYAmount" format="integer"/>
     </declare-styleable>
 </resources>

@@ -16,7 +16,8 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.core.graphics.withSave
 import ru.kpfu.itis.paramonov.common_android.R
 import ru.kpfu.itis.paramonov.common_android.utils.setAndUpdate
-import ru.kpfu.itis.paramonov.common_android.utils.toPx
+import ru.kpfu.itis.paramonov.common_android.utils.dpToPx
+import ru.kpfu.itis.paramonov.common_android.utils.spToPx
 
 class GraphView @JvmOverloads constructor(
     ctx: Context,
@@ -30,7 +31,7 @@ class GraphView @JvmOverloads constructor(
     }
     private val graphStrokePaint = Paint().apply {
         color = Color.BLACK
-        strokeWidth = context.toPx(4f)
+        strokeWidth = context.dpToPx(4f)
         style = Paint.Style.STROKE
     }
     private val dotPaint = Paint().apply {
@@ -38,7 +39,11 @@ class GraphView @JvmOverloads constructor(
         style = Paint.Style.FILL
         xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
     }
-    var dotSize = ctx.toPx(6f)
+    private val labelPaint = Paint().apply {
+        color = Color.BLACK
+        textSize = context.spToPx(8f)
+    }
+    var dotSize = ctx.dpToPx(6f)
         set(value) {
             setAndUpdate { field = value }
         }
@@ -72,6 +77,15 @@ class GraphView @JvmOverloads constructor(
             setAndUpdate { field = value }
         }
 
+    var labelXAmount = LABEL_X_DEFAULT_AMOUNT
+        set(value) {
+            setAndUpdate { field = value }
+        }
+    var labelYAmount = LABEL_Y_DEFAULT_AMOUNT
+        set(value) {
+            setAndUpdate { field = value }
+        }
+
     private val dots = mutableListOf<Dot>()
 
     init {
@@ -79,13 +93,15 @@ class GraphView @JvmOverloads constructor(
             context.obtainStyledAttributes(attrs, R.styleable.GraphView).apply {
                 graphFillColor = getColor(R.styleable.GraphView_graphFillColor, Color.GRAY)
                 graphStrokeColor = getColor(R.styleable.GraphView_graphStrokeColor, Color.BLACK)
-                graphStrokeWidth = getDimension(R.styleable.GraphView_graphStrokeWidth, ctx.toPx(2f))
+                graphStrokeWidth = getDimension(R.styleable.GraphView_graphStrokeWidth, ctx.dpToPx(2f))
                 dotColor = getColor(R.styleable.GraphView_dotColor, Color.BLACK)
-                dotSize = getDimension(R.styleable.GraphView_dotSize, ctx.toPx(4f))
+                dotSize = getDimension(R.styleable.GraphView_dotSize, ctx.dpToPx(4f))
                 gradient = getBoolean(R.styleable.GraphView_gradient, false)
                 if (gradient) {
                     graphGradientColor = getColor(R.styleable.GraphView_graphGradientColor, Color.WHITE)
                 }
+                labelXAmount = getInt(R.styleable.GraphView_labelXAmount, LABEL_X_DEFAULT_AMOUNT)
+                labelYAmount = getInt(R.styleable.GraphView_labelYAmount, LABEL_Y_DEFAULT_AMOUNT)
                 recycle()
             }
         }
@@ -144,6 +160,30 @@ class GraphView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawGraph()
+        canvas.drawLabels()
+    }
+
+    private fun Canvas.drawLabels() {
+        val deltaX = xInterval / labelXAmount
+        val deltaY = yInterval / labelYAmount
+        val labelXPosY = (1 - GRAPH_BOTTOM_MARGIN) * height + GRAPH_BOTTOM_MARGIN / 2 * height
+        val labelYPosX = width * GRAPH_MARGIN / 2
+        drawText("%.2f".format(dots.first().x), getGraphPositionX(dots.first().x), labelXPosY, labelPaint)
+        drawText("%.2f".format(dots.min().y), labelYPosX, getGraphPositionY(dots.min().y), labelPaint)
+        if (dots.size > 1 && labelXAmount > 1) {
+            for (delta in 0 ..   labelXAmount) {
+                if (delta == 0 || delta == labelXAmount) continue
+                val deltaValue = dots.first().x + delta * deltaX
+                drawText("%.2f".format(deltaValue), getGraphPositionX(deltaValue), labelXPosY, labelPaint)
+            }
+            for (delta in 0 ..   labelYAmount) {
+                if (delta == 0 || delta == labelXAmount) continue
+                val deltaValue = dots.min().y + delta * deltaY
+                drawText("%.2f".format(deltaValue), labelYPosX, getGraphPositionY(deltaValue), labelPaint)
+            }
+            drawText("%.2f".format(dots.last().x), getGraphPositionX(dots.last().x), labelXPosY, labelPaint)
+            drawText("%.2f".format(dots.max().y), labelYPosX, getGraphPositionY(dots.max().y), labelPaint)
+        }
     }
 
     private fun Canvas.drawGraph() {
@@ -228,11 +268,13 @@ class GraphView @JvmOverloads constructor(
         override fun compareTo(other: Dot): Int {
             return y.compareTo(other.y)
         }
-
     }
 
     companion object {
         private const val GRAPH_MARGIN = 0.1f
         private const val GRAPH_BOTTOM_MARGIN = 0.2f
+
+        private const val LABEL_X_DEFAULT_AMOUNT = 10
+        private const val LABEL_Y_DEFAULT_AMOUNT = 5
     }
 }

@@ -14,7 +14,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.withSave
 import ru.kpfu.itis.paramonov.common_android.R
-import ru.kpfu.itis.paramonov.common_android.utils.toPx
+import ru.kpfu.itis.paramonov.common_android.utils.dpToPx
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -33,13 +33,13 @@ class StopwatchView @JvmOverloads constructor(
 
     private val strokePaint = Paint().apply {
         color = Color.BLACK
-        strokeWidth = context.toPx(4f)
+        strokeWidth = context.dpToPx(4f)
         style = Paint.Style.STROKE
     }
 
     private val arrowPaint = Paint().apply {
         color = Color.BLACK
-        strokeWidth = context.toPx(2f)
+        strokeWidth = context.dpToPx(2f)
         style = Paint.Style.FILL
     }
 

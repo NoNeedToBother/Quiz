@@ -22,12 +22,19 @@ fun View.gone() {
     visibility = View.GONE
 }
 
-fun Context.toPx(dp: Float): Float {
+fun Context.dpToPx(dp: Float): Float {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         dp,
         resources.displayMetrics
     )
+}
+
+fun Context.spToPx(sp: Float): Float {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_SP,
+        sp,
+        resources.displayMetrics)
 }
 
 

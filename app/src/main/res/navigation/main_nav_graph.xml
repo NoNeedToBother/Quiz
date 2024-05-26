@@ -92,4 +92,11 @@
         tools:layout="@layout/fragment_search_users"
         />
 
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="ru.kpfu.itis.paramonov.feature_users.presentation.fragments.FriendsFragment"
+        android:label="fragment_friends"
+        tools:layout="@layout/fragment_friends"
+        />
+
 </navigation>

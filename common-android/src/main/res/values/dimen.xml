@@ -7,6 +7,7 @@
     <dimen name="zero_size">0dp</dimen>
     <dimen name="small_profile_picture_size">60dp</dimen>
     <dimen name="medium_text_size">24sp</dimen>
+    <dimen name="large_text_size">32sp</dimen>
 
     <dimen name="logo_text_size">92sp</dimen>
     <dimen name="large_margin">44dp</dimen>

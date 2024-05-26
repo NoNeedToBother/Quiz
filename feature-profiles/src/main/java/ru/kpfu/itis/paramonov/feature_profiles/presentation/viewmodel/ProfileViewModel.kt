@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common_android.utils.emitException
 import ru.kpfu.itis.paramonov.feature_profiles.domain.exception.IncorrectUserDataException
+import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.GetCurrentUserLastResultsUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.profile_settings.ChangeCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.profile_settings.ConfirmCredentialsUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.GetCurrentUserUseCase
@@ -32,6 +33,7 @@ class ProfileViewModel(
     private val acceptFriendRequestUseCase: AcceptFriendRequestUseCase,
     private val denyFriendRequestUseCase: DenyFriendRequestUseCase,
     private val subscribeToProfileUpdatesUseCase: SubscribeToProfileUpdatesUseCase,
+    private val getCurrentUserLastResultsUseCase: GetCurrentUserLastResultsUseCase,
     private val authenticationRouter: AuthenticationRouter
 ): BaseProfileViewModel() {
 
@@ -166,6 +168,19 @@ class ProfileViewModel(
         viewModelScope.launch {
             subscribeToProfileUpdatesUseCase.invoke().collect {
                 _userDataFlow.value = UserDataResult.Success(it)
+            }
+        }
+    }
+
+    fun getLastResults(max: Int) {
+        viewModelScope.launch {
+            try {
+                val results = getCurrentUserLastResultsUseCase.invoke(max)
+                _resultsDataFlow.value = LastResultsDataResult.Success(results)
+            } catch (ex: Throwable) {
+                _resultsDataFlow.emitException(LastResultsDataResult.Failure(ex))
+            } finally {
+                _resultsDataFlow.value = null
             }
         }
     }

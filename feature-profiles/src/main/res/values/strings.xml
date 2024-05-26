@@ -34,4 +34,8 @@
     <string name="requests">Requests</string>
     
     <string name="profile_picture_transition_name">profile_picture</string>
+    <string name="stats">Last results statistics</string>
+    <string name="check_stats">Check last results</string>
+    <string name="get_results_fail">Failed to get last results</string>
+    <string name="get_requests_fail">Failed to get friend requests</string>
 </resources>

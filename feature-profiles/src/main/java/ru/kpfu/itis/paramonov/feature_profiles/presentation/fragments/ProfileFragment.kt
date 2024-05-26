@@ -26,6 +26,8 @@ import ru.kpfu.itis.paramonov.feature_profiles.presentation.fragments.dialogs.Pr
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.fragments.dialogs.ProfilePictureDialogFragment
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.fragments.dialogs.ProfileSettingsDialogFragment
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.fragments.dialogs.RequestsDialogFragment
+import ru.kpfu.itis.paramonov.feature_profiles.presentation.fragments.dialogs.StatsDialogFragment
+import ru.kpfu.itis.paramonov.feature_profiles.presentation.model.ResultUiModel
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.viewmodel.BaseProfileViewModel
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.viewmodel.ProfileViewModel
 import javax.inject.Inject
@@ -54,8 +56,6 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
         setOnClickListeners()
         initSettingsMenu()
         postponeEnterTransition()
-        binding.gvStats.provideValues(-4.0 to 16.0, -3.0 to 9.0, -2.0 to 4.0, -1.0 to 1.0, 0.0 to 0.0,
-            1.0 to 1.0, 2.0 to 4.0, 3.0 to 9.0, 4.0 to 16.0)
     }
 
     private val pickProfilePictureIntent = registerForActivityResult(
@@ -73,7 +73,14 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
             btnRequests.setOnClickListener {
                 onRequestsClicked()
             }
+            btnStats.setOnClickListener {
+                onStatsClicked()
+            }
         }
+    }
+
+    private fun onStatsClicked() {
+        viewModel.getLastResults(MAX_RESULTS_AMOUNT)
     }
 
     private fun onRequestsClicked() {
@@ -110,6 +117,30 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
         viewModel.processingCredentialEvents.collect(lifecycleOwner = viewLifecycleOwner) {
             collectProcessingCredentialEvents(it)
         }
+        viewModel.resultsDataFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectResultsData(it)
+        }
+    }
+
+    private fun collectResultsData(results: BaseProfileViewModel.LastResultsDataResult?) {
+        results?.let {
+            when(it) {
+                is BaseProfileViewModel.LastResultsDataResult.Success -> onLastResultsDataReceived(it.getValue())
+                is BaseProfileViewModel.LastResultsDataResult.Failure ->
+                    showErrorBottomSheetDialog(
+                        getString(R.string.get_results_fail),
+                        it.getException().message ?:
+                        getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
+                    )
+            }
+        }
+    }
+
+    private fun onLastResultsDataReceived(list: List<ResultUiModel>) {
+        StatsDialogFragment.builder()
+            .provideResultList(list)
+            .build()
+            .show(childFragmentManager, StatsDialogFragment.STATS_DIALOG_TAG)
     }
 
     private fun collectRequestsData(requests: ProfileViewModel.FriendRequestResult?) {
@@ -118,7 +149,7 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
                 is ProfileViewModel.FriendRequestResult.Success -> onRequestsDataReceived(it.getValue())
                 is ProfileViewModel.FriendRequestResult.Failure ->
                     showErrorBottomSheetDialog(
-                        getString(ru.kpfu.itis.paramonov.common_android.R.string.empty),
+                        getString(R.string.get_requests_fail),
                         it.getException().message ?:
                         getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
                     )
@@ -128,7 +159,7 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
 
     private fun onRequestsDataReceived(list: List<UserModel>) {
         RequestsDialogFragment.builder()
-            .setRequestList(list)
+            .provideRequestList(list)
             .setOnRequestAccepted {
                 viewModel.acceptFriendRequest(it)
             }
@@ -182,6 +213,7 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
             loadProfilePicture(user.profilePictureUrl)
             fabChangePfp.show()
             btnRequests.show()
+            btnStats.show()
             with(user.friendRequestFromList) {
                 if (isNotEmpty()) {
                     ctvRequests.show()
@@ -320,5 +352,9 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
             .error(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
             .centerCrop()
             .into(binding.ivProfilePicture)
+    }
+
+    companion object {
+        private const val MAX_RESULTS_AMOUNT = 10
     }
 }

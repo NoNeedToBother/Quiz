@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.common_android.utils.emitException
+import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.GetUserLastResultsUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.GetUserUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.friends.GetFriendStatusUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.friends.SendFriendRequestUseCase
@@ -13,7 +14,8 @@ import ru.kpfu.itis.paramonov.feature_profiles.presentation.model.FriendStatusUi
 class OtherUserProfileViewModel(
     private val getUserUseCase: GetUserUseCase,
     private val sendFriendRequestUseCase: SendFriendRequestUseCase,
-    private val getFriendStatusUseCase: GetFriendStatusUseCase
+    private val getFriendStatusUseCase: GetFriendStatusUseCase,
+    private val getUserLastResultsUseCase: GetUserLastResultsUseCase
 ): BaseProfileViewModel() {
 
     private val _sendFriendRequestErrorFlow = MutableStateFlow<Throwable?>(null)
@@ -52,6 +54,19 @@ class OtherUserProfileViewModel(
                 _friendStatusDataFlow.value = FriendStatusDataResult.Success(friendStatus)
             } catch (ex: Throwable) {
                 _friendStatusDataFlow.emitException(FriendStatusDataResult.Failure(ex))
+            }
+        }
+    }
+
+    fun getLastResults(max: Int, id: String) {
+        viewModelScope.launch {
+            try {
+                val results = getUserLastResultsUseCase.invoke(max, id)
+                _resultsDataFlow.value = LastResultsDataResult.Success(results)
+            } catch (ex: Throwable) {
+                _resultsDataFlow.emitException(LastResultsDataResult.Failure(ex))
+            } finally {
+                _resultsDataFlow.value = null
             }
         }
     }

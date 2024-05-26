@@ -159,8 +159,10 @@ class GraphView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawGraph()
-        canvas.drawLabels()
+        if (dots.isNotEmpty()) {
+            canvas.drawGraph()
+            canvas.drawLabels()
+        }
     }
 
     private fun Canvas.drawLabels() {

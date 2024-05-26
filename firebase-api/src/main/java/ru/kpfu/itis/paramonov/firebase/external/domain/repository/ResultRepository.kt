@@ -22,4 +22,8 @@ interface ResultRepository {
     suspend fun save(result: Result): Double
 
     suspend fun getMaxScore(): Double
+
+    suspend fun getLastResults(max: Int): List<Result>
+
+    suspend fun getLastResults(max: Int, id: String): List<Result>
 }

@@ -10,6 +10,7 @@ import ru.kpfu.itis.paramonov.common.model.data.Category
 import ru.kpfu.itis.paramonov.common.model.data.Difficulty
 import ru.kpfu.itis.paramonov.common.model.data.GameMode
 import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
 import ru.kpfu.itis.paramonov.firebase.R
 import ru.kpfu.itis.paramonov.firebase.external.domain.exceptions.ResultDataException
 import ru.kpfu.itis.paramonov.firebase.internal.data.utils.waitResult
@@ -22,7 +23,8 @@ internal class ResultRepositoryImpl(
     private val database: FirebaseFirestore,
     private val dispatcher: CoroutineDispatcher,
     private val resourceManager: ResourceManager,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val dateTimeParser: DateTimeParser
 ): ResultRepository {
     override suspend fun getGlobalResults(
         gameMode: GameMode,
@@ -100,7 +102,8 @@ internal class ResultRepositoryImpl(
                 DB_SCORE_FIELD to score,
                 DB_DIFFICULTY_FIELD to getDifficultyValForDatabase(result.difficulty),
                 DB_CATEGORY_FIELD to getCategoryValForDatabase(result.category),
-                DB_GAME_MODE_FIELD to getGameModeValForDatabase(result.gameMode)
+                DB_GAME_MODE_FIELD to getGameModeValForDatabase(result.gameMode),
+                DB_DATE_FIELD to dateTimeParser.parseMillisToString(System.currentTimeMillis())
             )
             val id = resultDocument.add(values).waitResult().result.get().waitResult().result.id
             resultDocument.document(id).set(
@@ -112,6 +115,36 @@ internal class ResultRepositoryImpl(
 
     override suspend fun getMaxScore(): Double {
         return MAX_SCORE.toDouble()
+    }
+
+    override suspend fun getLastResults(max: Int): List<Result> {
+        return withContext(dispatcher) {
+            val user = userRepository.getCurrentUser() ?:
+                throw ResultDataException(resourceManager.getString(R.string.result_data_failed))
+            getLastResults(max, user.id)
+        }
+    }
+
+    override suspend fun getLastResults(max: Int, id: String): List<Result> {
+        return withContext(dispatcher) {
+            val task = database.collection(RESULTS_COLLECTION_NAME)
+                .whereEqualTo(DB_USER_ID_FIELD, id)
+                .get().waitResult()
+            if (task.isSuccessful) {
+                var results = mutableListOf<Result>()
+                task.result.documents.forEach { doc ->
+                    try {
+                        results.add(doc.getResult())
+                    } catch (_: Throwable) {}
+                }
+                results = results.sortedWith { r1, r2 ->
+                    r1.date.compareTo(r2.date)
+                }.toMutableList()
+                if (results.size > max) {
+                    results.subList(results.size - max, results.size)
+                } else results
+            } else throw ResultDataException(resourceManager.getString(R.string.result_data_failed))
+        }
     }
 
     private fun getStandardQuery(
@@ -165,13 +198,15 @@ internal class ResultRepositoryImpl(
         val difficulty = data?.get(DB_DIFFICULTY_FIELD) as String
         val category = data?.get(DB_CATEGORY_FIELD) as String
         val gameMode = data?.get(DB_GAME_MODE_FIELD) as String
-        userRepository.getUser(userId) ?: throw NullPointerException()
+        val date = data?.get(DB_DATE_FIELD) as String
+        val user = userRepository.getUser(userId) ?: throw NullPointerException()
         return Result(
-            id = id, user = userRepository.getUser(userId)!!,
+            id = id, user = user,
             time = time, correct = correct, total = total, score = score,
             difficulty = Difficulty.valueOf(difficulty),
             category = Category.valueOf(category),
-            gameMode = GameMode.valueOf(gameMode)
+            gameMode = GameMode.valueOf(gameMode),
+            date = dateTimeParser.parseString(date)
         )
     }
 
@@ -186,6 +221,7 @@ internal class ResultRepositoryImpl(
         private const val DB_DIFFICULTY_FIELD = "difficulty"
         private const val DB_CATEGORY_FIELD = "category"
         private const val DB_GAME_MODE_FIELD = "gameMode"
+        private const val DB_DATE_FIELD = "date"
 
         private const val BLITZ_FACTOR = (1).toDouble() / 10 / 5
         private const val MAX_SCORE = 10

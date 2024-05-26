@@ -25,6 +25,7 @@
     <string name="res_time">Time: %d</string>
     <string name="res_ratio">Result: %d/%d</string>
     <string name="res_score">Score: %.3f</string>
+    <string name="user_not_present">Sorry, it seems you are no longer logged in</string>
 
     <string-array name="difficulties">
         <item>EASY</item>

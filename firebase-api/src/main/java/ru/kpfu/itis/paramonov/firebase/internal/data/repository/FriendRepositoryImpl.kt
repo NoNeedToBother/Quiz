@@ -24,7 +24,7 @@ internal class FriendRepositoryImpl(
                 val requestsFrom = to.friendRequestFromList.toMutableList()
                 userRepository.getCurrentUser()?.let {from ->
                     if (!from.friendIdList.contains(to.id) &&
-                        !from.friendRequestFromList.contains(to.id)) {
+                        !to.friendRequestFromList.contains(to.id)) {
                         requestsFrom.add(from.id)
                         val toDoc = database.collection(USERS_COLLECTION_NAME).document(to.id)
                         val updates = mapOf(DB_REQUESTS_FIELD to requestsFrom)

@@ -6,6 +6,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_requests"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/zero_size"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

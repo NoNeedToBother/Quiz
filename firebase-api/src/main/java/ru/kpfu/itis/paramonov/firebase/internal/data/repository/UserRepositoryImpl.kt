@@ -61,6 +61,7 @@ internal class UserRepositoryImpl(
                         }
                     }
                     UpdateKeys.UPDATE_INFO_KEY -> updates[DB_INFO_FIELD] = value
+                    UpdateKeys.UPDATE_DATE_REGISTERED_KEY -> updates[DB_DATE_REGISTERED_FIELD] = value
                 }
             }
 

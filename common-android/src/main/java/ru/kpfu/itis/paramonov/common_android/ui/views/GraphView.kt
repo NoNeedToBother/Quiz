@@ -6,8 +6,6 @@ import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
 import android.graphics.Shader
 import android.util.AttributeSet
@@ -37,7 +35,6 @@ class GraphView @JvmOverloads constructor(
     private val dotPaint = Paint().apply {
         color = Color.BLACK
         style = Paint.Style.FILL
-        xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
     }
     private val labelPaint = Paint().apply {
         color = Color.BLACK
@@ -61,7 +58,7 @@ class GraphView @JvmOverloads constructor(
     var graphStrokeWidth
         get() = graphStrokePaint.strokeWidth
         set(value) {
-            setAndUpdate { graphStrokePaint.strokeWidth = value }
+            if (value >= 0) setAndUpdate { graphStrokePaint.strokeWidth = value }
         }
     var graphFillColor
         get() = fillPaint.color
@@ -79,11 +76,11 @@ class GraphView @JvmOverloads constructor(
 
     var labelXAmount = LABEL_X_DEFAULT_AMOUNT
         set(value) {
-            setAndUpdate { field = value }
+            if (value >= 1) setAndUpdate { field = value }
         }
     var labelYAmount = LABEL_Y_DEFAULT_AMOUNT
         set(value) {
-            setAndUpdate { field = value }
+            if (value >= 1) setAndUpdate { field = value }
         }
 
     private val dots = mutableListOf<Dot>()
@@ -145,8 +142,10 @@ class GraphView @JvmOverloads constructor(
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
         val heightSize = MeasureSpec.getSize(heightMeasureSpec)
 
-        var width = if (widthMode == WRAP_CONTENT || widthMode == MeasureSpec.AT_MOST) widthSize else MeasureSpec.getSize(widthMeasureSpec)
-        var height = if (heightMode == WRAP_CONTENT || heightMode == MeasureSpec.AT_MOST) (width * 9 / 16) else MeasureSpec.getSize(heightMeasureSpec)
+        var width = if (widthMode == WRAP_CONTENT || widthMode == MeasureSpec.AT_MOST || widthMode == MeasureSpec.UNSPECIFIED)
+            widthSize else MeasureSpec.getSize(widthMeasureSpec)
+        var height = if (heightMode == WRAP_CONTENT || heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED)
+                (width * 9 / 16) else MeasureSpec.getSize(heightMeasureSpec)
 
         if (widthMode == MeasureSpec.AT_MOST) {
             width = width.coerceAtMost(widthSize)
@@ -166,29 +165,52 @@ class GraphView @JvmOverloads constructor(
     }
 
     private fun Canvas.drawLabels() {
-        val deltaX = xInterval / labelXAmount
-        val deltaY = yInterval / labelYAmount
+        val deltaX = if (labelXAmount > 1) xInterval / (labelXAmount - 1) else xInterval / labelXAmount
+        val deltaY = if (labelYAmount > 1) yInterval / (labelYAmount - 1) else yInterval / labelYAmount
         val labelXPosY = (1 - GRAPH_BOTTOM_MARGIN) * height + GRAPH_BOTTOM_MARGIN / 2 * height
         val labelYPosX = width * GRAPH_MARGIN / 2
-        drawText("%.2f".format(dots.first().x), getGraphPositionX(dots.first().x), labelXPosY, labelPaint)
-        drawText("%.2f".format(dots.min().y), labelYPosX, getGraphPositionY(dots.min().y), labelPaint)
-        if (dots.size > 1 && labelXAmount > 1) {
-            for (delta in 0 ..   labelXAmount) {
-                if (delta == 0 || delta == labelXAmount) continue
-                val deltaValue = dots.first().x + delta * deltaX
-                drawText("%.2f".format(deltaValue), getGraphPositionX(deltaValue), labelXPosY, labelPaint)
-            }
-            for (delta in 0 ..   labelYAmount) {
-                if (delta == 0 || delta == labelXAmount) continue
-                val deltaValue = dots.min().y + delta * deltaY
-                drawText("%.2f".format(deltaValue), labelYPosX, getGraphPositionY(deltaValue), labelPaint)
-            }
-            drawText("%.2f".format(dots.last().x), getGraphPositionX(dots.last().x), labelXPosY, labelPaint)
-            drawText("%.2f".format(dots.max().y), labelYPosX, getGraphPositionY(dots.max().y), labelPaint)
+        if (dots.size == 1) {
+            drawLabel(dots[0].x, labelXPosY, true) { width / 2f }
+            drawLabel(dots[0].y, labelYPosX, false) { height / 2f }
+            return
+        }
+        drawLabelsAxis(labelXAmount, deltaX, labelXPosY, dots.first().x, true) {
+            getGraphPositionX(it)
+        }
+        drawLabelsAxis(labelYAmount, deltaY, labelYPosX, dots.min().y, false) {
+            getGraphPositionY(it)
         }
     }
 
+    private fun Canvas.drawLabelsAxis(labelAmount: Int, deltaAxis: Double, labelPosOtherAxis: Float,
+                                      minValue: Double, xLabel: Boolean, getGraphPosition: (Double) -> Float) {
+        drawLabel(minValue, labelPosOtherAxis, xLabel) { getGraphPosition.invoke(minValue) }
+        if (dots.size > 1 && labelAmount > 1) {
+            for (delta in 1 until  labelAmount) {
+                val deltaValue = minValue + delta * deltaAxis
+                drawLabel(deltaValue, labelPosOtherAxis, xLabel) { getGraphPosition.invoke(deltaValue) }
+            }
+        }
+    }
+
+    private fun Canvas.drawLabel(value: Double, labelPosOtherAxis: Float, xLabel: Boolean,
+                                 getGraphPosition: (Double) -> Float) {
+        if (xLabel) drawText("%.2f".format(value), getGraphPosition.invoke(value), labelPosOtherAxis, labelPaint)
+        else drawText("%.2f".format(value), labelPosOtherAxis, getGraphPosition.invoke(value), labelPaint)
+    }
+
     private fun Canvas.drawGraph() {
+        val graphPath = getGraphPath()
+        drawPath(graphPath, graphStrokePaint)
+        graphPath.closeGraphPath()
+        withSave {
+            clipPath(graphPath)
+            fillGraph(graphPath)
+        }
+        drawDots()
+    }
+
+    private fun Canvas.getGraphPath(): Path {
         val graphPath = Path()
         for (i in dots.indices) {
             val dot = dots[i]
@@ -197,13 +219,7 @@ class GraphView @JvmOverloads constructor(
             if (i == 0) graphPath.moveTo(dotPosX, dotPosY)
             else graphPath.lineTo(dotPosX, dotPosY)
         }
-        drawPath(graphPath, graphStrokePaint)
-        graphPath.closeGraphPath()
-        withSave {
-            clipPath(graphPath)
-            fillGraph(graphPath)
-        }
-        drawDots()
+        return graphPath
     }
 
     private fun Canvas.fillGraph(path: Path) {
@@ -216,10 +232,14 @@ class GraphView @JvmOverloads constructor(
                 intArrayOf(graphFillColor, graphGradientColor),
                 floatArrayOf(0f, 1f), Shader.TileMode.CLAMP)
         }
-        drawPaint(fillPaint)
+        if (dots.size > 1) drawPaint(fillPaint)
     }
 
     private fun Canvas.drawDots() {
+        if (dots.size == 1) {
+            drawCircle(width / 2f, height / 2f, dotSize, dotPaint)
+            return
+        }
         for (dot in dots) {
             val dotPosX = getGraphPositionX(dot.x)
             val dotPosY = getGraphPositionY(dot.y)

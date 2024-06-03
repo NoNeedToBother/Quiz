@@ -5,6 +5,7 @@ import android.transition.ChangeBounds
 import android.transition.ChangeTransform
 import android.transition.Transition
 import android.transition.TransitionSet
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
@@ -102,6 +103,17 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
         }
         viewModel.resultsDataFlow.collect(lifecycleOwner = viewLifecycleOwner) {
             collectResultsData(it)
+        }
+        viewModel.sendFriendRequestResultFlow.collect(lifecycleOwner = viewLifecycleOwner) {
+            collectFriendRequestResultData(it)
+        }
+    }
+
+    private fun collectFriendRequestResultData(result: Boolean?) {
+        result?.let { success ->
+            if (success) {
+                onFriendStatusReceived(FriendStatusUiModel.REQUEST_SENT)
+            } else Toast.makeText(requireContext(), R.string.friend_request_error, Toast.LENGTH_SHORT)
         }
     }
 

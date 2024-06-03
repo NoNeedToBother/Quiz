@@ -9,7 +9,7 @@ enum class CategoryUiModel {
 }
 
 enum class GameModeUiModel  {
-    BLITZ,
+    BLITZ, CHALLENGE, EXPERT
 }
 
 data class SettingUiModel(

@@ -35,6 +35,7 @@ class StatsDialogFragment: DialogFragment() {
             }
             gvResults.provideValues(list)
             if (results.isEmpty()) view.findViewById<LinearLayout>(R.id.layout_empty_results).show()
+            else gvResults.show()
         }
     }
 

@@ -48,5 +48,7 @@
 
     <string-array name="game_modes">
         <item>Blitz</item>
+        <item>Challenge</item>
+        <item>Expert</item>
     </string-array>
 </resources>

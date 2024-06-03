@@ -18,6 +18,7 @@
         app:gradient="true"
         app:dotColor="@color/primary_variant"
         app:graphStrokeColor="@color/primary"
-        app:graphFillColor="@color/secondary"/>
+        app:graphFillColor="@color/secondary"
+        android:visibility="gone"/>
 
 </LinearLayout>

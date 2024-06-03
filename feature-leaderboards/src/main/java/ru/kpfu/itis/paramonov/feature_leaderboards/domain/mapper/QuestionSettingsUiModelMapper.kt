@@ -35,6 +35,8 @@ class QuestionSettingsUiModelMapper @Inject constructor() {
     fun mapGameMode(gameMode: GameMode): GameModeUiModel {
         return when(gameMode) {
             GameMode.BLITZ -> GameModeUiModel.BLITZ
+            GameMode.CHALLENGE -> GameModeUiModel.CHALLENGE
+            GameMode.EXPERT -> GameModeUiModel.EXPERT
         }
     }
 }

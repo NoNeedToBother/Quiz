@@ -38,4 +38,5 @@
     <string name="check_stats">Check last results</string>
     <string name="get_results_fail">Failed to get last results</string>
     <string name="get_requests_fail">Failed to get friend requests</string>
+    <string name="friend_request_error">Error trying sending request, try again later</string>
 </resources>

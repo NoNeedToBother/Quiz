@@ -180,8 +180,11 @@ internal class ResultRepositoryImpl(
     private fun calculateScore(time: Int, correct: Int, total: Int, gameMode: GameMode): Double {
         val ratio = correct.toDouble() / total
         val ratioValue = Math.E.pow(ratio)
-        val gameModeFactor = when(gameMode) {
-            GameMode.BLITZ -> BLITZ_FACTOR
+        val gameModeFactor =
+            when(gameMode) {
+                GameMode.BLITZ -> BLITZ_FACTOR
+                GameMode.CHALLENGE -> CHALLENGE_FACTOR
+                GameMode.EXPERT -> EXPERT_CHALLENGE
         }
         val timeValue = Math.E.pow((-1) * (time * gameModeFactor).pow(4))
 
@@ -224,6 +227,9 @@ internal class ResultRepositoryImpl(
         private const val DB_DATE_FIELD = "date"
 
         private const val BLITZ_FACTOR = (1).toDouble() / 10 / 5
+        private const val CHALLENGE_FACTOR = (1).toDouble() / 15 / 8
+        private const val EXPERT_CHALLENGE = (1).toDouble() / 25 / 10
+
         private const val MAX_SCORE = 10
     }
 }

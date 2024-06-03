@@ -9,5 +9,5 @@ enum class Category {
 }
 
 enum class GameMode {
-    BLITZ,
+    BLITZ, CHALLENGE, EXPERT
 }

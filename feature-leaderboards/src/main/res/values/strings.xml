@@ -38,5 +38,7 @@
 
     <string-array name="leaderbaord_game_modes">
         <item>Blitz</item>
+        <item>Challenge</item>
+        <item>Expert</item>
     </string-array>
 </resources>

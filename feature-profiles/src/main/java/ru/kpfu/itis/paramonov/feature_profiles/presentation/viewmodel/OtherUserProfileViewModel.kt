@@ -18,9 +18,9 @@ class OtherUserProfileViewModel(
     private val getUserLastResultsUseCase: GetUserLastResultsUseCase
 ): BaseProfileViewModel() {
 
-    private val _sendFriendRequestErrorFlow = MutableStateFlow<Throwable?>(null)
+    private val _sendFriendRequestResultFlow = MutableStateFlow<Boolean?>(null)
 
-    val sendFriendRequestErrorFlow: StateFlow<Throwable?> get() = _sendFriendRequestErrorFlow
+    val sendFriendRequestResultFlow: StateFlow<Boolean?> get() = _sendFriendRequestResultFlow
 
     private val _friendStatusDataFlow = MutableStateFlow<FriendStatusDataResult?>(null)
 
@@ -41,8 +41,11 @@ class OtherUserProfileViewModel(
         viewModelScope.launch {
             try {
                 sendFriendRequestUseCase.invoke(id)
+                _sendFriendRequestResultFlow.value = true
             } catch (ex: Throwable) {
-                _sendFriendRequestErrorFlow.emitException(ex)
+                _sendFriendRequestResultFlow.value = false
+            } finally {
+                _sendFriendRequestResultFlow.value = null
             }
         }
     }

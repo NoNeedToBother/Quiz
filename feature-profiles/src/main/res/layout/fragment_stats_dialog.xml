@@ -2,7 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_empty_results"
+        android:id="@+id/layout_empty_results"
+        android:visibility="gone">
+    </include>
 
     <ru.kpfu.itis.paramonov.common_android.ui.views.GraphView
         android:id="@+id/gv_stats"

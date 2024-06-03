@@ -4,10 +4,12 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_profiles.R
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.adapter.RequestAdapter
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.adapter.diffutil.RequestDiffUtilCallback
@@ -47,6 +49,9 @@ class RequestsDialogFragment : DialogFragment() {
             val layoutManager = LinearLayoutManager(requireContext())
             rvRequests.layoutManager = layoutManager
             adapter.submitList(requests)
+            requests?.let {
+                if (it.isEmpty()) view.findViewById<LinearLayout>(R.id.layout_empty_results).show()
+            }
         }
     }
 

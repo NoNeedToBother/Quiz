@@ -10,6 +10,7 @@ import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.utils.collect
 import ru.kpfu.itis.paramonov.common_android.utils.gone
+import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.common_android.utils.startPostponedTransition
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.FragmentLeaderboardBinding
@@ -134,6 +135,8 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
             it.score
         })
         currentResultCount = newList.size
+        if (newList.isEmpty()) binding.layoutEmptyResults.root.show()
+        else binding.layoutEmptyResults.root.gone()
         adapter?.submitList(newList)
     }
 

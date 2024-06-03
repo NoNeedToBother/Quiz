@@ -9,22 +9,24 @@
     android:elevation="@dimen/settings_sheet_elevation"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_sheet_button_height"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_expand"
+        android:layout_width="@dimen/settings_sheet_expand_btn_size"
+        android:layout_height="@dimen/settings_sheet_expand_btn_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/extra_small_margin"
-        android:layout_marginHorizontal="@dimen/settings_sheet_button_margin_horizontal"
-        android:background="@drawable/bottom_sheet"/>
+        android:src="@drawable/arrow_down_up_anim"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_difficulties"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_expand"
         android:hint="@string/difficulty"
         android:layout_marginHorizontal="@dimen/medium_margin"
-        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginTop="@dimen/extra_small_margin"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu.QuestionsSettings">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView

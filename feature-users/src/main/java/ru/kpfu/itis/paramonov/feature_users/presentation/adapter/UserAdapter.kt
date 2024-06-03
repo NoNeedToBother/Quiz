@@ -2,6 +2,7 @@ package ru.kpfu.itis.paramonov.feature_users.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
@@ -24,6 +25,9 @@ class UserAdapter(
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bindItem(getItem(position))
+        holder.binding.root.startAnimation(AnimationUtils.loadAnimation(
+            holder.binding.root.context, ru.kpfu.itis.paramonov.common_android.R.anim.recyler_view_item_enter_anim
+        ))
     }
 
 }

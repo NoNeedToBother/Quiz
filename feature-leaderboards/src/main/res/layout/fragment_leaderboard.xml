@@ -16,4 +16,9 @@
         android:visibility="visible">
     </include>
 
+    <include layout="@layout/layout_empty_results"
+        android:id="@+id/layout_empty_results"
+        android:visibility="gone">
+    </include>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,11 @@
         app:iconifiedByDefault="false"
         />
 
+    <include layout="@layout/layout_empty_results"
+        android:id="@+id/layout_empty_results"
+        android:visibility="gone">
+    </include>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_users"
         android:layout_width="match_parent"

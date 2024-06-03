@@ -8,6 +8,8 @@ import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.common_android.utils.collect
+import ru.kpfu.itis.paramonov.common_android.utils.gone
+import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_users.R
 import ru.kpfu.itis.paramonov.feature_users.databinding.FragmentFriendsBinding
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersComponent
@@ -118,6 +120,8 @@ class FriendsFragment: BaseFragment(R.layout.fragment_friends) {
 
     private fun onGetFriendsSuccess(users: List<UserModel>) {
         adapter?.submitList(users)
+        if (users.isEmpty()) binding.layoutEmptyResults.root.show()
+        else binding.layoutEmptyResults.root.gone()
     }
 
     private fun onGetFriendsFail(ex: Throwable) {

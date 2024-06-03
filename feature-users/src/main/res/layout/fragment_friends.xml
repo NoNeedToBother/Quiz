@@ -14,6 +14,11 @@
         android:textStyle="bold"
         android:textSize="@dimen/large_text_size"/>
 
+    <include layout="@layout/layout_empty_results"
+        android:id="@+id/layout_empty_results"
+        android:visibility="gone">
+    </include>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_friends"
         android:layout_width="match_parent"

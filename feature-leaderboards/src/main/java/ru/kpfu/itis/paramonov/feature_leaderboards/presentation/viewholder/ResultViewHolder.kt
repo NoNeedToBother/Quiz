@@ -17,7 +17,7 @@ import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.ItemResultBinding
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiModel
 
 class ResultViewHolder(
-    private val binding: ItemResultBinding,
+    val binding: ItemResultBinding,
     private val resourceManager: ResourceManager,
     onResultClicked: (String, ImageView) -> Unit
 ): RecyclerView.ViewHolder(binding.root) {
@@ -140,7 +140,6 @@ class ResultViewHolder(
     private fun loadImage(url: String) {
         Glide.with(binding.root)
             .load(url)
-            //.placeholder(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
             .error(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
             .centerCrop()
             .into(binding.ivProfilePicture)

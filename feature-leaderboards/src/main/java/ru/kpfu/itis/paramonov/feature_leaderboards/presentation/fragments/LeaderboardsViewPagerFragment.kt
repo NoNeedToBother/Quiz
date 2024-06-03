@@ -1,10 +1,17 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.presentation.fragments
 
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.ImageView
+import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -40,6 +47,14 @@ class LeaderboardsViewPagerFragment: BaseFragment(R.layout.fragment_leaderboards
 
     @Inject
     lateinit var viewModel: LeaderboardsViewModel
+
+    private var expanded = false
+
+    private val settingsSheetBehavior: BottomSheetBehavior<View>? get() {
+        return binding.clSettings.findViewById<View>(R.id.bottom_sheet_container)?.let {
+            BottomSheetBehavior.from(it)
+        }
+    }
 
     override fun inject() {
         leaderboardsComponent =
@@ -93,7 +108,54 @@ class LeaderboardsViewPagerFragment: BaseFragment(R.layout.fragment_leaderboards
             initAutoCompleteTextView(tvCategories, CategoryArrayAdapter(requireContext(), getCategoryList()))
             initAutoCompleteTextView(tvDifficulties, DifficultyArrayAdapter(requireContext(), getDifficultyList()))
             initAutoCompleteTextView(tvGameModes, GameModeArrayAdapter(requireContext(), getGameModeList()))
+
+            val ivExpand = clSettings.findViewById<AppCompatImageView>(R.id.iv_expand)
+            ivExpand.setOnClickListener {
+                settingsSheetBehavior?.let {
+                    when(it.state) {
+                        BottomSheetBehavior.STATE_COLLAPSED -> expandBottomSheet(ivExpand, it)
+                        BottomSheetBehavior.STATE_EXPANDED -> collapseBottomSheet(ivExpand, it)
+                    }
+                }
+            }
+            settingsSheetBehavior?.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
+                override fun onStateChanged(view: View, state: Int) {
+                    when(state) {
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+                            if (expanded) {
+                                ivExpand.startArrowAnimation(R.drawable.arrow_up_down_anim)
+                                expanded = false
+                            }
+                        }
+                        BottomSheetBehavior.STATE_EXPANDED -> {
+                            if (!expanded) {
+                                ivExpand.startArrowAnimation(R.drawable.arrow_down_up_anim)
+                                expanded = true
+                            }
+                        }
+                    }
+                }
+
+                override fun onSlide(p0: View, p1: Float) {}
+            })
         }
+    }
+
+    private fun expandBottomSheet(iv: ImageView, behavior: BottomSheetBehavior<View>) {
+        expanded = true
+        iv.startArrowAnimation(R.drawable.arrow_down_up_anim)
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    private fun collapseBottomSheet(iv: ImageView, behavior: BottomSheetBehavior<View>) {
+        expanded = false
+        iv.startArrowAnimation(R.drawable.arrow_up_down_anim)
+        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    private fun ImageView.startArrowAnimation(@DrawableRes animId: Int) {
+        setImageDrawable(AppCompatResources.getDrawable(requireContext(), animId))
+        (drawable as AnimatedVectorDrawable).start()
     }
 
     private fun <T> initAutoCompleteTextView(tv: AutoCompleteTextView, adapter: ArrayAdapter<T>) {

@@ -8,7 +8,7 @@ import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.feature_users.databinding.ItemUserBinding
 
 class UserViewHolder(
-    private val binding: ItemUserBinding,
+    val binding: ItemUserBinding,
     private val onUserClicked: (UserModel, ImageView) -> Unit
 ): RecyclerView.ViewHolder(binding.root) {
 

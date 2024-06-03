@@ -4,8 +4,10 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import ru.kpfu.itis.paramonov.common_android.ui.views.GraphView
+import ru.kpfu.itis.paramonov.common_android.utils.show
 import ru.kpfu.itis.paramonov.feature_profiles.R
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.model.ResultUiModel
 
@@ -32,6 +34,7 @@ class StatsDialogFragment: DialogFragment() {
                 list.add((i + 1).toDouble() to results[i].score)
             }
             gvResults.provideValues(list)
+            if (results.isEmpty()) view.findViewById<LinearLayout>(R.id.layout_empty_results).show()
         }
     }
 

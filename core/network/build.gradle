@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'ru.kpfu.itis.paramonov.question_api'
+    namespace 'ru.kpfu.itis.paramonov.network'
     compileSdk rootProject.compileSdkVersion
 
     defaultConfig {

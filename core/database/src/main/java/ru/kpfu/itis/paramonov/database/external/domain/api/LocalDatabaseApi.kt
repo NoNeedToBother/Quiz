@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.database.external.domain.api
 
-import ru.kpfu.itis.paramonov.local_database_api.external.domain.repository.QuestionSettingsRepository
-import ru.kpfu.itis.paramonov.local_database_api.external.domain.repository.SavedQuestionRepository
+import ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettingsRepository
+import ru.kpfu.itis.paramonov.database.external.domain.repository.SavedQuestionRepository
 
 interface LocalDatabaseApi {
 

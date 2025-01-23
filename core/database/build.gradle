@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'ru.kpfu.itis.paramonov.local_database_api'
+    namespace 'ru.kpfu.itis.paramonov.database'
     compileSdk rootProject.compileSdkVersion
 
     defaultConfig {

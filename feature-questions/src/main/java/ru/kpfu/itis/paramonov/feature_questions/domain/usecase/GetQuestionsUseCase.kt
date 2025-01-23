@@ -6,8 +6,8 @@ import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionSettingsUi
 import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionUiModelMapper
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import ru.kpfu.itis.paramonov.common.model.data.GameMode
-import ru.kpfu.itis.paramonov.local_database_api.external.domain.repository.QuestionSettingsRepository
-import ru.kpfu.itis.paramonov.question_api.external.domain.repository.QuestionRepository
+import ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettingsRepository
+import ru.kpfu.itis.paramonov.network.external.domain.repository.QuestionRepository
 import javax.inject.Inject
 
 class GetQuestionsUseCase @Inject constructor(

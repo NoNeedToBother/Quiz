@@ -5,9 +5,9 @@ import ru.kpfu.itis.paramonov.common.resources.ResourceManager
 import ru.kpfu.itis.paramonov.common.utils.HtmlDecoder
 import ru.kpfu.itis.paramonov.firebase.external.domain.repository.ResultRepository
 import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
-import ru.kpfu.itis.paramonov.local_database_api.external.domain.repository.QuestionSettingsRepository
-import ru.kpfu.itis.paramonov.local_database_api.external.domain.repository.SavedQuestionRepository
-import ru.kpfu.itis.paramonov.question_api.external.domain.repository.QuestionRepository
+import ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettingsRepository
+import ru.kpfu.itis.paramonov.database.external.domain.repository.SavedQuestionRepository
+import ru.kpfu.itis.paramonov.network.external.domain.repository.QuestionRepository
 
 interface FeatureQuestionsDependencies {
 

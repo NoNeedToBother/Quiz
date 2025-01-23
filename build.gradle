@@ -7,51 +7,6 @@ buildscript {
         compileSdkVersion = 34
         minSdkVersion = 21
         targetSdkVersion = 34
-
-        daggerVersion = '2.49'
-        dagger = "com.google.dagger:dagger:$daggerVersion"
-        daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
-
-        viewBindingDelegateVersion = "1.5.9"
-        viewBindingDelegate = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:$viewBindingDelegateVersion"
-
-        androidxCoreVersion = "1.8.0"
-        androidXCore = "androidx.core:core-ktx:$androidxCoreVersion"
-        androidXCompatVersion = "1.6.1"
-        androidXCompat = "androidx.appcompat:appcompat:$androidXCompatVersion"
-        materialVersion = "1.11.0"
-        material = "com.google.android.material:material:$materialVersion"
-
-        jetpackNavigationVersion = "2.7.7"
-        jetpackNavigationFragment = "androidx.navigation:navigation-fragment-ktx:$jetpackNavigationVersion"
-        jetpackNavigationUi = "androidx.navigation:navigation-ui-ktx:$jetpackNavigationVersion"
-
-        viewModelKtxVersion = "2.6.0"
-        viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelKtxVersion"
-
-        fragmentKtxVersion = "1.6.2"
-        fragmentKtx = "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
-
-        retrofitVersion = "2.9.0"
-        retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
-        retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-
-        okHttp3Version = "4.12.0"
-        okHttp3 = "com.squareup.okhttp3:okhttp:$okHttp3Version"
-
-        gsonVersion = "2.10.1"
-        gson = "com.google.code.gson:gson:$gsonVersion"
-
-        coroutinesVersion = "1.3.9"
-        coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
-
-        roomVersion = "2.6.0"
-        roomRuntime = "androidx.room:room-runtime:$roomVersion"
-        roomKtx = "androidx.room:room-ktx:$roomVersion"
-        roomKapt = "androidx.room:room-compiler:$roomVersion"
-
-        glideVersion = "4.16.0"
-        glide = "com.github.bumptech.glide:glide:$glideVersion"
     }
 
     repositories {
@@ -60,14 +15,16 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.google.gms:google-services:4.4.1'
+        classpath libs.google.services
     }
 }
 
 plugins {
-    id 'com.android.application' version '8.3.2' apply false
-    id 'com.android.library' version '8.3.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.9.21' apply false
-    id "com.google.devtools.ksp" version "1.9.21-1.0.15" apply false
-    id("com.google.gms.google-services") version "4.4.1" apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.gms) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.room) apply false
 }

@@ -5,7 +5,7 @@ import dagger.Component
 import ru.kpfu.itis.paramonov.common.api.CommonApi
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.di.LeaderboardsComponent
 import ru.kpfu.itis.paramonov.firebase.external.domain.api.FirebaseApi
-import ru.kpfu.itis.paramonov.local_database_api.external.domain.api.LocalDatabaseApi
+import ru.kpfu.itis.paramonov.database.external.domain.api.LocalDatabaseApi
 import ru.kpfu.itis.paramonov.navigation.UserRouter
 import ru.kpfu.itis.paramonov.common.scopes.FeatureScope
 

@@ -1,0 +1,134 @@
+[versions]
+android = "8.7.3"
+googleServicesVersion = "4.4.2"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.28"
+googleServices = "4.4.2"
+firebaseCrashlyticsPlugin = "3.0.2"
+
+firebaseBom = "33.7.0"
+
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+
+dagger = "2.49"
+
+viewBindingDelegate = "1.5.9"
+androidXCore = "1.15.0"
+androidXCompat = "1.7.0"
+androidxComposeBom = "2024.11.00"
+material = "1.12.0"
+jetpackNavigation = "2.8.5"
+
+viewModelKtx = "2.8.7"
+fragmentKtx = "1.8.5"
+
+retrofit = "2.9.0"
+okHttp3 = "4.12.0"
+
+gson = "2.10.1"
+coroutines = "1.3.9"
+room = "2.6.1"
+glide = "4.16.0"
+
+[libraries]
+dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
+dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
+view-binding-delegate = { group = "com.github.kirich1409", name = "viewbindingpropertydelegate-noreflection", version.ref = "viewBindingDelegate" }
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidXCore" }
+androidx-compat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXCompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+
+jetpack-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "jetpackNavigation" }
+jetpack-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "jetpackNavigation" }
+
+viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewModelKtx" }
+fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttp3" }
+
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
+coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version = "room" }
+
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+androidx-ui-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-ui-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
+androidx-ui-animation = { module = "androidx.compose.animation:animation" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material3-navigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite" }
+androidx-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+androidx-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
+
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android" }
+android-library = { id = "com.android.library", version.ref = "android" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
+gms = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+
+[bundles]
+compose = [
+    "androidx-ui",
+    "androidx-ui-runtime",
+    "androidx-ui-animation",
+    "androidx-ui-foundation",
+    "androidx-ui-foundation-layout",
+    "androidx-ui-graphics",
+    "androidx-ui-util",
+    "androidx-material3",
+    "androidx-material3-navigationSuite",
+    "androidx-material3-windowSizeClass",
+    "androidx-material-iconsExtended",
+]
+
+firebase = [
+    "firebase-bom",
+    "firebase-analytics",
+    "firebase-cloud-messaging",
+    "firebase-crashlytics",
+    "firebase-firestore",
+    "firebase-storage",
+    "firebase-auth"
+]
+
+compose-tooling = [
+    "androidx-ui-tooling",
+    "androidx-ui-tooling-preview",
+]
+
+
+

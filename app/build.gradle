@@ -1,10 +1,9 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id "com.google.devtools.ksp"
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.gms)
 }
-
-apply plugin: 'com.google.gms.google-services'
 
 android {
     namespace 'ru.kpfu.itis.paramonov.quiz'
@@ -26,15 +25,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
-
     kotlin {
-        jvmToolchain(8)
+        jvmToolchain(17)
     }
 
     buildFeatures {
@@ -43,38 +41,36 @@ android {
 }
 
 dependencies {
-    implementation project(':firebase-api')
+    implementation project(':core:firebase')
     implementation project(':common')
     implementation project(':common-android')
     implementation project(':feature-authentication')
     implementation project(':navigation')
-    implementation project(':local-database-api')
+    implementation project(':core:database')
     implementation project(':feature-questions')
-    implementation project(':question-api')
+    implementation project(':core:network')
     implementation project(':feature-profiles')
     implementation project(':feature-leaderboards')
     implementation project(':feature-users')
 
-    implementation(dagger)
-    ksp(daggerCompiler)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.compat)
+    implementation(libs.material)
 
-    implementation(viewBindingDelegate)
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
 
-    implementation(viewModelKtx)
+    implementation(libs.view.binding.delegate)
 
-    implementation(fragmentKtx)
+    implementation(libs.viewmodel.ktx)
+    implementation(libs.fragment.ktx)
 
-    implementation(jetpackNavigationFragment)
-    implementation(jetpackNavigationUi)
+    implementation(libs.jetpack.navigation.fragment)
+    implementation(libs.jetpack.navigation.ui)
 
-    def firebaseBoMVersion = '32.7.4'
-    implementation(platform("com.google.firebase:firebase-bom:${firebaseBoMVersion}"))
-    implementation("com.google.firebase:firebase-auth")
+    implementation(platform(libs.firebase.bom))
 
-    implementation(androidXCore)
-    implementation(androidXCompat)
-    implementation(material)
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

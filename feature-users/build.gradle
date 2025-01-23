@@ -1,7 +1,7 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
-    id "com.google.devtools.ksp"
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -22,14 +22,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     kotlin {
-        jvmToolchain(8)
+        jvmToolchain(17)
     }
     buildFeatures {
         viewBinding = true
@@ -40,24 +40,24 @@ dependencies {
 
     implementation project(':common')
     implementation project(':common-android')
-    implementation project(':firebase-api')
+    implementation project(':core:firebase')
     implementation project(':navigation')
 
-    implementation(androidXCore)
-    implementation(androidXCompat)
-    implementation(material)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.compat)
+    implementation(libs.material)
 
-    implementation(dagger)
-    ksp(daggerCompiler)
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
 
-    implementation(viewBindingDelegate)
+    implementation(libs.view.binding.delegate)
 
-    implementation(viewModelKtx)
-    implementation(fragmentKtx)
+    implementation(libs.viewmodel.ktx)
+    implementation(libs.fragment.ktx)
 
-    implementation(glide)
+    implementation(libs.glide)
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

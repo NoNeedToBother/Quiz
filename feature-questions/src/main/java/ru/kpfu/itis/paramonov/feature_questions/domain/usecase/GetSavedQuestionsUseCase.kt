@@ -5,8 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionSettingsUiModelMapper
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerDataUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
-import ru.kpfu.itis.paramonov.local_database_api.external.domain.repository.QuestionSettingsRepository
-import ru.kpfu.itis.paramonov.local_database_api.external.domain.repository.SavedQuestionRepository
+import ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettingsRepository
+import ru.kpfu.itis.paramonov.database.external.domain.repository.SavedQuestionRepository
 import javax.inject.Inject
 
 class GetSavedQuestionsUseCase @Inject constructor(

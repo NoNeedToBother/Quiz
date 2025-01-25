@@ -10,7 +10,7 @@
         android:visibility="gone">
     </include>
 
-    <ru.kpfu.itis.paramonov.common_android.ui.views.GraphView
+    <ru.kpfu.itis.paramonov.ui.views.GraphView
         android:id="@+id/gv_stats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

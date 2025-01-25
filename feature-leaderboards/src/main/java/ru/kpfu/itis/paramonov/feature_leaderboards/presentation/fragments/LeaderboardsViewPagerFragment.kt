@@ -17,8 +17,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import ru.kpfu.itis.paramonov.core.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.core.utils.toEnumName
-import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
-import ru.kpfu.itis.paramonov.core.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.core.utils.collect
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.FragmentLeaderboardsViewPagerBinding

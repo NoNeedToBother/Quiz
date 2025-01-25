@@ -3,7 +3,7 @@ package ru.kpfu.itis.paramonov.feature_profiles.presentation.viewmodel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
-import ru.kpfu.itis.paramonov.core.ui.base.BaseViewModel
+import ru.kpfu.itis.paramonov.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.model.ResultUiModel
 
 abstract class BaseProfileViewModel: BaseViewModel() {

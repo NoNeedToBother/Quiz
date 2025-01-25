@@ -25,7 +25,7 @@
         android:visibility="gone"
         android:orientation="horizontal">
 
-        <ru.kpfu.itis.paramonov.common_android.ui.views.StopwatchView
+        <ru.kpfu.itis.paramonov.ui.views.StopwatchView
             android:id="@+id/swv_clock"
             android:layout_width="@dimen/stopwatch_size"
             android:layout_height="@dimen/stopwatch_size"

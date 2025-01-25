@@ -118,7 +118,7 @@
         android:visibility="gone"
         android:layout_marginBottom="@dimen/profile_requests_margin_bottom"/>
 
-    <ru.kpfu.itis.paramonov.common_android.ui.views.CircleTextView
+    <ru.kpfu.itis.paramonov.ui.views.CircleTextView
         android:id="@+id/ctv_requests"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

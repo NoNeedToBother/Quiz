@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.kpfu.itis.paramonov.core.resources.ResourceManager
-import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.core.utils.collect
 import ru.kpfu.itis.paramonov.core.utils.gone
 import ru.kpfu.itis.paramonov.core.utils.show
@@ -120,10 +120,10 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
     }
 
     private fun onGetResultsFail(ex: Throwable) {
-        /*showErrorBottomSheetDialog(
+        showErrorBottomSheetDialog(
             getString(R.string.get_results_fail),
             ex.message ?: getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
-        )*/
+        )
     }
 
     private fun addResults(results: List<ResultUiModel>) {

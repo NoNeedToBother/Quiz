@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
-import ru.kpfu.itis.paramonov.core.ui.di.viewmodel.ViewModelKey
-import ru.kpfu.itis.paramonov.core.ui.di.viewmodel.ViewModelModule
+import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelKey
+import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.AuthenticateUserUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.domain.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.feature_authentication.presentation.signing_in.SignInViewModel

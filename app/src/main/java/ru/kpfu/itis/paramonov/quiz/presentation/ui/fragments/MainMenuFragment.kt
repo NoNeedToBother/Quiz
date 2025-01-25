@@ -4,7 +4,7 @@ import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import androidx.appcompat.app.AppCompatActivity
 import by.kirich1409.viewbindingdelegate.viewBinding
-import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.databinding.FragmentMainMenuBinding
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies

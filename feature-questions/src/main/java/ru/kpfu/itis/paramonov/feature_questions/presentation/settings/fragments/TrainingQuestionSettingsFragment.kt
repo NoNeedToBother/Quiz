@@ -7,8 +7,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
-import ru.kpfu.itis.paramonov.core.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentTrainingQuestionSettingsBinding
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsComponent
@@ -72,11 +72,11 @@ class TrainingQuestionSettingsFragment: BaseFragment(R.layout.fragment_training_
                     try {
                         viewModel.saveTrainingQuestionSettings(it.value.toInt())
                     } catch (_: NumberFormatException) {
-                        /*showErrorBottomSheetDialog(
-                            getString(ru.kpfu.itis.paramonov.common_android.R.string.empty),
+                        showErrorBottomSheetDialog(
+                            getString(ru.kpfu.itis.paramonov.ui.R.string.empty),
                             getString(
                                 R.string.limit_not_correct, LIMIT_LOWER_BOUND, LIMIT_UPPER_BOUND)
-                            )*/
+                            )
                     }
                 }
             }
@@ -106,11 +106,11 @@ class TrainingQuestionSettingsFragment: BaseFragment(R.layout.fragment_training_
                         }
                     }
                     is TrainingQuestionSettingsViewModel.TrainingQuestionSettingsResult.Failure -> {
-                        /*showErrorBottomSheetDialog(
-                            getString(ru.kpfu.itis.paramonov.common_android.R.string.empty),
+                        showErrorBottomSheetDialog(
+                            getString(ru.kpfu.itis.paramonov.ui.R.string.empty),
                             result.getException().message ?:
-                            getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
-                        )*/
+                            getString(ru.kpfu.itis.paramonov.ui.R.string.default_error_msg)
+                        )
                     }
                 }
             }

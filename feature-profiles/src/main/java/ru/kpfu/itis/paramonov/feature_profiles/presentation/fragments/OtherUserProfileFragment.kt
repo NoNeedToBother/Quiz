@@ -14,8 +14,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
-import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
-import ru.kpfu.itis.paramonov.core.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.core.utils.collect
 import ru.kpfu.itis.paramonov.core.utils.gone
 import ru.kpfu.itis.paramonov.core.utils.show
@@ -113,7 +113,7 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
         result?.let { success ->
             if (success) {
                 onFriendStatusReceived(FriendStatusUiModel.REQUEST_SENT)
-            } else Toast.makeText(requireContext(), R.string.friend_request_error, Toast.LENGTH_SHORT)
+            } else Toast.makeText(requireContext(), R.string.friend_request_error, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -121,12 +121,12 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
         results?.let {
             when(it) {
                 is BaseProfileViewModel.LastResultsDataResult.Success -> onLastResultsDataReceived(it.getValue())
-                is BaseProfileViewModel.LastResultsDataResult.Failure -> {}
-                    /*showErrorBottomSheetDialog(
+                is BaseProfileViewModel.LastResultsDataResult.Failure ->
+                    showErrorBottomSheetDialog(
                         getString(R.string.get_results_fail),
                         it.getException().message ?:
                         getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
-                    )*/
+                    )
             }
         }
     }
@@ -177,11 +177,11 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
         result?.let {
             when(result) {
                 is BaseProfileViewModel.UserDataResult.Success -> showUserInfo(result.getValue())
-                is BaseProfileViewModel.UserDataResult.Failure -> {}/*showErrorBottomSheetDialog(
+                is BaseProfileViewModel.UserDataResult.Failure -> showErrorBottomSheetDialog(
                     getString(R.string.user_data_fail_title),
                     result.getException().message ?:
                     getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
-                )*/
+                )
             }
         }
     }

@@ -2,12 +2,12 @@ package ru.kpfu.itis.paramonov.feature_profiles.di
 
 import dagger.BindsInstance
 import dagger.Component
-import ru.kpfu.itis.paramonov.common.api.CommonApi
+import ru.kpfu.itis.paramonov.core.api.CommonApi
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.di.OtherUserProfileComponent
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.di.ProfileComponent
 import ru.kpfu.itis.paramonov.firebase.external.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
-import ru.kpfu.itis.paramonov.common.scopes.FeatureScope
+import ru.kpfu.itis.paramonov.core.di.scopes.FeatureScope
 
 @Component(
     dependencies = [

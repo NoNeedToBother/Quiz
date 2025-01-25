@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.quiz.utils
 
-import ru.kpfu.itis.paramonov.common.utils.DateTime
-import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
+import ru.kpfu.itis.paramonov.core.utils.DateTime
+import ru.kpfu.itis.paramonov.core.utils.DateTimeParser
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.feature_questions.di
 
-import ru.kpfu.itis.paramonov.common.scopes.ApplicationScope
-import ru.kpfu.itis.paramonov.common_android.di.FeatureApiHolder
+import ru.kpfu.itis.paramonov.core.di.scopes.ApplicationScope
+import ru.kpfu.itis.paramonov.core.di.FeatureApiHolder
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import javax.inject.Inject

@@ -1,9 +1,9 @@
 package ru.kpfu.itis.paramonov.feature_profiles.di
 
 import kotlinx.coroutines.CoroutineDispatcher
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
-import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 import ru.kpfu.itis.paramonov.firebase.external.domain.repository.FriendRepository
 import ru.kpfu.itis.paramonov.firebase.external.domain.repository.ResultRepository
 import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository

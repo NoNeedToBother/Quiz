@@ -4,9 +4,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.ClassKey
 import dagger.multibindings.IntoMap
-import ru.kpfu.itis.paramonov.common_android.di.FeatureApiHolder
-import ru.kpfu.itis.paramonov.common_android.di.FeatureContainer
-import ru.kpfu.itis.paramonov.common.scopes.ApplicationScope
+import ru.kpfu.itis.paramonov.core.di.FeatureApiHolder
+import ru.kpfu.itis.paramonov.core.di.FeatureContainer
+import ru.kpfu.itis.paramonov.core.di.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationHolder
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependenciesContainer

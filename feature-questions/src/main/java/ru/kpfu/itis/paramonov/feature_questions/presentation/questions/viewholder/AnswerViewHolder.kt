@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.AnswerItemBinding
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerDataUiModel

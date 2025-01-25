@@ -2,8 +2,8 @@ package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragment
 
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionBinding
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.adapter.AnswerAdapter

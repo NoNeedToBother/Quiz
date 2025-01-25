@@ -5,9 +5,9 @@ import android.graphics.drawable.LayerDrawable
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import by.kirich1409.viewbindingdelegate.viewBinding
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
-import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
-import ru.kpfu.itis.paramonov.common_android.utils.collect
+import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.core.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.core.utils.collect
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentResultBinding
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsComponent
@@ -52,7 +52,7 @@ class ResultFragment: BaseFragment(R.layout.fragment_result) {
             }
             showInfoOnScreen(difficulty, category, gameMode, time, correct, total, score)
         } catch (ex: Throwable) {
-            when(ex) {
+            /*when(ex) {
                 is NullPointerException, is ClassCastException -> showErrorBottomSheetDialog(
                     getString(ru.kpfu.itis.paramonov.common_android.R.string.empty),
                     getString(R.string.unsupported_arguments)
@@ -61,7 +61,7 @@ class ResultFragment: BaseFragment(R.layout.fragment_result) {
                     getString(ru.kpfu.itis.paramonov.common_android.R.string.empty),
                     getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
                 )
-            }
+            }*/
         }
     }
 

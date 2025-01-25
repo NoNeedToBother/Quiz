@@ -1,14 +1,14 @@
 package ru.kpfu.itis.paramonov.database.internal.data.shared_pref.repository
 
 import android.content.SharedPreferences
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.utils.toEnumName
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.utils.toEnumName
 import ru.kpfu.itis.paramonov.database.R
 import ru.kpfu.itis.paramonov.database.external.domain.exception.IncorrectParameterException
 import ru.kpfu.itis.paramonov.database.external.domain.exception.NoParameterFoundException
-import ru.kpfu.itis.paramonov.common.model.data.Category
-import ru.kpfu.itis.paramonov.common.model.data.Difficulty
-import ru.kpfu.itis.paramonov.common.model.data.GameMode
+import ru.kpfu.itis.paramonov.core.model.data.Category
+import ru.kpfu.itis.paramonov.core.model.data.Difficulty
+import ru.kpfu.itis.paramonov.core.model.data.GameMode
 import ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettingsRepository
 
 internal class QuestionSettingsRepositoryImpl(

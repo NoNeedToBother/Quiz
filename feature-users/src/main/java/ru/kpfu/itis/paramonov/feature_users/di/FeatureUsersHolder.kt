@@ -1,6 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_users.di
 
-import ru.kpfu.itis.paramonov.common_android.di.FeatureApiHolder
+import ru.kpfu.itis.paramonov.core.di.FeatureApiHolder
 import ru.kpfu.itis.paramonov.navigation.UserRouter
 import javax.inject.Inject
 

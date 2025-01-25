@@ -3,11 +3,11 @@ package ru.kpfu.itis.paramonov.firebase.internal.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
-import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
-import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
-import ru.kpfu.itis.paramonov.common.validators.Validator
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.utils.DateTimeParser
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
+import ru.kpfu.itis.paramonov.core.validators.Validator
 import ru.kpfu.itis.paramonov.firebase.R
 import ru.kpfu.itis.paramonov.firebase.external.domain.exceptions.CredentialException
 import ru.kpfu.itis.paramonov.firebase.external.domain.exceptions.RegisterException

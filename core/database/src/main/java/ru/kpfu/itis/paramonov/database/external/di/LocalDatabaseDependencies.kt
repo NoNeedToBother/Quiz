@@ -2,7 +2,7 @@ package ru.kpfu.itis.paramonov.database.external.di
 
 import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
 
 interface LocalDatabaseDependencies {
 

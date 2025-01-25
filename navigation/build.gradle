@@ -30,7 +30,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core)
     implementation(libs.androidx.compat)
     implementation(libs.material)

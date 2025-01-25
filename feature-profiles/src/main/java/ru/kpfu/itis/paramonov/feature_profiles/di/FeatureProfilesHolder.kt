@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.feature_profiles.di
 
-import ru.kpfu.itis.paramonov.common.scopes.ApplicationScope
-import ru.kpfu.itis.paramonov.common_android.di.FeatureApiHolder
+import ru.kpfu.itis.paramonov.core.di.scopes.ApplicationScope
+import ru.kpfu.itis.paramonov.core.di.FeatureApiHolder
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import javax.inject.Inject
 

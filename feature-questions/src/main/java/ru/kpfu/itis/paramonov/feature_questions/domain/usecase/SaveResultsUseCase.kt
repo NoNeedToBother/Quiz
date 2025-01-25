@@ -2,7 +2,7 @@ package ru.kpfu.itis.paramonov.feature_questions.domain.usecase
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.domain.mapper.QuestionSettingsApiModelMapper
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.CategoryUiModel

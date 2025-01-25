@@ -14,7 +14,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.withSave
 import ru.kpfu.itis.paramonov.common_android.R
-import ru.kpfu.itis.paramonov.common_android.utils.dpToPx
+import ru.kpfu.itis.paramonov.core.utils.dpToPx
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin

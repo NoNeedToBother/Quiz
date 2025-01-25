@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    implementation project(':common')
+    implementation project(':core:core')
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.firebase)

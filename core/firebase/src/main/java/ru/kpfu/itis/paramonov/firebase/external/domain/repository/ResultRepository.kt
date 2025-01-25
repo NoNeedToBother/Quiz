@@ -1,8 +1,8 @@
 package ru.kpfu.itis.paramonov.firebase.external.domain.repository
 
-import ru.kpfu.itis.paramonov.common.model.data.Category
-import ru.kpfu.itis.paramonov.common.model.data.Difficulty
-import ru.kpfu.itis.paramonov.common.model.data.GameMode
+import ru.kpfu.itis.paramonov.core.model.data.Category
+import ru.kpfu.itis.paramonov.core.model.data.Difficulty
+import ru.kpfu.itis.paramonov.core.model.data.GameMode
 import ru.kpfu.itis.paramonov.firebase.external.domain.model.Result
 
 interface ResultRepository {

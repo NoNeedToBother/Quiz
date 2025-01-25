@@ -5,12 +5,12 @@ import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.utils.DateTimeParser
 import ru.kpfu.itis.paramonov.quiz.utils.DateTimeParserImpl
-import ru.kpfu.itis.paramonov.common.utils.HtmlDecoder
-import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
-import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
+import ru.kpfu.itis.paramonov.core.utils.HtmlDecoder
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 import ru.kpfu.itis.paramonov.quiz.utils.ResourceManagerImpl
 import ru.kpfu.itis.paramonov.quiz.utils.HtmlDecoderImpl
 

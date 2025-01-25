@@ -3,8 +3,8 @@ package ru.kpfu.itis.paramonov.firebase.internal.data.handler
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import ru.kpfu.itis.paramonov.common.handler.ExceptionHandler
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.handler.ExceptionHandler
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
 import ru.kpfu.itis.paramonov.firebase.external.domain.exceptions.RegisterException
 import ru.kpfu.itis.paramonov.firebase.R
 
@@ -15,7 +15,7 @@ internal class RegistrationExceptionHandler(
     override fun handle(ex: Throwable): Throwable {
         return when(ex) {
             is FirebaseAuthWeakPasswordException -> RegisterException(
-                resourceManager.getString(ru.kpfu.itis.paramonov.common.R.string.weak_password)
+                resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.weak_password)
             )
             is FirebaseAuthInvalidCredentialsException -> RegisterException(
                 resourceManager.getString(R.string.invalid_email)

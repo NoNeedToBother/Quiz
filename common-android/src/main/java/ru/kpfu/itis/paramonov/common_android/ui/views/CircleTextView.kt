@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import androidx.appcompat.widget.AppCompatTextView
 import ru.kpfu.itis.paramonov.common_android.R
-import ru.kpfu.itis.paramonov.common_android.utils.dpToPx
+import ru.kpfu.itis.paramonov.core.utils.dpToPx
 import kotlin.math.max
 
 class CircleTextView @JvmOverloads constructor(

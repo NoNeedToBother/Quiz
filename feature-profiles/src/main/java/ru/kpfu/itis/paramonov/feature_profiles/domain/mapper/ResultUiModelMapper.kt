@@ -1,6 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_profiles.domain.mapper
 
-import ru.kpfu.itis.paramonov.common.mapper.ModelMapper
+import ru.kpfu.itis.paramonov.core.mapper.ModelMapper
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.model.ResultUiModel
 import ru.kpfu.itis.paramonov.firebase.external.domain.model.Result
 import javax.inject.Inject

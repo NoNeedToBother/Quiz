@@ -3,9 +3,9 @@ package ru.kpfu.itis.paramonov.feature_questions.domain.mapper
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.CategoryUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.DifficultyUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.model.GameModeUiModel
-import ru.kpfu.itis.paramonov.common.model.data.Category
-import ru.kpfu.itis.paramonov.common.model.data.Difficulty
-import ru.kpfu.itis.paramonov.common.model.data.GameMode
+import ru.kpfu.itis.paramonov.core.model.data.Category
+import ru.kpfu.itis.paramonov.core.model.data.Difficulty
+import ru.kpfu.itis.paramonov.core.model.data.GameMode
 import javax.inject.Inject
 
 class QuestionSettingsUiModelMapper @Inject constructor() {

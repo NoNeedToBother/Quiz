@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
-import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
-import ru.kpfu.itis.paramonov.common.validators.Validator
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
+import ru.kpfu.itis.paramonov.core.validators.Validator
 import ru.kpfu.itis.paramonov.firebase.external.domain.model.FirebaseUser
 import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
 import ru.kpfu.itis.paramonov.firebase.R

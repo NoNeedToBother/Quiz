@@ -2,7 +2,7 @@ package ru.kpfu.itis.paramonov.feature_questions.di
 
 import dagger.BindsInstance
 import dagger.Component
-import ru.kpfu.itis.paramonov.common.api.CommonApi
+import ru.kpfu.itis.paramonov.core.api.CommonApi
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.di.QuestionsComponent
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.di.TrainingQuestionsComponent
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.di.QuestionSettingsComponent
@@ -12,7 +12,7 @@ import ru.kpfu.itis.paramonov.database.external.domain.api.LocalDatabaseApi
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import ru.kpfu.itis.paramonov.network.external.domain.api.QuestionApi
-import ru.kpfu.itis.paramonov.common.scopes.FeatureScope
+import ru.kpfu.itis.paramonov.core.di.scopes.FeatureScope
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.di.ResultComponent
 
 @Component(

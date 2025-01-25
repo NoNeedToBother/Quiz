@@ -2,9 +2,9 @@ package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragment
 
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
-import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
-import ru.kpfu.itis.paramonov.common_android.utils.collect
+import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.core.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.core.utils.collect
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentTrainingQuestionsBinding
 import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsComponent
@@ -59,9 +59,9 @@ class TrainingQuestionsFragment: BaseFragment(R.layout.fragment_training_questio
     }
 
     private fun onGetQuestionsFail(ex: Throwable) {
-        showErrorBottomSheetDialog(getString(R.string.get_questions_fail_msg),
+        /*showErrorBottomSheetDialog(getString(R.string.get_questions_fail_msg),
             ex.message ?:
-            getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg))
+            getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg))*/
     }
 
     private fun onGetQuestionsSuccess(questions: List<QuestionDataUiModel>) {

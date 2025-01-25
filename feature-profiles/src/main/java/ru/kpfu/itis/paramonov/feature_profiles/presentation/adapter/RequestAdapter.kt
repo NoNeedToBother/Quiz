@@ -3,7 +3,7 @@ package ru.kpfu.itis.paramonov.feature_profiles.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.feature_profiles.databinding.ItemFriendRequestBinding
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.adapter.diffutil.RequestDiffUtilCallback
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.viewholder.RequestViewHolder

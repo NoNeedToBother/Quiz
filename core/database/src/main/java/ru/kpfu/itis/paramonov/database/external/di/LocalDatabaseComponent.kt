@@ -1,8 +1,8 @@
 package ru.kpfu.itis.paramonov.database.external.di
 
 import dagger.Component
-import ru.kpfu.itis.paramonov.common.api.CommonApi
-import ru.kpfu.itis.paramonov.common.api.ContextApi
+import ru.kpfu.itis.paramonov.core.api.CommonApi
+import ru.kpfu.itis.paramonov.core.api.ContextApi
 import ru.kpfu.itis.paramonov.database.external.domain.api.LocalDatabaseApi
 import ru.kpfu.itis.paramonov.database.internal.di.LocalDatabaseModule
 import ru.kpfu.itis.paramonov.database.internal.di.RoomModule

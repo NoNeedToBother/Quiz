@@ -6,11 +6,11 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.common.model.data.Category
-import ru.kpfu.itis.paramonov.common.model.data.Difficulty
-import ru.kpfu.itis.paramonov.common.model.data.GameMode
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
+import ru.kpfu.itis.paramonov.core.model.data.Category
+import ru.kpfu.itis.paramonov.core.model.data.Difficulty
+import ru.kpfu.itis.paramonov.core.model.data.GameMode
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.utils.DateTimeParser
 import ru.kpfu.itis.paramonov.firebase.R
 import ru.kpfu.itis.paramonov.firebase.external.domain.exceptions.ResultDataException
 import ru.kpfu.itis.paramonov.firebase.internal.data.utils.waitResult

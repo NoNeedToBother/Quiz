@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
-import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.feature_users.databinding.ItemUserBinding
 import ru.kpfu.itis.paramonov.feature_users.presentation.adapter.diffutil.UserDiffUtilCallback
 import ru.kpfu.itis.paramonov.feature_users.presentation.viewholder.UserViewHolder

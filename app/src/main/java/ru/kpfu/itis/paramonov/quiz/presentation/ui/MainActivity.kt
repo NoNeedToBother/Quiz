@@ -8,8 +8,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ru.kpfu.itis.paramonov.common_android.utils.gone
-import ru.kpfu.itis.paramonov.common_android.utils.show
+import ru.kpfu.itis.paramonov.core.utils.gone
+import ru.kpfu.itis.paramonov.core.utils.show
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.databinding.ActivityMainBinding
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies

@@ -2,10 +2,10 @@ package ru.kpfu.itis.paramonov.network.internal.data.repository
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.common.model.data.Category
-import ru.kpfu.itis.paramonov.common.model.data.Difficulty
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
+import ru.kpfu.itis.paramonov.core.model.data.Category
+import ru.kpfu.itis.paramonov.core.model.data.Difficulty
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.network.R
 import ru.kpfu.itis.paramonov.network.external.domain.exceptions.UnknownParameterException
 import ru.kpfu.itis.paramonov.network.external.domain.model.QuestionDomainModel

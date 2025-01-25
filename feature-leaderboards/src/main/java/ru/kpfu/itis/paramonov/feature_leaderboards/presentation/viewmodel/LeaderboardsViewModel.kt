@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
-import ru.kpfu.itis.paramonov.common_android.utils.emitException
+import ru.kpfu.itis.paramonov.core.ui.base.BaseViewModel
+import ru.kpfu.itis.paramonov.core.utils.emitException
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetDifficultyUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetFriendsLeaderboardUseCase
 import ru.kpfu.itis.paramonov.feature_leaderboards.domain.usecase.GetGameModeUseCase

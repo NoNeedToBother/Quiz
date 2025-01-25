@@ -13,9 +13,9 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.core.graphics.withSave
 import ru.kpfu.itis.paramonov.common_android.R
-import ru.kpfu.itis.paramonov.common_android.utils.setAndUpdate
-import ru.kpfu.itis.paramonov.common_android.utils.dpToPx
-import ru.kpfu.itis.paramonov.common_android.utils.spToPx
+import ru.kpfu.itis.paramonov.core.utils.setAndUpdate
+import ru.kpfu.itis.paramonov.core.utils.dpToPx
+import ru.kpfu.itis.paramonov.core.utils.spToPx
 
 class GraphView @JvmOverloads constructor(
     ctx: Context,

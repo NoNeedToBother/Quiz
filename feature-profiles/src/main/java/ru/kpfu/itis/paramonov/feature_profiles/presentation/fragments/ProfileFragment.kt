@@ -9,14 +9,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
-import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
-import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
-import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
-import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
-import ru.kpfu.itis.paramonov.common_android.utils.collect
-import ru.kpfu.itis.paramonov.common_android.utils.show
-import ru.kpfu.itis.paramonov.common_android.utils.startPostponedTransition
+import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
+import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.core.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.core.utils.collect
+import ru.kpfu.itis.paramonov.core.utils.show
+import ru.kpfu.itis.paramonov.core.utils.startPostponedTransition
 import ru.kpfu.itis.paramonov.feature_profiles.R
 import ru.kpfu.itis.paramonov.feature_profiles.databinding.FragmentProfileBinding
 import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesComponent
@@ -126,12 +126,12 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
         results?.let {
             when(it) {
                 is BaseProfileViewModel.LastResultsDataResult.Success -> onLastResultsDataReceived(it.getValue())
-                is BaseProfileViewModel.LastResultsDataResult.Failure ->
-                    showErrorBottomSheetDialog(
+                is BaseProfileViewModel.LastResultsDataResult.Failure -> {}
+                    /*showErrorBottomSheetDialog(
                         getString(R.string.get_results_fail),
                         it.getException().message ?:
-                        getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
-                    )
+                        getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+                    )*/
             }
         }
     }
@@ -147,12 +147,12 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
         requests?.let {
             when(it) {
                 is ProfileViewModel.FriendRequestResult.Success -> onRequestsDataReceived(it.getValue())
-                is ProfileViewModel.FriendRequestResult.Failure ->
-                    showErrorBottomSheetDialog(
+                is ProfileViewModel.FriendRequestResult.Failure -> {}
+                    /*showErrorBottomSheetDialog(
                         getString(R.string.get_requests_fail),
                         it.getException().message ?:
-                        getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
-                    )
+                        getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+                    )*/
             }
         }
     }
@@ -176,10 +176,10 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
 
     private fun collectChangeUserDataErrors(ex: Throwable?) {
         ex?.let {
-            showErrorBottomSheetDialog(
+            /*showErrorBottomSheetDialog(
                 getString(R.string.dialog_incorrect_credentials),
                 getString(R.string.credentials_change_failed)
-            )
+            )*/
         }
     }
 
@@ -194,11 +194,11 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
         result?.let {
             when(result) {
                 is BaseProfileViewModel.UserDataResult.Success -> showUserInfo(result.getValue())
-                is BaseProfileViewModel.UserDataResult.Failure -> showErrorBottomSheetDialog(
+                is BaseProfileViewModel.UserDataResult.Failure -> {} /*showErrorBottomSheetDialog(
                     getString(R.string.user_data_fail_title),
                     result.getException().message ?:
-                    getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
-                )
+                    getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+                )*/
             }
         }
     }
@@ -247,10 +247,10 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
     }
 
     private fun onConfirmCredentialsFailed() {
-        showErrorBottomSheetDialog(
+        /*showErrorBottomSheetDialog(
             getString(R.string.dialog_incorrect_credentials),
             getString(R.string.dialog_incorrect_credentials_expanded)
-        )
+        )*/
     }
 
     private fun onChangeCredentialsClicked() {
@@ -279,17 +279,17 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
                 ) {
                     if (password != null && confirmPassword != null) {
                         if (password == confirmPassword) viewModel.changeCredentials(email, password)
-                        else showErrorBottomSheetDialog(
+                        /*else showErrorBottomSheetDialog(
                             getString(R.string.dialog_incorrect_credentials),
                             getString(R.string.password_confirm_password_not_match)
-                        )
+                        )*/
                     }
                     else if (password == null && confirmPassword == null) {
                         viewModel.changeCredentials(email, null)
-                    } else showErrorBottomSheetDialog(
+                    } /*else showErrorBottomSheetDialog(
                         getString(R.string.credentials_change_failed),
                         getString(R.string.dialog_incorrect_credentials)
-                    )
+                    )*/
                 }
             })
             .setOnDismiss {
@@ -348,8 +348,8 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
     private fun loadProfilePicture(url: String) {
         Glide.with(requireContext())
             .load(url)
-            .placeholder(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
-            .error(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
+            .placeholder(ru.kpfu.itis.paramonov.core.R.drawable.default_pfp)
+            .error(ru.kpfu.itis.paramonov.core.R.drawable.default_pfp)
             .centerCrop()
             .into(binding.ivProfilePicture)
     }

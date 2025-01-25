@@ -4,9 +4,9 @@ import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentHolderModule
 import dagger.BindsInstance
 import dagger.Component
 import ru.kpfu.itis.paramonov.quiz.di.modules.CommonModule
-import ru.kpfu.itis.paramonov.common.api.CommonApi
-import ru.kpfu.itis.paramonov.common.api.ContextApi
-import ru.kpfu.itis.paramonov.common.scopes.ApplicationScope
+import ru.kpfu.itis.paramonov.core.api.CommonApi
+import ru.kpfu.itis.paramonov.core.api.ContextApi
+import ru.kpfu.itis.paramonov.core.di.scopes.ApplicationScope
 import ru.kpfu.itis.paramonov.quiz.App
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesModule
 import ru.kpfu.itis.paramonov.quiz.di.main.MainDependencies

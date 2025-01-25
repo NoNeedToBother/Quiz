@@ -8,10 +8,10 @@ import com.google.firebase.storage.storage
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.utils.DateTimeParser
-import ru.kpfu.itis.paramonov.common.validators.PasswordValidator
-import ru.kpfu.itis.paramonov.common.validators.UsernameValidator
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.utils.DateTimeParser
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 import ru.kpfu.itis.paramonov.firebase.internal.data.handler.RegistrationExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.internal.data.handler.SignInExceptionHandler
 import ru.kpfu.itis.paramonov.firebase.internal.data.repository.AuthenticationRepositoryImpl

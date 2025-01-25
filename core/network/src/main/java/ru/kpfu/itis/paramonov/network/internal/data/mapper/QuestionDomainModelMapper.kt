@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.network.internal.data.mapper
 
-import ru.kpfu.itis.paramonov.common.mapper.ModelMapper
-import ru.kpfu.itis.paramonov.common.utils.HtmlDecoder
+import ru.kpfu.itis.paramonov.core.mapper.ModelMapper
+import ru.kpfu.itis.paramonov.core.utils.HtmlDecoder
 import ru.kpfu.itis.paramonov.network.external.domain.model.QuestionDataDomainModel
 import ru.kpfu.itis.paramonov.network.external.domain.model.QuestionDomainModel
 import ru.kpfu.itis.paramonov.network.internal.data.model.QuestionDataResponse

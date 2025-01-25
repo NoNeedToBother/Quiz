@@ -6,8 +6,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.utils.HtmlDecoder
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.utils.HtmlDecoder
 import ru.kpfu.itis.paramonov.network.BuildConfig
 import ru.kpfu.itis.paramonov.network.internal.data.handler.QuestionExceptionHandler
 import ru.kpfu.itis.paramonov.network.internal.data.repository.QuestionRepositoryImpl

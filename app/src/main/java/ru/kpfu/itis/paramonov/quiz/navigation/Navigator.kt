@@ -8,7 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import ru.kpfu.itis.paramonov.common.exception.UnsupportedArgumentException
+import ru.kpfu.itis.paramonov.core.exception.UnsupportedArgumentException
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.fragments.OtherUserProfileFragment
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter

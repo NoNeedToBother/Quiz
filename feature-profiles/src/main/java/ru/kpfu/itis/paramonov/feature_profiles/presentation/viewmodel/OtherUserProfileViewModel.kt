@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.common_android.utils.emitException
+import ru.kpfu.itis.paramonov.core.utils.emitException
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.GetUserLastResultsUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.GetUserUseCase
 import ru.kpfu.itis.paramonov.feature_profiles.domain.usecase.friends.GetFriendStatusUseCase

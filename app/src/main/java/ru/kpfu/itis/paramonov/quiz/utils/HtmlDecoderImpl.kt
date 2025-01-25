@@ -2,7 +2,7 @@ package ru.kpfu.itis.paramonov.quiz.utils
 
 import android.os.Build
 import android.text.Html
-import ru.kpfu.itis.paramonov.common.utils.HtmlDecoder
+import ru.kpfu.itis.paramonov.core.utils.HtmlDecoder
 
 class HtmlDecoderImpl: HtmlDecoder {
 

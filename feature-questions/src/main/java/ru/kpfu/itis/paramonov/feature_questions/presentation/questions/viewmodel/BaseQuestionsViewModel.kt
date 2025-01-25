@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
+import ru.kpfu.itis.paramonov.core.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerDataUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 

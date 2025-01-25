@@ -13,13 +13,13 @@ import androidx.core.view.ViewCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
-import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
-import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
-import ru.kpfu.itis.paramonov.common_android.utils.collect
-import ru.kpfu.itis.paramonov.common_android.utils.gone
-import ru.kpfu.itis.paramonov.common_android.utils.show
-import ru.kpfu.itis.paramonov.common_android.utils.startPostponedTransition
+import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.core.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.core.utils.collect
+import ru.kpfu.itis.paramonov.core.utils.gone
+import ru.kpfu.itis.paramonov.core.utils.show
+import ru.kpfu.itis.paramonov.core.utils.startPostponedTransition
 import ru.kpfu.itis.paramonov.feature_profiles.R
 import ru.kpfu.itis.paramonov.feature_profiles.databinding.FragmentProfileOtherUserBinding
 import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesComponent
@@ -121,12 +121,12 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
         results?.let {
             when(it) {
                 is BaseProfileViewModel.LastResultsDataResult.Success -> onLastResultsDataReceived(it.getValue())
-                is BaseProfileViewModel.LastResultsDataResult.Failure ->
-                    showErrorBottomSheetDialog(
+                is BaseProfileViewModel.LastResultsDataResult.Failure -> {}
+                    /*showErrorBottomSheetDialog(
                         getString(R.string.get_results_fail),
                         it.getException().message ?:
-                        getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
-                    )
+                        getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+                    )*/
             }
         }
     }
@@ -177,11 +177,11 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
         result?.let {
             when(result) {
                 is BaseProfileViewModel.UserDataResult.Success -> showUserInfo(result.getValue())
-                is BaseProfileViewModel.UserDataResult.Failure -> showErrorBottomSheetDialog(
+                is BaseProfileViewModel.UserDataResult.Failure -> {}/*showErrorBottomSheetDialog(
                     getString(R.string.user_data_fail_title),
                     result.getException().message ?:
-                    getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
-                )
+                    getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+                )*/
             }
         }
     }
@@ -202,8 +202,8 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
     private fun loadProfilePicture(url: String) {
         Glide.with(requireContext())
             .load(url)
-            .placeholder(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
-            .error(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
+            .placeholder(ru.kpfu.itis.paramonov.core.R.drawable.default_pfp)
+            .error(ru.kpfu.itis.paramonov.core.R.drawable.default_pfp)
             .centerCrop()
             .into(binding.ivProfilePicture)
     }

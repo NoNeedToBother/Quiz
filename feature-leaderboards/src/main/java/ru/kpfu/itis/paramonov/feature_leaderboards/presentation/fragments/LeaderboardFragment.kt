@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
-import ru.kpfu.itis.paramonov.common_android.utils.collect
-import ru.kpfu.itis.paramonov.common_android.utils.gone
-import ru.kpfu.itis.paramonov.common_android.utils.show
-import ru.kpfu.itis.paramonov.common_android.utils.startPostponedTransition
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.core.utils.collect
+import ru.kpfu.itis.paramonov.core.utils.gone
+import ru.kpfu.itis.paramonov.core.utils.show
+import ru.kpfu.itis.paramonov.core.utils.startPostponedTransition
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.FragmentLeaderboardBinding
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.adapter.LeaderboardResultAdapter
@@ -120,10 +120,10 @@ class LeaderboardFragment: BaseFragment(R.layout.fragment_leaderboard) {
     }
 
     private fun onGetResultsFail(ex: Throwable) {
-        showErrorBottomSheetDialog(
+        /*showErrorBottomSheetDialog(
             getString(R.string.get_results_fail),
-            ex.message ?: getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
-        )
+            ex.message ?: getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+        )*/
     }
 
     private fun addResults(results: List<ResultUiModel>) {

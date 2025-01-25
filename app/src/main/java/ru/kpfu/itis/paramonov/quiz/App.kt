@@ -1,11 +1,10 @@
 package ru.kpfu.itis.paramonov.quiz
 
 import android.app.Application
-import com.google.firebase.FirebaseApp
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.FeatureHolderManager
-import ru.kpfu.itis.paramonov.common_android.di.FeatureContainer
-import ru.kpfu.itis.paramonov.common.api.CommonApi
-import ru.kpfu.itis.paramonov.common.api.ContextApi
+import ru.kpfu.itis.paramonov.core.di.FeatureContainer
+import ru.kpfu.itis.paramonov.core.api.CommonApi
+import ru.kpfu.itis.paramonov.core.api.ContextApi
 import ru.kpfu.itis.paramonov.firebase.external.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependenciesContainer
 import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsDependenciesContainer
@@ -14,17 +13,17 @@ import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesDependenciesCon
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependenciesContainer
 import ru.kpfu.itis.paramonov.firebase.external.di.DaggerFirebaseComponent
 import ru.kpfu.itis.paramonov.firebase.external.di.DaggerFirebaseComponent_FirebaseDependenciesComponent
-import ru.kpfu.itis.paramonov.local_database_api.external.di.DaggerLocalDatabaseComponent
-import ru.kpfu.itis.paramonov.local_database_api.external.di.DaggerLocalDatabaseComponent_LocalDatabaseDependenciesComponent
-import ru.kpfu.itis.paramonov.local_database_api.external.domain.api.LocalDatabaseApi
-import ru.kpfu.itis.paramonov.question_api.external.domain.api.QuestionApi
+import ru.kpfu.itis.paramonov.database.external.di.DaggerLocalDatabaseComponent
+import ru.kpfu.itis.paramonov.database.external.di.DaggerLocalDatabaseComponent_LocalDatabaseDependenciesComponent
+import ru.kpfu.itis.paramonov.database.external.domain.api.LocalDatabaseApi
+import ru.kpfu.itis.paramonov.network.external.domain.api.QuestionApi
 import ru.kpfu.itis.paramonov.quiz.di.AppComponent
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesProvider
 import ru.kpfu.itis.paramonov.firebase.external.di.FirebaseComponent
-import ru.kpfu.itis.paramonov.local_database_api.external.di.LocalDatabaseComponent
-import ru.kpfu.itis.paramonov.question_api.external.di.DaggerQuestionsComponent
-import ru.kpfu.itis.paramonov.question_api.external.di.DaggerQuestionsComponent_QuestionDependenciesComponent
-import ru.kpfu.itis.paramonov.question_api.external.di.QuestionsComponent
+import ru.kpfu.itis.paramonov.database.external.di.LocalDatabaseComponent
+import ru.kpfu.itis.paramonov.network.external.di.DaggerQuestionsComponent
+import ru.kpfu.itis.paramonov.network.external.di.DaggerQuestionsComponent_QuestionDependenciesComponent
+import ru.kpfu.itis.paramonov.network.external.di.QuestionsComponent
 import javax.inject.Inject
 
 class App: Application(), FeatureContainer, FeatureAuthenticationDependenciesContainer,
@@ -50,15 +49,10 @@ class App: Application(), FeatureContainer, FeatureAuthenticationDependenciesCon
     }
 
     private fun init() {
-        initFirebase()
         initAppComponent()
         initFirebaseComponent()
         initLocalDatabaseComponent()
         initQuestionsComponent()
-    }
-
-    private fun initFirebase() {
-        FirebaseApp.initializeApp(this)
     }
 
     private fun initAppComponent() {

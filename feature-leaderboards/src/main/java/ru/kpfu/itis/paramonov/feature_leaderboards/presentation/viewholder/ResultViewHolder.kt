@@ -8,10 +8,10 @@ import androidx.annotation.AnimRes
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
-import ru.kpfu.itis.paramonov.common.utils.normalizeEnumName
-import ru.kpfu.itis.paramonov.common_android.utils.gone
-import ru.kpfu.itis.paramonov.common_android.utils.show
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.utils.normalizeEnumName
+import ru.kpfu.itis.paramonov.core.utils.gone
+import ru.kpfu.itis.paramonov.core.utils.show
 import ru.kpfu.itis.paramonov.feature_leaderboards.R
 import ru.kpfu.itis.paramonov.feature_leaderboards.databinding.ItemResultBinding
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.ResultUiModel

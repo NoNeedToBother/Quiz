@@ -2,7 +2,7 @@ package ru.kpfu.itis.paramonov.feature_profiles.presentation.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.feature_profiles.databinding.ItemFriendRequestBinding
 
 class RequestViewHolder(

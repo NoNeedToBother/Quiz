@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseViewModel
+import ru.kpfu.itis.paramonov.core.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.feature_questions.domain.usecase.GetMaxScoreUseCase
 
 class ResultViewModel(

@@ -2,12 +2,12 @@ package ru.kpfu.itis.paramonov.feature_leaderboards.di
 
 import dagger.BindsInstance
 import dagger.Component
-import ru.kpfu.itis.paramonov.common.api.CommonApi
+import ru.kpfu.itis.paramonov.core.api.CommonApi
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.di.LeaderboardsComponent
 import ru.kpfu.itis.paramonov.firebase.external.domain.api.FirebaseApi
 import ru.kpfu.itis.paramonov.database.external.domain.api.LocalDatabaseApi
 import ru.kpfu.itis.paramonov.navigation.UserRouter
-import ru.kpfu.itis.paramonov.common.scopes.FeatureScope
+import ru.kpfu.itis.paramonov.core.di.scopes.FeatureScope
 
 @Component(
     dependencies = [

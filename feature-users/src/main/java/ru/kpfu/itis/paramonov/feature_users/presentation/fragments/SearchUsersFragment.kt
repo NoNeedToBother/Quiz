@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
-import ru.kpfu.itis.paramonov.common_android.ui.di.FeatureUtils
-import ru.kpfu.itis.paramonov.common_android.utils.collect
-import ru.kpfu.itis.paramonov.common_android.utils.gone
-import ru.kpfu.itis.paramonov.common_android.utils.show
-import ru.kpfu.itis.paramonov.common_android.utils.startPostponedTransition
+import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.core.ui.di.FeatureUtils
+import ru.kpfu.itis.paramonov.core.utils.collect
+import ru.kpfu.itis.paramonov.core.utils.gone
+import ru.kpfu.itis.paramonov.core.utils.show
+import ru.kpfu.itis.paramonov.core.utils.startPostponedTransition
 import ru.kpfu.itis.paramonov.feature_users.R
 import ru.kpfu.itis.paramonov.feature_users.databinding.FragmentSearchUsersBinding
 import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersComponent
@@ -163,10 +163,10 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
     }
 
     private fun onSearchUsersFail(ex: Throwable) {
-        showErrorBottomSheetDialog(
+        /*showErrorBottomSheetDialog(
             getString(R.string.search_users_fail),
-            ex.message ?: getString(ru.kpfu.itis.paramonov.common_android.R.string.default_error_msg)
-        )
+            ex.message ?: getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+        )*/
     }
 
     companion object {

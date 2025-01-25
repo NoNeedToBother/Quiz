@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.feature_authentication.domain.mapper
 
-import ru.kpfu.itis.paramonov.common.mapper.ModelMapper
-import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.core.mapper.ModelMapper
+import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.firebase.external.domain.model.FirebaseUser
 import javax.inject.Inject
 

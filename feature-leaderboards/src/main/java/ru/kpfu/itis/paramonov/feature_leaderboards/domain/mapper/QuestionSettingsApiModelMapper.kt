@@ -1,8 +1,8 @@
 package ru.kpfu.itis.paramonov.feature_leaderboards.domain.mapper
 
-import ru.kpfu.itis.paramonov.common.model.data.Category
-import ru.kpfu.itis.paramonov.common.model.data.Difficulty
-import ru.kpfu.itis.paramonov.common.model.data.GameMode
+import ru.kpfu.itis.paramonov.core.model.data.Category
+import ru.kpfu.itis.paramonov.core.model.data.Difficulty
+import ru.kpfu.itis.paramonov.core.model.data.GameMode
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.CategoryUiModel
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.DifficultyUiModel
 import ru.kpfu.itis.paramonov.feature_leaderboards.presentation.model.GameModeUiModel

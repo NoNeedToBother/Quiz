@@ -2,7 +2,7 @@ package ru.kpfu.itis.paramonov.feature_questions.presentation.settings.fragments
 
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.tabs.TabLayoutMediator
-import ru.kpfu.itis.paramonov.common_android.ui.base.BaseFragment
+import ru.kpfu.itis.paramonov.core.ui.base.BaseFragment
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.databinding.FragmentQuestionSettingsViewPagerBinding
 import ru.kpfu.itis.paramonov.feature_questions.presentation.settings.adapter.QuestionSettingsViewPagerAdapter

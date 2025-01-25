@@ -3,7 +3,7 @@ package ru.kpfu.itis.paramonov.quiz.di.main
 import androidx.fragment.app.Fragment
 import dagger.BindsInstance
 import dagger.Subcomponent
-import ru.kpfu.itis.paramonov.common.scopes.FeatureScope
+import ru.kpfu.itis.paramonov.core.di.scopes.FeatureScope
 import ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments.MainMenuFragment
 
 @Subcomponent(

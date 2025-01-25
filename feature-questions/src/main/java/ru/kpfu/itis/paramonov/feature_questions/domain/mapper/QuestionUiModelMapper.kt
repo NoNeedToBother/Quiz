@@ -1,6 +1,6 @@
 package ru.kpfu.itis.paramonov.feature_questions.domain.mapper
 
-import ru.kpfu.itis.paramonov.common.mapper.ModelMapper
+import ru.kpfu.itis.paramonov.core.mapper.ModelMapper
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.AnswerDataUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import ru.kpfu.itis.paramonov.network.external.domain.model.QuestionDomainModel

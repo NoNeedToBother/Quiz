@@ -1,8 +1,8 @@
 package ru.kpfu.itis.paramonov.feature_questions.presentation.questions.fragments
 
 import androidx.core.os.bundleOf
-import ru.kpfu.itis.paramonov.common_android.utils.collect
-import ru.kpfu.itis.paramonov.common_android.utils.show
+import ru.kpfu.itis.paramonov.core.utils.collect
+import ru.kpfu.itis.paramonov.core.utils.show
 import ru.kpfu.itis.paramonov.feature_questions.R
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.model.QuestionDataUiModel
 import ru.kpfu.itis.paramonov.feature_questions.presentation.questions.viewmodel.QuestionsViewModel

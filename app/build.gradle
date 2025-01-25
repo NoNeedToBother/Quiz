@@ -42,7 +42,7 @@ android {
 
 dependencies {
     implementation project(':core:firebase')
-    implementation project(':common')
+    implementation project(':core:core')
     implementation project(':common-android')
     implementation project(':feature-authentication')
     implementation project(':navigation')

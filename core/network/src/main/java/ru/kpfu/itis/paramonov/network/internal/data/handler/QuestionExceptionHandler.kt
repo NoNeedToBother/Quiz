@@ -1,8 +1,8 @@
 package ru.kpfu.itis.paramonov.network.internal.data.handler
 
 import retrofit2.HttpException
-import ru.kpfu.itis.paramonov.common.handler.ExceptionHandler
-import ru.kpfu.itis.paramonov.common.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.handler.ExceptionHandler
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
 import ru.kpfu.itis.paramonov.network.R
 import ru.kpfu.itis.paramonov.network.external.domain.exceptions.ConnectionException
 import ru.kpfu.itis.paramonov.network.external.domain.exceptions.GetQuestionException

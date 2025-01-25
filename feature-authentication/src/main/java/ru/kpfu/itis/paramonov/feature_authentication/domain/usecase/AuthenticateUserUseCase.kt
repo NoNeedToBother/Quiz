@@ -2,7 +2,7 @@ package ru.kpfu.itis.paramonov.feature_authentication.domain.usecase
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.paramonov.common.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.feature_authentication.domain.mapper.UserUiModelMapper
 import ru.kpfu.itis.paramonov.firebase.external.domain.repository.AuthenticationRepository
 import javax.inject.Inject

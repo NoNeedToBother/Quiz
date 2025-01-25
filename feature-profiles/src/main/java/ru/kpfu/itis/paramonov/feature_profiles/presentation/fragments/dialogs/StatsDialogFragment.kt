@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import ru.kpfu.itis.paramonov.common_android.ui.views.GraphView
-import ru.kpfu.itis.paramonov.common_android.utils.show
+import ru.kpfu.itis.paramonov.core.utils.show
 import ru.kpfu.itis.paramonov.feature_profiles.R
 import ru.kpfu.itis.paramonov.feature_profiles.presentation.model.ResultUiModel
 

@@ -43,6 +43,7 @@ dependencies {
     implementation project(':core:network')
     implementation project(':core:firebase')
     implementation project(':navigation')
+    implementation project(':feature:questions:api')
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.compat)

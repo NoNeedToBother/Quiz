@@ -42,6 +42,7 @@ dependencies {
     implementation project(':core:ui')
     implementation project(':core:firebase')
     implementation project(':navigation')
+    implementation project(':feature:users:api')
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.compat)

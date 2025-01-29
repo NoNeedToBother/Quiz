@@ -14,12 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Quiz"
 include ':app'
-include ':feature-authentication'
 include ':navigation'
-include ':feature-questions'
-include ':feature-profiles'
-include ':feature-leaderboards'
-include ':feature-users'
 include ':core'
 include ':core:firebase'
 include ':core:network'

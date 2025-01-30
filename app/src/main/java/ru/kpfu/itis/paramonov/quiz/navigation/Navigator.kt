@@ -9,7 +9,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import ru.kpfu.itis.paramonov.core.exception.UnsupportedArgumentException
-import ru.kpfu.itis.paramonov.feature_profiles.presentation.fragments.OtherUserProfileFragment
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
@@ -109,12 +108,12 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter, UserRout
     private var sharedView: View? = null
 
     override fun goToUser(id: String) {
-        val extras = extrasWithSharedView(OtherUserProfileFragment.PROFILE_PICTURE_TRANSITION_NAME) {
+        val extras = extrasWithSharedView("profile_picture") {
             it is ImageView
         }
         navController?.navigate(
             R.id.otherUserProfileFragment,
-            bundleOf(OtherUserProfileFragment.USER_ID_KEY to id),
+            bundleOf("id" to id),
             null,
             extras
         )

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="settings_inner_color">#7582A5</color>
+    <color name="settings_color">#BACDFF</color>
+    <color name="settings_choosing_color">#E4EAFD</color>
+    <color name="settings_btn_ripple_color">#667582A5</color>
+    <color name="clock_fill_color">#BCBCBC</color>
+    <color name="tab_settings_inner_color">#B8CCFF</color>
+    <color name="tab_settings_color">#E2EAFF</color>
 </resources>

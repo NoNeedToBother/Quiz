@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">impl</string>
+    <string name="search_users">Search users</string>
+    <string name="search_users_fail">Failed to search users</string>
+    <string name="your_friends">Your friends</string>
 </resources>

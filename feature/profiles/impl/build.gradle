@@ -39,7 +39,6 @@ android {
 dependencies {
     implementation project(':core:core')
     implementation project(':core:ui')
-    implementation project(':core:firebase')
     implementation project(':navigation')
     implementation project(':feature:profiles:api')
 

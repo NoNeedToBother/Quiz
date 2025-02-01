@@ -6,8 +6,7 @@ import ru.kpfu.itis.paramonov.core.api.CommonApi
 import ru.kpfu.itis.paramonov.leaderboards.presentation.di.LeaderboardsComponent
 import ru.kpfu.itis.paramonov.navigation.UserRouter
 import ru.kpfu.itis.paramonov.core.di.scopes.FeatureScope
-import ru.kpfu.itis.paramonov.leaderboards.api.repository.QuestionSettingsRepository
-import ru.kpfu.itis.paramonov.leaderboards.api.repository.ResultRepository
+import ru.kpfu.itis.paramonov.leaderboards.api.api.FeatureLeaderboardsApi
 
 @Component(
     dependencies = [
@@ -31,9 +30,8 @@ interface FeatureLeaderboardsComponent {
 
     @Component(
         dependencies = [
-            QuestionSettingsRepository::class,
-            CommonApi::class,
-            ResultRepository::class
+            FeatureLeaderboardsApi::class,
+            CommonApi::class
         ]
     )
     interface FeatureLeaderboardsDependenciesComponent: FeatureLeaderboardsDependencies

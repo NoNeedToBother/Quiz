@@ -14,8 +14,7 @@ class FeatureLeaderboardsHolder @Inject constructor(
         val featureLeaderboardsDependencies =
             DaggerFeatureLeaderboardsComponent_FeatureLeaderboardsDependenciesComponent.builder()
                 .commonApi(dependenciesContainer.commonApi())
-                .resultRepositpry(dependenciesContainer.resultRepository())
-                .questionSettingsRepository(dependenciesContainer.questionSettingsRepository())
+                .featureLeaderboardsApi(dependenciesContainer.featureLeaderboardsApi())
                 .build()
         return DaggerFeatureLeaderboardsComponent.builder()
             .dependencies(featureLeaderboardsDependencies)

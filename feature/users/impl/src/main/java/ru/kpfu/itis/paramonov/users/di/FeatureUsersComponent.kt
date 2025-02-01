@@ -7,7 +7,7 @@ import ru.kpfu.itis.paramonov.core.di.scopes.FeatureScope
 import ru.kpfu.itis.paramonov.users.presentation.di.FriendsComponent
 import ru.kpfu.itis.paramonov.users.presentation.di.SearchUsersComponent
 import ru.kpfu.itis.paramonov.navigation.UserRouter
-import ru.kpfu.itis.paramonov.users.api.repository.UserRepository
+import ru.kpfu.itis.paramonov.users.api.api.FeatureUsersApi
 
 @Component(
     dependencies = [
@@ -33,7 +33,7 @@ interface FeatureUsersComponent {
     @Component(
         dependencies = [
             CommonApi::class,
-            UserRepository::class
+            FeatureUsersApi::class
         ]
     )
     interface FeatureUsersDependenciesComponent: FeatureUsersDependencies

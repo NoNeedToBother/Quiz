@@ -11,6 +11,8 @@ import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.authentication.api.usecase.AuthenticateUserUseCase
 import ru.kpfu.itis.paramonov.authentication.api.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.authentication.domain.mapper.UserUiModelMapper
+import ru.kpfu.itis.paramonov.authentication.domain.usecase.AuthenticateUserUseCaseImpl
+import ru.kpfu.itis.paramonov.authentication.domain.usecase.CheckUserIsAuthenticatedUseCaseImpl
 import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.SignInViewModel
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
@@ -26,6 +28,12 @@ class SigningInModule {
     fun signInViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): SignInViewModel {
         return ViewModelProvider(fragment, factory)[SignInViewModel::class.java]
     }
+
+    @Provides
+    fun authenticateUserUseCase(impl: AuthenticateUserUseCaseImpl): AuthenticateUserUseCase = impl
+
+    @Provides
+    fun checkUserIsAuthenticatedUseCase(impl: CheckUserIsAuthenticatedUseCaseImpl): CheckUserIsAuthenticatedUseCase = impl
 
     @Provides
     @IntoMap

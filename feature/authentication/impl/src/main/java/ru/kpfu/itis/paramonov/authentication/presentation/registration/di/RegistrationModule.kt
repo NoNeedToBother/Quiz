@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.authentication.api.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.authentication.api.usecase.RegisterUserUseCase
 import ru.kpfu.itis.paramonov.authentication.domain.mapper.UserUiModelMapper
+import ru.kpfu.itis.paramonov.authentication.domain.usecase.CheckUserIsAuthenticatedUseCaseImpl
 import ru.kpfu.itis.paramonov.authentication.domain.usecase.RegisterUserUseCaseImpl
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelModule
@@ -32,7 +33,7 @@ class RegistrationModule {
     fun registerUserUseCase(impl: RegisterUserUseCaseImpl): RegisterUserUseCase = impl
 
     @Provides
-    fun checkUserIsAuthenticatedUseCase(impl: CheckUserIsAuthenticatedUseCase): CheckUserIsAuthenticatedUseCase = impl
+    fun checkUserIsAuthenticatedUseCase(impl: CheckUserIsAuthenticatedUseCaseImpl): CheckUserIsAuthenticatedUseCase = impl
 
     @Provides
     @IntoMap

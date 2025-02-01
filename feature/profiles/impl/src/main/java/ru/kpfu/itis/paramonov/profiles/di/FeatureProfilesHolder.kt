@@ -14,9 +14,7 @@ class FeatureProfilesHolder @Inject constructor(
     override fun initializeDependencies(): Any {
         val featureProfileDependencies = DaggerFeatureProfilesComponent_FeatureProfilesDependenciesComponent.builder()
             .commonApi(commonApi())
-            .friendRepository(dependenciesContainer.friendRepository())
-            .userRepository(dependenciesContainer.userRepository())
-            .resultRepository(dependenciesContainer.resultRepository())
+            .featureProfilesApi(dependenciesContainer.featureProfilesApi())
             .build()
 
         return DaggerFeatureProfilesComponent.builder()

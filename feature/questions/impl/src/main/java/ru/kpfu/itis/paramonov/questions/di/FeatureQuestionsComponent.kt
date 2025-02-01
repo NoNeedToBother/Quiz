@@ -10,11 +10,7 @@ import ru.kpfu.itis.paramonov.questions.presentation.settings.di.TrainingQuestio
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import ru.kpfu.itis.paramonov.core.di.scopes.FeatureScope
-import ru.kpfu.itis.paramonov.questions.api.repository.QuestionRepository
-import ru.kpfu.itis.paramonov.questions.api.repository.QuestionSettingsRepository
-import ru.kpfu.itis.paramonov.questions.api.repository.ResultRepository
-import ru.kpfu.itis.paramonov.questions.api.repository.SavedQuestionRepository
-import ru.kpfu.itis.paramonov.questions.api.repository.UserRepository
+import ru.kpfu.itis.paramonov.questions.api.api.FeatureQuestionsApi
 import ru.kpfu.itis.paramonov.questions.presentation.questions.di.ResultComponent
 
 @Component(
@@ -50,11 +46,7 @@ interface FeatureQuestionsComponent {
 
     @Component(
         dependencies = [
-            QuestionSettingsRepository::class,
-            SavedQuestionRepository::class,
-            QuestionRepository::class,
-            ResultRepository::class,
-            UserRepository::class,
+            FeatureQuestionsApi::class,
             CommonApi::class,
         ]
     )

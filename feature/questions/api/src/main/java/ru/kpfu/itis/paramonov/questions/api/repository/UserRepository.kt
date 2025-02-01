@@ -4,6 +4,6 @@ import ru.kpfu.itis.paramonov.questions.api.model.User
 
 interface UserRepository {
 
-    fun getCurrentUser(): User?
+    suspend fun getCurrentUser(): User?
 
 }

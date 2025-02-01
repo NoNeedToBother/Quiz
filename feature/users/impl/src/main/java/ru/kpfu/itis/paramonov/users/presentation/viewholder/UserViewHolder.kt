@@ -34,7 +34,7 @@ class UserViewHolder(
     private fun loadImage(url: String) {
         Glide.with(binding.root)
             .load(url)
-            //.placeholder(ru.kpfu.itis.paramonov.common_android.R.drawable.default_pfp)
+            .placeholder(ru.kpfu.itis.paramonov.ui.R.drawable.default_pfp)
             .error(ru.kpfu.itis.paramonov.ui.R.drawable.default_pfp)
             .centerCrop()
             .into(binding.ivProfilePicture)

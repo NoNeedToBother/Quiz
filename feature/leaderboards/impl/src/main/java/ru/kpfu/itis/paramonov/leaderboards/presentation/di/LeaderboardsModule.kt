@@ -34,12 +34,16 @@ class LeaderboardsModule {
         return ViewModelProvider(fragment, factory)[LeaderboardsViewModel::class.java]
     }
 
+    @Provides
     fun getGlobalLeaderboardUseCase(impl: GetGlobalLeaderboardUseCaseImpl): GetGlobalLeaderboardUseCase = impl
 
+    @Provides
     fun getFriendsLeaderboardUseCase(impl: GetFriendsLeaderboardUseCaseImpl): GetFriendsLeaderboardUseCase = impl
 
+    @Provides
     fun getGameModeUseCase(impl: GetGameModeUseCaseImpl): GetGameModeUseCase = impl
 
+    @Provides
     fun getDifficultyUseCase(impl: GetDifficultyUseCaseImpl): GetDifficultyUseCase = impl
 
     @Provides

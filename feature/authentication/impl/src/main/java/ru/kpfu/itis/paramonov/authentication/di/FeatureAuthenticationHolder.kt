@@ -15,7 +15,7 @@ class FeatureAuthenticationHolder @Inject constructor(
 
     override fun initializeDependencies(): Any {
         val authFeatureDependencies = DaggerFeatureAuthenticationComponent_FeatureAuthenticationDependenciesComponent.builder()
-            .authenticationRepository(dependenciesContainer.authenticationRepository())
+            .featureAuthenticationApi(dependenciesContainer.featureAuthenticationApi())
             .commonApi(commonApi())
             .build()
         return DaggerFeatureAuthenticationComponent.builder()

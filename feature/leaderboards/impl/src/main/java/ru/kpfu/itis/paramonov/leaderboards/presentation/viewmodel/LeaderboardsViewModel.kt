@@ -110,15 +110,15 @@ class LeaderboardsViewModel(
         viewModelScope.launch {
             try {
                 val leaderboard = getFriendsLeaderboardUseCase.invoke(
-                    gameMode = questionSettingsDomainModelMapper.mapGameMode(
-                        _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke()
-                    ),
-                    difficulty = questionSettingsDomainModelMapper.mapDifficulty(
-                        _settingsDataFlow.value?.difficulty
-                    ),
-                    category = questionSettingsDomainModelMapper.mapCategory(
-                        _settingsDataFlow.value?.category
-                    ),
+                    gameMode = _settingsDataFlow.value?.let {
+                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
+                    } ?: getGameModeUseCase.invoke(),
+                    difficulty = _settingsDataFlow.value?.difficulty?.let {
+                        questionSettingsDomainModelMapper.mapDifficulty(it)
+                    },
+                    category = _settingsDataFlow.value?.category?.let {
+                        questionSettingsDomainModelMapper.mapCategory(it)
+                    },
                     max = max, afterScore = null
                 ).map { model -> resultUiModelMapper.map(model) }
                 if (checkLeaderboard(leaderboard))
@@ -133,15 +133,15 @@ class LeaderboardsViewModel(
         viewModelScope.launch {
             try {
                 val leaderboard = getGlobalLeaderboardUseCase.invoke(
-                    gameMode = questionSettingsDomainModelMapper.mapGameMode(
-                        _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke()
-                    ),
-                    difficulty = questionSettingsDomainModelMapper.mapDifficulty(
-                        _settingsDataFlow.value?.difficulty
-                    ),
-                    category = questionSettingsDomainModelMapper.mapCategory(
-                        _settingsDataFlow.value?.category
-                    ),
+                    gameMode = _settingsDataFlow.value?.let {
+                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
+                    } ?: getGameModeUseCase.invoke(),
+                    difficulty = _settingsDataFlow.value?.difficulty?.let {
+                        questionSettingsDomainModelMapper.mapDifficulty(it)
+                    },
+                    category = _settingsDataFlow.value?.category?.let {
+                        questionSettingsDomainModelMapper.mapCategory(it)
+                    },
                     max = max, afterScore = null
                 ).map { model -> resultUiModelMapper.map(model) }
                 if (checkLeaderboard(leaderboard))
@@ -157,15 +157,15 @@ class LeaderboardsViewModel(
             sendInitialSettingData()
             try {
                 val leaderboard = getGlobalLeaderboardUseCase.invoke(
-                    gameMode = questionSettingsDomainModelMapper.mapGameMode(
-                        _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke()
-                    ),
-                    difficulty = questionSettingsDomainModelMapper.mapDifficulty(
-                        _settingsDataFlow.value?.difficulty ?: getDifficultyUseCase.invoke()
-                    ),
-                    category = questionSettingsDomainModelMapper.mapCategory(
-                        _settingsDataFlow.value?.category
-                    ),
+                    gameMode = _settingsDataFlow.value?.let {
+                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
+                    } ?: getGameModeUseCase.invoke(),
+                    difficulty = _settingsDataFlow.value?.difficulty?.let {
+                        questionSettingsDomainModelMapper.mapDifficulty(it)
+                    } ?: getDifficultyUseCase.invoke(),
+                    category = _settingsDataFlow.value?.category?.let {
+                        questionSettingsDomainModelMapper.mapCategory(it)
+                    },
                     max = max, afterScore = null
                 ).map { model -> resultUiModelMapper.map(model) }
                 if (checkLeaderboard(leaderboard))
@@ -180,15 +180,15 @@ class LeaderboardsViewModel(
         viewModelScope.launch {
             try {
                 val leaderboard = getFriendsLeaderboardUseCase.invoke(
-                    gameMode = questionSettingsDomainModelMapper.mapGameMode(
-                        _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke()
-                    ),
-                    difficulty = questionSettingsDomainModelMapper.mapDifficulty(
-                        _settingsDataFlow.value?.difficulty ?: getDifficultyUseCase.invoke()
-                    ),
-                    category = questionSettingsDomainModelMapper.mapCategory(
-                        _settingsDataFlow.value?.category
-                    ),
+                    gameMode = _settingsDataFlow.value?.let {
+                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
+                    } ?: getGameModeUseCase.invoke(),
+                    difficulty = _settingsDataFlow.value?.difficulty?.let {
+                        questionSettingsDomainModelMapper.mapDifficulty(it)
+                    } ?: getDifficultyUseCase.invoke(),
+                    category = _settingsDataFlow.value?.category?.let {
+                        questionSettingsDomainModelMapper.mapCategory(it)
+                    },
                     max = max, afterScore = null
                 ).map { model -> resultUiModelMapper.map(model) }
                 if (checkLeaderboard(leaderboard))
@@ -225,15 +225,15 @@ class LeaderboardsViewModel(
         viewModelScope.launch {
             try {
                 val leaderboard = getFriendsLeaderboardUseCase.invoke(
-                    gameMode = questionSettingsDomainModelMapper.mapGameMode(
-                        _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke()
-                    ),
-                    difficulty = questionSettingsDomainModelMapper.mapDifficulty(
-                        _settingsDataFlow.value?.difficulty
-                    ),
-                    category = questionSettingsDomainModelMapper.mapCategory(
-                        _settingsDataFlow.value?.category
-                    ),
+                    gameMode = _settingsDataFlow.value?.let {
+                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
+                    } ?: getGameModeUseCase.invoke(),
+                    difficulty = _settingsDataFlow.value?.difficulty?.let {
+                        questionSettingsDomainModelMapper.mapDifficulty(it)
+                    },
+                    category = _settingsDataFlow.value?.category?.let {
+                        questionSettingsDomainModelMapper.mapCategory(it)
+                    },
                     max = max, afterScore = startAfter
                 ).map { model -> resultUiModelMapper.map(model) }
                 if (checkLeaderboard(leaderboard))
@@ -248,15 +248,15 @@ class LeaderboardsViewModel(
         viewModelScope.launch {
             try {
                 val leaderboard = getGlobalLeaderboardUseCase.invoke(
-                    gameMode = questionSettingsDomainModelMapper.mapGameMode(
-                        _settingsDataFlow.value?.gameMode ?: getGameModeUseCase.invoke()
-                    ),
-                    difficulty = questionSettingsDomainModelMapper.mapDifficulty(
-                        _settingsDataFlow.value?.difficulty
-                    ),
-                    category = questionSettingsDomainModelMapper.mapCategory(
-                        _settingsDataFlow.value?.category
-                    ),
+                    gameMode = _settingsDataFlow.value?.let {
+                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
+                    } ?: getGameModeUseCase.invoke(),
+                    difficulty = _settingsDataFlow.value?.difficulty?.let {
+                        questionSettingsDomainModelMapper.mapDifficulty(it)
+                    },
+                    category = _settingsDataFlow.value?.category?.let {
+                        questionSettingsDomainModelMapper.mapCategory(it)
+                    },
                     max = max, afterScore = startAfter
                 ).map { model -> resultUiModelMapper.map(model) }
                 if (checkLeaderboard(leaderboard))

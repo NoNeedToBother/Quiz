@@ -15,11 +15,7 @@ class FeatureQuestionsHolder @Inject constructor(
     override fun initializeDependencies(): Any {
         val featureQuestionsDependencies = DaggerFeatureQuestionsComponent_FeatureQuestionsDependenciesComponent.builder()
             .commonApi(commonApi())
-            .userRepository(dependenciesContainer.userRepository())
-            .questionRepository(dependenciesContainer.questionRepository())
-            .questionSettingsRepository(dependenciesContainer.questionSettingsRepository())
-            .savedQuestionRepository(dependenciesContainer.savedQuestionRepository())
-            .resultRepository(dependenciesContainer.resultRepository())
+            .featureQuestionsApi(dependenciesContainer.featureQuestionsApi())
             .build()
         return DaggerFeatureQuestionsComponent.builder()
             .dependencies(featureQuestionsDependencies)

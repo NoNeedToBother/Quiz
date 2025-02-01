@@ -7,9 +7,7 @@ import ru.kpfu.itis.paramonov.profiles.presentation.di.OtherUserProfileComponent
 import ru.kpfu.itis.paramonov.profiles.presentation.di.ProfileComponent
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.core.di.scopes.FeatureScope
-import ru.kpfu.itis.paramonov.profiles.api.repository.FriendRepository
-import ru.kpfu.itis.paramonov.profiles.api.repository.ResultRepository
-import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
+import ru.kpfu.itis.paramonov.profiles.api.api.FeatureProfilesApi
 
 @Component(
     dependencies = [
@@ -36,9 +34,7 @@ interface FeatureProfilesComponent {
     @Component(
         dependencies = [
             CommonApi::class,
-            FriendRepository::class,
-            ResultRepository::class,
-            UserRepository::class
+            FeatureProfilesApi::class
         ]
     )
     interface FeatureProfilesDependenciesComponent: FeatureProfilesDependencies

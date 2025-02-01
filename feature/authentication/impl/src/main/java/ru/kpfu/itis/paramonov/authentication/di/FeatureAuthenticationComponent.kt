@@ -2,7 +2,7 @@ package ru.kpfu.itis.paramonov.authentication.di
 
 import dagger.BindsInstance
 import dagger.Component
-import ru.kpfu.itis.paramonov.authentication.api.repository.AuthenticationRepository
+import ru.kpfu.itis.paramonov.authentication.api.api.FeatureAuthenticationApi
 import ru.kpfu.itis.paramonov.core.api.CommonApi
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.di.RegistrationComponent
 import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.di.SigningInComponent
@@ -38,7 +38,7 @@ interface FeatureAuthenticationComponent {
 
     @Component(
         dependencies = [
-            AuthenticationRepository::class,
+            FeatureAuthenticationApi::class,
             CommonApi::class,
         ]
     )

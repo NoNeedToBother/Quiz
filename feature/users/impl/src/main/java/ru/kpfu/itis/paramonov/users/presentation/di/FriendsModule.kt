@@ -11,6 +11,7 @@ import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.users.api.usecase.GetFriendsUseCase
 import ru.kpfu.itis.paramonov.users.presentation.viewmodel.FriendsViewModel
 import ru.kpfu.itis.paramonov.navigation.UserRouter
+import ru.kpfu.itis.paramonov.users.domain.mapper.UserUiModelMapper
 import ru.kpfu.itis.paramonov.users.domain.usecase.GetFriendsUseCaseImpl
 
 @Module(
@@ -33,8 +34,9 @@ class FriendsModule {
     @ViewModelKey(FriendsViewModel::class)
     fun provideFriendsViewModel(
         getFriendsUseCase: GetFriendsUseCase,
-        userRouter: UserRouter
+        userRouter: UserRouter,
+        userUiModelMapper: UserUiModelMapper
     ): ViewModel {
-        return FriendsViewModel(getFriendsUseCase, userRouter)
+        return FriendsViewModel(getFriendsUseCase, userRouter, userUiModelMapper)
     }
 }

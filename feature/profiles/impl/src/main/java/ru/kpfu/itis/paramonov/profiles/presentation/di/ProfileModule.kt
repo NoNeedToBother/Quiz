@@ -23,6 +23,17 @@ import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.ProfileViewModel
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.ResultUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.UserUiModelMapper
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.GetCurrentUserLastResultsUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.GetCurrentUserUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.LogoutUserUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.SubscribeToProfileUpdatesUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.friends.AcceptFriendRequestUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.friends.DenyFriendRequestUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.friends.GetFriendRequestsUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.profile_settings.ChangeCredentialsUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.profile_settings.ConfirmCredentialsUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.profile_settings.SaveProfilePictureUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.profile_settings.SaveUserSettingsUseCaseImpl
 
 @Module(
     includes = [
@@ -35,6 +46,39 @@ class ProfileModule {
     fun profileViewModel(fragment: Fragment, factory: ViewModelProvider.Factory): ProfileViewModel {
         return ViewModelProvider(fragment, factory)[ProfileViewModel::class.java]
     }
+
+    @Provides
+    fun getCurrentUserUseCase(impl: GetCurrentUserUseCaseImpl): GetCurrentUserUseCase = impl
+
+    @Provides
+    fun logoutUserUseCase(impl: LogoutUserUseCaseImpl): LogoutUserUseCase = impl
+
+    @Provides
+    fun saveProfilePictureUseCase(impl: SaveProfilePictureUseCaseImpl): SaveProfilePictureUseCase = impl
+
+    @Provides
+    fun saveUserSettingsUseCase(impl: SaveUserSettingsUseCaseImpl): SaveUserSettingsUseCase = impl
+
+    @Provides
+    fun changeCredentialsUseCase(impl: ChangeCredentialsUseCaseImpl): ChangeCredentialsUseCase = impl
+
+    @Provides
+    fun confirmCredentialsUseCase(impl: ConfirmCredentialsUseCaseImpl): ConfirmCredentialsUseCase = impl
+
+    @Provides
+    fun getFriendRequestsUseCase(impl: GetFriendRequestsUseCaseImpl): GetFriendRequestsUseCase = impl
+
+    @Provides
+    fun acceptFriendRequestUseCase(impl: AcceptFriendRequestUseCaseImpl): AcceptFriendRequestUseCase = impl
+
+    @Provides
+    fun denyFriendRequestUseCase(impl: DenyFriendRequestUseCaseImpl): DenyFriendRequestUseCase = impl
+
+    @Provides
+    fun subscribeToProfileUpdatesUseCase(impl: SubscribeToProfileUpdatesUseCaseImpl): SubscribeToProfileUpdatesUseCase = impl
+
+    @Provides
+    fun getCurrentUserLastResultsUseCase(impl: GetCurrentUserLastResultsUseCaseImpl): GetCurrentUserLastResultsUseCase = impl
 
     @Provides
     @IntoMap

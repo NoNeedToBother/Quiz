@@ -7,21 +7,21 @@ import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.core.di.FeatureApiHolder
 import ru.kpfu.itis.paramonov.core.di.FeatureContainer
 import ru.kpfu.itis.paramonov.core.di.scopes.ApplicationScope
-import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependencies
-import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationHolder
-import ru.kpfu.itis.paramonov.feature_authentication.di.FeatureAuthenticationDependenciesContainer
-import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsDependencies
-import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsDependenciesContainer
-import ru.kpfu.itis.paramonov.feature_leaderboards.di.FeatureLeaderboardsHolder
-import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependencies
-import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsDependenciesContainer
-import ru.kpfu.itis.paramonov.feature_questions.di.FeatureQuestionsHolder
-import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesDependencies
-import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesDependenciesContainer
-import ru.kpfu.itis.paramonov.feature_profiles.di.FeatureProfilesHolder
-import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependencies
-import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersDependenciesContainer
-import ru.kpfu.itis.paramonov.feature_users.di.FeatureUsersHolder
+import ru.kpfu.itis.paramonov.authentication.di.FeatureAuthenticationDependencies
+import ru.kpfu.itis.paramonov.authentication.di.FeatureAuthenticationHolder
+import ru.kpfu.itis.paramonov.authentication.di.FeatureAuthenticationDependenciesContainer
+import ru.kpfu.itis.paramonov.leaderboards.di.FeatureLeaderboardsDependencies
+import ru.kpfu.itis.paramonov.leaderboards.di.FeatureLeaderboardsDependenciesContainer
+import ru.kpfu.itis.paramonov.leaderboards.di.FeatureLeaderboardsHolder
+import ru.kpfu.itis.paramonov.questions.di.FeatureQuestionsDependencies
+import ru.kpfu.itis.paramonov.questions.di.FeatureQuestionsDependenciesContainer
+import ru.kpfu.itis.paramonov.questions.di.FeatureQuestionsHolder
+import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesDependencies
+import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesDependenciesContainer
+import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesHolder
+import ru.kpfu.itis.paramonov.users.di.FeatureUsersDependencies
+import ru.kpfu.itis.paramonov.users.di.FeatureUsersDependenciesContainer
+import ru.kpfu.itis.paramonov.users.di.FeatureUsersHolder
 import ru.kpfu.itis.paramonov.quiz.App
 
 @Module

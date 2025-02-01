@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.gms)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -44,14 +45,19 @@ dependencies {
     implementation project(':core:firebase')
     implementation project(':core:core')
     implementation project(':core:ui')
-    implementation project(':feature-authentication')
     implementation project(':navigation')
     implementation project(':core:database')
-    implementation project(':feature-questions')
     implementation project(':core:network')
-    implementation project(':feature-profiles')
-    implementation project(':feature-leaderboards')
-    implementation project(':feature-users')
+    implementation project(':feature:authentication:api')
+    implementation project(':feature:authentication:impl')
+    implementation project(':feature:leaderboards:api')
+    implementation project(':feature:leaderboards:impl')
+    implementation project(':feature:profiles:api')
+    implementation project(':feature:profiles:impl')
+    implementation project(':feature:questions:api')
+    implementation project(':feature:questions:impl')
+    implementation project(':feature:users:api')
+    implementation project(':feature:users:impl')
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.compat)
@@ -69,6 +75,8 @@ dependencies {
     implementation(libs.jetpack.navigation.ui)
 
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -14,8 +14,8 @@ import ru.kpfu.itis.paramonov.authentication.domain.usecase.RegisterUserUseCaseI
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.RegisterViewModel
-import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
-import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 
 @Module(
     includes = [
@@ -41,11 +41,16 @@ class RegistrationModule {
     fun provideRegisterViewModel(
         registerUserUseCase: RegisterUserUseCase,
         checkUserIsAuthenticatedUseCase: CheckUserIsAuthenticatedUseCase,
-        authenticationRouter: AuthenticationRouter,
         mapper: UserUiModelMapper,
-        mainMenuRouter: MainMenuRouter
+        usernameValidator: UsernameValidator,
+        passwordValidator: PasswordValidator
     ): ViewModel {
-        return RegisterViewModel(registerUserUseCase, checkUserIsAuthenticatedUseCase,
-            authenticationRouter, mapper, mainMenuRouter)
+        return RegisterViewModel(
+            registerUserUseCase = registerUserUseCase,
+            checkUserIsAuthenticatedUseCase = checkUserIsAuthenticatedUseCase,
+            mapper = mapper,
+            usernameValidator = usernameValidator,
+            passwordValidator = passwordValidator
+        )
     }
 }

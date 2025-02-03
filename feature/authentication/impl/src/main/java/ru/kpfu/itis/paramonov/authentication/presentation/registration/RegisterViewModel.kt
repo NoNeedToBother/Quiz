@@ -1,77 +1,65 @@
 package ru.kpfu.itis.paramonov.authentication.presentation.registration
 
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.viewmodel.container
 import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.authentication.api.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.authentication.api.usecase.RegisterUserUseCase
 import ru.kpfu.itis.paramonov.authentication.domain.mapper.UserUiModelMapper
-import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
-import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
+import ru.kpfu.itis.paramonov.authentication.presentation.registration.mvi.RegisterScreenState
+import ru.kpfu.itis.paramonov.authentication.presentation.registration.mvi.RegisterScreenSideEffect
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 
 class RegisterViewModel(
     private val registerUserUseCase: RegisterUserUseCase,
     private val checkUserIsAuthenticatedUseCase: CheckUserIsAuthenticatedUseCase,
-    private val authenticationRouter: AuthenticationRouter,
     private val mapper: UserUiModelMapper,
-    private val mainMenuRouter: MainMenuRouter
-): BaseViewModel() {
+    private val usernameValidator: UsernameValidator,
+    private val passwordValidator: PasswordValidator
+): BaseViewModel(), ContainerHost<RegisterScreenState, RegisterScreenSideEffect> {
 
-    private val _userDataFlow = MutableStateFlow<UserDataResult?>(null)
+    override val container = container<RegisterScreenState, RegisterScreenSideEffect>(RegisterScreenState(null))
 
-    val userDataFlow: StateFlow<UserDataResult?> get() = _userDataFlow
+    fun registerUser(username: String, email: String, password: String, confirmPassword: String) = intent {
+        reduce { state.copy(isLoading = true) }
 
-    private val _registerProceedingFlow = MutableStateFlow(false)
+        try {
+            val user = mapper.map(
+                registerUserUseCase.invoke(username, email, password, confirmPassword)
+            )
 
-    val registerProceedingFlow: StateFlow<Boolean> get() = _registerProceedingFlow
+            reduce { state.copy(userData = user, isLoading = false) }
+            postSideEffect(RegisterScreenSideEffect.NavigateToMainMenu)
+        } catch (ex: Throwable) {
+            reduce { state.copy(userData = null, isLoading = false) }
+            postSideEffect(RegisterScreenSideEffect.ShowError(ex.message ?: ""))
+        }
+    }
 
-    fun registerUser(username: String, email: String, password: String, confirmPassword: String) {
-        viewModelScope.launch {
-            _registerProceedingFlow.value = true
-            try {
-                val user = mapper.map(
-                    registerUserUseCase.invoke(username, email, password, confirmPassword)
-                )
-                _userDataFlow.value = UserDataResult.Success(user)
-                mainMenuRouter.goToMainMenu()
-            } catch (ex: Throwable) {
-                _userDataFlow.value = UserDataResult.Failure(ex)
-            } finally {
-                _registerProceedingFlow.value = false
+    fun checkCurrentUser() = intent {
+        try {
+            val user = checkUserIsAuthenticatedUseCase.invoke()?.let { mapper.map(it) }
+            user?.let {
+                reduce { state.copy(userData = it) }
+                postSideEffect(RegisterScreenSideEffect.NavigateToMainMenu)
             }
-            _userDataFlow.value = null
+        } catch (ex: Throwable) {
+            reduce { state.copy(userData = null) }
+            postSideEffect(RegisterScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 
-    fun checkCurrentUser() {
-        viewModelScope.launch {
-            try {
-                val user = checkUserIsAuthenticatedUseCase.invoke()?.let { mapper.map(it) }
-                user?.let {
-                    _userDataFlow.value = UserDataResult.Success(it)
-                    mainMenuRouter.goToMainMenu()
-                }
-            } catch (ex: Throwable) {
-                _userDataFlow.value = UserDataResult.Failure(ex)
-            }
-        }
+    fun validatePassword(password: String) = intent {
+        reduce { state.copy(isPasswordCorrect = passwordValidator.validate(password)) }
     }
 
-    fun goToSignIn() {
-        viewModelScope.launch {
-            authenticationRouter.goToSignIn()
-        }
+    fun validateConfirmPassword(password: String) = intent {
+        reduce { state.copy(isConfirmPasswordCorrect = passwordValidator.validate(password)) }
     }
 
-    sealed interface UserDataResult: Result {
-        class Success(private val result: UserModel): UserDataResult, Result.Success<UserModel> {
-            override fun getValue(): UserModel = result
-        }
-        class Failure(private val ex: Throwable): UserDataResult, Result.Failure {
-            override fun getException(): Throwable = ex
-        }
+    fun validateUsername(username: String) = intent {
+        reduce { state.copy(isUsernameCorrect = usernameValidator.validate(username)) }
     }
 }

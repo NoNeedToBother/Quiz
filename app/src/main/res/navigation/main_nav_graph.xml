@@ -7,14 +7,14 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="ru.kpfu.itis.paramonov.authentication.presentation.registration.RegisterFragment"
+        android:name="ru.kpfu.itis.paramonov.authentication.presentation.registration.RegisterScreen"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
     </fragment>
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="ru.kpfu.itis.paramonov.authentication.presentation.signing_in.SignInFragment"
+        android:name="ru.kpfu.itis.paramonov.authentication.presentation.signing_in.SignInScreen"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" >
     </fragment>

@@ -32,6 +32,10 @@ coroutines = "1.3.9"
 room = "2.6.1"
 glide = "4.16.0"
 
+mvi_orbit = "9.0.0"
+uiAndroid = "1.7.7"
+material3Android = "1.3.1"
+
 [libraries]
 dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
 dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
@@ -90,6 +94,12 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 
+mvi-core-core = { group = "org.orbit-mvi", name = "orbit-core", version.ref = "mvi_orbit" }
+mvi-core-viewmodel = { group = "org.orbit-mvi", name = "orbit-viewmodel", version.ref = "mvi_orbit" }
+mvi-core-compose = { group = "org.orbit-mvi", name = "orbit-compose", version.ref = "mvi_orbit" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android" }
 android-library = { id = "com.android.library", version.ref = "android" }
@@ -128,6 +138,12 @@ firebase = [
 compose-tooling = [
     "androidx-ui-tooling",
     "androidx-ui-tooling-preview",
+]
+
+mvi-core = [
+    "mvi-core-core",
+    "mvi-core-viewmodel",
+    "mvi-core-compose"
 ]
 
 

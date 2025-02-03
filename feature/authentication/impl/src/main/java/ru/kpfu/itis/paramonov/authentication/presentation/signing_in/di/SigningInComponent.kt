@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.kpfu.itis.paramonov.core.di.scopes.ScreenScope
-import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.SignInFragment
+import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.SignInScreen
 
 @Subcomponent(
     modules = [
@@ -22,5 +22,5 @@ interface SigningInComponent {
         ): SigningInComponent
     }
 
-    fun inject(fragment: SignInFragment)
+    fun inject(fragment: SignInScreen)
 }

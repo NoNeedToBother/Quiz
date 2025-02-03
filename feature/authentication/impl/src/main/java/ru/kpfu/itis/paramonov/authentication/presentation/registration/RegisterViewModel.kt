@@ -2,7 +2,6 @@ package ru.kpfu.itis.paramonov.authentication.presentation.registration
 
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
-import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.authentication.api.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.authentication.api.usecase.RegisterUserUseCase

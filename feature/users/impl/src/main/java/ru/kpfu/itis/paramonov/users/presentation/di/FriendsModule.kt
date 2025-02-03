@@ -34,9 +34,8 @@ class FriendsModule {
     @ViewModelKey(FriendsViewModel::class)
     fun provideFriendsViewModel(
         getFriendsUseCase: GetFriendsUseCase,
-        userRouter: UserRouter,
         userUiModelMapper: UserUiModelMapper
     ): ViewModel {
-        return FriendsViewModel(getFriendsUseCase, userRouter, userUiModelMapper)
+        return FriendsViewModel(getFriendsUseCase, userUiModelMapper)
     }
 }

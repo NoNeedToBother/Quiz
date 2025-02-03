@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.kpfu.itis.paramonov.core.di.scopes.ScreenScope
-import ru.kpfu.itis.paramonov.users.presentation.fragments.FriendsScreen
+import ru.kpfu.itis.paramonov.users.presentation.ui.screens.FriendsScreen
 
 @Subcomponent(
     modules = [

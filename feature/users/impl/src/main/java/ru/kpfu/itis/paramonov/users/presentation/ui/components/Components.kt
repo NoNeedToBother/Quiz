@@ -14,21 +14,28 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
+import ru.kpfu.itis.paramonov.users.R
 
 @Composable
 fun UserItem(
@@ -101,4 +108,23 @@ fun UserList(
                 }
             }
     }
+}
+
+@Composable
+fun SearchBar(
+    modifier: Modifier = Modifier,
+    query: String,
+    onQueryChange: (String) -> Unit
+) {
+    TextField(
+        value = query,
+        onValueChange = onQueryChange,
+        modifier = modifier.fillMaxWidth(),
+        placeholder = { Text(stringResource(R.string.search_users)) },
+        trailingIcon = {
+            IconButton(onClick = { }) {
+                Icon(Icons.Default.Search, contentDescription = stringResource(R.string.search_users))
+            }
+        }
+    )
 }

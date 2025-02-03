@@ -34,7 +34,6 @@ android {
     }
     buildFeatures {
         compose = true
-        viewBinding = true
     }
 }
 
@@ -56,8 +55,6 @@ dependencies {
 
     implementation(libs.viewmodel.ktx)
     implementation(libs.fragment.ktx)
-
-    implementation(libs.glide)
 
     implementation(libs.bundles.mvi.core)
     implementation(libs.bundles.compose)

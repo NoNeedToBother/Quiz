@@ -10,7 +10,6 @@ import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.users.api.usecase.SearchUsersUseCase
 import ru.kpfu.itis.paramonov.users.presentation.viewmodel.SearchUsersViewModel
-import ru.kpfu.itis.paramonov.navigation.UserRouter
 import ru.kpfu.itis.paramonov.users.domain.mapper.UserUiModelMapper
 import ru.kpfu.itis.paramonov.users.domain.usecase.SearchUsersUseCaseImpl
 
@@ -34,12 +33,10 @@ class SearchUsersModule {
     @ViewModelKey(SearchUsersViewModel::class)
     fun provideSearchUsersViewModel(
         searchUsersUseCase: SearchUsersUseCase,
-        userUiModelMapper: UserUiModelMapper,
-        userRouter: UserRouter
+        userUiModelMapper: UserUiModelMapper
     ): ViewModel {
         return SearchUsersViewModel(
             searchUsersUseCase = searchUsersUseCase,
-            userRouter = userRouter,
             userUiModelMapper = userUiModelMapper
         )
     }

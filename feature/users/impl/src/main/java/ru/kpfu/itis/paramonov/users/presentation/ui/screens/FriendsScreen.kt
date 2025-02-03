@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.users.presentation.fragments
+package ru.kpfu.itis.paramonov.users.presentation.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +23,7 @@ import ru.kpfu.itis.paramonov.users.R
 import ru.kpfu.itis.paramonov.users.di.FeatureUsersComponent
 import ru.kpfu.itis.paramonov.users.di.FeatureUsersDependencies
 import ru.kpfu.itis.paramonov.users.presentation.mvi.FriendsScreenState
-import ru.kpfu.itis.paramonov.users.presentation.mvi.FriendsSideEffect
+import ru.kpfu.itis.paramonov.users.presentation.mvi.FriendsScreenSideEffect
 import ru.kpfu.itis.paramonov.users.presentation.ui.components.UserList
 import ru.kpfu.itis.paramonov.users.presentation.viewmodel.FriendsViewModel
 import javax.inject.Inject
@@ -54,7 +54,7 @@ class FriendsScreen: MviBaseFragment() {
 
                     effect.collect {
                         when (it) {
-                            is FriendsSideEffect.ShowError -> {
+                            is FriendsScreenSideEffect.ShowError -> {
                                 val errorMessage = it.message
                                 val errorTitle = getString(R.string.get_friends_fail)
 

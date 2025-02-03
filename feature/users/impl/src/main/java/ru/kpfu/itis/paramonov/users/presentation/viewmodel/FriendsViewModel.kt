@@ -3,34 +3,35 @@ package ru.kpfu.itis.paramonov.users.presentation.viewmodel
 import ru.kpfu.itis.paramonov.users.api.usecase.GetFriendsUseCase
 import ru.kpfu.itis.paramonov.users.domain.mapper.UserUiModelMapper
 import androidx.lifecycle.ViewModel
-import javax.inject.Inject
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import ru.kpfu.itis.paramonov.users.presentation.mvi.FriendsScreenState
-import ru.kpfu.itis.paramonov.users.presentation.mvi.FriendsSideEffect
+import ru.kpfu.itis.paramonov.users.presentation.mvi.FriendsScreenSideEffect
 
-class FriendsViewModel @Inject constructor(
+class FriendsViewModel(
     private val getFriendsUseCase: GetFriendsUseCase,
     private val userUiModelMapper: UserUiModelMapper
-) : ViewModel(), ContainerHost<FriendsScreenState, FriendsSideEffect> {
+): ViewModel(), ContainerHost<FriendsScreenState, FriendsScreenSideEffect> {
 
-    override val container = container<FriendsScreenState, FriendsSideEffect>(FriendsScreenState())
+    override val container = container<FriendsScreenState, FriendsScreenSideEffect>(FriendsScreenState())
 
     fun getFriends(max: Int) = intent {
         try {
             val friends = getFriendsUseCase.invoke(0, max).map(userUiModelMapper::map)
             reduce { state.copy(friends = friends) }
         } catch (ex: Throwable) {
-            postSideEffect(FriendsSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(FriendsScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 
     fun loadNextFriends(offset: Int, max: Int) = intent {
         try {
             val users = getFriendsUseCase.invoke(offset, max).map(userUiModelMapper::map)
-            reduce { state.copy(pagedFriends = users) }
+            val new = ArrayList(state.friends)
+            new.addAll(users)
+            reduce { state.copy(friends = new.distinctBy { it.id }) }
         } catch (ex: Throwable) {
-            postSideEffect(FriendsSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(FriendsScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 }

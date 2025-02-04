@@ -28,11 +28,10 @@ import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.ProfileSet
 import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.RequestsDialogFragment
 import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.StatsDialog
 import ru.kpfu.itis.paramonov.profiles.presentation.model.ResultUiModel
-import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.BaseProfileViewModel
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.ProfileViewModel
 import javax.inject.Inject
 
-class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
+/*class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
 
     private val binding: FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
 
@@ -357,4 +356,4 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
     companion object {
         private const val MAX_RESULTS_AMOUNT = 10
     }
-}
+}*/

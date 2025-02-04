@@ -1,6 +1,7 @@
 package ru.kpfu.itis.paramonov.profiles.presentation.viewmodel
 
 import android.net.Uri
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,9 +40,9 @@ class ProfileViewModel(
     private val userUiModelMapper: UserUiModelMapper,
     private val resultUiModelMapper: ResultUiModelMapper,
     private val authenticationRouter: AuthenticationRouter
-): BaseProfileViewModel() {
+): ViewModel() {
 
-    private val _confirmCredentialsFlow = MutableStateFlow<Boolean?>(null)
+    /*private val _confirmCredentialsFlow = MutableStateFlow<Boolean?>(null)
 
     val confirmCredentialsFlow: StateFlow<Boolean?> get() = _confirmCredentialsFlow
 
@@ -204,5 +205,5 @@ class ProfileViewModel(
     companion object {
         const val USERNAME_KEY = "username"
         const val INFO_KEY = "info"
-    }
+    }*/
 }

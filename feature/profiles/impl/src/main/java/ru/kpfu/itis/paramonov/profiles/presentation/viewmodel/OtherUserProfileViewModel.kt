@@ -1,10 +1,8 @@
 package ru.kpfu.itis.paramonov.profiles.presentation.viewmodel
 
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.core.utils.emitException
+import androidx.lifecycle.ViewModel
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.viewmodel.container
 import ru.kpfu.itis.paramonov.profiles.api.usecase.GetUserLastResultsUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.GetUserUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.GetFriendStatusUseCase
@@ -12,7 +10,8 @@ import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.SendFriendRequestUseC
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.FriendStatusUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.ResultUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.UserUiModelMapper
-import ru.kpfu.itis.paramonov.profiles.presentation.model.FriendStatusUiModel
+import ru.kpfu.itis.paramonov.profiles.presentation.mvi.OtherUserProfileScreenSideEffect
+import ru.kpfu.itis.paramonov.profiles.presentation.mvi.OtherUserProfileScreenState
 
 class OtherUserProfileViewModel(
     private val getUserUseCase: GetUserUseCase,
@@ -22,72 +21,47 @@ class OtherUserProfileViewModel(
     private val userUiModelMapper: UserUiModelMapper,
     private val resultUiModelMapper: ResultUiModelMapper,
     private val friendStatusUiModelMapper: FriendStatusUiModelMapper
-): BaseProfileViewModel() {
+): ViewModel(), ContainerHost<OtherUserProfileScreenState, OtherUserProfileScreenSideEffect> {
 
-    private val _sendFriendRequestResultFlow = MutableStateFlow<Boolean?>(null)
+    override val container = container<OtherUserProfileScreenState, OtherUserProfileScreenSideEffect>(
+        OtherUserProfileScreenState()
+    )
 
-    val sendFriendRequestResultFlow: StateFlow<Boolean?> get() = _sendFriendRequestResultFlow
-
-    private val _friendStatusDataFlow = MutableStateFlow<FriendStatusDataResult?>(null)
-
-    val friendStatusDataFlow: StateFlow<FriendStatusDataResult?> get() = _friendStatusDataFlow
-
-    fun getUser(id: String) {
-        viewModelScope.launch {
-            try {
-                val user = userUiModelMapper.map(getUserUseCase.invoke(id))
-                _userDataFlow.value = UserDataResult.Success(user)
-            } catch (ex: Throwable) {
-                _userDataFlow.emitException(UserDataResult.Failure(ex))
-            }
+    fun getUser(id: String) = intent {
+        try {
+            val user = userUiModelMapper.map(getUserUseCase.invoke(id))
+            reduce { state.copy(user = user) }
+        } catch (ex: Throwable) {
+            postSideEffect(OtherUserProfileScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 
-    fun sendFriendRequest(id: String) {
-        viewModelScope.launch {
-            try {
-                sendFriendRequestUseCase.invoke(id)
-                _sendFriendRequestResultFlow.value = true
-            } catch (ex: Throwable) {
-                _sendFriendRequestResultFlow.value = false
-            } finally {
-                _sendFriendRequestResultFlow.value = null
-            }
+    fun sendFriendRequest(id: String) = intent {
+        try {
+            sendFriendRequestUseCase.invoke(id)
+            reduce { state.copy(friendRequestSent = true) }
+        } catch (ex: Throwable) {
+            reduce { state.copy(friendRequestSent = false) }
         }
     }
 
-    fun checkFriendStatus(id: String) {
-        viewModelScope.launch {
-            try {
-                val friendStatus = friendStatusUiModelMapper.map(
-                    getFriendStatusUseCase.invoke(id)
-                )
-                _friendStatusDataFlow.value = FriendStatusDataResult.Success(friendStatus)
-            } catch (ex: Throwable) {
-                _friendStatusDataFlow.emitException(FriendStatusDataResult.Failure(ex))
-            }
+    fun checkFriendStatus(id: String) = intent {
+        try {
+            val friendStatus = friendStatusUiModelMapper.map(
+                getFriendStatusUseCase.invoke(id)
+            )
+            reduce { state.copy(friendStatus = friendStatus) }
+        } catch (ex: Throwable) {
+            postSideEffect(OtherUserProfileScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 
-    fun getLastResults(max: Int, id: String) {
-        viewModelScope.launch {
-            try {
-                val results = getUserLastResultsUseCase.invoke(max, id).map { res -> resultUiModelMapper.map(res) }
-                _resultsDataFlow.value = LastResultsDataResult.Success(results)
-            } catch (ex: Throwable) {
-                _resultsDataFlow.emitException(LastResultsDataResult.Failure(ex))
-            } finally {
-                _resultsDataFlow.value = null
-            }
-        }
-    }
-
-    sealed interface FriendStatusDataResult: Result {
-        class Success(private val result: FriendStatusUiModel): Result.Success<FriendStatusUiModel>, FriendStatusDataResult {
-            override fun getValue(): FriendStatusUiModel = result
-        }
-        class Failure(private val ex: Throwable): Result.Failure, FriendStatusDataResult {
-            override fun getException(): Throwable = ex
+    fun getLastResults(max: Int, id: String) = intent {
+        try {
+            val results = getUserLastResultsUseCase.invoke(max, id).map { res -> resultUiModelMapper.map(res) }
+            postSideEffect(OtherUserProfileScreenSideEffect.ResultsReceived(results))
+        } catch (ex: Throwable) {
+            postSideEffect(OtherUserProfileScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 }

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import ru.kpfu.itis.paramonov.ui.views.ErrorBottomSheetDialogFragment
-import ru.kpfu.itis.paramonov.ui.views.MessageSnackbar
 
 abstract class MviBaseFragment: Fragment() {
 
@@ -34,16 +33,5 @@ abstract class MviBaseFragment: Fragment() {
             parentFragmentManager,
             ErrorBottomSheetDialogFragment.ERROR_BOTTOM_SHEET_DIALOG_TAG
         )
-    }
-
-    protected open fun showMessageSnackbar(anchor: View, message: String) {
-        val messageSnackbar = MessageSnackbar(requireContext(), anchor, message)
-        val displayMetrics = requireContext().resources.displayMetrics
-        val marginTop = displayMetrics.heightPixels / 20
-        val defaultMargin =
-            requireContext().resources.getDimensionPixelSize(com.google.android.material.R.dimen.mtrl_snackbar_margin)
-        messageSnackbar.adjustPosition(defaultMargin, marginTop = marginTop)
-        messageSnackbar.show()
-
     }
 }

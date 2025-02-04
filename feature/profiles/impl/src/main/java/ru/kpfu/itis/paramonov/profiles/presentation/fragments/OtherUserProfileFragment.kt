@@ -24,7 +24,7 @@ import ru.kpfu.itis.paramonov.profiles.R
 import ru.kpfu.itis.paramonov.profiles.databinding.FragmentProfileOtherUserBinding
 import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesComponent
 import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesDependencies
-import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.StatsDialogFragment
+import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.StatsDialog
 import ru.kpfu.itis.paramonov.profiles.presentation.model.FriendStatusUiModel
 import ru.kpfu.itis.paramonov.profiles.presentation.model.ResultUiModel
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.BaseProfileViewModel
@@ -132,10 +132,10 @@ class OtherUserProfileFragment: BaseFragment(R.layout.fragment_profile_other_use
     }
 
     private fun onLastResultsDataReceived(list: List<ResultUiModel>) {
-        StatsDialogFragment.builder()
+        StatsDialog.builder()
             .provideResultList(list)
             .build()
-            .show(childFragmentManager, StatsDialogFragment.STATS_DIALOG_TAG)
+            .show(childFragmentManager, StatsDialog.STATS_DIALOG_TAG)
     }
 
     private fun collectFriendStatusData(result: OtherUserProfileViewModel.FriendStatusDataResult?) {

@@ -26,7 +26,7 @@ import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.ProfileCre
 import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.ProfilePictureDialogFragment
 import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.ProfileSettingsDialogFragment
 import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.RequestsDialogFragment
-import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.StatsDialogFragment
+import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.StatsDialog
 import ru.kpfu.itis.paramonov.profiles.presentation.model.ResultUiModel
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.BaseProfileViewModel
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.ProfileViewModel
@@ -137,10 +137,10 @@ class ProfileFragment: BaseFragment(R.layout.fragment_profile) {
     }
 
     private fun onLastResultsDataReceived(list: List<ResultUiModel>) {
-        StatsDialogFragment.builder()
+        StatsDialog.builder()
             .provideResultList(list)
             .build()
-            .show(childFragmentManager, StatsDialogFragment.STATS_DIALOG_TAG)
+            .show(childFragmentManager, StatsDialog.STATS_DIALOG_TAG)
     }
 
     private fun collectRequestsData(requests: ProfileViewModel.FriendRequestResult?) {

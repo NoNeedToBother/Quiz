@@ -17,9 +17,9 @@
 
     <string-array name="leaderboard_difficulties">
         <item>Any</item>
-        <item>EASY</item>
-        <item>MEDIUM</item>
-        <item>HARD</item>
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
     </string-array>
 
     <string-array name="leaderboard_categories">
@@ -29,7 +29,7 @@
         <item>Film</item>
         <item>Music</item>
         <item>TV</item>
-        <item>Video_games</item>
+        <item>Video games</item>
         <item>Sports</item>
         <item>Geography</item>
         <item>History</item>

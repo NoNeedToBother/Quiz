@@ -70,7 +70,7 @@
 
     <fragment
         android:id="@+id/leaderboardsFragment"
-        android:name="ru.kpfu.itis.paramonov.leaderboards.presentation.fragments.LeaderboardsViewPagerFragment"
+        android:name="ru.kpfu.itis.paramonov.leaderboards.presentation.fragments.LeaderboardScreen"
         android:label="fragment_leaderboards"
         />
 

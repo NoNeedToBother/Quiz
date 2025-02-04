@@ -4,8 +4,7 @@ import androidx.fragment.app.Fragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.kpfu.itis.paramonov.core.di.scopes.ScreenScope
-import ru.kpfu.itis.paramonov.leaderboards.presentation.fragments.LeaderboardFragment
-import ru.kpfu.itis.paramonov.leaderboards.presentation.fragments.LeaderboardsViewPagerFragment
+import ru.kpfu.itis.paramonov.leaderboards.presentation.fragments.LeaderboardScreen
 
 @Subcomponent(
     modules = [
@@ -23,7 +22,5 @@ interface LeaderboardsComponent {
         ): LeaderboardsComponent
     }
 
-    fun inject(fragment: LeaderboardsViewPagerFragment)
-
-    fun inject(fragment: LeaderboardFragment)
+    fun inject(fragment: LeaderboardScreen)
 }

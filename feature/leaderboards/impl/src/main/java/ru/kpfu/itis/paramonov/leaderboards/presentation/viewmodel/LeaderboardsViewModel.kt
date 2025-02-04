@@ -1,12 +1,9 @@
 package ru.kpfu.itis.paramonov.leaderboards.presentation.viewmodel
 
-import android.widget.ImageView
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.ui.base.BaseViewModel
-import ru.kpfu.itis.paramonov.core.utils.emitException
+import androidx.lifecycle.ViewModel
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.viewmodel.container
+import ru.kpfu.itis.paramonov.core.utils.toEnumName
 import ru.kpfu.itis.paramonov.leaderboards.api.usecase.GetDifficultyUseCase
 import ru.kpfu.itis.paramonov.leaderboards.api.usecase.GetFriendsLeaderboardUseCase
 import ru.kpfu.itis.paramonov.leaderboards.api.usecase.GetGameModeUseCase
@@ -14,13 +11,13 @@ import ru.kpfu.itis.paramonov.leaderboards.api.usecase.GetGlobalLeaderboardUseCa
 import ru.kpfu.itis.paramonov.leaderboards.domain.mapper.QuestionSettingsDomainModelMapper
 import ru.kpfu.itis.paramonov.leaderboards.domain.mapper.QuestionSettingsUiModelMapper
 import ru.kpfu.itis.paramonov.leaderboards.domain.mapper.ResultUiModelMapper
-import ru.kpfu.itis.paramonov.leaderboards.presentation.fragments.LeaderboardFragment
 import ru.kpfu.itis.paramonov.leaderboards.presentation.model.CategoryUiModel
 import ru.kpfu.itis.paramonov.leaderboards.presentation.model.DifficultyUiModel
 import ru.kpfu.itis.paramonov.leaderboards.presentation.model.GameModeUiModel
 import ru.kpfu.itis.paramonov.leaderboards.presentation.model.ResultUiModel
 import ru.kpfu.itis.paramonov.leaderboards.presentation.model.SettingUiModel
-import ru.kpfu.itis.paramonov.navigation.UserRouter
+import ru.kpfu.itis.paramonov.leaderboards.presentation.mvi.LeaderboardsScreenSideEffect
+import ru.kpfu.itis.paramonov.leaderboards.presentation.mvi.LeaderboardsScreenState
 
 class LeaderboardsViewModel(
     private val getGlobalLeaderboardUseCase: GetGlobalLeaderboardUseCase,
@@ -29,71 +26,24 @@ class LeaderboardsViewModel(
     private val getDifficultyUseCase: GetDifficultyUseCase,
     private val questionSettingsDomainModelMapper: QuestionSettingsDomainModelMapper,
     private val resultUiModelMapper: ResultUiModelMapper,
-    private val questionSettingsUiModelMapper: QuestionSettingsUiModelMapper,
-    private val userRouter: UserRouter
-): BaseViewModel() {
+    private val questionSettingsUiModelMapper: QuestionSettingsUiModelMapper
+): ViewModel(), ContainerHost<LeaderboardsScreenState, LeaderboardsScreenSideEffect> {
 
-    private val _globalLeaderboardDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
+    override val container = container<LeaderboardsScreenState, LeaderboardsScreenSideEffect>(LeaderboardsScreenState())
 
-    private val globalLeaderboardDataFlow: StateFlow<LeaderboardDataResult?> get() = _globalLeaderboardDataFlow
-
-    private val _friendsLeaderboardDataFlow = MutableStateFlow<LeaderboardDataResult?>(null)
-
-    private val friendsLeaderboardDataFlow: StateFlow<LeaderboardDataResult?> get() = _friendsLeaderboardDataFlow
-
-    private val _settingsDataFlow = MutableStateFlow<SettingUiModel?>(null)
-
-    val settingsDataFlow: StateFlow<SettingUiModel?> get() = _settingsDataFlow
-
-    private val _clearLeaderboardFlow = MutableStateFlow(false)
-
-    val clearLeaderboardFlow: StateFlow<Boolean> get() = _clearLeaderboardFlow
-
-    fun navigateToUser(id: String, sharedView: ImageView) {
-        viewModelScope.launch {
-            userRouter.withSharedView(sharedView) {
-                goToUser(id)
-            }
-        }
-    }
-
-    fun clearLeaderboards() {
-        viewModelScope.launch {
-            _clearLeaderboardFlow.value = true
-        }
-    }
-
-    fun onLeaderboardCleared() {
-        viewModelScope.launch {
-            _clearLeaderboardFlow.value = false
-        }
-    }
-
-    fun saveSettings(category: CategoryUiModel?, difficulty: DifficultyUiModel?, gameMode: GameModeUiModel) {
-        viewModelScope.launch {
-            _settingsDataFlow.value = SettingUiModel(
-                difficulty = difficulty, category = category, gameMode = gameMode
-            )
-        }
-    }
-
-    fun getResultsOnStart(type: LeaderboardFragment.LeaderboardType, max: Int) {
-        when(type) {
-            LeaderboardFragment.LeaderboardType.GLOBAL -> getGlobalLeaderboardOnStart(max)
-            LeaderboardFragment.LeaderboardType.FRIENDS -> getFriendsLeaderboardOnStart(max)
-        }
-    }
-
-    fun getResultsAfterCleared(type: LeaderboardFragment.LeaderboardType, max: Int) {
-        when(type) {
-            LeaderboardFragment.LeaderboardType.GLOBAL -> getGlobalLeaderboardAfterCleared(max)
-            LeaderboardFragment.LeaderboardType.FRIENDS -> getFriendsLeaderboardAfterCleared(max)
-        }
+    fun saveSettings() = intent {
+        val settings = SettingUiModel(
+            difficulty = state.settings?.difficulty,
+            category = state.settings?.category,
+            gameMode = state.settings?.gameMode
+                ?: questionSettingsUiModelMapper.mapGameMode(getGameModeUseCase.invoke())
+        )
+        reduce { state.copy(settings = settings, results = emptyList(), loadingEnded = false) }
     }
 
     private fun checkLeaderboard(results: List<ResultUiModel>): Boolean {
         if (results.isEmpty()) return true
-        val currentSettings = _settingsDataFlow.value
+        val currentSettings = container.stateFlow.value.settings
         val result = results[0]
         currentSettings?.run {
             if (gameMode != result.gameMode) return false
@@ -106,176 +56,158 @@ class LeaderboardsViewModel(
         }
         return true
     }
-    private fun getFriendsLeaderboardAfterCleared(max: Int) {
-        viewModelScope.launch {
-            try {
-                val leaderboard = getFriendsLeaderboardUseCase.invoke(
-                    gameMode = _settingsDataFlow.value?.let {
-                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
-                    } ?: getGameModeUseCase.invoke(),
-                    difficulty = _settingsDataFlow.value?.difficulty?.let {
-                        questionSettingsDomainModelMapper.mapDifficulty(it)
-                    },
-                    category = _settingsDataFlow.value?.category?.let {
-                        questionSettingsDomainModelMapper.mapCategory(it)
-                    },
-                    max = max, afterScore = null
-                ).map { model -> resultUiModelMapper.map(model) }
-                if (checkLeaderboard(leaderboard))
-                    _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
-            } catch (ex: Throwable) {
-                _friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
-            }
+
+    fun getGlobalLeaderboard(max: Int) = intent {
+        if (state.settings == null) sendInitialSettingData().join()
+        reduce { state.copy(results = emptyList(), loadingEnded = false) }
+        try {
+            val settings = state.settings
+            val leaderboard = getGlobalLeaderboardUseCase.invoke(
+                gameMode = settings?.let {
+                    questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
+                } ?: getGameModeUseCase.invoke(),
+                difficulty = settings?.difficulty?.let {
+                    questionSettingsDomainModelMapper.mapDifficulty(it)
+                } ?: getDifficultyUseCase.invoke(),
+                category = settings?.category?.let {
+                    questionSettingsDomainModelMapper.mapCategory(it)
+                },
+                max = max, afterScore = null
+            ).map { model -> resultUiModelMapper.map(model) }
+            if (checkLeaderboard(leaderboard))
+                reduce { state.copy(results = leaderboard, loadingEnded = true) }
+        } catch (ex: Throwable) {
+            postSideEffect(LeaderboardsScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 
-    private fun getGlobalLeaderboardAfterCleared(max: Int) {
-        viewModelScope.launch {
-            try {
-                val leaderboard = getGlobalLeaderboardUseCase.invoke(
-                    gameMode = _settingsDataFlow.value?.let {
-                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
-                    } ?: getGameModeUseCase.invoke(),
-                    difficulty = _settingsDataFlow.value?.difficulty?.let {
-                        questionSettingsDomainModelMapper.mapDifficulty(it)
-                    },
-                    category = _settingsDataFlow.value?.category?.let {
-                        questionSettingsDomainModelMapper.mapCategory(it)
-                    },
-                    max = max, afterScore = null
-                ).map { model -> resultUiModelMapper.map(model) }
-                if (checkLeaderboard(leaderboard))
-                    _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
-            } catch (ex: Throwable) {
-                _globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
-            }
+    fun getFriendsLeaderboard(max: Int) = intent {
+        if (state.settings == null) sendInitialSettingData().join()
+        reduce { state.copy(results = emptyList(), loadingEnded = false) }
+        try {
+            val settings = state.settings
+            val leaderboard = getFriendsLeaderboardUseCase.invoke(
+                gameMode = settings?.let {
+                    questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
+                } ?: getGameModeUseCase.invoke(),
+                difficulty = settings?.difficulty?.let {
+                    questionSettingsDomainModelMapper.mapDifficulty(it)
+                } ?: getDifficultyUseCase.invoke(),
+                category = settings?.category?.let {
+                    questionSettingsDomainModelMapper.mapCategory(it)
+                },
+                max = max, afterScore = null
+            ).map { model -> resultUiModelMapper.map(model) }
+            if (checkLeaderboard(leaderboard))
+                reduce { state.copy(results = leaderboard, loadingEnded = true) }
+        } catch (ex: Throwable) {
+            postSideEffect(LeaderboardsScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 
-    private fun getGlobalLeaderboardOnStart(max: Int) {
-        viewModelScope.launch {
-            sendInitialSettingData()
-            try {
-                val leaderboard = getGlobalLeaderboardUseCase.invoke(
-                    gameMode = _settingsDataFlow.value?.let {
-                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
-                    } ?: getGameModeUseCase.invoke(),
-                    difficulty = _settingsDataFlow.value?.difficulty?.let {
-                        questionSettingsDomainModelMapper.mapDifficulty(it)
-                    } ?: getDifficultyUseCase.invoke(),
-                    category = _settingsDataFlow.value?.category?.let {
-                        questionSettingsDomainModelMapper.mapCategory(it)
-                    },
-                    max = max, afterScore = null
-                ).map { model -> resultUiModelMapper.map(model) }
-                if (checkLeaderboard(leaderboard))
-                    _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
-            } catch (ex: Throwable) {
-                _globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
-            }
-        }
-    }
-
-    private fun getFriendsLeaderboardOnStart(max: Int) {
-        viewModelScope.launch {
-            try {
-                val leaderboard = getFriendsLeaderboardUseCase.invoke(
-                    gameMode = _settingsDataFlow.value?.let {
-                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
-                    } ?: getGameModeUseCase.invoke(),
-                    difficulty = _settingsDataFlow.value?.difficulty?.let {
-                        questionSettingsDomainModelMapper.mapDifficulty(it)
-                    } ?: getDifficultyUseCase.invoke(),
-                    category = _settingsDataFlow.value?.category?.let {
-                        questionSettingsDomainModelMapper.mapCategory(it)
-                    },
-                    max = max, afterScore = null
-                ).map { model -> resultUiModelMapper.map(model) }
-                if (checkLeaderboard(leaderboard))
-                    _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
-            } catch (ex: Throwable) {
-                _friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
-            }
-        }
-    }
-
-    private suspend fun sendInitialSettingData() {
-        _settingsDataFlow.value = SettingUiModel(
+    private fun sendInitialSettingData() = intent {
+        val settings = SettingUiModel(
             gameMode = questionSettingsUiModelMapper.mapGameMode(getGameModeUseCase.invoke()),
             difficulty = questionSettingsUiModelMapper.mapDifficulty(getDifficultyUseCase.invoke()),
             category = null
         )
+
+        reduce { state.copy(settings = settings) }
     }
 
-    fun getDataFlow(type: LeaderboardFragment.LeaderboardType): StateFlow<LeaderboardDataResult?> {
-        return when(type) {
-            LeaderboardFragment.LeaderboardType.GLOBAL -> globalLeaderboardDataFlow
-            LeaderboardFragment.LeaderboardType.FRIENDS -> friendsLeaderboardDataFlow
+    fun loadNextFriendsResults(max: Int, startAfter: Double) = intent {
+        try {
+            val settings = state.settings
+            val leaderboard = getFriendsLeaderboardUseCase.invoke(
+                gameMode = settings?.let {
+                    questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
+                } ?: getGameModeUseCase.invoke(),
+                difficulty = settings?.difficulty?.let {
+                    questionSettingsDomainModelMapper.mapDifficulty(it)
+                },
+                category = settings?.category?.let {
+                    questionSettingsDomainModelMapper.mapCategory(it)
+                },
+                max = max, afterScore = startAfter
+            ).map { model -> resultUiModelMapper.map(model) }
+            if (checkLeaderboard(leaderboard)) {
+                val new = ArrayList(state.results)
+                new.addAll(leaderboard)
+                reduce { state.copy(results = new.distinctBy { it.id }) }
+            }
+        } catch (ex: Throwable) {
+            postSideEffect(LeaderboardsScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 
-    fun loadNextResults(type: LeaderboardFragment.LeaderboardType, max: Int, startAfter: Double) {
-        when(type) {
-            LeaderboardFragment.LeaderboardType.GLOBAL -> loadNextGlobalResults(max, startAfter)
-            LeaderboardFragment.LeaderboardType.FRIENDS -> loadNextFriendsResults(max, startAfter)
+    fun loadNextGlobalResults(max: Int, startAfter: Double) = intent {
+        try {
+            val settings = state.settings
+            val leaderboard = getGlobalLeaderboardUseCase.invoke(
+                gameMode = settings?.let {
+                    questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
+                } ?: getGameModeUseCase.invoke(),
+                difficulty = settings?.difficulty?.let {
+                    questionSettingsDomainModelMapper.mapDifficulty(it)
+                },
+                category = settings?.category?.let {
+                    questionSettingsDomainModelMapper.mapCategory(it)
+                },
+                max = max, afterScore = startAfter
+            ).map { model -> resultUiModelMapper.map(model) }
+            if (checkLeaderboard(leaderboard)) {
+                val new = ArrayList(state.results)
+                new.addAll(leaderboard)
+                reduce { state.copy(results = new.distinctBy { it.id }) }
+            }
+        } catch (ex: Throwable) {
+            postSideEffect(LeaderboardsScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 
-    private fun loadNextFriendsResults(max: Int, startAfter: Double) {
-        viewModelScope.launch {
-            try {
-                val leaderboard = getFriendsLeaderboardUseCase.invoke(
-                    gameMode = _settingsDataFlow.value?.let {
-                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
-                    } ?: getGameModeUseCase.invoke(),
-                    difficulty = _settingsDataFlow.value?.difficulty?.let {
-                        questionSettingsDomainModelMapper.mapDifficulty(it)
-                    },
-                    category = _settingsDataFlow.value?.category?.let {
-                        questionSettingsDomainModelMapper.mapCategory(it)
-                    },
-                    max = max, afterScore = startAfter
-                ).map { model -> resultUiModelMapper.map(model) }
-                if (checkLeaderboard(leaderboard))
-                    _friendsLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
-            } catch (ex: Throwable) {
-                _friendsLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
+    fun changeDifficulty(difficulty: String) = intent {
+        val gameMode = state.settings?.gameMode ?: questionSettingsUiModelMapper.mapGameMode(
+            getGameModeUseCase.invoke()
+        )
+        if (difficulty == "Any")
+            reduce { state.copy(settings = SettingUiModel(
+                difficulty = null,
+                category = state.settings?.category,
+                gameMode = gameMode))
+            }
+        else {
+            reduce { state.copy(settings = SettingUiModel(
+                difficulty = DifficultyUiModel.valueOf(difficulty.toEnumName()),
+                category = state.settings?.category,
+                gameMode = gameMode))
             }
         }
     }
 
-    private fun loadNextGlobalResults(max: Int, startAfter: Double) {
-        viewModelScope.launch {
-            try {
-                val leaderboard = getGlobalLeaderboardUseCase.invoke(
-                    gameMode = _settingsDataFlow.value?.let {
-                        questionSettingsDomainModelMapper.mapGameMode(it.gameMode)
-                    } ?: getGameModeUseCase.invoke(),
-                    difficulty = _settingsDataFlow.value?.difficulty?.let {
-                        questionSettingsDomainModelMapper.mapDifficulty(it)
-                    },
-                    category = _settingsDataFlow.value?.category?.let {
-                        questionSettingsDomainModelMapper.mapCategory(it)
-                    },
-                    max = max, afterScore = startAfter
-                ).map { model -> resultUiModelMapper.map(model) }
-                if (checkLeaderboard(leaderboard))
-                    _globalLeaderboardDataFlow.value = LeaderboardDataResult.Success(leaderboard)
-            } catch (ex: Throwable) {
-                _globalLeaderboardDataFlow.emitException(LeaderboardDataResult.Failure(ex))
+    fun changeCategory(category: String) = intent {
+        val gameMode = state.settings?.gameMode ?: questionSettingsUiModelMapper.mapGameMode(
+            getGameModeUseCase.invoke()
+        )
+        if (category == "Any")
+            reduce { state.copy(settings = SettingUiModel(
+                difficulty = state.settings?.difficulty,
+                category = null,
+                gameMode = gameMode))
+            }
+        else {
+            reduce { state.copy(settings = SettingUiModel(
+                difficulty = state.settings?.difficulty,
+                category = CategoryUiModel.valueOf(category.toEnumName()),
+                gameMode = gameMode))
             }
         }
     }
 
-    sealed interface LeaderboardDataResult: Result {
-        class Success(private val result: List<ResultUiModel>): LeaderboardDataResult,
-            Result.Success<List<ResultUiModel>> {
-            override fun getValue(): List<ResultUiModel> = result
-        }
-
-        class Failure(private val ex: Throwable): LeaderboardDataResult, Result.Failure {
-            override fun getException(): Throwable = ex
-
+    fun changeGameMode(gameMode: String) = intent {
+        reduce { state.copy(settings = SettingUiModel(
+            difficulty = state.settings?.difficulty,
+            category = state.settings?.category,
+            gameMode = GameModeUiModel.valueOf(gameMode.toEnumName())))
         }
     }
 }

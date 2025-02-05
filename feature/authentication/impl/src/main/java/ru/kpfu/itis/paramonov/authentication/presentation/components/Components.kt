@@ -36,7 +36,7 @@ fun InputSection(
             IconButton(onClick = {}) {
                 Icon(
                     painter = painterResource(R.drawable.edit),
-                    contentDescription = "Edit"
+                    contentDescription = stringResource(R.string.edit)
                 )
             }
         }
@@ -63,7 +63,7 @@ fun PasswordSection(
                 }) {
                     Icon(
                         painter = painterResource(R.drawable.not_visible),
-                        contentDescription = "Edit"
+                        contentDescription = stringResource(R.string.toggle)
                     )
                 }
             }
@@ -81,7 +81,7 @@ fun PasswordSection(
                 }) {
                     Icon(
                         painter = painterResource(R.drawable.visible),
-                        contentDescription = "Edit"
+                        contentDescription = stringResource(R.string.toggle)
                     )
                 }
             }

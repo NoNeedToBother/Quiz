@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.profiles.api.usecase.GetCurrentUserLastResultsUseCase
@@ -95,7 +98,10 @@ class ProfileModule {
         subscribeToProfileUpdatesUseCase: SubscribeToProfileUpdatesUseCase,
         getCurrentUserLastResultsUseCase: GetCurrentUserLastResultsUseCase,
         resultUiModelMapper: ResultUiModelMapper,
-        userUiModelMapper: UserUiModelMapper
+        userUiModelMapper: UserUiModelMapper,
+        usernameValidator: UsernameValidator,
+        passwordValidator: PasswordValidator,
+        resourceManager: ResourceManager
     ): ViewModel {
         return ProfileViewModel(
             getCurrentUserUseCase = getCurrentUserUseCase,
@@ -110,7 +116,10 @@ class ProfileModule {
             subscribeToProfileUpdatesUseCase = subscribeToProfileUpdatesUseCase,
             getCurrentUserLastResultsUseCase = getCurrentUserLastResultsUseCase,
             resultUiModelMapper = resultUiModelMapper,
-            userUiModelMapper = userUiModelMapper
+            userUiModelMapper = userUiModelMapper,
+            usernameValidator = usernameValidator,
+            passwordValidator = passwordValidator,
+            resourceManager = resourceManager
         )
     }
 }

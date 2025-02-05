@@ -4,6 +4,9 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 import ru.kpfu.itis.paramonov.profiles.domain.exception.IncorrectUserDataException
 import ru.kpfu.itis.paramonov.profiles.api.usecase.GetCurrentUserLastResultsUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.ChangeCredentialsUseCase
@@ -16,11 +19,12 @@ import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.DenyFriendRequestUseC
 import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.GetFriendRequestsUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.SaveProfilePictureUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.SaveUserSettingsUseCase
-import ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.dialogs.ProfileSettingsDialogFragment
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.ResultUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.UserUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.presentation.mvi.ProfileScreenSideEffect
 import ru.kpfu.itis.paramonov.profiles.presentation.mvi.ProfileScreenState
+import ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.dialogs.INFO_UPDATE_KEY
+import ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.dialogs.USERNAME_UPDATE_KEY
 
 class ProfileViewModel(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
@@ -35,7 +39,10 @@ class ProfileViewModel(
     private val subscribeToProfileUpdatesUseCase: SubscribeToProfileUpdatesUseCase,
     private val getCurrentUserLastResultsUseCase: GetCurrentUserLastResultsUseCase,
     private val userUiModelMapper: UserUiModelMapper,
-    private val resultUiModelMapper: ResultUiModelMapper
+    private val resultUiModelMapper: ResultUiModelMapper,
+    private val usernameValidator: UsernameValidator,
+    private val passwordValidator: PasswordValidator,
+    private val resourceManager: ResourceManager
 ): ViewModel(), ContainerHost<ProfileScreenState, ProfileScreenSideEffect> {
 
     override val container = container<ProfileScreenState, ProfileScreenSideEffect>(ProfileScreenState())
@@ -82,6 +89,10 @@ class ProfileViewModel(
         }
     }
 
+    fun onProfilePictureChosen(uri: Uri) = intent {
+        postSideEffect(ProfileScreenSideEffect.ProfilePictureConfirmed(uri))
+    }
+
     fun saveUserSettings(settings: Map<String, String>) = intent {
         val map = mutableMapOf<String, String>()
         for (setting in settings) {
@@ -97,8 +108,8 @@ class ProfileViewModel(
 
     private fun getProfileSettingsUpdateKey(dialogKey: String): String? {
         return when(dialogKey) {
-            ProfileSettingsDialogFragment.USERNAME_KEY -> USERNAME_KEY
-            ProfileSettingsDialogFragment.INFO_KEY -> INFO_KEY
+            USERNAME_UPDATE_KEY -> USERNAME_KEY
+            INFO_UPDATE_KEY -> INFO_KEY
             else -> null
         }
     }
@@ -143,6 +154,24 @@ class ProfileViewModel(
         } catch (ex: Throwable) {
             postSideEffect(ProfileScreenSideEffect.ShowError(ex.message ?: ""))
         }
+    }
+
+    fun checkUsername(username: String?): String? = username?.let {
+        if (username.isEmpty()) null
+        else if (usernameValidator.validate(username)) null
+        else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.invalid_username_msg)
+    }
+
+    fun checkPassword(password: String?): String? = password?.let {
+        if (password.isEmpty()) resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.empty_password)
+        else if (passwordValidator.validate(password)) null
+        else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.weak_password_msg)
+    }
+
+    fun checkEmail(email: String?): String? = email?.let {
+        if (email.isEmpty()) resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.empty_email)
+        else if (email.contains("@")) null
+        else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.invalid_email)
     }
 
     companion object {

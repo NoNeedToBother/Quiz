@@ -33,6 +33,8 @@
     <string name="request_sent">You already sent request</string>
     <string name="check_requests">Check requests</string>
     <string name="requests">Requests</string>
+    <string name="edit">Edit</string>
+    <string name="toggle">Toggle</string>
     
     <string name="profile_picture_transition_name">profile_picture</string>
     <string name="stats">Last results statistics</string>

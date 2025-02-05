@@ -9,9 +9,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
@@ -21,6 +27,7 @@ import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesComponent
 import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesDependencies
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.dialogs.StatsDialog
 import ru.kpfu.itis.paramonov.profiles.presentation.model.FriendStatusUiModel
+import ru.kpfu.itis.paramonov.profiles.presentation.model.ResultUiModel
 import ru.kpfu.itis.paramonov.profiles.presentation.mvi.OtherUserProfileScreenSideEffect
 import ru.kpfu.itis.paramonov.profiles.presentation.mvi.OtherUserProfileScreenState
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.ProfileInfoField
@@ -53,6 +60,8 @@ class OtherUserProfileScreen: MviBaseFragment() {
                     val state = viewModel.container.stateFlow.collectAsState()
                     val effect = viewModel.container.sideEffectFlow
 
+                    var results by remember { mutableStateOf<List<ResultUiModel>?>(null) }
+
                     LaunchedEffect(null) {
                         viewModel.getUser(userId)
                         viewModel.checkFriendStatus(userId)
@@ -66,10 +75,7 @@ class OtherUserProfileScreen: MviBaseFragment() {
                                     showErrorBottomSheetDialog(errorTitle, errorMessage)
                                 }
                                 is OtherUserProfileScreenSideEffect.ResultsReceived ->
-                                    StatsDialog.builder()
-                                        .provideResultList(it.results)
-                                        .build()
-                                        .show(childFragmentManager, StatsDialog.STATS_DIALOG_TAG)
+                                    results = it.results
                             }
                         }
                     }
@@ -79,6 +85,15 @@ class OtherUserProfileScreen: MviBaseFragment() {
                         onGetResultsClicked = { viewModel.getLastResults(MAX_RESULTS_AMOUNT, userId) },
                         onAddFriendClick = { viewModel.sendFriendRequest(userId) }
                     )
+
+                    results?.let {
+                        StatsDialog(
+                            results = it,
+                            onDismiss = {
+                                results = null
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -103,6 +118,7 @@ fun Screen(
         Image(
             painter = rememberAsyncImagePainter(state.value.user?.profilePictureUrl),
             contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier.size(200.dp).clip(CircleShape)
         )
         ProfileInfoField(
@@ -144,6 +160,7 @@ fun Screen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FriendStatusButton(
     modifier: Modifier = Modifier,
@@ -157,7 +174,17 @@ fun FriendStatusButton(
                 modifier = modifier,
                 onClick = {}
             ) {
-                Text(text = stringResource(R.string.request_sent))
+                Row {
+                    Text(
+                        text = stringResource(R.string.request_sent),
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Icon(
+                        painter = painterResource(R.drawable.request_sent),
+                        contentDescription = ""
+                    )
+                }
             }
         }
     } ?:
@@ -166,19 +193,49 @@ fun FriendStatusButton(
             modifier = modifier,
             onClick = onAddFriendClick
         ) {
-            Text(text = stringResource(R.string.add_friend))
+            Row {
+                Text(
+                    text = stringResource(R.string.add_friend),
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Icon(
+                    painter = painterResource(R.drawable.add_friend),
+                    contentDescription = ""
+                )
+            }
         }
         FriendStatusUiModel.REQUEST_SENT -> OutlinedButton(
             modifier = modifier,
             onClick = {}
         ) {
-            Text(text = stringResource(R.string.request_sent))
+            Row {
+                Text(
+                    text = stringResource(R.string.request_sent),
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Icon(
+                    painter = painterResource(R.drawable.request_sent),
+                    contentDescription = ""
+                )
+            }
         }
         FriendStatusUiModel.FRIEND -> OutlinedButton(
             modifier = modifier,
             onClick = {}
         ) {
-            Text(text = stringResource(R.string.is_friend))
+            Row {
+                Text(
+                    text = stringResource(R.string.is_friend),
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Icon(
+                    painter = painterResource(R.drawable.is_friend),
+                    contentDescription = ""
+                )
+            }
         }
         else -> {}
     }

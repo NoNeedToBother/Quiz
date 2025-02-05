@@ -40,7 +40,7 @@
 
     <fragment
         android:id="@+id/trainingQuestionsFragment"
-        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.TrainingQuestionsFragment"
+        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.TrainingQuestionsScreen"
         android:label="fragment_training_questions"
         />
 

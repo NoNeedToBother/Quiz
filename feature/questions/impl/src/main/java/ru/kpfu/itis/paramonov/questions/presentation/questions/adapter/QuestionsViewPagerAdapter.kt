@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.BaseQuestionFragment
 import ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.QuestionFragment
-import ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.TrainingQuestionFragment
+//import ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.TrainingQuestionFragment
 import ru.kpfu.itis.paramonov.questions.presentation.questions.model.QuestionDataUiModel
 import kotlin.reflect.KClass
 
@@ -28,7 +28,7 @@ class QuestionsViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return when(fragmentType) {
             QuestionFragment::class -> QuestionFragment.newInstance(position)
-            TrainingQuestionFragment::class -> TrainingQuestionFragment.newInstance(position)
+            //TrainingQuestionFragment::class -> TrainingQuestionFragment.newInstance(position)
             else -> throw RuntimeException("Unsupported fragment")
         }
     }

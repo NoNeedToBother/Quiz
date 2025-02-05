@@ -9,13 +9,11 @@ import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.mvi.SignInS
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
-import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 
 class SignInViewModel(
     private val authenticateUserUseCase: AuthenticateUserUseCase,
     private val checkUserIsAuthenticatedUseCase: CheckUserIsAuthenticatedUseCase,
     private val mapper: UserUiModelMapper,
-    private val usernameValidator: UsernameValidator,
     private val passwordValidator: PasswordValidator
 ): BaseViewModel(), ContainerHost<SignInScreenState, SignInScreenSideEffect> {
 
@@ -54,7 +52,7 @@ class SignInViewModel(
         reduce { state.copy(isPasswordCorrect = passwordValidator.validate(password)) }
     }
 
-    fun validateUsername(username: String) = intent {
-        reduce { state.copy(isUsernameCorrect = usernameValidator.validate(username)) }
+    fun validateEmail(email: String) = intent {
+        reduce { state.copy(isEmailCorrect = email.contains("@")) }
     }
 }

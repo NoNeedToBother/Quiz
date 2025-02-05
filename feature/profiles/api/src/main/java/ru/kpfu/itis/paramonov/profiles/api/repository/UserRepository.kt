@@ -9,7 +9,7 @@ interface UserRepository {
 
     suspend fun getUser(id: String): User?
 
-    suspend fun logoutUser(onLogoutSuccess: () -> Unit)
+    suspend fun logoutUser(onLogoutSuccess: suspend () -> Unit)
 
     suspend fun reauthenticate(email: String, password: String)
 

@@ -61,4 +61,8 @@ class RegisterViewModel(
     fun validateUsername(username: String) = intent {
         reduce { state.copy(isUsernameCorrect = usernameValidator.validate(username)) }
     }
+
+    fun validateEmail(email: String) = intent {
+        reduce { state.copy(isEmailCorrect = email.contains("@")) }
+    }
 }

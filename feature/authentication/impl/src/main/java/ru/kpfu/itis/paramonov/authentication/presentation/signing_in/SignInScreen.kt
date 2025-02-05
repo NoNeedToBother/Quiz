@@ -80,10 +80,10 @@ class SignInScreen: MviBaseFragment() {
                 AppTheme {
                     Screen(
                         state = state,
-                        onUsernameInput = { viewModel.validateUsername(it) },
+                        onEmailInput = { viewModel.validateEmail(it) },
                         onPasswordInput = { viewModel.validatePassword(it) },
-                        onSignInBtnClick = { username, password ->
-                            viewModel.authenticateUser(username, password)
+                        onSignInBtnClick = { email, password ->
+                            viewModel.authenticateUser(email, password)
                         },
                         onGoToRegisterClick = { authenticationRouter.goToRegister() }
                     )
@@ -96,12 +96,12 @@ class SignInScreen: MviBaseFragment() {
 @Composable
 fun Screen(
     state: State<SignInScreenState>,
-    onUsernameInput: (String) -> Unit,
+    onEmailInput: (String) -> Unit,
     onPasswordInput: (String) -> Unit,
     onSignInBtnClick: (String, String) -> Unit,
     onGoToRegisterClick: () -> Unit
 ) {
-    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Box {
@@ -115,12 +115,12 @@ fun Screen(
         ) {
             Logo()
             InputSection(
-                value = username,
+                value = email,
                 onValueChange = {
-                    username = it
-                    onUsernameInput.invoke(username)
+                    email = it
+                    onEmailInput.invoke(email)
                 },
-                label = stringResource(R.string.enter_username)
+                label = stringResource(R.string.enter_email)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -145,10 +145,10 @@ fun Screen(
         ) {
             Button(
                 onClick = {
-                    onSignInBtnClick.invoke(username, password)
+                    onSignInBtnClick.invoke(email, password)
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = state.value.isPasswordCorrect && state.value.isUsernameCorrect
+                enabled = state.value.isPasswordCorrect && email.contains("@")
             ) {
                 Text(stringResource(R.string.sign_in))
             }

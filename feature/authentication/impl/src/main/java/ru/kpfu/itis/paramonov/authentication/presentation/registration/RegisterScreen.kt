@@ -83,7 +83,7 @@ class RegisterScreen: MviBaseFragment() {
                         onUsernameInput = { viewModel.validateUsername(it) },
                         onConfirmPasswordInput = { viewModel.validateConfirmPassword(it) },
                         onPasswordInput = { viewModel.validatePassword(it) },
-                        onEmailInput = { },
+                        onEmailInput = { viewModel.validateEmail(it) },
                         onRegisterBtnClick = { username, email, password, confirmPassword ->
                             viewModel.registerUser(username, email, password, confirmPassword)
                         },
@@ -179,7 +179,7 @@ fun Screen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = state.value.isPasswordCorrect && state.value.isUsernameCorrect
-                        && state.value.isConfirmPasswordCorrect
+                        && state.value.isConfirmPasswordCorrect && state.value.isEmailCorrect
             ) {
                 Text(stringResource(R.string.register))
             }

@@ -3,6 +3,7 @@
     <string name="user_data_fail_title">Failed to get data</string>
     <string name="incorrect_other_user_data">Failed to get user data</string>
     <string name="get_req_fail">Failed to get friend requests</string>
+    <string name="get_info_fail">Failed to get information</string>
     <string name="password_confirm_password_not_match">Password and confirm password fields are not the same</string>
     <string name="dialog_incorrect_user_data">Incorrect user data changes</string>
     <string name="dialog_incorrect_credentials">Incorrect credentials</string>

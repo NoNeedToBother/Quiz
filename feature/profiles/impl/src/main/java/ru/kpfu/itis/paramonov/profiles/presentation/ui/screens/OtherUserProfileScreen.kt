@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.profiles.presentation.fragments
+package ru.kpfu.itis.paramonov.profiles.presentation.ui.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,16 +19,17 @@ import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.profiles.R
 import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesComponent
 import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesDependencies
-import ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs.StatsDialog
+import ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.dialogs.StatsDialog
 import ru.kpfu.itis.paramonov.profiles.presentation.model.FriendStatusUiModel
 import ru.kpfu.itis.paramonov.profiles.presentation.mvi.OtherUserProfileScreenSideEffect
 import ru.kpfu.itis.paramonov.profiles.presentation.mvi.OtherUserProfileScreenState
+import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.ProfileInfoField
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.OtherUserProfileViewModel
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 import javax.inject.Inject
 
-class OtherUserProfileFragment: MviBaseFragment() {
+class OtherUserProfileScreen: MviBaseFragment() {
 
     @Inject
     lateinit var viewModel: OtherUserProfileViewModel
@@ -60,7 +61,7 @@ class OtherUserProfileFragment: MviBaseFragment() {
                             when (it) {
                                 is OtherUserProfileScreenSideEffect.ShowError -> {
                                     val errorMessage = it.message
-                                    val errorTitle = getString(R.string.get_results_fail)
+                                    val errorTitle = getString(R.string.get_info_fail)
 
                                     showErrorBottomSheetDialog(errorTitle, errorMessage)
                                 }
@@ -104,26 +105,20 @@ fun Screen(
             contentDescription = null,
             modifier = Modifier.size(200.dp).clip(CircleShape)
         )
-        OutlinedTextField(
+        ProfileInfoField(
             modifier = Modifier.padding(PaddingValues(top = 12.dp, start = 80.dp, end = 80.dp)),
-            value = state.value.user?.username ?: "",
-            onValueChange = {},
-            label = { Text(stringResource(R.string.username)) },
-            enabled = false
+            label = stringResource(R.string.username),
+            value = state.value.user?.username ?: ""
         )
-        OutlinedTextField(
+        ProfileInfoField(
             modifier = Modifier.padding(PaddingValues(top = 12.dp, start = 80.dp, end = 80.dp)),
-            value = state.value.user?.info ?: "",
-            onValueChange = {},
-            label = { Text(stringResource(R.string.info)) },
-            enabled = false
+            label = stringResource(R.string.info),
+            value = state.value.user?.info ?: ""
         )
-        OutlinedTextField(
-            modifier = Modifier.padding(PaddingValues(top = 12.dp, start = 40.dp, end = 40.dp)),
-            value = "",
-            onValueChange = {},
-            label = { Text(stringResource(R.string.registration_date, state.value.user?.dateRegistered ?: "")) },
-            enabled = false
+        ProfileInfoField(
+            modifier = Modifier.padding(PaddingValues(top = 12.dp, start = 80.dp, end = 80.dp)),
+            label = stringResource(R.string.registration_date, state.value.user?.dateRegistered ?: ""),
+            value = ""
         )
         Spacer(modifier = Modifier.weight(1f))
         Column(

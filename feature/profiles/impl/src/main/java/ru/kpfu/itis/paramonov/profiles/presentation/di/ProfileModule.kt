@@ -20,7 +20,6 @@ import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.GetFriendRequestsUseC
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.SaveProfilePictureUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.SaveUserSettingsUseCase
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.ProfileViewModel
-import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.ResultUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.UserUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.domain.usecase.GetCurrentUserLastResultsUseCaseImpl
@@ -96,14 +95,12 @@ class ProfileModule {
         subscribeToProfileUpdatesUseCase: SubscribeToProfileUpdatesUseCase,
         getCurrentUserLastResultsUseCase: GetCurrentUserLastResultsUseCase,
         resultUiModelMapper: ResultUiModelMapper,
-        userUiModelMapper: UserUiModelMapper,
-        authenticationRouter: AuthenticationRouter
+        userUiModelMapper: UserUiModelMapper
     ): ViewModel {
         return ProfileViewModel(
             getCurrentUserUseCase = getCurrentUserUseCase,
             logoutUserUseCase = logoutUserUseCase,
             saveProfilePictureUseCase = saveProfilePictureUseCase,
-            authenticationRouter = authenticationRouter,
             saveUserSettingsUseCase = saveUserSettingsUseCase,
             changeCredentialsUseCase = changeCredentialsUseCase,
             confirmCredentialsUseCase = confirmCredentialsUseCase,

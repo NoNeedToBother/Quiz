@@ -6,5 +6,5 @@ data class SignInScreenState(
     val userData: UserModel?,
     val isLoading: Boolean = false,
     val isPasswordCorrect: Boolean = false,
-    val isUsernameCorrect: Boolean = false,
+    val isEmailCorrect: Boolean = false,
 )

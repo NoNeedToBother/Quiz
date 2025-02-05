@@ -11,7 +11,7 @@ class LogoutUserUseCaseImpl @Inject constructor(
     private val repository: UserRepository
 ): LogoutUserUseCase {
 
-    override suspend operator fun invoke(onLogout: () -> Unit) {
+    override suspend operator fun invoke(onLogout: suspend () -> Unit) {
         withContext(dispatcher) {
             repository.logoutUser(onLogout)
         }

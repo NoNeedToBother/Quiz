@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.profiles.presentation.fragments.dialogs
+package ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog

@@ -58,13 +58,13 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="ru.kpfu.itis.paramonov.profiles.presentation.fragments.ProfileFragment"
+        android:name="ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.ProfileScreen"
         android:label="fragment_profile"
         />
 
     <fragment
         android:id="@+id/otherUserProfileFragment"
-        android:name="ru.kpfu.itis.paramonov.profiles.presentation.fragments.OtherUserProfileFragment"
+        android:name="ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.OtherUserProfileScreen"
         android:label="fragment_profile_other_user"
         />
 

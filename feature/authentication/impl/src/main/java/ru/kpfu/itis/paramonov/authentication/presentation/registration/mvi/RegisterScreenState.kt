@@ -8,4 +8,5 @@ data class RegisterScreenState(
     val isPasswordCorrect: Boolean = false,
     val isConfirmPasswordCorrect: Boolean = false,
     val isUsernameCorrect: Boolean = false,
+    val isEmailCorrect: Boolean = false
 )

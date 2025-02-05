@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.kpfu.itis.paramonov.core.di.scopes.ScreenScope
-//import ru.kpfu.itis.paramonov.profiles.presentation.fragments.ProfileFragment
+import ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.ProfileScreen
 
 @Subcomponent(
     modules = [
@@ -21,5 +21,5 @@ interface ProfileComponent {
         ): ProfileComponent
     }
 
-    //fun inject(fragment: ProfileFragment)
+    fun inject(fragment: ProfileScreen)
 }

@@ -15,7 +15,6 @@ import ru.kpfu.itis.paramonov.authentication.domain.usecase.AuthenticateUserUseC
 import ru.kpfu.itis.paramonov.authentication.domain.usecase.CheckUserIsAuthenticatedUseCaseImpl
 import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.SignInViewModel
 import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
-import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 
 @Module(
     includes = [
@@ -41,14 +40,12 @@ class SigningInModule {
     fun provideSignInViewModel(
         authenticateUserUseCase: AuthenticateUserUseCase,
         checkUserIsAuthenticatedUseCase: CheckUserIsAuthenticatedUseCase,
-        usernameValidator: UsernameValidator,
         passwordValidator: PasswordValidator,
         mapper: UserUiModelMapper
     ): ViewModel {
         return SignInViewModel(
             authenticateUserUseCase = authenticateUserUseCase,
             checkUserIsAuthenticatedUseCase = checkUserIsAuthenticatedUseCase,
-            usernameValidator = usernameValidator,
             passwordValidator = passwordValidator,
             mapper = mapper
         )

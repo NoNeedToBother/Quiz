@@ -10,7 +10,7 @@ interface UserRepository {
 
     suspend fun reauthenticate(email: String, password: String)
 
-    suspend fun logoutUser(onLogoutSuccess: () -> Unit)
+    suspend fun logoutUser(onLogoutSuccess: suspend () -> Unit)
 
     suspend fun getCurrentUser(): FirebaseUser?
 

@@ -312,7 +312,7 @@ class App: Application(), FeatureContainer, FeatureAuthenticationDependenciesCon
                             firebaseUserToFeatureProfilesUserMapper.map(it)
                         }
 
-                    override suspend fun logoutUser(onLogoutSuccess: () -> Unit) {
+                    override suspend fun logoutUser(onLogoutSuccess: suspend () -> Unit) {
                         firebaseComponent.userRepository().logoutUser(onLogoutSuccess)
                     }
 

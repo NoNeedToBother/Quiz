@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/questionSettingsFragment"
-        android:name="ru.kpfu.itis.paramonov.questions.presentation.settings.fragments.QuestionSettingsViewPagerFragment"
+        android:name="ru.kpfu.itis.paramonov.questions.presentation.settings.ui.screens.QuestionSettingsScreen"
         android:label="fragment_question_settings"
         />
 

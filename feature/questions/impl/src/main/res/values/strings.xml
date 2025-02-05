@@ -4,6 +4,7 @@
     <string name="category">Category</string>
     <string name="game_mode">Game mode</string>
     <string name="save">Save</string>
+
     <string name="get_questions_fail_msg">Could not get questions, try again later</string>
     <string name="question_num">Question: %d/%d</string>
     <string name="clock_time_with_min">Time: %02dm %02ds</string>
@@ -13,10 +14,11 @@
     <string name="incorrect_guess">Incorrect, keep guessing!</string>
     <string name="standard_settings">Standard mode settings</string>
     <string name="training_settings">Training mode settings</string>
-    <string name="enter_limit">"Enter limit: %d"</string>
-    <string name="enter_limit_default">Enter limit:&#160;</string>
+    <string name="enter_limit">"Enter limit"</string>
+
     <string name="limit_should_be">Should be between %d and %d</string>
     <string name="limit_not_correct">Limit should be between %d and %d</string>
+
     <string name="results">Results</string>
     <string name="unsupported_arguments">Unsupported arguments were received</string>
     <string name="res_difficulty">Difficulty: %s</string>
@@ -26,11 +28,12 @@
     <string name="res_ratio">Result: %d/%d</string>
     <string name="res_score">Score: %.3f</string>
     <string name="user_not_present">Sorry, it seems you are no longer logged in</string>
+    <string name="empty_limit">Empty limit</string>
 
     <string-array name="difficulties">
-        <item>EASY</item>
-        <item>MEDIUM</item>
-        <item>HARD</item>
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
     </string-array>
 
     <string-array name="categories">
@@ -39,7 +42,7 @@
         <item>Film</item>
         <item>Music</item>
         <item>TV</item>
-        <item>Video_games</item>
+        <item>Video games</item>
         <item>Sports</item>
         <item>Geography</item>
         <item>History</item>

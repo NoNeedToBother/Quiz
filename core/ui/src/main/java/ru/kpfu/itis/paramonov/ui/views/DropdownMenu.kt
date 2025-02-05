@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 @Composable
 fun DropdownMenu(
     modifier: Modifier = Modifier,
+    value: String,
     suggestions: List<String>,
     label: String,
     onChosen: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
@@ -31,8 +31,8 @@ fun DropdownMenu(
         onExpandedChange = { expanded = !expanded }
     ) {
         TextField(
-            value = text,
-            onValueChange = { text = it },
+            value = value,
+            onValueChange = {  },
             label = { Text(label) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable, true),
@@ -47,9 +47,7 @@ fun DropdownMenu(
                 DropdownMenuItem(
                     text = { Text(suggestion) },
                     onClick = {
-                        text = suggestion
-                        expanded = false
-                        onChosen(text)
+                        onChosen(suggestion)
                     }
                 )
             }

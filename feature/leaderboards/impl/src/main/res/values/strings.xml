@@ -15,6 +15,8 @@
     <string name="difficulty">Difficulty</string>
     <string name="save">Save</string>
 
+    <string name="any_settings_item">Any</string>
+
     <string-array name="leaderboard_difficulties">
         <item>Any</item>
         <item>Easy</item>

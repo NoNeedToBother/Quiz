@@ -1,74 +1,58 @@
 package ru.kpfu.itis.paramonov.authentication.presentation.signing_in
 
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.authentication.api.usecase.AuthenticateUserUseCase
 import ru.kpfu.itis.paramonov.authentication.api.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.authentication.domain.mapper.UserUiModelMapper
-import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
-import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
+import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.mvi.SignInScreenSideEffect
+import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.mvi.SignInScreenState
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.viewmodel.container
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
 
 class SignInViewModel(
     private val authenticateUserUseCase: AuthenticateUserUseCase,
     private val checkUserIsAuthenticatedUseCase: CheckUserIsAuthenticatedUseCase,
-    private val authenticationRouter: AuthenticationRouter,
     private val mapper: UserUiModelMapper,
-    private val mainMenuRouter: MainMenuRouter
-): BaseViewModel() {
+    private val passwordValidator: PasswordValidator
+): BaseViewModel(), ContainerHost<SignInScreenState, SignInScreenSideEffect> {
 
-    private val _userDataFlow = MutableStateFlow<UserDataResult?>(null)
+    override val container = container<SignInScreenState, SignInScreenSideEffect>(SignInScreenState(null))
 
-    val userDataFlow: StateFlow<UserDataResult?> get() = _userDataFlow
+    fun authenticateUser(username: String, password: String) = intent {
+        reduce { state.copy(isLoading = true) }
 
-    private val _signInProceedingFlow = MutableStateFlow(false)
-    val signInProceedingFlow: StateFlow<Boolean> get() = _signInProceedingFlow
+        try {
+            val user = mapper.map(
+                authenticateUserUseCase.invoke(username, password)
+            )
 
-    fun authenticateUser(username: String, password: String) {
-        viewModelScope.launch {
-            _signInProceedingFlow.value = true
-            try {
-                val user = mapper.map(authenticateUserUseCase.invoke(username, password))
-                _userDataFlow.value = UserDataResult.Success(user)
-                mainMenuRouter.goToMainMenu()
-            } catch (ex: Throwable) {
-                _userDataFlow.value = UserDataResult.Failure(ex)
-            } finally {
-                _signInProceedingFlow.value = false
+            reduce { state.copy(userData = user, isLoading = false) }
+            postSideEffect(SignInScreenSideEffect.NavigateToMainMenu)
+        } catch (ex: Throwable) {
+            reduce { state.copy(userData = null, isLoading = false) }
+            postSideEffect(SignInScreenSideEffect.ShowError(ex.message ?: ""))
+        }
+    }
+
+    fun checkCurrentUser() = intent {
+        try {
+            val user = checkUserIsAuthenticatedUseCase.invoke()?.let { mapper.map(it) }
+            user?.let {
+                reduce { state.copy(userData = it) }
+                postSideEffect(SignInScreenSideEffect.NavigateToMainMenu)
             }
-            _userDataFlow.value = null
+        } catch (ex: Throwable) {
+            reduce { state.copy(userData = null) }
+            postSideEffect(SignInScreenSideEffect.ShowError(ex.message ?: ""))
         }
     }
 
-    fun checkCurrentUser() {
-        viewModelScope.launch {
-            try {
-                val user = checkUserIsAuthenticatedUseCase.invoke()?.let { mapper.map(it) }
-                user?.let {
-                    _userDataFlow.value = UserDataResult.Success(it)
-                    mainMenuRouter.goToMainMenu()
-                }
-            } catch (ex: Throwable) {
-                _userDataFlow.value = UserDataResult.Failure(ex)
-            }
-        }
+    fun validatePassword(password: String) = intent {
+        reduce { state.copy(isPasswordCorrect = passwordValidator.validate(password)) }
     }
 
-    fun goToRegister() {
-        viewModelScope.launch {
-            authenticationRouter.goToRegister()
-        }
-    }
-
-    sealed interface UserDataResult: Result {
-        class Success(private val result: UserModel): UserDataResult, Result.Success<UserModel> {
-            override fun getValue(): UserModel = result
-        }
-        class Failure(private val ex: Throwable): UserDataResult, Result.Failure {
-            override fun getException(): Throwable = ex
-        }
+    fun validateEmail(email: String) = intent {
+        reduce { state.copy(isEmailCorrect = email.contains("@")) }
     }
 }

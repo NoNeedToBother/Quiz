@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/signInFragment">
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="ru.kpfu.itis.paramonov.authentication.presentation.registration.RegisterFragment"
-        android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        android:name="ru.kpfu.itis.paramonov.authentication.presentation.registration.RegisterScreen"
+        android:label="fragment_register">
     </fragment>
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="ru.kpfu.itis.paramonov.authentication.presentation.signing_in.SignInFragment"
-        android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" >
+        android:name="ru.kpfu.itis.paramonov.authentication.presentation.signing_in.SignInScreen"
+        android:label="fragment_sign_in">
     </fragment>
 
     <fragment
         android:id="@+id/mainMenuFragment"
         android:name="ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments.MainMenuFragment"
         android:label="fragment_main_menu"
-        tools:layout="@layout/fragment_main_menu"
         >
         <action
             android:id="@+id/action_mainMenuFragment_to_questionsFragment"
@@ -40,63 +36,54 @@
         android:id="@+id/questionsFragment"
         android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.QuestionsFragment"
         android:label="fragment_questions"
-        tools:layout="@layout/fragment_questions"
         />
 
     <fragment
         android:id="@+id/trainingQuestionsFragment"
         android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.TrainingQuestionsFragment"
         android:label="fragment_training_questions"
-        tools:layout="@layout/fragment_training_questions"
         />
 
     <fragment
         android:id="@+id/questionSettingsFragment"
         android:name="ru.kpfu.itis.paramonov.questions.presentation.settings.fragments.QuestionSettingsViewPagerFragment"
         android:label="fragment_question_settings"
-        tools:layout="@layout/fragment_question_settings_view_pager"
         />
 
     <fragment
         android:id="@+id/questionResultsFragment"
         android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.ResultFragment"
         android:label="fragment_question_results"
-        tools:layout="@layout/fragment_result"
         />
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="ru.kpfu.itis.paramonov.profiles.presentation.fragments.ProfileFragment"
+        android:name="ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.ProfileScreen"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile"
         />
 
     <fragment
         android:id="@+id/otherUserProfileFragment"
-        android:name="ru.kpfu.itis.paramonov.profiles.presentation.fragments.OtherUserProfileFragment"
+        android:name="ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.OtherUserProfileScreen"
         android:label="fragment_profile_other_user"
-        tools:layout="@layout/fragment_profile_other_user"
         />
 
     <fragment
         android:id="@+id/leaderboardsFragment"
-        android:name="ru.kpfu.itis.paramonov.leaderboards.presentation.fragments.LeaderboardsViewPagerFragment"
+        android:name="ru.kpfu.itis.paramonov.leaderboards.presentation.fragments.LeaderboardScreen"
         android:label="fragment_leaderboards"
-        tools:layout="@layout/fragment_leaderboards_view_pager"
         />
 
     <fragment
         android:id="@+id/searchUsersFragment"
-        android:name="ru.kpfu.itis.paramonov.users.presentation.fragments.SearchUsersFragment"
+        android:name="ru.kpfu.itis.paramonov.users.presentation.ui.screens.SearchUsersScreen"
         android:label="fragment_search_users"
-        tools:layout="@layout/fragment_search_users"
         />
 
     <fragment
         android:id="@+id/friendsFragment"
-        android:name="ru.kpfu.itis.paramonov.users.presentation.fragments.FriendsFragment"
+        android:name="ru.kpfu.itis.paramonov.users.presentation.ui.screens.FriendsScreen"
         android:label="fragment_friends"
-        tools:layout="@layout/fragment_friends"
         />
 
 </navigation>

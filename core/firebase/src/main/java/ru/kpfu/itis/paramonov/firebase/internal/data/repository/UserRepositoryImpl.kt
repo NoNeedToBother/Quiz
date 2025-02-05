@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -156,10 +157,13 @@ internal class UserRepositoryImpl(
         }
     }
 
-    override suspend fun logoutUser(onLogoutSuccess: () -> Unit) {
+    override suspend fun logoutUser(onLogoutSuccess: suspend () -> Unit) {
+        val scope = CoroutineScope(dispatcher)
         auth.addAuthStateListener {
             if (it.currentUser == null) {
-                onLogoutSuccess.invoke()
+                scope.launch {
+                    onLogoutSuccess.invoke()
+                }
             }
         }
         auth.signOut()

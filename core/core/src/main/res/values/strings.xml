@@ -4,9 +4,13 @@
         and lowercase letter and one digit;</string>
     <string name="weak_password_msg">Should have 6 or more symbols, 1 uppercase and lowercase
         letter, 1 digit</string>
+    <string name="empty_password">Password is empty</string>
+    <string name="empty_email">Password is empty</string>
 
     <string name="invalid_username">Username length should be more than 6 symbols</string>
     <string name="invalid_username_msg">Should contain more than 6 symbols</string>
+
+    <string name="invalid_email">Invalid email</string>
 
     <string name="default_error_msg">Something wrong happened…</string>
 </resources>

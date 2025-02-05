@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
+import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.profiles.api.usecase.GetCurrentUserLastResultsUseCase
@@ -20,7 +23,6 @@ import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.GetFriendRequestsUseC
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.SaveProfilePictureUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.SaveUserSettingsUseCase
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.ProfileViewModel
-import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.ResultUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.UserUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.domain.usecase.GetCurrentUserLastResultsUseCaseImpl
@@ -97,13 +99,14 @@ class ProfileModule {
         getCurrentUserLastResultsUseCase: GetCurrentUserLastResultsUseCase,
         resultUiModelMapper: ResultUiModelMapper,
         userUiModelMapper: UserUiModelMapper,
-        authenticationRouter: AuthenticationRouter
+        usernameValidator: UsernameValidator,
+        passwordValidator: PasswordValidator,
+        resourceManager: ResourceManager
     ): ViewModel {
         return ProfileViewModel(
             getCurrentUserUseCase = getCurrentUserUseCase,
             logoutUserUseCase = logoutUserUseCase,
             saveProfilePictureUseCase = saveProfilePictureUseCase,
-            authenticationRouter = authenticationRouter,
             saveUserSettingsUseCase = saveUserSettingsUseCase,
             changeCredentialsUseCase = changeCredentialsUseCase,
             confirmCredentialsUseCase = confirmCredentialsUseCase,
@@ -113,7 +116,10 @@ class ProfileModule {
             subscribeToProfileUpdatesUseCase = subscribeToProfileUpdatesUseCase,
             getCurrentUserLastResultsUseCase = getCurrentUserLastResultsUseCase,
             resultUiModelMapper = resultUiModelMapper,
-            userUiModelMapper = userUiModelMapper
+            userUiModelMapper = userUiModelMapper,
+            usernameValidator = usernameValidator,
+            passwordValidator = passwordValidator,
+            resourceManager = resourceManager
         )
     }
 }

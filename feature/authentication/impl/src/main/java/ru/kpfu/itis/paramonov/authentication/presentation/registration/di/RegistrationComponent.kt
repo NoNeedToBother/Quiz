@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.kpfu.itis.paramonov.core.di.scopes.ScreenScope
-import ru.kpfu.itis.paramonov.authentication.presentation.registration.RegisterFragment
+import ru.kpfu.itis.paramonov.authentication.presentation.registration.RegisterScreen
 
 @Subcomponent(
     modules = [
@@ -22,5 +22,5 @@ interface RegistrationComponent {
         ): RegistrationComponent
     }
 
-    fun inject(fragment: RegisterFragment)
+    fun inject(fragment: RegisterScreen)
 }

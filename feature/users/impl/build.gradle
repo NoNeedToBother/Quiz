@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -32,7 +33,7 @@ android {
         jvmToolchain(17)
     }
     buildFeatures {
-        viewBinding = true
+        compose = true
     }
 }
 
@@ -50,12 +51,13 @@ dependencies {
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
 
-    implementation(libs.view.binding.delegate)
-
     implementation(libs.viewmodel.ktx)
     implementation(libs.fragment.ktx)
 
-    implementation(libs.glide)
+    implementation(libs.bundles.mvi.core)
+    implementation(libs.bundles.compose)
+
+    implementation(libs.bundles.coil)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

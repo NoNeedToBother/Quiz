@@ -3,6 +3,7 @@
     <string name="user_data_fail_title">Failed to get data</string>
     <string name="incorrect_other_user_data">Failed to get user data</string>
     <string name="get_req_fail">Failed to get friend requests</string>
+    <string name="get_info_fail">Failed to get information</string>
     <string name="password_confirm_password_not_match">Password and confirm password fields are not the same</string>
     <string name="dialog_incorrect_user_data">Incorrect user data changes</string>
     <string name="dialog_incorrect_credentials">Incorrect credentials</string>
@@ -32,6 +33,8 @@
     <string name="request_sent">You already sent request</string>
     <string name="check_requests">Check requests</string>
     <string name="requests">Requests</string>
+    <string name="edit">Edit</string>
+    <string name="toggle">Toggle</string>
     
     <string name="profile_picture_transition_name">profile_picture</string>
     <string name="stats">Last results statistics</string>

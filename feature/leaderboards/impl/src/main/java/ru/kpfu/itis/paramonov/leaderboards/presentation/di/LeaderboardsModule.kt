@@ -20,7 +20,6 @@ import ru.kpfu.itis.paramonov.leaderboards.domain.usecase.GetGlobalLeaderboardUs
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.leaderboards.presentation.viewmodel.LeaderboardsViewModel
-import ru.kpfu.itis.paramonov.navigation.UserRouter
 
 @Module(
     includes = [
@@ -56,8 +55,7 @@ class LeaderboardsModule {
         getDifficultyUseCase: GetDifficultyUseCase,
         questionSettingsDomainModelMapper: QuestionSettingsDomainModelMapper,
         questionSettingsUiModelMapper: QuestionSettingsUiModelMapper,
-        resultUiModelMapper: ResultUiModelMapper,
-        userRouter: UserRouter
+        resultUiModelMapper: ResultUiModelMapper
     ): ViewModel {
         return LeaderboardsViewModel(
             getGlobalLeaderboardUseCase = getGlobalLeaderboardUseCase,
@@ -66,8 +64,7 @@ class LeaderboardsModule {
             getDifficultyUseCase = getDifficultyUseCase,
             questionSettingsDomainModelMapper = questionSettingsDomainModelMapper,
             questionSettingsUiModelMapper = questionSettingsUiModelMapper,
-            resultUiModelMapper = resultUiModelMapper,
-            userRouter = userRouter
+            resultUiModelMapper = resultUiModelMapper
         )
     }
 }

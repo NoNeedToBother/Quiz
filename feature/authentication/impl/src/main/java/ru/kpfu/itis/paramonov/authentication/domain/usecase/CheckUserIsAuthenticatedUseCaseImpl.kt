@@ -5,9 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.authentication.api.model.User
 import ru.kpfu.itis.paramonov.authentication.api.repository.AuthenticationRepository
 import ru.kpfu.itis.paramonov.authentication.api.usecase.CheckUserIsAuthenticatedUseCase
-import javax.inject.Inject
 
-class CheckUserIsAuthenticatedUseCaseImpl @Inject constructor(
+class CheckUserIsAuthenticatedUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val repository: AuthenticationRepository
 ): CheckUserIsAuthenticatedUseCase {

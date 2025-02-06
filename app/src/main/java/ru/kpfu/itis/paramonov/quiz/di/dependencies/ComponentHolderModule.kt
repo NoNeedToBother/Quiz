@@ -7,9 +7,6 @@ import dagger.multibindings.IntoMap
 import ru.kpfu.itis.paramonov.core.di.FeatureApiHolder
 import ru.kpfu.itis.paramonov.core.di.FeatureContainer
 import ru.kpfu.itis.paramonov.core.di.scopes.ApplicationScope
-import ru.kpfu.itis.paramonov.authentication.di.FeatureAuthenticationDependencies
-import ru.kpfu.itis.paramonov.authentication.di.FeatureAuthenticationHolder
-import ru.kpfu.itis.paramonov.authentication.di.FeatureAuthenticationDependenciesContainer
 import ru.kpfu.itis.paramonov.leaderboards.di.FeatureLeaderboardsDependencies
 import ru.kpfu.itis.paramonov.leaderboards.di.FeatureLeaderboardsDependenciesContainer
 import ru.kpfu.itis.paramonov.leaderboards.di.FeatureLeaderboardsHolder
@@ -33,10 +30,6 @@ interface ComponentHolderModule {
 
     @ApplicationScope
     @Binds
-    fun featureAuthenticationDependenciesContainer(application: App): FeatureAuthenticationDependenciesContainer
-
-    @ApplicationScope
-    @Binds
     fun featureQuestionsDependenciesContainer(application: App): FeatureQuestionsDependenciesContainer
 
     @ApplicationScope
@@ -50,12 +43,6 @@ interface ComponentHolderModule {
     @ApplicationScope
     @Binds
     fun featureUsersDependenciesContainer(application: App): FeatureUsersDependenciesContainer
-
-    @ApplicationScope
-    @Binds
-    @ClassKey(FeatureAuthenticationDependencies::class)
-    @IntoMap
-    fun authenticationFeatureHolder(authenticationFeatureHolder: FeatureAuthenticationHolder): FeatureApiHolder
 
     @ApplicationScope
     @Binds

@@ -5,9 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.authentication.api.model.User
 import ru.kpfu.itis.paramonov.authentication.api.repository.AuthenticationRepository
 import ru.kpfu.itis.paramonov.authentication.api.usecase.RegisterUserUseCase
-import javax.inject.Inject
 
-class RegisterUserUseCaseImpl @Inject constructor(
+class RegisterUserUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val repository: AuthenticationRepository
 ): RegisterUserUseCase {

@@ -1,16 +1,18 @@
 package ru.kpfu.itis.paramonov.quiz
 
 import android.app.Application
+import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.kpfu.itis.paramonov.authentication.api.api.FeatureAuthenticationApi
-import ru.kpfu.itis.paramonov.authentication.api.model.User
-import ru.kpfu.itis.paramonov.authentication.api.repository.AuthenticationRepository
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.bind
+import org.kodein.di.singleton
+import ru.kpfu.itis.paramonov.authentication.di.featureAuthenticationModule
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.FeatureHolderManager
 import ru.kpfu.itis.paramonov.core.di.FeatureContainer
 import ru.kpfu.itis.paramonov.core.api.CommonApi
 import ru.kpfu.itis.paramonov.core.api.ContextApi
-import ru.kpfu.itis.paramonov.authentication.di.FeatureAuthenticationDependenciesContainer
 import ru.kpfu.itis.paramonov.core.model.data.Category
 import ru.kpfu.itis.paramonov.core.model.data.Difficulty
 import ru.kpfu.itis.paramonov.core.model.data.GameMode
@@ -26,6 +28,7 @@ import ru.kpfu.itis.paramonov.quiz.di.AppComponent
 import ru.kpfu.itis.paramonov.quiz.di.dependencies.ComponentDependenciesProvider
 import ru.kpfu.itis.paramonov.firebase.external.di.FirebaseComponent
 import ru.kpfu.itis.paramonov.database.external.di.LocalDatabaseComponent
+import ru.kpfu.itis.paramonov.firebase.external.di.firebaseModule
 import ru.kpfu.itis.paramonov.leaderboards.api.api.FeatureLeaderboardsApi
 import ru.kpfu.itis.paramonov.network.external.di.DaggerQuestionsComponent
 import ru.kpfu.itis.paramonov.network.external.di.DaggerQuestionsComponent_QuestionDependenciesComponent
@@ -41,6 +44,10 @@ import ru.kpfu.itis.paramonov.questions.api.repository.QuestionSettingsRepositor
 import ru.kpfu.itis.paramonov.questions.api.repository.ResultRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.SavedQuestionRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.UserRepository
+import ru.kpfu.itis.paramonov.quiz.di.commonModule
+import ru.kpfu.itis.paramonov.quiz.di.featureAuthenticationAdapterModule
+import ru.kpfu.itis.paramonov.quiz.di.featureMapperAdapterModule
+import ru.kpfu.itis.paramonov.quiz.di.navigationModule
 import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.DatabaseQuestionToFeatureQuestionsDatabaseQuestionMapper
 import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.FeatureQuestionsDatabaseQuestionToDatabaseQuestionMapper
 import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.FeatureQuestionsResultToResultMapper
@@ -54,9 +61,24 @@ import ru.kpfu.itis.paramonov.quiz.mapper.feature_users.FirebaseUserToFeatureUse
 import ru.kpfu.itis.paramonov.users.api.api.FeatureUsersApi
 import javax.inject.Inject
 
-class App: Application(), FeatureContainer, FeatureAuthenticationDependenciesContainer,
+class App: Application(), FeatureContainer,
     FeatureQuestionsDependenciesContainer, FeatureProfilesDependenciesContainer,
-    FeatureLeaderboardsDependenciesContainer, FeatureUsersDependenciesContainer {
+    FeatureLeaderboardsDependenciesContainer, FeatureUsersDependenciesContainer, DIAware {
+
+
+    override val di: DI by DI.lazy {
+        bind<Context>() with singleton { this@App.applicationContext }
+        import(commonModule)
+        extend(firebaseModule)
+        import(featureMapperAdapterModule)
+
+        import(navigationModule)
+
+        import(featureAuthenticationAdapterModule)
+        extend(featureAuthenticationModule)
+
+    }
+
     @Inject
     lateinit var featureHolderManager: FeatureHolderManager
 
@@ -147,35 +169,6 @@ class App: Application(), FeatureContainer, FeatureAuthenticationDependenciesCon
         questionsComponent = DaggerQuestionsComponent.builder()
             .questionsDependencies(questionsDependencies)
             .build()
-    }
-
-    override fun featureAuthenticationApi(): FeatureAuthenticationApi {
-        return object : FeatureAuthenticationApi {
-            override fun authenticationRepository(): AuthenticationRepository {
-                return object : AuthenticationRepository {
-                    override suspend fun registerUser(
-                        username: String,
-                        email: String,
-                        password: String,
-                        confirmPassword: String
-                    ): User = firebaseUserToFeatureAuthenticationUserMapper.map(
-                        firebaseComponent.authenticationRepository().registerUser(
-                            username = username, email = email, password = password, confirmPassword = confirmPassword
-                        )
-                    )
-
-                    override suspend fun authenticateUser(email: String, password: String): User =
-                        firebaseUserToFeatureAuthenticationUserMapper.map(
-                            firebaseComponent.authenticationRepository().authenticateUser(email, password)
-                        )
-
-                    override suspend fun checkUserIsAuthenticated(): User? =
-                        firebaseComponent.authenticationRepository().checkUserIsAuthenticated()?.let {
-                            firebaseUserToFeatureAuthenticationUserMapper.map(it)
-                        }
-                }
-            }
-        }
     }
 
     override fun featureQuestionsApi(): FeatureQuestionsApi {

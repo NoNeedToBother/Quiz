@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.ui.views
+package ru.kpfu.itis.paramonov.ui.components
 
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
@@ -16,7 +16,7 @@ private const val GRAPH_MARGIN = 0.1f
 private const val GRAPH_BOTTOM_MARGIN = 0.2f
 
 @Composable
-fun GraphView(
+fun Graph(
     modifier: Modifier = Modifier,
     values: List<Pair<Double, Double>>,
     dotSize: Float = 6f,

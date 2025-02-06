@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import ru.kpfu.itis.paramonov.ui.views.ErrorBottomSheetDialogFragment
+import ru.kpfu.itis.paramonov.ui.components.ErrorBottomSheetDialogFragment
 
 abstract class MviBaseFragment: Fragment() {
 

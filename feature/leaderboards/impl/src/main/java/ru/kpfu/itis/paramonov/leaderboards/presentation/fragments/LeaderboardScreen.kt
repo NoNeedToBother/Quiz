@@ -32,7 +32,7 @@ import ru.kpfu.itis.paramonov.navigation.UserRouter
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
-import ru.kpfu.itis.paramonov.ui.views.EmptyResults
+import ru.kpfu.itis.paramonov.ui.components.EmptyResults
 import javax.inject.Inject
 
 class LeaderboardScreen: MviBaseFragment() {

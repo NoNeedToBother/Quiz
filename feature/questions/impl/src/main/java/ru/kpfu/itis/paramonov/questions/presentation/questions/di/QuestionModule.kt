@@ -6,17 +6,18 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.questions.api.usecase.GetMaxScoreUseCase
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelKey
 import ru.kpfu.itis.paramonov.ui.di.viewmodel.ViewModelModule
 import ru.kpfu.itis.paramonov.questions.presentation.questions.viewmodel.QuestionsViewModel
-import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
-import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
 import ru.kpfu.itis.paramonov.questions.api.usecase.GetQuestionSettingsUseCase
 import ru.kpfu.itis.paramonov.questions.api.usecase.GetQuestionsUseCase
 import ru.kpfu.itis.paramonov.questions.api.usecase.SaveQuestionsUseCase
 import ru.kpfu.itis.paramonov.questions.api.usecase.SaveResultsUseCase
 import ru.kpfu.itis.paramonov.questions.domain.mapper.QuestionDataApiModelMapper
 import ru.kpfu.itis.paramonov.questions.domain.mapper.QuestionDataUiModelMapper
+import ru.kpfu.itis.paramonov.questions.domain.usecase.GetMaxScoreUseCaseImpl
 import ru.kpfu.itis.paramonov.questions.domain.usecase.GetQuestionSettingsUseCaseImpl
 import ru.kpfu.itis.paramonov.questions.domain.usecase.GetQuestionsUseCaseImpl
 import ru.kpfu.itis.paramonov.questions.domain.usecase.SaveQuestionsUseCaseImpl
@@ -46,6 +47,9 @@ class QuestionModule {
     fun getQuestionSettingsUseCase(impl: GetQuestionSettingsUseCaseImpl): GetQuestionSettingsUseCase = impl
 
     @Provides
+    fun getMaxScoreUseCase(impl: GetMaxScoreUseCaseImpl): GetMaxScoreUseCase = impl
+
+    @Provides
     @IntoMap
     @ViewModelKey(QuestionsViewModel::class)
     fun provideQuestionsViewModel(
@@ -53,20 +57,20 @@ class QuestionModule {
         saveQuestionsUseCase: SaveQuestionsUseCase,
         saveResultsUseCase: SaveResultsUseCase,
         getQuestionSettingsUseCase: GetQuestionSettingsUseCase,
+        getMaxScoreUseCase: GetMaxScoreUseCase,
         questionDataUiModelMapper: QuestionDataUiModelMapper,
         questionDataApiModelMapper: QuestionDataApiModelMapper,
-        mainMenuRouter: MainMenuRouter,
-        questionsRouter: QuestionsRouter
+        resourceManager: ResourceManager
     ): ViewModel {
         return QuestionsViewModel(
             getQuestionsUseCase = getQuestionsUseCase,
             saveQuestionsUseCase = saveQuestionsUseCase,
             saveResultsUseCase = saveResultsUseCase,
             getQuestionSettingsUseCase = getQuestionSettingsUseCase,
-            mainMenuRouter = mainMenuRouter,
-            questionsRouter = questionsRouter,
+            getMaxScoreUseCase = getMaxScoreUseCase,
             questionDataUiModelMapper = questionDataUiModelMapper,
-            questionDataApiModelMapper = questionDataApiModelMapper
+            questionDataApiModelMapper = questionDataApiModelMapper,
+            resourceManager = resourceManager
         )
     }
 }

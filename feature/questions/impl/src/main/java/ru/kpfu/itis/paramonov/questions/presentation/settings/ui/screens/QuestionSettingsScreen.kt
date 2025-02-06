@@ -37,7 +37,7 @@ import ru.kpfu.itis.paramonov.questions.presentation.settings.viewmodel.Question
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
-import ru.kpfu.itis.paramonov.ui.views.DropdownMenu
+import ru.kpfu.itis.paramonov.ui.components.DropdownMenu
 import javax.inject.Inject
 
 class QuestionSettingsScreen: MviBaseFragment() {

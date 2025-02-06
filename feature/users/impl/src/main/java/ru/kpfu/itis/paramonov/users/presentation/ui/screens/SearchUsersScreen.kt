@@ -19,7 +19,7 @@ import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.navigation.UserRouter
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
-import ru.kpfu.itis.paramonov.ui.views.EmptyResults
+import ru.kpfu.itis.paramonov.ui.components.EmptyResults
 import ru.kpfu.itis.paramonov.users.R
 import ru.kpfu.itis.paramonov.users.di.FeatureUsersComponent
 import ru.kpfu.itis.paramonov.users.di.FeatureUsersDependencies

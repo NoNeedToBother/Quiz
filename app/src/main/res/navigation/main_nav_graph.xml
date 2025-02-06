@@ -34,13 +34,13 @@
 
     <fragment
         android:id="@+id/questionsFragment"
-        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.QuestionsFragment"
+        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.ui.screens.QuestionsScreen"
         android:label="fragment_questions"
         />
 
     <fragment
         android:id="@+id/trainingQuestionsFragment"
-        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.TrainingQuestionsScreen"
+        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.ui.screens.TrainingQuestionsScreen"
         android:label="fragment_training_questions"
         />
 
@@ -48,12 +48,6 @@
         android:id="@+id/questionSettingsFragment"
         android:name="ru.kpfu.itis.paramonov.questions.presentation.settings.ui.screens.QuestionSettingsScreen"
         android:label="fragment_question_settings"
-        />
-
-    <fragment
-        android:id="@+id/questionResultsFragment"
-        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.ResultFragment"
-        android:label="fragment_question_results"
         />
 
     <fragment

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.kpfu.itis.paramonov.core.di.scopes.ScreenScope
-import ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.TrainingQuestionsScreen
+import ru.kpfu.itis.paramonov.questions.presentation.questions.ui.screens.TrainingQuestionsScreen
 
 @Subcomponent(
     modules = [

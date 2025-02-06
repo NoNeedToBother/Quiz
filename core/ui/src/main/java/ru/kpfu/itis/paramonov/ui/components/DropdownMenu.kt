@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.ui.views
+package ru.kpfu.itis.paramonov.ui.components
 
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api

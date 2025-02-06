@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.leaderboards.R
-import ru.kpfu.itis.paramonov.ui.views.DropdownMenu
+import ru.kpfu.itis.paramonov.ui.components.DropdownMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

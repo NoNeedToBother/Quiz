@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.questions.presentation.questions.fragments
+package ru.kpfu.itis.paramonov.questions.presentation.questions.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

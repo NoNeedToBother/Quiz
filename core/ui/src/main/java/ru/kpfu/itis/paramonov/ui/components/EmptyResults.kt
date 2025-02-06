@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.ui.views
+package ru.kpfu.itis.paramonov.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row

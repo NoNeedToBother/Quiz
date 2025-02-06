@@ -1,4 +1,4 @@
-package ru.kpfu.itis.paramonov.ui.views
+package ru.kpfu.itis.paramonov.ui.components
 
 import android.os.Bundle
 import android.view.View

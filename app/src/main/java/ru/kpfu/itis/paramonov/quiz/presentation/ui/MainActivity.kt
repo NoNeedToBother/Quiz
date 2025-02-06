@@ -16,7 +16,6 @@ import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies
 import ru.kpfu.itis.paramonov.quiz.di.main.MainComponent
 import ru.kpfu.itis.paramonov.quiz.di.main.MainDependencies
 import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
-import ru.kpfu.itis.paramonov.quiz.presentation.viewmodel.MainViewModel
 import javax.inject.Inject
 
 class MainActivity: AppCompatActivity(R.layout.activity_main) {
@@ -24,8 +23,8 @@ class MainActivity: AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var mainComponent: MainComponent
 
-    @Inject
-    lateinit var viewModel: MainViewModel
+    //@Inject
+    //lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

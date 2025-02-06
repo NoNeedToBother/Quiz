@@ -1,14 +1,8 @@
 package ru.kpfu.itis.paramonov.quiz.navigation
 
-import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import ru.kpfu.itis.paramonov.core.exception.UnsupportedArgumentException
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
@@ -50,13 +44,8 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter, UserRout
         }
     }
 
-    override fun popToMainMenu() {
-        navController?.popBackStack(R.id.mainMenuFragment, false)
-    }
-
     override fun goToMainMenu() {
         navController?.apply {
-            popToMainMenu()
             navigate(
                 R.id.mainMenuFragment
             )
@@ -81,60 +70,11 @@ class Navigator: AuthenticationRouter, MainMenuRouter, QuestionsRouter, UserRout
         )
     }
 
-    override fun goToQuestionResults(vararg args: Pair<String, Any>) {
-        val arguments = putArguments(args)
-        navController?.navigate(
-            R.id.questionResultsFragment,
-            arguments
-        )
-    }
-
-    private fun putArguments(args: Array<out Pair<String, Any>>): Bundle {
-        return Bundle().apply {
-            for (pair in args) {
-                when(val value = pair.second) {
-                    is Int -> putInt(pair.first, value)
-                    is String -> putString(pair.first, value)
-                    is Double -> putDouble(pair.first, value)
-                    is Float -> putFloat(pair.first, value)
-                    is Boolean -> putBoolean(pair.first, value)
-                    is Long -> putLong(pair.first, value)
-                    else -> throw UnsupportedArgumentException("Unsupported argument")
-                }
-            }
-        }
-    }
-
-    private var sharedView: View? = null
-
     override fun goToUser(id: String) {
-        val extras = extrasWithSharedView("profile_picture") {
-            it is ImageView
-        }
         navController?.navigate(
             R.id.otherUserProfileFragment,
             bundleOf("id" to id),
-            null,
-            extras
+            null
         )
     }
-
-    override fun withSharedView(sharedView: View, block: UserRouter.() -> Unit) {
-        block.invoke(this.apply {
-            this.sharedView = sharedView
-        })
-    }
-
-    private fun extrasWithSharedView(transitionName: String, condition: (View) -> Boolean, ): FragmentNavigator.Extras? {
-        val extras = sharedView?.let {
-            if (condition.invoke(it)) {
-                FragmentNavigatorExtras(
-                    it to transitionName
-                )
-            } else null
-        }
-        sharedView = null
-        return extras
-    }
-
 }

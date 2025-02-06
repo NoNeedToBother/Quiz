@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments.MainMenuFragment"
+        android:name="ru.kpfu.itis.paramonov.quiz.presentation.ui.screens.MainMenuFragment"
         android:label="fragment_main_menu"
         >
         <action

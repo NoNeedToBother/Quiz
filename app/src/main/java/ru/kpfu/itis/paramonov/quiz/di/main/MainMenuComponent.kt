@@ -4,13 +4,9 @@ import androidx.fragment.app.Fragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.kpfu.itis.paramonov.core.di.scopes.FeatureScope
-import ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments.MainMenuFragment
+import ru.kpfu.itis.paramonov.quiz.presentation.ui.screens.MainMenuFragment
 
-@Subcomponent(
-    modules = [
-        MainMenuModule::class
-    ]
-)
+@Subcomponent
 @FeatureScope
 interface MainMenuComponent {
 

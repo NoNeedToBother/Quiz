@@ -16,9 +16,4 @@
         <item name="android:fontFamily">@font/stardos_stencil_bold</item>
         <item name="android:textColor">@color/black</item>
     </style>
-
-    <style name="circleImageView">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
 </resources>

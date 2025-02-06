@@ -10,15 +10,11 @@ import ru.kpfu.itis.paramonov.quiz.presentation.ui.MainActivity
     dependencies = [
         MainDependencies::class,
     ],
-    modules = [
-        MainModule::class
-    ]
 )
 @ScreenScope
 interface MainComponent {
 
     fun mainMenuComponentFactory(): MainMenuComponent.Factory
-
 
     companion object {
         fun init(activity: AppCompatActivity,

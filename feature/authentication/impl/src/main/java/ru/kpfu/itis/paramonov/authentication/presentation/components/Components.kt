@@ -18,7 +18,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import ru.kpfu.itis.paramonov.authentication.R
-import ru.kpfu.itis.paramonov.ui.theme.logoFont
+import ru.kpfu.itis.paramonov.ui.theme.StardosFont
 
 @Composable
 fun InputSection(
@@ -96,6 +96,6 @@ fun Logo(modifier: Modifier = Modifier) {
         textAlign = TextAlign.Center,
         modifier = modifier,
         fontSize = 92.sp,
-        style = TextStyle(fontFamily = logoFont)
+        style = TextStyle(fontFamily = StardosFont)
     )
 }

@@ -4,8 +4,7 @@ import androidx.fragment.app.Fragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.kpfu.itis.paramonov.core.di.scopes.ScreenScope
-import ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.TrainingQuestionFragment
-import ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.TrainingQuestionsFragment
+import ru.kpfu.itis.paramonov.questions.presentation.questions.ui.screens.TrainingQuestionsScreen
 
 @Subcomponent(
     modules = [
@@ -23,8 +22,6 @@ interface TrainingQuestionsComponent {
         ): TrainingQuestionsComponent
     }
 
-    fun inject(fragment: TrainingQuestionsFragment)
-
-    fun inject(fragment: TrainingQuestionFragment)
+    fun inject(fragment: TrainingQuestionsScreen)
 
 }

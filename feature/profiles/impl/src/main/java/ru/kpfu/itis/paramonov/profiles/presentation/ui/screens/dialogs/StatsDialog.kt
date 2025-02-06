@@ -5,8 +5,8 @@ import androidx.compose.ui.res.stringResource
 import ru.kpfu.itis.paramonov.profiles.R
 import ru.kpfu.itis.paramonov.profiles.presentation.model.ResultUiModel
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.DialogWithTitle
-import ru.kpfu.itis.paramonov.ui.views.EmptyResults
-import ru.kpfu.itis.paramonov.ui.views.GraphView
+import ru.kpfu.itis.paramonov.ui.components.EmptyResults
+import ru.kpfu.itis.paramonov.ui.components.Graph
 
 @Composable
 fun StatsDialog(
@@ -23,7 +23,7 @@ fun StatsDialog(
                 list.add((i + 1).toDouble() to results[i].score)
             }
 
-            GraphView(
+            Graph(
                 values = list,
                 gradient = true
             )

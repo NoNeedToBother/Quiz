@@ -33,7 +33,6 @@ android {
         jvmToolchain(17)
     }
     buildFeatures {
-        viewBinding = true
         compose = true
     }
 }
@@ -51,8 +50,6 @@ dependencies {
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
 
-    implementation(libs.view.binding.delegate)
-
     implementation(libs.viewmodel.ktx)
     implementation(libs.fragment.ktx)
 
@@ -60,8 +57,6 @@ dependencies {
     implementation(libs.bundles.compose)
 
     implementation(libs.bundles.coil)
-
-    implementation(libs.glide)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

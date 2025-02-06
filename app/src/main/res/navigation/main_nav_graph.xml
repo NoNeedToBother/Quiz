@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="ru.kpfu.itis.paramonov.quiz.presentation.ui.fragments.MainMenuFragment"
+        android:name="ru.kpfu.itis.paramonov.quiz.presentation.ui.screens.MainMenuFragment"
         android:label="fragment_main_menu"
         >
         <action
@@ -34,26 +34,20 @@
 
     <fragment
         android:id="@+id/questionsFragment"
-        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.QuestionsFragment"
+        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.ui.screens.QuestionsScreen"
         android:label="fragment_questions"
         />
 
     <fragment
         android:id="@+id/trainingQuestionsFragment"
-        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.TrainingQuestionsFragment"
+        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.ui.screens.TrainingQuestionsScreen"
         android:label="fragment_training_questions"
         />
 
     <fragment
         android:id="@+id/questionSettingsFragment"
-        android:name="ru.kpfu.itis.paramonov.questions.presentation.settings.fragments.QuestionSettingsViewPagerFragment"
+        android:name="ru.kpfu.itis.paramonov.questions.presentation.settings.ui.screens.QuestionSettingsScreen"
         android:label="fragment_question_settings"
-        />
-
-    <fragment
-        android:id="@+id/questionResultsFragment"
-        android:name="ru.kpfu.itis.paramonov.questions.presentation.questions.fragments.ResultFragment"
-        android:label="fragment_question_results"
         />
 
     <fragment

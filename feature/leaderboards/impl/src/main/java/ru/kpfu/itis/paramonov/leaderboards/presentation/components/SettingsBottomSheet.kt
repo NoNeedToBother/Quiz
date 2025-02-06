@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.paramonov.leaderboards.R
-import ru.kpfu.itis.paramonov.ui.views.DropdownMenu
+import ru.kpfu.itis.paramonov.ui.components.DropdownMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +37,9 @@ fun SettingsBottomSheetWrapper(
     onDifficultyChosen: (String) -> Unit,
     onCategoryChosen: (String) -> Unit,
     onGameModeChosen: (String) -> Unit,
+    difficultyValue: String,
+    categoryValue: String,
+    gameModeValue: String,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val sheetState = rememberStandardBottomSheetState(
@@ -62,7 +65,10 @@ fun SettingsBottomSheetWrapper(
                 onSaveClick = onSaveClick,
                 onDifficultyChosen = onDifficultyChosen,
                 onCategoryChosen = onCategoryChosen,
-                onGameModeChosen = onGameModeChosen
+                onGameModeChosen = onGameModeChosen,
+                difficultyValue = difficultyValue,
+                categoryValue = categoryValue,
+                gameModeValue = gameModeValue
             )
         },
         scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState),
@@ -84,6 +90,9 @@ fun SettingsBottomSheetWrapper(
 
 @Composable
 fun BottomSheetContent(
+    difficultyValue: String,
+    categoryValue: String,
+    gameModeValue: String,
     onExpandClick: () -> Unit,
     onSaveClick: () -> Unit,
     onDifficultyChosen: (String) -> Unit,
@@ -100,21 +109,24 @@ fun BottomSheetContent(
             suggestions = stringArrayResource(R.array.leaderboard_difficulties).toList(),
             label = stringResource(R.string.difficulty),
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 8.dp),
-            onChosen = onDifficultyChosen
+            onChosen = onDifficultyChosen,
+            value = difficultyValue
         )
 
         DropdownMenu(
             suggestions = stringArrayResource(R.array.leaderbaord_game_modes).toList(),
             label = stringResource(R.string.game_mode),
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 8.dp),
-            onChosen = onGameModeChosen
+            onChosen = onGameModeChosen,
+            value = gameModeValue
         )
 
         DropdownMenu(
             suggestions = stringArrayResource(R.array.leaderboard_categories).toList(),
             label = stringResource(R.string.category),
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 8.dp),
-            onChosen = onCategoryChosen
+            onChosen = onCategoryChosen,
+            value = categoryValue
         )
 
         Button(

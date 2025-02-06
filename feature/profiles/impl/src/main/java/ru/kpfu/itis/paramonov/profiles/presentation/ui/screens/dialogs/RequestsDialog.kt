@@ -31,7 +31,7 @@ import coil3.compose.rememberAsyncImagePainter
 import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
 import ru.kpfu.itis.paramonov.profiles.R
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.DialogWithTitle
-import ru.kpfu.itis.paramonov.ui.views.EmptyResults
+import ru.kpfu.itis.paramonov.ui.components.EmptyResults
 
 @Composable
 fun RequestsDialog(

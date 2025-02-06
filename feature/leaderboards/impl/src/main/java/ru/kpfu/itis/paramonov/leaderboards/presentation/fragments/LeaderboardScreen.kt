@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
+import ru.kpfu.itis.paramonov.core.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.leaderboards.R
 import ru.kpfu.itis.paramonov.leaderboards.di.FeatureLeaderboardsComponent
 import ru.kpfu.itis.paramonov.leaderboards.di.FeatureLeaderboardsDependencies
@@ -31,7 +32,7 @@ import ru.kpfu.itis.paramonov.navigation.UserRouter
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
-import ru.kpfu.itis.paramonov.ui.views.EmptyResults
+import ru.kpfu.itis.paramonov.ui.components.EmptyResults
 import javax.inject.Inject
 
 class LeaderboardScreen: MviBaseFragment() {
@@ -132,7 +133,12 @@ fun Screen(
         },
         onDifficultyChosen = onDifficultyChosen,
         onCategoryChosen = onCategoryChosen,
-        onGameModeChosen = onGameModeChosen
+        onGameModeChosen = onGameModeChosen,
+        difficultyValue = state.value.settings?.difficulty?.toString()?.normalizeEnumName()
+            ?: stringResource(R.string.any_settings_item),
+        categoryValue = state.value.settings?.category?.toString()?.normalizeEnumName()
+            ?: stringResource(R.string.any_settings_item),
+        gameModeValue = state.value.settings?.gameMode.toString().normalizeEnumName(),
     ) { paddingValues ->
         Column(modifier = Modifier
             .fillMaxWidth()

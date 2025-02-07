@@ -7,9 +7,8 @@ import ru.kpfu.itis.paramonov.core.model.data.Difficulty
 import ru.kpfu.itis.paramonov.core.model.data.GameMode
 import ru.kpfu.itis.paramonov.questions.api.repository.QuestionSettingsRepository
 import ru.kpfu.itis.paramonov.questions.api.usecase.SaveQuestionSettingsUseCase
-import javax.inject.Inject
 
-class SaveQuestionSettingsUseCaseImpl @Inject constructor(
+class SaveQuestionSettingsUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val repository: QuestionSettingsRepository
 ): SaveQuestionSettingsUseCase {

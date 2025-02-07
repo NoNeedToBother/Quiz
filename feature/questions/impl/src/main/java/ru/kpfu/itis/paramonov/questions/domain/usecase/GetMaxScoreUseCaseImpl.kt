@@ -4,9 +4,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.questions.api.repository.ResultRepository
 import ru.kpfu.itis.paramonov.questions.api.usecase.GetMaxScoreUseCase
-import javax.inject.Inject
 
-class GetMaxScoreUseCaseImpl @Inject constructor(
+class GetMaxScoreUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val resultRepository: ResultRepository
 ): GetMaxScoreUseCase {

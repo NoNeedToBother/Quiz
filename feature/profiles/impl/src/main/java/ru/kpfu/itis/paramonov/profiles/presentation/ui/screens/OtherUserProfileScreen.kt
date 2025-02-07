@@ -21,10 +21,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.closestDI
+import org.kodein.di.android.x.viewmodel.viewModel
 import ru.kpfu.itis.paramonov.profiles.R
-import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesComponent
-import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesDependencies
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.dialogs.StatsDialog
 import ru.kpfu.itis.paramonov.profiles.presentation.model.FriendStatusUiModel
 import ru.kpfu.itis.paramonov.profiles.presentation.model.ResultUiModel
@@ -34,23 +35,16 @@ import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.ProfileInfoFie
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.OtherUserProfileViewModel
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
-import javax.inject.Inject
 
-class OtherUserProfileScreen: MviBaseFragment() {
+class OtherUserProfileScreen: MviBaseFragment(), DIAware {
 
-    @Inject
-    lateinit var viewModel: OtherUserProfileViewModel
+    override val di: DI by closestDI()
+
+    private val viewModel: OtherUserProfileViewModel by viewModel()
 
     private val userId: String get() {
         val args = requireArguments()
         return args.getString(USER_ID_KEY) ?: ""
-    }
-
-    override fun inject() {
-        FeatureUtils.getFeature<FeatureProfilesComponent>(this, FeatureProfilesDependencies::class.java)
-            .otherUserProfileComponentFactory()
-            .create(this)
-            .inject(this)
     }
 
     override fun initView(): ComposeView {

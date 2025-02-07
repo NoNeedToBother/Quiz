@@ -8,9 +8,8 @@ import ru.kpfu.itis.paramonov.profiles.api.model.FriendStatus
 import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.GetFriendStatusUseCase
 import ru.kpfu.itis.paramonov.profiles.domain.exception.IncorrectUserDataException
-import javax.inject.Inject
 
-class GetFriendStatusUseCaseImpl @Inject constructor(
+class GetFriendStatusUseCaseImpl(
     private val userRepository: UserRepository,
     private val dispatcher: CoroutineDispatcher,
     private val resourceManager: ResourceManager

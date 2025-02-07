@@ -65,8 +65,8 @@ dependencies {
     implementation(libs.androidx.compat)
     implementation(libs.material)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
+    implementation(libs.kodein)
+    implementation(libs.kodein.android)
 
     implementation(libs.view.binding.delegate)
 
@@ -83,7 +83,9 @@ dependencies {
     implementation(libs.bundles.mvi.core)
     implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
-    //implementation(libs.androidx.compose.fragment)
+
+    implementation(libs.kodein)
+    implementation(libs.kodein.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

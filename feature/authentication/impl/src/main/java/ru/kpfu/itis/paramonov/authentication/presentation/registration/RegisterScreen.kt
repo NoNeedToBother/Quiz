@@ -15,10 +15,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.closestDI
+import org.kodein.di.android.x.viewmodel.viewModel
+import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.authentication.R
-import ru.kpfu.itis.paramonov.authentication.di.FeatureAuthenticationComponent
-import ru.kpfu.itis.paramonov.authentication.di.FeatureAuthenticationDependencies
 import ru.kpfu.itis.paramonov.authentication.presentation.components.InputSection
 import ru.kpfu.itis.paramonov.authentication.presentation.components.Logo
 import ru.kpfu.itis.paramonov.authentication.presentation.components.PasswordSection
@@ -28,25 +30,16 @@ import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
-import javax.inject.Inject
 
-class RegisterScreen: MviBaseFragment() {
+class RegisterScreen: MviBaseFragment(), DIAware {
 
-    @Inject
-    lateinit var viewModel: RegisterViewModel
+    override val di: DI by closestDI()
 
-    @Inject
-    lateinit var mainMenuRouter: MainMenuRouter
+    private val mainMenuRouter: MainMenuRouter by instance()
 
-    @Inject
-    lateinit var authenticationRouter: AuthenticationRouter
+    private val authenticationRouter: AuthenticationRouter by instance()
 
-    override fun inject() {
-        FeatureUtils.getFeature<FeatureAuthenticationComponent>(this, FeatureAuthenticationDependencies::class.java)
-            .registrationComponentFactory()
-            .create(this)
-            .inject(this)
-    }
+    private val viewModel: RegisterViewModel by viewModel()
 
     override fun initView(): ComposeView {
         return ComposeView(requireContext()).apply {

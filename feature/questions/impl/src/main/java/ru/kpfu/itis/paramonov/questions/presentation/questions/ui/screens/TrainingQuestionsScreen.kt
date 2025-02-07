@@ -21,29 +21,23 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.closestDI
+import org.kodein.di.android.x.viewmodel.viewModel
 import ru.kpfu.itis.paramonov.questions.R
-import ru.kpfu.itis.paramonov.questions.di.FeatureQuestionsComponent
-import ru.kpfu.itis.paramonov.questions.di.FeatureQuestionsDependencies
 import ru.kpfu.itis.paramonov.questions.presentation.questions.mvi.TrainingQuestionsScreenState
 import ru.kpfu.itis.paramonov.questions.presentation.questions.ui.components.QuestionPage
 import ru.kpfu.itis.paramonov.questions.presentation.questions.viewmodel.TrainingQuestionsViewModel
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
-import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
-import javax.inject.Inject
 import kotlin.math.abs
 
-class TrainingQuestionsScreen: MviBaseFragment() {
+class TrainingQuestionsScreen: MviBaseFragment(), DIAware {
 
-    @Inject
-    lateinit var viewModel: TrainingQuestionsViewModel
+    override val di: DI by closestDI()
 
-    override fun inject() {
-        FeatureUtils.getFeature<FeatureQuestionsComponent>(this, FeatureQuestionsDependencies::class.java)
-            .trainingQuestionsComponentFactory()
-            .create(this)
-            .inject(this)
-    }
+    private val viewModel: TrainingQuestionsViewModel by viewModel()
 
     override fun initView(): ComposeView {
         return ComposeView(requireContext()).apply {

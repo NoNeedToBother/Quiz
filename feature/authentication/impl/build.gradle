@@ -48,14 +48,14 @@ dependencies {
     implementation(libs.androidx.compat)
     implementation(libs.material)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
-
     implementation(libs.viewmodel.ktx)
     implementation(libs.fragment.ktx)
 
     implementation(libs.bundles.mvi.core)
     implementation(libs.bundles.compose)
+
+    implementation(libs.kodein)
+    implementation(libs.kodein.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

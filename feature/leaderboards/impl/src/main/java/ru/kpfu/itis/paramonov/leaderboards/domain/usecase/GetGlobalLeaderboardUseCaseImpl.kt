@@ -8,9 +8,8 @@ import ru.kpfu.itis.paramonov.core.model.data.GameMode
 import ru.kpfu.itis.paramonov.leaderboards.api.model.Result
 import ru.kpfu.itis.paramonov.leaderboards.api.repository.ResultRepository
 import ru.kpfu.itis.paramonov.leaderboards.api.usecase.GetGlobalLeaderboardUseCase
-import javax.inject.Inject
 
-class GetGlobalLeaderboardUseCaseImpl @Inject constructor(
+class GetGlobalLeaderboardUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val resultRepository: ResultRepository
 ): GetGlobalLeaderboardUseCase {

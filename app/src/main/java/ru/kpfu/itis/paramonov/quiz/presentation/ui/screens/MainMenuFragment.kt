@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.quiz.presentation.ui.screens
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,31 +17,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.closestDI
+import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.quiz.R
-import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies
-import ru.kpfu.itis.paramonov.quiz.di.main.MainComponent
-import ru.kpfu.itis.paramonov.quiz.di.main.MainDependencies
 import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 import ru.kpfu.itis.paramonov.ui.theme.StardosFont
 import ru.kpfu.itis.paramonov.ui.theme.Typography
-import javax.inject.Inject
+class MainMenuFragment: MviBaseFragment(), DIAware {
 
-class MainMenuFragment: MviBaseFragment() {
+    override val di: DI by closestDI()
 
-    @Inject
-    lateinit var navigator: Navigator
-
-    override fun inject() {
-        with(requireActivity() as AppCompatActivity) {
-            MainComponent.init(this,
-                findComponentDependencies<MainDependencies>())
-                .mainMenuComponentFactory()
-                .create(this@MainMenuFragment)
-                .inject(this@MainMenuFragment)
-        }
-    }
+    private val navigator: Navigator by instance()
 
     override fun initView(): ComposeView {
         return ComposeView(requireContext()).apply {

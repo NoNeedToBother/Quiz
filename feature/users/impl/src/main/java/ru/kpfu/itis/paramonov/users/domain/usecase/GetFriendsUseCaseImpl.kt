@@ -5,9 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.users.api.model.User
 import ru.kpfu.itis.paramonov.users.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.users.api.usecase.GetFriendsUseCase
-import javax.inject.Inject
 
-class GetFriendsUseCaseImpl @Inject constructor(
+class GetFriendsUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val userRepository: UserRepository
 ): GetFriendsUseCase {

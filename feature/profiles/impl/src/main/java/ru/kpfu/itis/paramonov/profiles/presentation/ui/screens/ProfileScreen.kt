@@ -44,13 +44,14 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.closestDI
+import org.kodein.di.android.x.viewmodel.viewModel
+import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
-import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
 import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
 import ru.kpfu.itis.paramonov.profiles.R
-import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
-import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesComponent
-import ru.kpfu.itis.paramonov.profiles.di.FeatureProfilesDependencies
 import ru.kpfu.itis.paramonov.profiles.presentation.model.ResultUiModel
 import ru.kpfu.itis.paramonov.profiles.presentation.mvi.ProfileScreenSideEffect
 import ru.kpfu.itis.paramonov.profiles.presentation.mvi.ProfileScreenState
@@ -66,18 +67,14 @@ import ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.dialogs.USERNAME_
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.ProfileViewModel
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
-import javax.inject.Inject
 
-class ProfileScreen: MviBaseFragment() {
+class ProfileScreen: MviBaseFragment(), DIAware {
 
-    @Inject
-    lateinit var viewModel: ProfileViewModel
+    override val di: DI by closestDI()
 
-    @Inject
-    lateinit var passwordValidator: PasswordValidator
+    private val viewModel: ProfileViewModel by viewModel()
 
-    @Inject
-    lateinit var authenticationRouter: AuthenticationRouter
+    private val authenticationRouter: AuthenticationRouter by instance()
 
     private val pickProfilePictureIntent = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -85,13 +82,6 @@ class ProfileScreen: MviBaseFragment() {
         it?.let {
                 uri -> viewModel.onProfilePictureChosen(uri)
         }
-    }
-
-    override fun inject() {
-        FeatureUtils.getFeature<FeatureProfilesComponent>(this, FeatureProfilesDependencies::class.java)
-            .profileComponentFactory()
-            .create(this)
-            .inject(this)
     }
 
     override fun initView(): ComposeView {

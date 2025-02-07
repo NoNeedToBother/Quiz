@@ -36,14 +36,13 @@ android {
 dependencies {
     implementation(libs.coroutines)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
-
     implementation(libs.androidx.core)
     implementation(libs.androidx.compat)
 
     implementation(libs.viewmodel.ktx)
     implementation(libs.fragment.ktx)
+
+    implementation(libs.kodein)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -6,9 +6,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.profiles.api.model.User
 import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.profiles.api.usecase.SubscribeToProfileUpdatesUseCase
-import javax.inject.Inject
 
-class SubscribeToProfileUpdatesUseCaseImpl @Inject constructor(
+class SubscribeToProfileUpdatesUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val userRepository: UserRepository
 ): SubscribeToProfileUpdatesUseCase {

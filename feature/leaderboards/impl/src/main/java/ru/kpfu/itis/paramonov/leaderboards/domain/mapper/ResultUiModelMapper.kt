@@ -3,9 +3,8 @@ package ru.kpfu.itis.paramonov.leaderboards.domain.mapper
 import ru.kpfu.itis.paramonov.core.mapper.ModelMapper
 import ru.kpfu.itis.paramonov.leaderboards.presentation.model.ResultUiModel
 import ru.kpfu.itis.paramonov.leaderboards.api.model.Result
-import javax.inject.Inject
 
-class ResultUiModelMapper @Inject constructor(
+class ResultUiModelMapper(
     private val questionSettingsUiModelMapper: QuestionSettingsUiModelMapper,
     private val userUiModelMapper: UserUiModelMapper,
 ): ModelMapper<Result, ResultUiModel> {

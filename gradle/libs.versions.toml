@@ -12,8 +12,6 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
-dagger = "2.49"
-
 viewBindingDelegate = "1.5.9"
 androidXCore = "1.15.0"
 androidXCompat = "1.7.0"
@@ -38,10 +36,9 @@ material3Android = "1.3.1"
 coil = "3.0.4"
 animationGraphicsAndroid = "1.7.7"
 
-[libraries]
-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+kodein = "7.25.0"
 
+[libraries]
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
 view-binding-delegate = { group = "com.github.kirich1409", name = "viewbindingpropertydelegate-noreflection", version.ref = "viewBindingDelegate" }
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidXCore" }
@@ -91,8 +88,6 @@ androidx-material3-navigationSuite = { group = "androidx.compose.material3", nam
 androidx-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 androidx-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
-androidx-compose-fragment = { group = "androidx.fragment", name = "fragment-compose", version.ref = "fragment" }
-
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -106,6 +101,9 @@ androidx-material3-android = { group = "androidx.compose.material3", name = "mat
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 androidx-animation-graphics-android = { group = "androidx.compose.animation", name = "animation-graphics-android", version.ref = "animationGraphicsAndroid" }
+
+kodein = { group = "org.kodein.di", name = "kodein-di", version.ref = "kodein" }
+kodein-android = { group = "org.kodein.di", name = "kodein-di-framework-android-x-viewmodel", version.ref = "kodein" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android" }
@@ -158,6 +156,3 @@ coil = [
     "coil-compose",
     "coil-network"
 ]
-
-
-

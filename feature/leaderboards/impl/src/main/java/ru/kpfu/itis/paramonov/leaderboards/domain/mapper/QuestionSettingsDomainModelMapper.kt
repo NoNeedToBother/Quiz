@@ -6,9 +6,8 @@ import ru.kpfu.itis.paramonov.core.model.data.GameMode
 import ru.kpfu.itis.paramonov.leaderboards.presentation.model.CategoryUiModel
 import ru.kpfu.itis.paramonov.leaderboards.presentation.model.DifficultyUiModel
 import ru.kpfu.itis.paramonov.leaderboards.presentation.model.GameModeUiModel
-import javax.inject.Inject
 
-class QuestionSettingsDomainModelMapper @Inject constructor() {
+class QuestionSettingsDomainModelMapper {
     fun mapDifficulty(difficulty: DifficultyUiModel): Difficulty {
         return when(difficulty) {
             DifficultyUiModel.EASY -> Difficulty.EASY

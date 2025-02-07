@@ -8,39 +8,30 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.closestDI
+import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.core.utils.gone
 import ru.kpfu.itis.paramonov.core.utils.show
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.databinding.ActivityMainBinding
-import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies
-import ru.kpfu.itis.paramonov.quiz.di.main.MainComponent
-import ru.kpfu.itis.paramonov.quiz.di.main.MainDependencies
 import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
-import javax.inject.Inject
 
-class MainActivity: AppCompatActivity(R.layout.activity_main) {
+class MainActivity: AppCompatActivity(R.layout.activity_main), DIAware {
+
+    override val di: DI by closestDI()
+
+    private val navigator: Navigator by instance()
+
     private val binding by viewBinding(ActivityMainBinding::bind)
-
-    private lateinit var mainComponent: MainComponent
-
-    //@Inject
-    //lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        inject()
         setupNavigation()
     }
-    @Inject
-    lateinit var navigator: Navigator
 
     private var navController: NavController? = null
-
-    private fun inject() {
-        mainComponent = MainComponent.init(this,
-            findComponentDependencies<MainDependencies>())
-        mainComponent.inject(this)
-    }
 
     private fun setupNavigation() {
         binding.bnvMain.setOnItemSelectedListener { item ->

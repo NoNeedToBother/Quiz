@@ -5,9 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.questions.api.model.TrainingQuestionSettings
 import ru.kpfu.itis.paramonov.questions.api.repository.QuestionSettingsRepository
 import ru.kpfu.itis.paramonov.questions.api.usecase.GetTrainingQuestionSettingsUseCase
-import javax.inject.Inject
 
-class GetTrainingQuestionSettingsUseCaseImpl @Inject constructor(
+class GetTrainingQuestionSettingsUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val repository: QuestionSettingsRepository
 ): GetTrainingQuestionSettingsUseCase {

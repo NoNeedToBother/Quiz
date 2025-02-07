@@ -25,32 +25,26 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.closestDI
+import org.kodein.di.android.x.viewmodel.viewModel
 import ru.kpfu.itis.paramonov.core.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.questions.R
-import ru.kpfu.itis.paramonov.questions.di.FeatureQuestionsComponent
-import ru.kpfu.itis.paramonov.questions.di.FeatureQuestionsDependencies
 import ru.kpfu.itis.paramonov.questions.presentation.settings.model.QuestionSettingsUiModel
 import ru.kpfu.itis.paramonov.questions.presentation.settings.model.TrainingQuestionSettingsUiModel
 import ru.kpfu.itis.paramonov.questions.presentation.settings.mvi.QuestionSettingsScreenSideEffect
 import ru.kpfu.itis.paramonov.questions.presentation.settings.mvi.QuestionSettingsScreenState
 import ru.kpfu.itis.paramonov.questions.presentation.settings.viewmodel.QuestionSettingsViewModel
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
-import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 import ru.kpfu.itis.paramonov.ui.components.DropdownMenu
-import javax.inject.Inject
 
-class QuestionSettingsScreen: MviBaseFragment() {
+class QuestionSettingsScreen: MviBaseFragment(), DIAware {
 
-    @Inject
-    lateinit var viewModel: QuestionSettingsViewModel
+    override val di: DI by closestDI()
 
-    override fun inject() {
-        FeatureUtils.getFeature<FeatureQuestionsComponent>(this, FeatureQuestionsDependencies::class.java)
-            .questionSettingsComponentFactory()
-            .create(this)
-            .inject(this)
-    }
+    private val viewModel: QuestionSettingsViewModel by viewModel()
 
     override fun initView(): ComposeView {
         return ComposeView(requireContext()).apply {

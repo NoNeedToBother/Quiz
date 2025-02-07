@@ -1,6 +1,6 @@
 package ru.kpfu.itis.paramonov.authentication.presentation.signing_in
 
-import ru.kpfu.itis.paramonov.ui.base.BaseViewModel
+import androidx.lifecycle.ViewModel
 import ru.kpfu.itis.paramonov.authentication.api.usecase.AuthenticateUserUseCase
 import ru.kpfu.itis.paramonov.authentication.api.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.authentication.domain.mapper.UserUiModelMapper
@@ -15,7 +15,7 @@ class SignInViewModel(
     private val checkUserIsAuthenticatedUseCase: CheckUserIsAuthenticatedUseCase,
     private val mapper: UserUiModelMapper,
     private val passwordValidator: PasswordValidator
-): BaseViewModel(), ContainerHost<SignInScreenState, SignInScreenSideEffect> {
+): ViewModel(), ContainerHost<SignInScreenState, SignInScreenSideEffect> {
 
     override val container = container<SignInScreenState, SignInScreenSideEffect>(SignInScreenState(null))
 

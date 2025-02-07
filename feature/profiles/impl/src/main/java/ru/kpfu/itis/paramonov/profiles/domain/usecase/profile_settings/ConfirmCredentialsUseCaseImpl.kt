@@ -4,9 +4,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.ConfirmCredentialsUseCase
-import javax.inject.Inject
 
-class ConfirmCredentialsUseCaseImpl @Inject constructor(
+class ConfirmCredentialsUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val repository: UserRepository
 ): ConfirmCredentialsUseCase {

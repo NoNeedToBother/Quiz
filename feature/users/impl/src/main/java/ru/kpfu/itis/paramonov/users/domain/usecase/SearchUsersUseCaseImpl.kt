@@ -5,9 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.users.api.model.User
 import ru.kpfu.itis.paramonov.users.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.users.api.usecase.SearchUsersUseCase
-import javax.inject.Inject
 
-class SearchUsersUseCaseImpl @Inject constructor(
+class SearchUsersUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val userRepository: UserRepository
 ): SearchUsersUseCase {

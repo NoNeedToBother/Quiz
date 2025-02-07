@@ -4,9 +4,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.ChangeCredentialsUseCase
-import javax.inject.Inject
 
-class ChangeCredentialsUseCaseImpl @Inject constructor(
+class ChangeCredentialsUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val repository: UserRepository
 ): ChangeCredentialsUseCase {

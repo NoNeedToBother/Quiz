@@ -15,14 +15,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
-import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.closestDI
+import org.kodein.di.android.x.viewmodel.viewModel
+import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.navigation.UserRouter
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 import ru.kpfu.itis.paramonov.ui.components.EmptyResults
 import ru.kpfu.itis.paramonov.users.R
-import ru.kpfu.itis.paramonov.users.di.FeatureUsersComponent
-import ru.kpfu.itis.paramonov.users.di.FeatureUsersDependencies
 import ru.kpfu.itis.paramonov.users.presentation.mvi.SearchUsersScreenSideEffect
 import ru.kpfu.itis.paramonov.users.presentation.mvi.SearchUsersScreenState
 import ru.kpfu.itis.paramonov.users.presentation.ui.components.SearchBar
@@ -30,23 +32,15 @@ import ru.kpfu.itis.paramonov.users.presentation.ui.components.UserList
 import ru.kpfu.itis.paramonov.users.presentation.viewmodel.SearchUsersViewModel
 import java.lang.IllegalStateException
 import java.util.Timer
-import javax.inject.Inject
 import kotlin.concurrent.timerTask
 
-class SearchUsersScreen: MviBaseFragment() {
+class SearchUsersScreen: MviBaseFragment(), DIAware {
 
-    @Inject
-    lateinit var viewModel: SearchUsersViewModel
+    override val di: DI by closestDI()
 
-    @Inject
-    lateinit var userRouter: UserRouter
+    private val viewModel: SearchUsersViewModel by viewModel()
 
-    override fun inject() {
-        FeatureUtils.getFeature<FeatureUsersComponent>(this, FeatureUsersDependencies::class.java)
-            .searchUsersComponentFactory()
-            .create(this)
-            .inject(this)
-    }
+    private val userRouter: UserRouter by instance()
 
     override fun initView(): ComposeView {
         return ComposeView(requireContext()).apply {

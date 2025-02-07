@@ -4,9 +4,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.profiles.api.usecase.LogoutUserUseCase
-import javax.inject.Inject
 
-class LogoutUserUseCaseImpl @Inject constructor(
+class LogoutUserUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val repository: UserRepository
 ): LogoutUserUseCase {

@@ -48,9 +48,6 @@ dependencies {
     implementation(libs.androidx.compat)
     implementation(libs.material)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
-
     implementation(libs.viewmodel.ktx)
     implementation(libs.fragment.ktx)
 

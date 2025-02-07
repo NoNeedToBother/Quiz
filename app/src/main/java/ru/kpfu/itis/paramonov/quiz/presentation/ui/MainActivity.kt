@@ -16,38 +16,22 @@ import ru.kpfu.itis.paramonov.core.utils.gone
 import ru.kpfu.itis.paramonov.core.utils.show
 import ru.kpfu.itis.paramonov.quiz.R
 import ru.kpfu.itis.paramonov.quiz.databinding.ActivityMainBinding
-import ru.kpfu.itis.paramonov.quiz.di.dependencies.findComponentDependencies
-import ru.kpfu.itis.paramonov.quiz.di.main.MainComponent
-import ru.kpfu.itis.paramonov.quiz.di.main.MainDependencies
 import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
-import javax.inject.Inject
 
 class MainActivity: AppCompatActivity(R.layout.activity_main), DIAware {
 
     override val di: DI by closestDI()
 
-    private val kodeinNavigator: Navigator by instance()
+    private val navigator: Navigator by instance()
 
     private val binding by viewBinding(ActivityMainBinding::bind)
 
-    private lateinit var mainComponent: MainComponent
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        inject()
         setupNavigation()
     }
-    @Inject
-    lateinit var navigator: Navigator
 
     private var navController: NavController? = null
-
-    private fun inject() {
-        mainComponent = MainComponent.init(this,
-            findComponentDependencies<MainDependencies>())
-        mainComponent.inject(this)
-    }
 
     private fun setupNavigation() {
         binding.bnvMain.setOnItemSelectedListener { item ->
@@ -63,18 +47,8 @@ class MainActivity: AppCompatActivity(R.layout.activity_main), DIAware {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         navigator.attachNavController(navController!!, R.navigation.main_nav_graph)
-        kodeinNavigator.attachNavController(navController!!, R.navigation.main_nav_graph)
         val bnv = findViewById<BottomNavigationView>(R.id.bnv_main)
         navigator.addOnDestinationChangedListener {
-            val id = it.id
-            val fragmentsToHideBnv = listOf(R.id.registerFragment, R.id.signInFragment)
-            if (fragmentsToHideBnv.contains(id)) {
-                if (bnv.visibility == View.VISIBLE) hideBottomNavigationView(bnv)
-            }
-            else if(bnv.visibility == View.GONE) showBottomNavigationView(bnv)
-            if (bnv.menu.findItem(id) != null) bnv.menu.findItem(id).isChecked = true
-        }
-        kodeinNavigator.addOnDestinationChangedListener {
             val id = it.id
             val fragmentsToHideBnv = listOf(R.id.registerFragment, R.id.signInFragment)
             if (fragmentsToHideBnv.contains(id)) {
@@ -100,7 +74,6 @@ class MainActivity: AppCompatActivity(R.layout.activity_main), DIAware {
     override fun onDestroy() {
         navController?.let {
             navigator.detachNavController(it)
-            kodeinNavigator.detachNavController(it)
         }
         super.onDestroy()
     }

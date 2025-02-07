@@ -5,9 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.core.model.data.Difficulty
 import ru.kpfu.itis.paramonov.leaderboards.api.repository.QuestionSettingsRepository
 import ru.kpfu.itis.paramonov.leaderboards.api.usecase.GetDifficultyUseCase
-import javax.inject.Inject
 
-class GetDifficultyUseCaseImpl @Inject constructor(
+class GetDifficultyUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val settingsRepository: QuestionSettingsRepository
 ): GetDifficultyUseCase {

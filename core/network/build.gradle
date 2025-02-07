@@ -44,9 +44,6 @@ dependencies {
 
     implementation(libs.androidx.core)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
-
     api(libs.retrofit)
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp3)

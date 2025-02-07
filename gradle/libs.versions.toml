@@ -12,8 +12,6 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
-dagger = "2.49"
-
 viewBindingDelegate = "1.5.9"
 androidXCore = "1.15.0"
 androidXCompat = "1.7.0"
@@ -41,9 +39,6 @@ animationGraphicsAndroid = "1.7.7"
 kodein = "7.25.0"
 
 [libraries]
-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
-
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
 view-binding-delegate = { group = "com.github.kirich1409", name = "viewbindingpropertydelegate-noreflection", version.ref = "viewBindingDelegate" }
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidXCore" }
@@ -92,8 +87,6 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-material3-navigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite" }
 androidx-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 androidx-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
-
-androidx-compose-fragment = { group = "androidx.fragment", name = "fragment-compose", version.ref = "fragment" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -163,6 +156,3 @@ coil = [
     "coil-compose",
     "coil-network"
 ]
-
-
-

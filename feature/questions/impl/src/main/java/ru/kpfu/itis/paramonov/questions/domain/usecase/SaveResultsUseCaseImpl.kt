@@ -11,9 +11,8 @@ import ru.kpfu.itis.paramonov.questions.api.model.Result
 import ru.kpfu.itis.paramonov.questions.api.repository.ResultRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.questions.api.usecase.SaveResultsUseCase
-import javax.inject.Inject
 
-class SaveResultsUseCaseImpl @Inject constructor(
+class SaveResultsUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val userRepository: UserRepository,
     private val resultRepository: ResultRepository,

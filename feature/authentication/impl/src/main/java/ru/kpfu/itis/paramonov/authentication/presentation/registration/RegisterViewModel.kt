@@ -1,8 +1,8 @@
 package ru.kpfu.itis.paramonov.authentication.presentation.registration
 
+import androidx.lifecycle.ViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
-import ru.kpfu.itis.paramonov.ui.base.BaseViewModel
 import ru.kpfu.itis.paramonov.authentication.api.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.authentication.api.usecase.RegisterUserUseCase
 import ru.kpfu.itis.paramonov.authentication.domain.mapper.UserUiModelMapper
@@ -17,7 +17,7 @@ class RegisterViewModel(
     private val mapper: UserUiModelMapper,
     private val usernameValidator: UsernameValidator,
     private val passwordValidator: PasswordValidator
-): BaseViewModel(), ContainerHost<RegisterScreenState, RegisterScreenSideEffect> {
+): ViewModel(), ContainerHost<RegisterScreenState, RegisterScreenSideEffect> {
 
     override val container = container<RegisterScreenState, RegisterScreenSideEffect>(RegisterScreenState(null))
 

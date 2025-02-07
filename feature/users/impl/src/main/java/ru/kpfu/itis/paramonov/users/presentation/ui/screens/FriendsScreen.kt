@@ -14,34 +14,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.closestDI
+import org.kodein.di.android.x.viewmodel.viewModel
+import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.navigation.UserRouter
-import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 import ru.kpfu.itis.paramonov.ui.components.EmptyResults
 import ru.kpfu.itis.paramonov.users.R
-import ru.kpfu.itis.paramonov.users.di.FeatureUsersComponent
-import ru.kpfu.itis.paramonov.users.di.FeatureUsersDependencies
 import ru.kpfu.itis.paramonov.users.presentation.mvi.FriendsScreenState
 import ru.kpfu.itis.paramonov.users.presentation.mvi.FriendsScreenSideEffect
 import ru.kpfu.itis.paramonov.users.presentation.ui.components.UserList
 import ru.kpfu.itis.paramonov.users.presentation.viewmodel.FriendsViewModel
-import javax.inject.Inject
 
-class FriendsScreen: MviBaseFragment() {
+class FriendsScreen: MviBaseFragment(), DIAware {
 
-    @Inject
-    lateinit var viewModel: FriendsViewModel
+    override val di: DI by closestDI()
 
-    @Inject
-    lateinit var userRouter: UserRouter
+    private val viewModel: FriendsViewModel by viewModel()
 
-    override fun inject() {
-        FeatureUtils.getFeature<FeatureUsersComponent>(this, FeatureUsersDependencies::class.java)
-            .friendsComponentFactory()
-            .create(this)
-            .inject(this)
-    }
+    private val userRouter: UserRouter by instance()
 
     override fun initView(): ComposeView {
         return ComposeView(requireContext()).apply {

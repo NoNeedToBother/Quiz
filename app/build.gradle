@@ -65,8 +65,8 @@ dependencies {
     implementation(libs.androidx.compat)
     implementation(libs.material)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
+    implementation(libs.kodein)
+    implementation(libs.kodein.android)
 
     implementation(libs.view.binding.delegate)
 

@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.closestDI
-//import org.kodein.di.android.closestDI
 import org.kodein.di.android.x.viewmodel.viewModel
 import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.authentication.R
@@ -41,9 +40,6 @@ class SignInScreen: MviBaseFragment(), DIAware {
     private val authenticationRouter: AuthenticationRouter by instance()
 
     private val viewModel: SignInViewModel by viewModel()
-
-    override fun inject() {
-    }
 
     override fun initView(): ComposeView {
         return ComposeView(requireContext()).apply {

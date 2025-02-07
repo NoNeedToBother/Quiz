@@ -24,12 +24,11 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
-import ru.kpfu.itis.paramonov.navigation.QuestionsRouter
-import ru.kpfu.itis.paramonov.ui.di.FeatureUtils
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.closestDI
+import org.kodein.di.android.x.viewmodel.viewModel
 import ru.kpfu.itis.paramonov.questions.R
-import ru.kpfu.itis.paramonov.questions.di.FeatureQuestionsComponent
-import ru.kpfu.itis.paramonov.questions.di.FeatureQuestionsDependencies
 import ru.kpfu.itis.paramonov.questions.presentation.questions.mvi.QuestionsScreenSideEffect
 import ru.kpfu.itis.paramonov.questions.presentation.questions.mvi.QuestionsScreenState
 import ru.kpfu.itis.paramonov.questions.presentation.questions.ui.components.QuestionPage
@@ -37,26 +36,13 @@ import ru.kpfu.itis.paramonov.questions.presentation.questions.viewmodel.Questio
 import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
 import ru.kpfu.itis.paramonov.ui.components.Stopwatch
 import ru.kpfu.itis.paramonov.ui.theme.AppTheme
-import javax.inject.Inject
 import kotlin.math.abs
 
-class QuestionsScreen: MviBaseFragment() {
+class QuestionsScreen: MviBaseFragment(), DIAware {
 
-    @Inject
-    lateinit var viewModel: QuestionsViewModel
+    override val di: DI by closestDI()
 
-    @Inject
-    lateinit var questionsRouter: QuestionsRouter
-
-    @Inject
-    lateinit var mainMenuRouter: MainMenuRouter
-
-    override fun inject() {
-        FeatureUtils.getFeature<FeatureQuestionsComponent>(this, FeatureQuestionsDependencies::class.java)
-            .questionsComponentFactory()
-            .create(this)
-            .inject(this)
-    }
+    private val viewModel: QuestionsViewModel by viewModel()
 
     override fun initView(): ComposeView {
         return ComposeView(requireContext()).apply {

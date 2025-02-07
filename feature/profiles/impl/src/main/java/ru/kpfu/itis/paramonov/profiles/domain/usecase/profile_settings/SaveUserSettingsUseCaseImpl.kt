@@ -5,9 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.profiles.api.model.UpdateKeys
 import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.SaveUserSettingsUseCase
-import javax.inject.Inject
 
-class SaveUserSettingsUseCaseImpl @Inject constructor(
+class SaveUserSettingsUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val repository: UserRepository
 ): SaveUserSettingsUseCase {

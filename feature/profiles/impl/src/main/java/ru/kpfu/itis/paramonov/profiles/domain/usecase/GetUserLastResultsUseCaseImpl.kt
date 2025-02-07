@@ -5,9 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.profiles.api.model.Result
 import ru.kpfu.itis.paramonov.profiles.api.repository.ResultRepository
 import ru.kpfu.itis.paramonov.profiles.api.usecase.GetUserLastResultsUseCase
-import javax.inject.Inject
 
-class GetUserLastResultsUseCaseImpl @Inject constructor(
+class GetUserLastResultsUseCaseImpl(
     private val resultRepository: ResultRepository,
     private val dispatcher: CoroutineDispatcher
 ): GetUserLastResultsUseCase {

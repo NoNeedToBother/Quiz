@@ -41,9 +41,6 @@ class RegisterScreen: MviBaseFragment(), DIAware {
 
     private val viewModel: RegisterViewModel by viewModel()
 
-    override fun inject() {
-    }
-
     override fun initView(): ComposeView {
         return ComposeView(requireContext()).apply {
             setContent {

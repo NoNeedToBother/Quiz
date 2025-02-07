@@ -6,9 +6,8 @@ import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.profiles.api.model.UpdateKeys
 import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.SaveProfilePictureUseCase
-import javax.inject.Inject
 
-class SaveProfilePictureUseCaseImpl @Inject constructor(
+class SaveProfilePictureUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val repository: UserRepository
 ): SaveProfilePictureUseCase {

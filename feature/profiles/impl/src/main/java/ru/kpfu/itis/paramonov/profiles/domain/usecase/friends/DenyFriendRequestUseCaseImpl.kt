@@ -4,9 +4,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.paramonov.profiles.api.repository.FriendRepository
 import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.DenyFriendRequestUseCase
-import javax.inject.Inject
 
-class DenyFriendRequestUseCaseImpl @Inject constructor(
+class DenyFriendRequestUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val friendRepository: FriendRepository
 ): DenyFriendRequestUseCase {

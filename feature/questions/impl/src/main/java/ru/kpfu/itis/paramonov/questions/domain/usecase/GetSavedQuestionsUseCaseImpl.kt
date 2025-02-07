@@ -7,9 +7,8 @@ import ru.kpfu.itis.paramonov.questions.api.model.QuestionData
 import ru.kpfu.itis.paramonov.questions.api.repository.QuestionSettingsRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.SavedQuestionRepository
 import ru.kpfu.itis.paramonov.questions.api.usecase.GetSavedQuestionsUseCase
-import javax.inject.Inject
 
-class GetSavedQuestionsUseCaseImpl @Inject constructor(
+class GetSavedQuestionsUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val savedQuestionRepository: SavedQuestionRepository,
     private val questionsSettingsRepository: QuestionSettingsRepository

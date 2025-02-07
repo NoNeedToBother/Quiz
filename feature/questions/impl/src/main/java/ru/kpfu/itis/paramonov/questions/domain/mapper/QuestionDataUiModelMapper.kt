@@ -4,9 +4,8 @@ import ru.kpfu.itis.paramonov.core.mapper.ModelMapper
 import ru.kpfu.itis.paramonov.questions.api.model.QuestionData
 import ru.kpfu.itis.paramonov.questions.presentation.questions.model.AnswerDataUiModel
 import ru.kpfu.itis.paramonov.questions.presentation.questions.model.QuestionDataUiModel
-import javax.inject.Inject
 
-class QuestionDataUiModelMapper @Inject constructor(): ModelMapper<QuestionData, QuestionDataUiModel> {
+class QuestionDataUiModelMapper: ModelMapper<QuestionData, QuestionDataUiModel> {
     override fun map(model: QuestionData): QuestionDataUiModel {
         return QuestionDataUiModel(
             text = model.text,

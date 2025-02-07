@@ -39,9 +39,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.firebase)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
-
     implementation(libs.kodein)
 
     testImplementation(libs.junit)

@@ -3,9 +3,8 @@ package ru.kpfu.itis.paramonov.profiles.domain.mapper
 import ru.kpfu.itis.paramonov.core.mapper.ModelMapper
 import ru.kpfu.itis.paramonov.profiles.api.model.FriendStatus
 import ru.kpfu.itis.paramonov.profiles.presentation.model.FriendStatusUiModel
-import javax.inject.Inject
 
-class FriendStatusUiModelMapper @Inject constructor(): ModelMapper<FriendStatus, FriendStatusUiModel> {
+class FriendStatusUiModelMapper: ModelMapper<FriendStatus, FriendStatusUiModel> {
     override fun map(model: FriendStatus): FriendStatusUiModel {
         return when(model) {
             FriendStatus.FRIEND -> FriendStatusUiModel.FRIEND

@@ -8,9 +8,8 @@ import ru.kpfu.itis.paramonov.profiles.api.model.User
 import ru.kpfu.itis.paramonov.profiles.domain.exception.IncorrectUserDataException
 import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
 import ru.kpfu.itis.paramonov.profiles.api.usecase.GetUserUseCase
-import javax.inject.Inject
 
-class GetUserUseCaseImpl @Inject constructor(
+class GetUserUseCaseImpl(
     private val dispatcher: CoroutineDispatcher,
     private val repository: UserRepository,
     private val resourceManager: ResourceManager

@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.ui.base
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +9,6 @@ import androidx.fragment.app.Fragment
 import ru.kpfu.itis.paramonov.ui.components.ErrorBottomSheetDialogFragment
 
 abstract class MviBaseFragment: Fragment() {
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        inject()
-    }
-
-    protected abstract fun inject()
 
     protected abstract fun initView(): ComposeView
 

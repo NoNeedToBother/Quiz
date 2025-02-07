@@ -64,7 +64,7 @@
 
     <fragment
         android:id="@+id/leaderboardsFragment"
-        android:name="ru.kpfu.itis.paramonov.leaderboards.presentation.fragments.LeaderboardScreen"
+        android:name="ru.kpfu.itis.paramonov.leaderboards.presentation.ui.screens.LeaderboardScreen"
         android:label="fragment_leaderboards"
         />
 

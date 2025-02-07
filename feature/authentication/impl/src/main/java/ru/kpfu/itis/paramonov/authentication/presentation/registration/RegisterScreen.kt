@@ -21,6 +21,7 @@ import ru.kpfu.itis.paramonov.authentication.presentation.components.Logo
 import ru.kpfu.itis.paramonov.authentication.presentation.components.PasswordSection
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.mvi.RegisterScreenSideEffect
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.mvi.RegisterScreenState
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 
 @Composable
 fun RegisterScreen(
@@ -33,6 +34,8 @@ fun RegisterScreen(
     val state = viewModel.container.stateFlow.collectAsState()
     val effect = viewModel.container.sideEffectFlow
 
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
+
     LaunchedEffect(null) {
         viewModel.checkCurrentUser()
 
@@ -42,10 +45,9 @@ fun RegisterScreen(
                     goToMainMenuScreen()
                 }
                 is RegisterScreenSideEffect.ShowError -> {
-                    //val errorMessage = it.message
-                    //val errorTitle = getString(R.string.registration_failed)
-
-                    //showErrorBottomSheetDialog(errorTitle, errorMessage)
+                    val errorMessage = it.message
+                    val errorTitle = it.title
+                    error = errorTitle to errorMessage
                 }
             }
         }
@@ -63,6 +65,16 @@ fun RegisterScreen(
         },
         onGoToSignInClick = { goToSignInScreen() }
     )
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
+        }
+    }
 }
 
 @Composable

@@ -78,7 +78,7 @@ class QuestionsViewModel(
             postSideEffect(QuestionsScreenSideEffect.ShowError(
                 title = resourceManager.getString(R.string.get_questions_fail_msg),
                 message = ex.message ?:
-                resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
             ))
         }
     }
@@ -115,7 +115,7 @@ class QuestionsViewModel(
             postSideEffect(QuestionsScreenSideEffect.ShowError(
                 title = resourceManager.getString(R.string.save_results_fail),
                 message = ex.message ?:
-                resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
             ))
         }
     }

@@ -3,11 +3,13 @@ package ru.kpfu.itis.paramonov.authentication.presentation.registration
 import androidx.lifecycle.ViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import ru.kpfu.itis.paramonov.authentication.R
 import ru.kpfu.itis.paramonov.authentication.api.usecase.CheckUserIsAuthenticatedUseCase
 import ru.kpfu.itis.paramonov.authentication.api.usecase.RegisterUserUseCase
 import ru.kpfu.itis.paramonov.authentication.domain.mapper.UserUiModelMapper
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.mvi.RegisterScreenState
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.mvi.RegisterScreenSideEffect
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
 import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
 import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
 
@@ -16,7 +18,8 @@ class RegisterViewModel(
     private val checkUserIsAuthenticatedUseCase: CheckUserIsAuthenticatedUseCase,
     private val mapper: UserUiModelMapper,
     private val usernameValidator: UsernameValidator,
-    private val passwordValidator: PasswordValidator
+    private val passwordValidator: PasswordValidator,
+    private val resourceManager: ResourceManager
 ): ViewModel(), ContainerHost<RegisterScreenState, RegisterScreenSideEffect> {
 
     override val container = container<RegisterScreenState, RegisterScreenSideEffect>(RegisterScreenState(null))
@@ -33,7 +36,10 @@ class RegisterViewModel(
             postSideEffect(RegisterScreenSideEffect.NavigateToMainMenu)
         } catch (ex: Throwable) {
             reduce { state.copy(userData = null, isLoading = false) }
-            postSideEffect(RegisterScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(RegisterScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.registration_failed),
+                message = ex.message ?: resourceManager.getString(R.string.default_error_msg))
+            )
         }
     }
 
@@ -46,7 +52,10 @@ class RegisterViewModel(
             }
         } catch (ex: Throwable) {
             reduce { state.copy(userData = null) }
-            postSideEffect(RegisterScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(RegisterScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.sign_in_failed),
+                message = ex.message ?: resourceManager.getString(R.string.default_error_msg))
+            )
         }
     }
 

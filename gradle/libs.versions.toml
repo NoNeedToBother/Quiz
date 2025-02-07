@@ -41,14 +41,12 @@ foundationLayoutAndroid = "1.7.2"
 
 [libraries]
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
-view-binding-delegate = { group = "com.github.kirich1409", name = "viewbindingpropertydelegate-noreflection", version.ref = "viewBindingDelegate" }
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidXCore" }
 androidx-compat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXCompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewModelKtx" }
-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment" }
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }

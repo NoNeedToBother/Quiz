@@ -23,6 +23,7 @@ import ru.kpfu.itis.paramonov.authentication.presentation.components.Logo
 import ru.kpfu.itis.paramonov.authentication.presentation.components.PasswordSection
 import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.mvi.SignInScreenSideEffect
 import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.mvi.SignInScreenState
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 
 @Composable
 fun SignInScreen(
@@ -35,6 +36,7 @@ fun SignInScreen(
     val state = viewModel.container.stateFlow.collectAsState()
     val effect = viewModel.container.sideEffectFlow
     var showToast by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
 
     LaunchedEffect(null) {
         viewModel.checkCurrentUser()
@@ -46,10 +48,10 @@ fun SignInScreen(
                     goToMainMenuScreen()
                 }
                 is SignInScreenSideEffect.ShowError -> {
-                    //val errorMessage = it.message
-                    //val errorTitle = getString(R.string.sign_in_failed)
+                    val errorMessage = it.message
+                    val errorTitle = it.title
 
-                    //showErrorBottomSheetDialog(errorTitle, errorMessage)
+                    error = errorTitle to errorMessage
                 }
             }
         }
@@ -70,6 +72,16 @@ fun SignInScreen(
             stringResource(R.string.welcome_back_user, state.value.userData?.username ?: ""),
             Toast.LENGTH_LONG).show()
         showToast = false
+    }
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
+        }
     }
 }
 

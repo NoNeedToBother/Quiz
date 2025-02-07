@@ -49,7 +49,6 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.viewmodel.ktx)
-    implementation(libs.fragment.ktx)
 
     implementation(libs.bundles.mvi.core)
     implementation(libs.bundles.compose)

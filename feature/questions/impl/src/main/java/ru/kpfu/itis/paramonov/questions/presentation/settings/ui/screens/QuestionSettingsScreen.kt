@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.questions.presentation.settings.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,6 +37,7 @@ import ru.kpfu.itis.paramonov.questions.presentation.settings.mvi.QuestionSettin
 import ru.kpfu.itis.paramonov.questions.presentation.settings.mvi.QuestionSettingsScreenState
 import ru.kpfu.itis.paramonov.questions.presentation.settings.viewmodel.QuestionSettingsViewModel
 import ru.kpfu.itis.paramonov.ui.components.DropdownMenu
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 
 @Composable
 fun QuestionSettingsScreen() {
@@ -45,6 +47,8 @@ fun QuestionSettingsScreen() {
     val state = viewModel.container.stateFlow.collectAsState()
     val effect = viewModel.container.sideEffectFlow
 
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
+
     LaunchedEffect(Unit) {
         viewModel.getQuestionSettings()
         viewModel.getTrainingQuestionSettings()
@@ -52,10 +56,10 @@ fun QuestionSettingsScreen() {
         effect.collect {
             when(it) {
                 is QuestionSettingsScreenSideEffect.ShowError -> {
-                    //val errorMessage = it.message
-                    //val errorTitle = it.title
+                    val errorMessage = it.message
+                    val errorTitle = it.title
 
-                    //showErrorBottomSheetDialog(errorTitle, errorMessage)
+                    error = errorTitle to errorMessage
                 }
             }
         }
@@ -72,6 +76,16 @@ fun QuestionSettingsScreen() {
         onSaveClick = { viewModel.saveTrainingQuestionSettings() },
         checkLimit = { viewModel.checkLimit(it) }
     )
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
+        }
+    }
 }
 
 @Composable

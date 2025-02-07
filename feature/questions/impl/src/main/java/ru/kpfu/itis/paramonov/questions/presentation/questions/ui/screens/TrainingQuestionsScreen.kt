@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.questions.presentation.questions.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,9 +24,11 @@ import androidx.compose.ui.unit.sp
 import org.kodein.di.compose.localDI
 import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.questions.R
+import ru.kpfu.itis.paramonov.questions.presentation.questions.mvi.TrainingQuestionsScreenSideEffect
 import ru.kpfu.itis.paramonov.questions.presentation.questions.mvi.TrainingQuestionsScreenState
 import ru.kpfu.itis.paramonov.questions.presentation.questions.ui.components.QuestionPage
 import ru.kpfu.itis.paramonov.questions.presentation.questions.viewmodel.TrainingQuestionsViewModel
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 import kotlin.math.abs
 
 @Composable
@@ -36,8 +39,21 @@ fun TrainingQuestionsScreen() {
     val state = viewModel.container.stateFlow.collectAsState()
     val effect = viewModel.container.sideEffectFlow
 
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
+
     LaunchedEffect(Unit) {
         viewModel.getQuestions()
+
+        effect.collect {
+            when(it) {
+                is TrainingQuestionsScreenSideEffect.ShowError -> {
+                    val errorTitle = it.title
+                    val errorMessage = it.message
+
+                    error = errorTitle to errorMessage
+                }
+            }
+        }
     }
 
     ScreenContent(
@@ -47,6 +63,16 @@ fun TrainingQuestionsScreen() {
             viewModel.updateChosenAnswers(question, answerPos)
         },
     )
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
+        }
+    }
 }
 
 @Composable

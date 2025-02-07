@@ -2,11 +2,13 @@ package ru.kpfu.itis.paramonov.profiles.presentation.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.collectLatest
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import ru.kpfu.itis.paramonov.core.resources.ResourceManager
 import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
 import ru.kpfu.itis.paramonov.core.validators.UsernameValidator
+import ru.kpfu.itis.paramonov.profiles.R
 import ru.kpfu.itis.paramonov.profiles.domain.exception.IncorrectUserDataException
 import ru.kpfu.itis.paramonov.profiles.api.usecase.GetCurrentUserLastResultsUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.ChangeCredentialsUseCase
@@ -52,10 +54,18 @@ class ProfileViewModel(
             val user = userUiModelMapper.map(getCurrentUserUseCase.invoke())
             reduce { state.copy(user = user) }
         } catch (ex: IncorrectUserDataException) {
-            postSideEffect(ProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(ProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.incorrect_user_data),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
             postSideEffect(ProfileScreenSideEffect.GoToSignIn)
         } catch (ex: Throwable) {
-            postSideEffect(ProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(ProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.incorrect_user_data),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 
@@ -65,7 +75,11 @@ class ProfileViewModel(
             changeCredentialsUseCase.invoke(email = email, password = password)
             logout()
         } catch (ex: Throwable) {
-            postSideEffect(ProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(ProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.dialog_incorrect_credentials),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
         reduce { state.copy(processingCredentials = false) }
     }
@@ -76,7 +90,11 @@ class ProfileViewModel(
             confirmCredentialsUseCase.invoke(email = email, password = password)
             postSideEffect(ProfileScreenSideEffect.CredentialsConfirmed)
         } catch (ex: Throwable) {
-            postSideEffect(ProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(ProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.credentials_change_failed),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
         reduce { state.copy(processingCredentials = false) }
     }
@@ -85,7 +103,11 @@ class ProfileViewModel(
         try {
             saveProfilePictureUseCase.invoke(uri)
         } catch (ex: Throwable) {
-            postSideEffect(ProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(ProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.save_photo_fail),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 
@@ -102,7 +124,11 @@ class ProfileViewModel(
         try {
             saveUserSettingsUseCase.invoke(settings)
         } catch (ex: Throwable) {
-            postSideEffect(ProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(ProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.dialog_incorrect_user_data),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 
@@ -125,7 +151,11 @@ class ProfileViewModel(
             val requests = getFriendRequestsUseCase.invoke().map { user -> userUiModelMapper.map(user) }
             postSideEffect(ProfileScreenSideEffect.FriendRequestsReceived(requests))
         } catch (ex: Throwable) {
-            postSideEffect(ProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(ProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.friend_request_error),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 
@@ -142,7 +172,7 @@ class ProfileViewModel(
     }
 
     fun subscribeToProfileUpdates() = intent {
-        subscribeToProfileUpdatesUseCase.invoke().collect {
+        subscribeToProfileUpdatesUseCase.invoke().collectLatest {
             reduce { state.copy(user = userUiModelMapper.map(it)) }
         }
     }
@@ -152,7 +182,11 @@ class ProfileViewModel(
             val results = getCurrentUserLastResultsUseCase.invoke(max).map { res -> resultUiModelMapper.map(res) }
             postSideEffect(ProfileScreenSideEffect.ResultsReceived(results))
         } catch (ex: Throwable) {
-            postSideEffect(ProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(ProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.get_results_fail),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 

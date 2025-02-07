@@ -30,6 +30,7 @@ import ru.kpfu.itis.paramonov.profiles.presentation.mvi.OtherUserProfileScreenSi
 import ru.kpfu.itis.paramonov.profiles.presentation.mvi.OtherUserProfileScreenState
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.ProfileInfoField
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.OtherUserProfileViewModel
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 
 private const val MAX_RESULTS_AMOUNT = 10
 
@@ -43,6 +44,7 @@ fun OtherUserProfileScreen(
     val effect = viewModel.container.sideEffectFlow
 
     var results by remember { mutableStateOf<List<ResultUiModel>?>(null) }
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
 
     LaunchedEffect(null) {
         viewModel.getUser(userId)
@@ -51,10 +53,10 @@ fun OtherUserProfileScreen(
         effect.collect {
             when (it) {
                 is OtherUserProfileScreenSideEffect.ShowError -> {
-                    //val errorMessage = it.message
-                    //val errorTitle = getString(R.string.get_info_fail)
+                    val errorMessage = it.message
+                    val errorTitle = it.title
 
-                    //showErrorBottomSheetDialog(errorTitle, errorMessage)
+                    error = errorTitle to errorMessage
                 }
                 is OtherUserProfileScreenSideEffect.ResultsReceived ->
                     results = it.results
@@ -67,15 +69,25 @@ fun OtherUserProfileScreen(
         state = state,
         onGetResultsClicked = { viewModel.getLastResults(MAX_RESULTS_AMOUNT, userId) },
         onAddFriendClick = { viewModel.sendFriendRequest(userId) }
-    )
+    ) {
+        results?.let {
+            StatsDialog(
+                results = it,
+                onDismiss = {
+                    results = null
+                }
+            )
+        }
+    }
 
-    results?.let {
-        StatsDialog(
-            results = it,
-            onDismiss = {
-                results = null
-            }
-        )
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
+        }
     }
 }
 
@@ -84,7 +96,8 @@ fun ScreenContent(
     modifier: Modifier = Modifier,
     state: State<OtherUserProfileScreenState>,
     onGetResultsClicked: () -> Unit,
-    onAddFriendClick: () -> Unit
+    onAddFriendClick: () -> Unit,
+    dialogs: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier.padding(PaddingValues(top = 24.dp)),
@@ -133,6 +146,7 @@ fun ScreenContent(
             }
         }
     }
+    dialogs()
 }
 
 @Composable

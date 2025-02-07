@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.users.presentation.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.kodein.di.compose.localDI
 import org.kodein.di.instance
-import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 import ru.kpfu.itis.paramonov.ui.components.EmptyResults
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 import ru.kpfu.itis.paramonov.users.presentation.mvi.SearchUsersScreenSideEffect
 import ru.kpfu.itis.paramonov.users.presentation.mvi.SearchUsersScreenState
 import ru.kpfu.itis.paramonov.users.presentation.ui.components.SearchBar
@@ -44,47 +45,56 @@ fun SearchUsersScreen(
 
     var lastTime by remember { mutableLongStateOf(DEFAULT_LAST_TIME_VALUE) }
     var timer by remember { mutableStateOf(Timer()) }
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
 
     LaunchedEffect(null) {
         effect.collect {
             when (it) {
                 is SearchUsersScreenSideEffect.ShowError -> {
-                    //val errorMessage = it.message
-                    //val errorTitle = getString(R.string.search_users_fail)
+                    val errorMessage = it.message
+                    val errorTitle = it.title
 
-                    //showErrorBottomSheetDialog(errorTitle, errorMessage)
+                    error = errorTitle to errorMessage
                 }
             }
         }
     }
 
-    AppTheme {
-        var searchQuery by remember { mutableStateOf("") }
-        Screen(
-            state = state,
-            onUserClick = { id -> goToUserScreen(id) },
-            onSearch = {
-                searchQuery = it
-                val currentTime = System.currentTimeMillis()
-                if (lastTime != DEFAULT_LAST_TIME_VALUE &&
-                    currentTime - lastTime < MIN_TIME_BETWEEN_REGISTERING
-                ) {
-                    try {
-                        timer.cancel()
-                        timer = Timer()
-                    } catch (_: IllegalStateException) {}
-                }
-                lastTime = currentTime
-                timer.schedule(timerTask {
-                    viewModel.searchUsers(it, MAX_USER_AMOUNT, null)
-                }, MIN_TIME_BETWEEN_REGISTERING)
-                viewModel.searchUsers(it, MAX_USER_AMOUNT, null)
-            },
-            loadMore = {
-                val last = state.value.users.last()
-                viewModel.loadNextUsers(searchQuery, MAX_USER_AMOUNT, last.id)
+    var searchQuery by remember { mutableStateOf("") }
+    Screen(
+        state = state,
+        onUserClick = { id -> goToUserScreen(id) },
+        onSearch = {
+            searchQuery = it
+            val currentTime = System.currentTimeMillis()
+            if (lastTime != DEFAULT_LAST_TIME_VALUE &&
+                currentTime - lastTime < MIN_TIME_BETWEEN_REGISTERING
+            ) {
+                try {
+                    timer.cancel()
+                    timer = Timer()
+                } catch (_: IllegalStateException) {}
             }
-        )
+            lastTime = currentTime
+            timer.schedule(timerTask {
+                viewModel.searchUsers(it, MAX_USER_AMOUNT, null)
+            }, MIN_TIME_BETWEEN_REGISTERING)
+            viewModel.searchUsers(it, MAX_USER_AMOUNT, null)
+        },
+        loadMore = {
+            val last = state.value.users.last()
+            viewModel.loadNextUsers(searchQuery, MAX_USER_AMOUNT, last.id)
+        }
+    )
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
+        }
     }
 }
 

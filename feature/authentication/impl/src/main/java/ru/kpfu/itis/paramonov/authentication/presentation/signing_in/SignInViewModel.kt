@@ -8,13 +8,16 @@ import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.mvi.SignInS
 import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.mvi.SignInScreenState
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import ru.kpfu.itis.paramonov.authentication.R
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
 import ru.kpfu.itis.paramonov.core.validators.PasswordValidator
 
 class SignInViewModel(
     private val authenticateUserUseCase: AuthenticateUserUseCase,
     private val checkUserIsAuthenticatedUseCase: CheckUserIsAuthenticatedUseCase,
     private val mapper: UserUiModelMapper,
-    private val passwordValidator: PasswordValidator
+    private val passwordValidator: PasswordValidator,
+    private val resourceManager: ResourceManager
 ): ViewModel(), ContainerHost<SignInScreenState, SignInScreenSideEffect> {
 
     override val container = container<SignInScreenState, SignInScreenSideEffect>(SignInScreenState(null))
@@ -31,7 +34,10 @@ class SignInViewModel(
             postSideEffect(SignInScreenSideEffect.NavigateToMainMenu)
         } catch (ex: Throwable) {
             reduce { state.copy(userData = null, isLoading = false) }
-            postSideEffect(SignInScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(SignInScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.sign_in_failed),
+                message = ex.message ?: resourceManager.getString(R.string.default_error_msg)
+            ))
         }
     }
 
@@ -44,7 +50,10 @@ class SignInViewModel(
             }
         } catch (ex: Throwable) {
             reduce { state.copy(userData = null) }
-            postSideEffect(SignInScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(SignInScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.sign_in_failed),
+                message = ex.message ?: resourceManager.getString(R.string.default_error_msg)
+            ))
         }
     }
 

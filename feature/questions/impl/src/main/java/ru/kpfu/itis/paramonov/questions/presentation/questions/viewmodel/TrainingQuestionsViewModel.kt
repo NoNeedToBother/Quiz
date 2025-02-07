@@ -3,6 +3,8 @@ package ru.kpfu.itis.paramonov.questions.presentation.questions.viewmodel
 import androidx.lifecycle.ViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.questions.R
 import ru.kpfu.itis.paramonov.questions.api.usecase.GetSavedQuestionsUseCase
 import ru.kpfu.itis.paramonov.questions.domain.mapper.QuestionDataUiModelMapper
 import ru.kpfu.itis.paramonov.questions.presentation.questions.model.AnswerDataUiModel
@@ -13,6 +15,7 @@ import ru.kpfu.itis.paramonov.questions.presentation.questions.mvi.TrainingQuest
 class TrainingQuestionsViewModel(
     private val getSavedQuestionsUseCase: GetSavedQuestionsUseCase,
     private val questionDataUiModelMapper: QuestionDataUiModelMapper,
+    private val resourceManager: ResourceManager
 ): ViewModel(), ContainerHost<TrainingQuestionsScreenState, TrainingQuestionsScreenSideEffect> {
 
     override val container = container<TrainingQuestionsScreenState, TrainingQuestionsScreenSideEffect>(
@@ -26,7 +29,11 @@ class TrainingQuestionsViewModel(
             }
             reduce { state.copy(questions = questions) }
         } catch (ex: Exception) {
-
+            postSideEffect(TrainingQuestionsScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.get_questions_fail_msg),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 

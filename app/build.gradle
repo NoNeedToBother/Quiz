@@ -38,7 +38,6 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
         compose = true
     }
 }
@@ -68,10 +67,7 @@ dependencies {
     implementation(libs.kodein)
     implementation(libs.kodein.android)
 
-    implementation(libs.view.binding.delegate)
-
     implementation(libs.viewmodel.ktx)
-    implementation(libs.fragment.ktx)
 
     implementation(libs.androidx.compose.navigation)
 
@@ -85,7 +81,6 @@ dependencies {
 
     implementation(libs.kodein)
     implementation(libs.bundles.kodein.android)
-    implementation libs.androidx.foundation.layout.android
     implementation libs.androidx.foundation.layout.android
 
     testImplementation(libs.junit)

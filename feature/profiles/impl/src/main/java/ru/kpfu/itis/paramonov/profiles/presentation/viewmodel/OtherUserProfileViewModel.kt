@@ -3,6 +3,8 @@ package ru.kpfu.itis.paramonov.profiles.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
+import ru.kpfu.itis.paramonov.profiles.R
 import ru.kpfu.itis.paramonov.profiles.api.usecase.GetUserLastResultsUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.GetUserUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.GetFriendStatusUseCase
@@ -20,7 +22,8 @@ class OtherUserProfileViewModel(
     private val getUserLastResultsUseCase: GetUserLastResultsUseCase,
     private val userUiModelMapper: UserUiModelMapper,
     private val resultUiModelMapper: ResultUiModelMapper,
-    private val friendStatusUiModelMapper: FriendStatusUiModelMapper
+    private val friendStatusUiModelMapper: FriendStatusUiModelMapper,
+    private val resourceManager: ResourceManager
 ): ViewModel(), ContainerHost<OtherUserProfileScreenState, OtherUserProfileScreenSideEffect> {
 
     override val container = container<OtherUserProfileScreenState, OtherUserProfileScreenSideEffect>(
@@ -32,7 +35,11 @@ class OtherUserProfileViewModel(
             val user = userUiModelMapper.map(getUserUseCase.invoke(id))
             reduce { state.copy(user = user) }
         } catch (ex: Throwable) {
-            postSideEffect(OtherUserProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(OtherUserProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.incorrect_other_user_data),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 
@@ -52,7 +59,11 @@ class OtherUserProfileViewModel(
             )
             reduce { state.copy(friendStatus = friendStatus) }
         } catch (ex: Throwable) {
-            postSideEffect(OtherUserProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(OtherUserProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.get_info_fail),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 
@@ -61,7 +72,11 @@ class OtherUserProfileViewModel(
             val results = getUserLastResultsUseCase.invoke(max, id).map { res -> resultUiModelMapper.map(res) }
             postSideEffect(OtherUserProfileScreenSideEffect.ResultsReceived(results))
         } catch (ex: Throwable) {
-            postSideEffect(OtherUserProfileScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(OtherUserProfileScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.get_results_fail),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 }

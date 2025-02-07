@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.questions.presentation.questions.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +31,7 @@ import ru.kpfu.itis.paramonov.questions.presentation.questions.mvi.QuestionsScre
 import ru.kpfu.itis.paramonov.questions.presentation.questions.mvi.QuestionsScreenState
 import ru.kpfu.itis.paramonov.questions.presentation.questions.ui.components.QuestionPage
 import ru.kpfu.itis.paramonov.questions.presentation.questions.viewmodel.QuestionsViewModel
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 import ru.kpfu.itis.paramonov.ui.components.Stopwatch
 import kotlin.math.abs
 
@@ -41,6 +43,8 @@ fun QuestionsScreen() {
     val state = viewModel.container.stateFlow.collectAsState()
     val effect = viewModel.container.sideEffectFlow
 
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
+
     LaunchedEffect(Unit) {
         viewModel.getQuestions()
         viewModel.getMaxScore()
@@ -48,10 +52,10 @@ fun QuestionsScreen() {
         effect.collect {
             when(it) {
                 is QuestionsScreenSideEffect.ShowError -> {
-                    //val errorMessage = it.message
-                    //val errorTitle = it.title
+                    val errorMessage = it.message
+                    val errorTitle = it.title
 
-                    //showErrorBottomSheetDialog(errorTitle, errorMessage)
+                    error = errorTitle to errorMessage
                 }
             }
         }
@@ -71,6 +75,16 @@ fun QuestionsScreen() {
         },
         onEndClick = { viewModel.onQuestionsEnd() }
     )
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
+        }
+    }
 }
 
 @Composable

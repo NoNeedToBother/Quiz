@@ -13,6 +13,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -28,6 +29,7 @@ import ru.kpfu.itis.paramonov.leaderboards.presentation.mvi.LeaderboardsScreenSi
 import ru.kpfu.itis.paramonov.leaderboards.presentation.mvi.LeaderboardsScreenState
 import ru.kpfu.itis.paramonov.leaderboards.presentation.viewmodel.LeaderboardsViewModel
 import ru.kpfu.itis.paramonov.ui.components.EmptyResults
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 
 private const val LEADERBOARD_MAX_AT_ONCE = 15
 
@@ -42,16 +44,18 @@ fun LeaderboardsScreen(
     val state = viewModel.container.stateFlow.collectAsState()
     val effect = viewModel.container.sideEffectFlow
 
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
+
     LaunchedEffect(null) {
         viewModel.getGlobalLeaderboard(LEADERBOARD_MAX_AT_ONCE)
 
         effect.collect {
             when (it) {
                 is LeaderboardsScreenSideEffect.ShowError -> {
-                    //val errorMessage = it.message
-                    //val errorTitle = getString(R.string.get_results_fail)
+                    val errorMessage = it.message
+                    val errorTitle = it.title
 
-                    //showErrorBottomSheetDialog(errorTitle, errorMessage)
+                    error = errorTitle to errorMessage
                 }
             }
         }
@@ -82,6 +86,16 @@ fun LeaderboardsScreen(
         onCategoryChosen = { viewModel.changeCategory(it) },
         onGameModeChosen = { viewModel.changeGameMode(it) }
     )
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
+        }
+    }
 }
 
 @Composable

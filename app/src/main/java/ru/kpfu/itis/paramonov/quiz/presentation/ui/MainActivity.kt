@@ -153,13 +153,13 @@ fun MainScreen(
                 OtherUserProfileScreen(userId = userId)
             }
             composable(Routes.LeaderboardsScreen.route) { LeaderboardsScreen(
-                goToUserScreen = { id -> navController.navigate(Routes.UserScreen.route + "/{$id}") }
+                goToUserScreen = { id -> navController.navigate(Routes.UserScreen.route + "/$id") }
             ) }
             composable(Routes.SearchUsersScreen.route) { SearchUsersScreen(
-                goToUserScreen = { id -> navController.navigate(Routes.UserScreen.route + "/{$id}") }
+                goToUserScreen = { id -> navController.navigate(Routes.UserScreen.route + "/$id") }
             ) }
             composable(Routes.FriendsScreen.route) { FriendsScreen(
-                goToUserScreen = { id -> navController.navigate(Routes.UserScreen.route + "/{$id}") }
+                goToUserScreen = { id -> navController.navigate(Routes.UserScreen.route + "/$id") }
             ) }
         }
     }

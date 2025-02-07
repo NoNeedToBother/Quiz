@@ -30,6 +30,7 @@
     <string name="user_not_present">Sorry, it seems you are no longer logged in</string>
     <string name="empty_limit">Empty limit</string>
     <string name="save_results_fail">Failed to save results</string>
+    <string name="save_settings_fail">Failed to save settings</string>
 
     <string-array name="difficulties">
         <item>Easy</item>

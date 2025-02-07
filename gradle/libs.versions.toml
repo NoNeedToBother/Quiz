@@ -17,7 +17,7 @@ androidXCore = "1.15.0"
 androidXCompat = "1.7.0"
 androidxComposeBom = "2024.11.00"
 material = "1.12.0"
-jetpackNavigation = "2.8.5"
+navigation = "2.8.6"
 
 viewModelKtx = "2.8.7"
 fragment = "1.8.5"
@@ -37,6 +37,7 @@ coil = "3.0.4"
 animationGraphicsAndroid = "1.7.7"
 
 kodein = "7.25.0"
+foundationLayoutAndroid = "1.7.2"
 
 [libraries]
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
@@ -45,8 +46,9 @@ androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "and
 androidx-compat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXCompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
-jetpack-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "jetpackNavigation" }
-jetpack-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "jetpackNavigation" }
+#jetpack-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "jetpackNavigation" }
+#jetpack-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "jetpackNavigation" }
+androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewModelKtx" }
 fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment" }
@@ -104,6 +106,7 @@ androidx-animation-graphics-android = { group = "androidx.compose.animation", na
 
 kodein = { group = "org.kodein.di", name = "kodein-di", version.ref = "kodein" }
 kodein-android = { group = "org.kodein.di", name = "kodein-di-framework-android-x-viewmodel", version.ref = "kodein" }
+androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android" }

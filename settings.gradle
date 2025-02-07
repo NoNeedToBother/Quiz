@@ -14,7 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Quiz"
 include ':app'
-include ':navigation'
 include ':core'
 include ':core:firebase'
 include ':core:network'
@@ -37,3 +36,4 @@ include ':feature:questions:api'
 include ':feature:questions:impl'
 include ':feature:users:api'
 include ':feature:users:impl'
+include ':core:navigation'

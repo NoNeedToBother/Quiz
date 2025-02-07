@@ -1,37 +1,67 @@
 package ru.kpfu.itis.paramonov.quiz.presentation.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
-import android.view.animation.AnimationUtils
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import by.kirich1409.viewbindingdelegate.viewBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.closestDI
-import org.kodein.di.instance
-import ru.kpfu.itis.paramonov.core.utils.gone
-import ru.kpfu.itis.paramonov.core.utils.show
+import ru.kpfu.itis.paramonov.navigation.Routes
 import ru.kpfu.itis.paramonov.quiz.R
-import ru.kpfu.itis.paramonov.quiz.databinding.ActivityMainBinding
-import ru.kpfu.itis.paramonov.quiz.navigation.Navigator
+import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 
-class MainActivity: AppCompatActivity(R.layout.activity_main), DIAware {
+data class TopLevelRoute<R : Routes>(val name: String, val route: R, val icon: ImageVector)
+
+class MainActivity: ComponentActivity(), DIAware {
 
     override val di: DI by closestDI()
 
-    private val navigator: Navigator by instance()
-
-    private val binding by viewBinding(ActivityMainBinding::bind)
+    //private val navigator: Navigator by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupNavigation()
+
+        setContent {
+            AppTheme {
+                val topLevelRoutes = listOf(
+                    TopLevelRoute(Routes.SearchUsersScreen.route, Routes.SearchUsersScreen,
+                        ImageVector.vectorResource(R.drawable.search_users)),
+                    TopLevelRoute(Routes.LeaderboardsScreen.route, Routes.LeaderboardsScreen,
+                        ImageVector.vectorResource(R.drawable.leaderboards)),
+                    TopLevelRoute(Routes.MainMenuScreen.route, Routes.MainMenuScreen,
+                        ImageVector.vectorResource(R.drawable.main_menu)),
+                    TopLevelRoute(Routes.FriendsScreen.route, Routes.FriendsScreen,
+                        ImageVector.vectorResource(R.drawable.friends)),
+                    TopLevelRoute(Routes.ProfileScreen.route, Routes.ProfileScreen,
+                        ImageVector.vectorResource(R.drawable.profile)),
+                )
+                MainScreen(
+                    topLevelRoutes = topLevelRoutes
+                )
+            }
+        }
     }
 
-    private var navController: NavController? = null
+    /*private var navController: NavController? = null
 
     private fun setupNavigation() {
         binding.bnvMain.setOnItemSelectedListener { item ->
@@ -76,5 +106,55 @@ class MainActivity: AppCompatActivity(R.layout.activity_main), DIAware {
             navigator.detachNavController(it)
         }
         super.onDestroy()
+    }*/
+}
+
+@SuppressLint("RestrictedApi")
+@Composable
+fun MainScreen(
+    topLevelRoutes: List<TopLevelRoute<*>>
+) {
+    val navController = rememberNavController()
+
+    Scaffold(
+        bottomBar = {
+            BottomNavigation(
+                navController = navController,
+                topLevelRoutes = topLevelRoutes
+            )
+        }
+    ) { padding ->
+        NavHost(navController, startDestination = Routes.SignInScreen, modifier = Modifier.padding(padding)) {
+            //composable<> {  }
+        }
+    }
+}
+
+@SuppressLint("RestrictedApi")
+@Composable
+fun BottomNavigation(
+    navController: NavController,
+    topLevelRoutes: List<TopLevelRoute<*>>
+) {
+    NavigationBar {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+
+        topLevelRoutes.forEach { topLevelRoute ->
+            NavigationBarItem(
+                icon = { Icon(topLevelRoute.icon, contentDescription = topLevelRoute.name) },
+                label = { Text(topLevelRoute.name) },
+                selected = currentDestination?.hierarchy?.any { it.hasRoute(topLevelRoute.name, null) } == true,
+                onClick = {
+                    navController.navigate(topLevelRoute.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
     }
 }

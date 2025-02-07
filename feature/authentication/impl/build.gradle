@@ -41,7 +41,7 @@ android {
 dependencies {
     implementation project(':core:core')
     implementation project(':core:ui')
-    implementation project(':navigation')
+    implementation project(':core:navigation')
     implementation project(':feature:authentication:api')
 
     implementation(libs.androidx.core)

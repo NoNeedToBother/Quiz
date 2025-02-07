@@ -1,6 +1,6 @@
 package ru.kpfu.itis.paramonov.authentication.usecase
 
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -14,6 +14,7 @@ import ru.kpfu.itis.paramonov.authentication.domain.usecase.RegisterUserUseCaseI
 
 class RegisterUserUseCaseImplTests {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun testRegisterUserUseCaseImpl_success() = runTest {
         val dispatcher = UnconfinedTestDispatcher()

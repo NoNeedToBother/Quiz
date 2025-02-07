@@ -25,14 +25,16 @@ val featureUsersModule = DI {
     bindProvider {
         FriendsViewModel(
             getFriendsUseCase = instance(),
-            userUiModelMapper = instance()
+            userUiModelMapper = instance(),
+            resourceManager = instance()
         )
     }
 
     bindProvider {
         SearchUsersViewModel(
             searchUsersUseCase = instance(),
-            userUiModelMapper = instance()
+            userUiModelMapper = instance(),
+            resourceManager = instance()
         )
     }
 }

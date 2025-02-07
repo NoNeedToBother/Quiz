@@ -42,7 +42,8 @@ val featureAuthenticationModule = DI {
             checkUserIsAuthenticatedUseCase = instance(),
             mapper = instance(),
             usernameValidator = instance(),
-            passwordValidator = instance()
+            passwordValidator = instance(),
+            resourceManager = instance()
         )
     }
 
@@ -51,7 +52,8 @@ val featureAuthenticationModule = DI {
             authenticateUserUseCase = instance(),
             checkUserIsAuthenticatedUseCase = instance(),
             mapper = instance(),
-            passwordValidator = instance()
+            passwordValidator = instance(),
+            resourceManager = instance()
         )
     }
 }

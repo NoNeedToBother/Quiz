@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.questions.presentation.questions.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,74 +20,76 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.closestDI
-import org.kodein.di.android.x.viewmodel.viewModel
+import org.kodein.di.compose.localDI
+import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.questions.R
 import ru.kpfu.itis.paramonov.questions.presentation.questions.mvi.QuestionsScreenSideEffect
 import ru.kpfu.itis.paramonov.questions.presentation.questions.mvi.QuestionsScreenState
 import ru.kpfu.itis.paramonov.questions.presentation.questions.ui.components.QuestionPage
 import ru.kpfu.itis.paramonov.questions.presentation.questions.viewmodel.QuestionsViewModel
-import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 import ru.kpfu.itis.paramonov.ui.components.Stopwatch
-import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 import kotlin.math.abs
 
-class QuestionsScreen: MviBaseFragment(), DIAware {
+@Composable
+fun QuestionsScreen() {
+    val di = localDI()
+    val viewModel: QuestionsViewModel by di.instance()
 
-    override val di: DI by closestDI()
+    val state = viewModel.container.stateFlow.collectAsState()
+    val effect = viewModel.container.sideEffectFlow
 
-    private val viewModel: QuestionsViewModel by viewModel()
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
 
-    override fun initView(): ComposeView {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                AppTheme {
-                    val state = viewModel.container.stateFlow.collectAsState()
-                    val effect = viewModel.container.sideEffectFlow
+    LaunchedEffect(Unit) {
+        viewModel.getQuestions()
+        viewModel.getMaxScore()
 
-                    LaunchedEffect(Unit) {
-                        viewModel.getQuestions()
-                        viewModel.getMaxScore()
+        effect.collect {
+            when(it) {
+                is QuestionsScreenSideEffect.ShowError -> {
+                    val errorMessage = it.message
+                    val errorTitle = it.title
 
-                        effect.collect {
-                            when(it) {
-                                is QuestionsScreenSideEffect.ShowError -> {
-                                    val errorMessage = it.message
-                                    val errorTitle = it.title
-
-                                    showErrorBottomSheetDialog(errorTitle, errorMessage)
-                                }
-                            }
-                        }
-                    }
-
-                    state.value.result?.let {
-                        ResultScreen(
-                            resultData = it,
-                            maxScore = state.value.maxScore
-                        )
-                    } ?: Screen(
-                        state = state.value,
-                        onAnswerSelected = { question, answerPos ->
-                            viewModel.updateChosenAnswers(question, answerPos)
-                        },
-                        onEndClick = { viewModel.onQuestionsEnd() }
-                    )
+                    error = errorTitle to errorMessage
                 }
             }
+        }
+    }
+
+    state.value.result?.let {
+        ResultScreen(
+            modifier = Modifier.fillMaxSize(),
+            resultData = it,
+            maxScore = state.value.maxScore
+        )
+    } ?: ScreenContent(
+        modifier = Modifier.fillMaxSize(),
+        state = state.value,
+        onAnswerSelected = { question, answerPos ->
+            viewModel.updateChosenAnswers(question, answerPos)
+        },
+        onEndClick = { viewModel.onQuestionsEnd() }
+    )
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
         }
     }
 }
 
 @Composable
-fun Screen(
+fun ScreenContent(
+    modifier: Modifier = Modifier,
     state: QuestionsScreenState,
     onAnswerSelected: (question: Int, answerPos: Int) -> Unit,
     onEndClick: () -> Unit
@@ -94,7 +97,7 @@ fun Screen(
     val pagerState = rememberPagerState(pageCount = { state.questions.size })
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(top = 28.dp),
         horizontalAlignment = Alignment.CenterHorizontally

@@ -3,7 +3,9 @@ package ru.kpfu.itis.paramonov.leaderboards.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import ru.kpfu.itis.paramonov.core.resources.ResourceManager
 import ru.kpfu.itis.paramonov.core.utils.toEnumName
+import ru.kpfu.itis.paramonov.leaderboards.R
 import ru.kpfu.itis.paramonov.leaderboards.api.usecase.GetDifficultyUseCase
 import ru.kpfu.itis.paramonov.leaderboards.api.usecase.GetFriendsLeaderboardUseCase
 import ru.kpfu.itis.paramonov.leaderboards.api.usecase.GetGameModeUseCase
@@ -26,7 +28,8 @@ class LeaderboardsViewModel(
     private val getDifficultyUseCase: GetDifficultyUseCase,
     private val questionSettingsDomainModelMapper: QuestionSettingsDomainModelMapper,
     private val resultUiModelMapper: ResultUiModelMapper,
-    private val questionSettingsUiModelMapper: QuestionSettingsUiModelMapper
+    private val questionSettingsUiModelMapper: QuestionSettingsUiModelMapper,
+    private val resourceManager: ResourceManager
 ): ViewModel(), ContainerHost<LeaderboardsScreenState, LeaderboardsScreenSideEffect> {
 
     override val container = container<LeaderboardsScreenState, LeaderboardsScreenSideEffect>(LeaderboardsScreenState())
@@ -77,7 +80,11 @@ class LeaderboardsViewModel(
             if (checkLeaderboard(leaderboard))
                 reduce { state.copy(results = leaderboard, loadingEnded = true) }
         } catch (ex: Throwable) {
-            postSideEffect(LeaderboardsScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(LeaderboardsScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.get_results_fail),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 
@@ -101,7 +108,11 @@ class LeaderboardsViewModel(
             if (checkLeaderboard(leaderboard))
                 reduce { state.copy(results = leaderboard, loadingEnded = true) }
         } catch (ex: Throwable) {
-            postSideEffect(LeaderboardsScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(LeaderboardsScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.get_results_fail),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 
@@ -136,7 +147,11 @@ class LeaderboardsViewModel(
                 reduce { state.copy(results = new.distinctBy { it.id }) }
             }
         } catch (ex: Throwable) {
-            postSideEffect(LeaderboardsScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(LeaderboardsScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.get_results_fail),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 
@@ -161,7 +176,11 @@ class LeaderboardsViewModel(
                 reduce { state.copy(results = new.distinctBy { it.id }) }
             }
         } catch (ex: Throwable) {
-            postSideEffect(LeaderboardsScreenSideEffect.ShowError(ex.message ?: ""))
+            postSideEffect(LeaderboardsScreenSideEffect.ShowError(
+                title = resourceManager.getString(R.string.get_results_fail),
+                message = ex.message ?:
+                    resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.default_error_msg)
+            ))
         }
     }
 

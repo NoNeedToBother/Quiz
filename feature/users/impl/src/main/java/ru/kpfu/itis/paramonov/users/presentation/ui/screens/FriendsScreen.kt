@@ -1,5 +1,6 @@
 package ru.kpfu.itis.paramonov.users.presentation.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,82 +10,81 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.closestDI
-import org.kodein.di.android.x.viewmodel.viewModel
+import org.kodein.di.compose.localDI
 import org.kodein.di.instance
-import ru.kpfu.itis.paramonov.navigation.UserRouter
-import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
-import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 import ru.kpfu.itis.paramonov.ui.components.EmptyResults
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 import ru.kpfu.itis.paramonov.users.R
 import ru.kpfu.itis.paramonov.users.presentation.mvi.FriendsScreenState
 import ru.kpfu.itis.paramonov.users.presentation.mvi.FriendsScreenSideEffect
 import ru.kpfu.itis.paramonov.users.presentation.ui.components.UserList
 import ru.kpfu.itis.paramonov.users.presentation.viewmodel.FriendsViewModel
 
-class FriendsScreen: MviBaseFragment(), DIAware {
+private const val MAX_USER_AMOUNT = 15
 
-    override val di: DI by closestDI()
+@Composable
+fun FriendsScreen(
+    goToUserScreen: (String) -> Unit
+) {
+    val di = localDI()
+    val viewModel: FriendsViewModel by di.instance()
+    val state = viewModel.container.stateFlow.collectAsState()
+    val effect = viewModel.container.sideEffectFlow
 
-    private val viewModel: FriendsViewModel by viewModel()
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
 
-    private val userRouter: UserRouter by instance()
+    LaunchedEffect(null) {
+        viewModel.getFriends(MAX_USER_AMOUNT)
 
-    override fun initView(): ComposeView {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                val state = viewModel.container.stateFlow.collectAsState()
-                val effect = viewModel.container.sideEffectFlow
+        effect.collect {
+            when (it) {
+                is FriendsScreenSideEffect.ShowError -> {
+                    val errorMessage = it.message
+                    val errorTitle = it.title
 
-                LaunchedEffect(null) {
-                    viewModel.getFriends(MAX_USER_AMOUNT)
-
-                    effect.collect {
-                        when (it) {
-                            is FriendsScreenSideEffect.ShowError -> {
-                                val errorMessage = it.message
-                                val errorTitle = getString(R.string.get_friends_fail)
-
-                                showErrorBottomSheetDialog(errorTitle, errorMessage)
-                            }
-                        }
-                    }
-                }
-
-                AppTheme {
-                    Screen(
-                        state = state,
-                        onFriendClick = { id -> userRouter.goToUser(id) },
-                        loadFriends = { offset ->
-                            viewModel.loadNextFriends(offset, MAX_USER_AMOUNT)
-                        }
-                    )
+                    error = errorTitle to errorMessage
                 }
             }
         }
     }
 
-    companion object {
-        private const val MAX_USER_AMOUNT = 15
+    ScreenContent(
+        modifier = Modifier.fillMaxSize(),
+        state = state,
+        onFriendClick = { id -> goToUserScreen(id) },
+        loadFriends = { offset ->
+            viewModel.loadNextFriends(offset, MAX_USER_AMOUNT)
+        }
+    )
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
+        }
     }
 }
 
 @Composable
-fun Screen(
+fun ScreenContent(
+    modifier: Modifier = Modifier,
     state: State<FriendsScreenState>,
     onFriendClick: (String) -> Unit,
     loadFriends: (Int) -> Unit
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
             .padding(horizontal = 16.dp)
     ) {
         Text(

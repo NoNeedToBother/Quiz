@@ -1,7 +1,9 @@
 package ru.kpfu.itis.paramonov.questions.presentation.settings.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -20,15 +22,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.closestDI
-import org.kodein.di.android.x.viewmodel.viewModel
+import androidx.core.text.isDigitsOnly
+import org.kodein.di.compose.localDI
+import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.core.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.questions.R
 import ru.kpfu.itis.paramonov.questions.presentation.settings.model.QuestionSettingsUiModel
@@ -36,57 +36,61 @@ import ru.kpfu.itis.paramonov.questions.presentation.settings.model.TrainingQues
 import ru.kpfu.itis.paramonov.questions.presentation.settings.mvi.QuestionSettingsScreenSideEffect
 import ru.kpfu.itis.paramonov.questions.presentation.settings.mvi.QuestionSettingsScreenState
 import ru.kpfu.itis.paramonov.questions.presentation.settings.viewmodel.QuestionSettingsViewModel
-import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
-import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 import ru.kpfu.itis.paramonov.ui.components.DropdownMenu
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 
-class QuestionSettingsScreen: MviBaseFragment(), DIAware {
+@Composable
+fun QuestionSettingsScreen() {
+    val di = localDI()
+    val viewModel: QuestionSettingsViewModel by di.instance()
 
-    override val di: DI by closestDI()
+    val state = viewModel.container.stateFlow.collectAsState()
+    val effect = viewModel.container.sideEffectFlow
 
-    private val viewModel: QuestionSettingsViewModel by viewModel()
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
 
-    override fun initView(): ComposeView {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                AppTheme {
-                    val state = viewModel.container.stateFlow.collectAsState()
-                    val effect = viewModel.container.sideEffectFlow
+    LaunchedEffect(Unit) {
+        viewModel.getQuestionSettings()
+        viewModel.getTrainingQuestionSettings()
 
-                    LaunchedEffect(Unit) {
-                        viewModel.getQuestionSettings()
-                        viewModel.getTrainingQuestionSettings()
+        effect.collect {
+            when(it) {
+                is QuestionSettingsScreenSideEffect.ShowError -> {
+                    val errorMessage = it.message
+                    val errorTitle = it.title
 
-                        effect.collect {
-                            when(it) {
-                                is QuestionSettingsScreenSideEffect.ShowError -> {
-                                    val errorMessage = it.message
-                                    val errorTitle = it.title
-
-                                    showErrorBottomSheetDialog(errorTitle, errorMessage)
-                                }
-                            }
-                        }
-                    }
-
-                    Screen(
-                        state = state.value,
-                        onCategoryChosen = { viewModel.updateCategory(it) },
-                        onDifficultyChosen = { viewModel.updateDifficulty(it) },
-                        onGameModeChosen = { viewModel.updateGameMode(it) },
-                        onSaveSettingsClick = { viewModel.saveQuestionSettings() },
-                        onLimitChanged = { viewModel.updateLimit(it) },
-                        onSaveClick = { viewModel.saveTrainingQuestionSettings() },
-                        checkLimit = { viewModel.checkLimit(it) }
-                    )
+                    error = errorTitle to errorMessage
                 }
             }
+        }
+    }
+
+    ScreenContent(
+        modifier = Modifier.fillMaxSize(),
+        state = state.value,
+        onCategoryChosen = { viewModel.updateCategory(it) },
+        onDifficultyChosen = { viewModel.updateDifficulty(it) },
+        onGameModeChosen = { viewModel.updateGameMode(it) },
+        onSaveSettingsClick = { viewModel.saveQuestionSettings() },
+        onLimitChanged = { viewModel.updateLimit(it) },
+        onSaveClick = { viewModel.saveTrainingQuestionSettings() },
+        checkLimit = { viewModel.checkLimit(it) }
+    )
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
         }
     }
 }
 
 @Composable
-fun Screen(
+fun ScreenContent(
+    modifier: Modifier = Modifier,
     state: QuestionSettingsScreenState,
     onCategoryChosen: (String) -> Unit,
     onDifficultyChosen: (String) -> Unit,
@@ -103,7 +107,7 @@ fun Screen(
     )
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
     ) {
         TabRow(selectedTabIndex = selectedTabIndex) {
@@ -248,7 +252,7 @@ fun LimitInputSection(
         value = limit,
         onValueChange = {
             limit = it
-            val inputToCheck: Int? = if (limit.isEmpty()) null else limit.toInt()
+            val inputToCheck: Int? = if (limit.isEmpty() || !limit.isDigitsOnly()) null else limit.toInt()
             val err = checkLimit(inputToCheck)
             limitError = err
             if (err == null) onInput(it.toInt())

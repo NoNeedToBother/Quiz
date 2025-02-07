@@ -40,7 +40,7 @@ android {
 dependencies {
     implementation project(':core:core')
     implementation project(':core:ui')
-    implementation project(':navigation')
+    implementation project(':core:navigation')
     implementation project(':feature:profiles:api')
 
     implementation(libs.androidx.core)
@@ -48,15 +48,15 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.viewmodel.ktx)
-    implementation(libs.fragment.ktx)
 
     implementation(libs.bundles.mvi.core)
     implementation(libs.bundles.compose)
+    implementation(libs.androidx.compose.activity)
 
     implementation(libs.bundles.coil)
 
     implementation(libs.kodein)
-    implementation(libs.kodein.android)
+    implementation(libs.bundles.kodein.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

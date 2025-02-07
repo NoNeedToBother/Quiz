@@ -51,7 +51,8 @@ val featureLeaderboardsModule = DI {
             getDifficultyUseCase = instance(),
             questionSettingsDomainModelMapper = instance(),
             resultUiModelMapper = instance(),
-            questionSettingsUiModelMapper = instance()
+            questionSettingsUiModelMapper = instance(),
+            resourceManager = instance()
         )
     }
 }

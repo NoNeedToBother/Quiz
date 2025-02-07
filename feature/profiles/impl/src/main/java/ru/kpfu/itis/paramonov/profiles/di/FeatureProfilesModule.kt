@@ -108,7 +108,8 @@ val featureProfilesModule = DI {
             getUserLastResultsUseCase = instance(),
             userUiModelMapper = instance(),
             resultUiModelMapper = instance(),
-            friendStatusUiModelMapper = instance()
+            friendStatusUiModelMapper = instance(),
+            resourceManager = instance()
         )
     }
 

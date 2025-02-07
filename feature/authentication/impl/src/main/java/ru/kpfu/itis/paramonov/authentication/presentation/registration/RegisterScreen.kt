@@ -1,6 +1,5 @@
 package ru.kpfu.itis.paramonov.authentication.presentation.registration
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -8,17 +7,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.closestDI
-import org.kodein.di.android.x.viewmodel.viewModel
+import org.kodein.di.compose.localDI
 import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.authentication.R
 import ru.kpfu.itis.paramonov.authentication.presentation.components.InputSection
@@ -26,70 +21,65 @@ import ru.kpfu.itis.paramonov.authentication.presentation.components.Logo
 import ru.kpfu.itis.paramonov.authentication.presentation.components.PasswordSection
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.mvi.RegisterScreenSideEffect
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.mvi.RegisterScreenState
-import ru.kpfu.itis.paramonov.navigation.AuthenticationRouter
-import ru.kpfu.itis.paramonov.navigation.MainMenuRouter
-import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
-import ru.kpfu.itis.paramonov.ui.theme.AppTheme
+import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
 
-class RegisterScreen: MviBaseFragment(), DIAware {
+@Composable
+fun RegisterScreen(
+    goToSignInScreen: () -> Unit,
+    goToMainMenuScreen: () -> Unit
+) {
+    val di = localDI()
+    val viewModel: RegisterViewModel by di.instance()
 
-    override val di: DI by closestDI()
+    val state = viewModel.container.stateFlow.collectAsState()
+    val effect = viewModel.container.sideEffectFlow
 
-    private val mainMenuRouter: MainMenuRouter by instance()
+    var error by remember { mutableStateOf<Pair<String, String>?>(null) }
 
-    private val authenticationRouter: AuthenticationRouter by instance()
+    LaunchedEffect(null) {
+        viewModel.checkCurrentUser()
 
-    private val viewModel: RegisterViewModel by viewModel()
-
-    override fun initView(): ComposeView {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                val state = viewModel.container.stateFlow.collectAsState()
-                val effect = viewModel.container.sideEffectFlow
-
-                LaunchedEffect(null) {
-                    viewModel.checkCurrentUser()
-
-                    effect.collect {
-                        when (it) {
-                            is RegisterScreenSideEffect.NavigateToMainMenu -> {
-                                mainMenuRouter.goToMainMenu()
-                                Toast.makeText(
-                                    requireContext(),
-                                    getString(R.string.welcome_user, state.value.userData?.username),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                            is RegisterScreenSideEffect.ShowError -> {
-                                val errorMessage = it.message
-                                val errorTitle = getString(R.string.registration_failed)
-
-                                showErrorBottomSheetDialog(errorTitle, errorMessage)
-                            }
-                        }
-                    }
+        effect.collect {
+            when (it) {
+                is RegisterScreenSideEffect.NavigateToMainMenu -> {
+                    goToMainMenuScreen()
                 }
-
-                AppTheme {
-                    Screen(
-                        state = state,
-                        onUsernameInput = { viewModel.validateUsername(it) },
-                        onConfirmPasswordInput = { viewModel.validateConfirmPassword(it) },
-                        onPasswordInput = { viewModel.validatePassword(it) },
-                        onEmailInput = { viewModel.validateEmail(it) },
-                        onRegisterBtnClick = { username, email, password, confirmPassword ->
-                            viewModel.registerUser(username, email, password, confirmPassword)
-                        },
-                        onGoToSignInClick = { authenticationRouter.goToSignIn() }
-                    )
+                is RegisterScreenSideEffect.ShowError -> {
+                    val errorMessage = it.message
+                    val errorTitle = it.title
+                    error = errorTitle to errorMessage
                 }
             }
+        }
+    }
+
+    ScreenContent(
+        modifier = Modifier.fillMaxSize(),
+        state = state,
+        onUsernameInput = { viewModel.validateUsername(it) },
+        onConfirmPasswordInput = { viewModel.validateConfirmPassword(it) },
+        onPasswordInput = { viewModel.validatePassword(it) },
+        onEmailInput = { viewModel.validateEmail(it) },
+        onRegisterBtnClick = { username, email, password, confirmPassword ->
+            viewModel.registerUser(username, email, password, confirmPassword)
+        },
+        onGoToSignInClick = { goToSignInScreen() }
+    )
+
+    Box {
+        error?.let {
+            ErrorDialog(
+                onDismiss = { error = null },
+                title = it.first,
+                text = it.second
+            )
         }
     }
 }
 
 @Composable
-fun Screen(
+fun ScreenContent(
+    modifier: Modifier = Modifier,
     state: State<RegisterScreenState>,
     onUsernameInput: (String) -> Unit,
     onConfirmPasswordInput: (String) -> Unit,
@@ -103,7 +93,7 @@ fun Screen(
     var confirmPassword by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
 
-    Box {
+    Box(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

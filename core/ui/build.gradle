@@ -34,7 +34,6 @@ android {
     }
     buildFeatures {
         compose = true
-        viewBinding = true
     }
 }
 
@@ -47,11 +46,6 @@ dependencies {
 
     implementation libs.androidx.ui.android
     implementation libs.androidx.material3.android
-
-    implementation(libs.view.binding.delegate)
-
-    implementation(libs.viewmodel.ktx)
-    implementation(libs.fragment.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

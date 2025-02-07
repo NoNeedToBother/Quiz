@@ -82,7 +82,8 @@ val featureQuestionsModule = DI {
     bindProvider {
         TrainingQuestionsViewModel(
             getSavedQuestionsUseCase = instance(),
-            questionDataUiModelMapper = instance()
+            questionDataUiModelMapper = instance(),
+            resourceManager = instance()
         )
     }
 

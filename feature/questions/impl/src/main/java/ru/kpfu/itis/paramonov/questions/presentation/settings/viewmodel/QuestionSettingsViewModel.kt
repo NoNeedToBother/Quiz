@@ -98,7 +98,7 @@ class QuestionSettingsViewModel(
             saveTrainingQuestionSettingsUseCase.invoke(state.trainingSettings?.limit ?: 50)
         } catch (ex: Throwable) {
             postSideEffect(QuestionSettingsScreenSideEffect.ShowError(
-                title = "",
+                title = resourceManager.getString(R.string.save_settings_fail),
                 message = resourceManager.getString(
                     R.string.limit_not_correct, LIMIT_LOWER_BOUND, LIMIT_UPPER_BOUND
                 )

@@ -55,7 +55,7 @@ dependencies {
     implementation(libs.bundles.compose)
 
     implementation(libs.kodein)
-    implementation(libs.kodein.android)
+    implementation(libs.bundles.kodein.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

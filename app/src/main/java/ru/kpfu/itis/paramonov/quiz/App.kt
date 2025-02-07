@@ -20,7 +20,6 @@ import ru.kpfu.itis.paramonov.quiz.di.adapters.featureMapperAdapterModule
 import ru.kpfu.itis.paramonov.quiz.di.adapters.featureProfilesAdapterModule
 import ru.kpfu.itis.paramonov.quiz.di.adapters.featureQuestionsAdapterModule
 import ru.kpfu.itis.paramonov.quiz.di.adapters.featureUsersAdapterModule
-import ru.kpfu.itis.paramonov.quiz.di.navigationModule
 import ru.kpfu.itis.paramonov.users.di.featureUsersModule
 
 class App: Application(), DIAware {
@@ -33,8 +32,6 @@ class App: Application(), DIAware {
         import(localDatabaseModule)
 
         import(featureMapperAdapterModule)
-
-        import(navigationModule)
 
         import(featureAuthenticationAdapterModule)
         extend(featureAuthenticationModule)

@@ -7,7 +7,7 @@ sealed class Routes(val route: String) {
     data object QuestionsScreen: Routes("questionsScreen")
     data object TrainingScreen: Routes("trainingScreen")
     data object QuestionSettingsScreen: Routes("questionSettingsScreen")
-    data class UserScreen(val id: String): Routes("userScreen")
+    data object UserScreen: Routes("userScreen")
 
     data object SearchUsersScreen: Routes("searchUsersScreen")
     data object LeaderboardsScreen: Routes("leaderboardsScreen")

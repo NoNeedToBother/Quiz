@@ -17,11 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.closestDI
+import org.kodein.di.compose.localDI
 import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.core.utils.normalizeEnumName
 import ru.kpfu.itis.paramonov.leaderboards.R
@@ -30,80 +27,65 @@ import ru.kpfu.itis.paramonov.leaderboards.presentation.ui.components.SettingsBo
 import ru.kpfu.itis.paramonov.leaderboards.presentation.mvi.LeaderboardsScreenSideEffect
 import ru.kpfu.itis.paramonov.leaderboards.presentation.mvi.LeaderboardsScreenState
 import ru.kpfu.itis.paramonov.leaderboards.presentation.viewmodel.LeaderboardsViewModel
-import ru.kpfu.itis.paramonov.navigation.UserRouter
-import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
-import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 import ru.kpfu.itis.paramonov.ui.components.EmptyResults
 
-class LeaderboardScreen: MviBaseFragment(), DIAware {
+private const val LEADERBOARD_MAX_AT_ONCE = 15
 
-    override val di: DI by closestDI()
+private const val LEADERBOARD_ABSOLUTE_MAX = 500
 
-    private val viewModel: LeaderboardsViewModel by instance()
+@Composable
+fun LeaderboardsScreen(
+    goToUserScreen: (String) -> Unit
+) {
+    val di = localDI()
+    val viewModel: LeaderboardsViewModel by di.instance()
+    val state = viewModel.container.stateFlow.collectAsState()
+    val effect = viewModel.container.sideEffectFlow
 
-    private val userRouter: UserRouter by instance()
+    LaunchedEffect(null) {
+        viewModel.getGlobalLeaderboard(LEADERBOARD_MAX_AT_ONCE)
 
-    override fun initView(): ComposeView {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                val state = viewModel.container.stateFlow.collectAsState()
-                val effect = viewModel.container.sideEffectFlow
+        effect.collect {
+            when (it) {
+                is LeaderboardsScreenSideEffect.ShowError -> {
+                    //val errorMessage = it.message
+                    //val errorTitle = getString(R.string.get_results_fail)
 
-                LaunchedEffect(null) {
-                    viewModel.getGlobalLeaderboard(LEADERBOARD_MAX_AT_ONCE)
-
-                    effect.collect {
-                        when (it) {
-                            is LeaderboardsScreenSideEffect.ShowError -> {
-                                val errorMessage = it.message
-                                val errorTitle = getString(R.string.get_results_fail)
-
-                                showErrorBottomSheetDialog(errorTitle, errorMessage)
-                            }
-                        }
-                    }
-                }
-
-                AppTheme {
-                    Screen(
-                        state = state,
-                        onFriendLeaderboardChosen = {
-                            viewModel.getFriendsLeaderboard(LEADERBOARD_MAX_AT_ONCE)
-                        },
-                        onGlobalLeaderboardChosen = {
-                            viewModel.getGlobalLeaderboard(LEADERBOARD_MAX_AT_ONCE)
-                        },
-                        onProfileClick = { userRouter.goToUser(it) },
-                        loadMoreGlobalResults = { scoreAfter ->
-                            if (state.value.results.size < LEADERBOARD_ABSOLUTE_MAX)
-                                viewModel.loadNextGlobalResults(LEADERBOARD_MAX_AT_ONCE, scoreAfter)
-                        },
-                        loadMoreFriendResults = { scoreAfter ->
-                            if (state.value.results.size < LEADERBOARD_ABSOLUTE_MAX)
-                                viewModel.loadNextFriendsResults(
-                                    LEADERBOARD_MAX_AT_ONCE,
-                                    scoreAfter
-                                )
-                        },
-                        onSaveClick = { viewModel.saveSettings() },
-                        onDifficultyChosen = { viewModel.changeDifficulty(it) },
-                        onCategoryChosen = { viewModel.changeCategory(it) },
-                        onGameModeChosen = { viewModel.changeGameMode(it) }
-                    )
+                    //showErrorBottomSheetDialog(errorTitle, errorMessage)
                 }
             }
         }
     }
 
-    companion object {
-        private const val LEADERBOARD_MAX_AT_ONCE = 15
-
-        private const val LEADERBOARD_ABSOLUTE_MAX = 500
-    }
+    ScreenContent(
+        state = state,
+        onFriendLeaderboardChosen = {
+            viewModel.getFriendsLeaderboard(LEADERBOARD_MAX_AT_ONCE)
+        },
+        onGlobalLeaderboardChosen = {
+            viewModel.getGlobalLeaderboard(LEADERBOARD_MAX_AT_ONCE)
+        },
+        onProfileClick = { goToUserScreen(it) },
+        loadMoreGlobalResults = { scoreAfter ->
+            if (state.value.results.size < LEADERBOARD_ABSOLUTE_MAX)
+                viewModel.loadNextGlobalResults(LEADERBOARD_MAX_AT_ONCE, scoreAfter)
+        },
+        loadMoreFriendResults = { scoreAfter ->
+            if (state.value.results.size < LEADERBOARD_ABSOLUTE_MAX)
+                viewModel.loadNextFriendsResults(
+                    LEADERBOARD_MAX_AT_ONCE,
+                    scoreAfter
+                )
+        },
+        onSaveClick = { viewModel.saveSettings() },
+        onDifficultyChosen = { viewModel.changeDifficulty(it) },
+        onCategoryChosen = { viewModel.changeCategory(it) },
+        onGameModeChosen = { viewModel.changeGameMode(it) }
+    )
 }
 
 @Composable
-fun Screen(
+fun ScreenContent(
     state: State<LeaderboardsScreenState>,
     onGlobalLeaderboardChosen: () -> Unit,
     onFriendLeaderboardChosen: () -> Unit,

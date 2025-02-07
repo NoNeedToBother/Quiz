@@ -84,7 +84,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.kodein)
-    implementation(libs.kodein.android)
+    implementation(libs.bundles.kodein.android)
     implementation libs.androidx.foundation.layout.android
     implementation libs.androidx.foundation.layout.android
 

@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -21,10 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.closestDI
-import org.kodein.di.android.x.viewmodel.viewModel
+import org.kodein.di.compose.localDI
+import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.profiles.R
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.dialogs.StatsDialog
 import ru.kpfu.itis.paramonov.profiles.presentation.model.FriendStatusUiModel
@@ -33,80 +30,64 @@ import ru.kpfu.itis.paramonov.profiles.presentation.mvi.OtherUserProfileScreenSi
 import ru.kpfu.itis.paramonov.profiles.presentation.mvi.OtherUserProfileScreenState
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.ProfileInfoField
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.OtherUserProfileViewModel
-import ru.kpfu.itis.paramonov.ui.base.MviBaseFragment
-import ru.kpfu.itis.paramonov.ui.theme.AppTheme
 
-class OtherUserProfileScreen: MviBaseFragment(), DIAware {
+private const val MAX_RESULTS_AMOUNT = 10
 
-    override val di: DI by closestDI()
+@Composable
+fun OtherUserProfileScreen(
+    userId: String
+) {
+    val di = localDI()
+    val viewModel: OtherUserProfileViewModel by di.instance()
+    val state = viewModel.container.stateFlow.collectAsState()
+    val effect = viewModel.container.sideEffectFlow
 
-    private val viewModel: OtherUserProfileViewModel by viewModel()
+    var results by remember { mutableStateOf<List<ResultUiModel>?>(null) }
 
-    private val userId: String get() {
-        val args = requireArguments()
-        return args.getString(USER_ID_KEY) ?: ""
-    }
+    LaunchedEffect(null) {
+        viewModel.getUser(userId)
+        viewModel.checkFriendStatus(userId)
 
-    override fun initView(): ComposeView {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                AppTheme {
-                    val state = viewModel.container.stateFlow.collectAsState()
-                    val effect = viewModel.container.sideEffectFlow
+        effect.collect {
+            when (it) {
+                is OtherUserProfileScreenSideEffect.ShowError -> {
+                    //val errorMessage = it.message
+                    //val errorTitle = getString(R.string.get_info_fail)
 
-                    var results by remember { mutableStateOf<List<ResultUiModel>?>(null) }
-
-                    LaunchedEffect(null) {
-                        viewModel.getUser(userId)
-                        viewModel.checkFriendStatus(userId)
-
-                        effect.collect {
-                            when (it) {
-                                is OtherUserProfileScreenSideEffect.ShowError -> {
-                                    val errorMessage = it.message
-                                    val errorTitle = getString(R.string.get_info_fail)
-
-                                    showErrorBottomSheetDialog(errorTitle, errorMessage)
-                                }
-                                is OtherUserProfileScreenSideEffect.ResultsReceived ->
-                                    results = it.results
-                            }
-                        }
-                    }
-
-                    Screen(
-                        state = state,
-                        onGetResultsClicked = { viewModel.getLastResults(MAX_RESULTS_AMOUNT, userId) },
-                        onAddFriendClick = { viewModel.sendFriendRequest(userId) }
-                    )
-
-                    results?.let {
-                        StatsDialog(
-                            results = it,
-                            onDismiss = {
-                                results = null
-                            }
-                        )
-                    }
+                    //showErrorBottomSheetDialog(errorTitle, errorMessage)
                 }
+                is OtherUserProfileScreenSideEffect.ResultsReceived ->
+                    results = it.results
             }
         }
     }
 
-    companion object {
-        const val USER_ID_KEY = "id"
-        private const val MAX_RESULTS_AMOUNT = 10
+    ScreenContent(
+        modifier = Modifier.fillMaxSize(),
+        state = state,
+        onGetResultsClicked = { viewModel.getLastResults(MAX_RESULTS_AMOUNT, userId) },
+        onAddFriendClick = { viewModel.sendFriendRequest(userId) }
+    )
+
+    results?.let {
+        StatsDialog(
+            results = it,
+            onDismiss = {
+                results = null
+            }
+        )
     }
 }
 
 @Composable
-fun Screen(
+fun ScreenContent(
+    modifier: Modifier = Modifier,
     state: State<OtherUserProfileScreenState>,
     onGetResultsClicked: () -> Unit,
     onAddFriendClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(PaddingValues(top = 24.dp)),
+        modifier = modifier.padding(PaddingValues(top = 24.dp)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -154,7 +135,6 @@ fun Screen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FriendStatusButton(
     modifier: Modifier = Modifier,

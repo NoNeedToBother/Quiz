@@ -40,6 +40,7 @@ private const val PLUS_GRADATION_MIN_RATION = 0.75
 
 @Composable
 fun ResultScreen(
+    modifier: Modifier = Modifier,
     resultData: ResultDataUiModel,
     maxScore: Double,
 ) {
@@ -48,7 +49,7 @@ fun ResultScreen(
     }
 
     BoxWithConstraints(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .paint(
                 painterResource(id = R.drawable.question_page),

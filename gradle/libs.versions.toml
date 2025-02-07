@@ -45,9 +45,6 @@ view-binding-delegate = { group = "com.github.kirich1409", name = "viewbindingpr
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidXCore" }
 androidx-compat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXCompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
-#jetpack-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "jetpackNavigation" }
-#jetpack-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "jetpackNavigation" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewModelKtx" }
@@ -90,6 +87,8 @@ androidx-material3-navigationSuite = { group = "androidx.compose.material3", nam
 androidx-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 androidx-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
+androidx-compose-activity = { group = "androidx.activity", name = "activity-compose" }
+
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -106,6 +105,7 @@ androidx-animation-graphics-android = { group = "androidx.compose.animation", na
 
 kodein = { group = "org.kodein.di", name = "kodein-di", version.ref = "kodein" }
 kodein-android = { group = "org.kodein.di", name = "kodein-di-framework-android-x-viewmodel", version.ref = "kodein" }
+kodein-compose = { group = "org.kodein.di", name = "kodein-di-framework-compose", version.ref = "kodein" }
 androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
 
 [plugins]
@@ -158,4 +158,9 @@ mvi-core = [
 coil = [
     "coil-compose",
     "coil-network"
+]
+
+kodein-android = [
+    "kodein-android",
+    "kodein-compose"
 ]

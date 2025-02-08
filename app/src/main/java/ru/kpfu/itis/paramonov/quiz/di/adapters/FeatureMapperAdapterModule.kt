@@ -4,18 +4,24 @@ import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.provider
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_authentication.FirebaseUserToFeatureAuthenticationUserMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_leaderboards.FirebaseUserToFeatureLeaderboardsUserMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_leaderboards.ResultToFeatureLeaderboardsResultMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_profiles.FirebaseUserToFeatureProfilesUserMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_profiles.ResultToFeatureProfilesResultMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.DatabaseQuestionToFeatureQuestionsDatabaseQuestionMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.FeatureQuestionsDatabaseQuestionToDatabaseQuestionMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.FeatureQuestionsResultToResultMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.FeatureQuestionsUserToFirebaseUserMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.FirebaseUserToFeatureQuestionsUserMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.QuestionToFeatureQuestionsQuestionMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_users.FirebaseUserToFeatureUsersUserMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.authentication.FirebaseUserToFeatureAuthenticationUserMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.leaderboards.FirebaseUserToFeatureLeaderboardsUserMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.leaderboards.ResultToFeatureLeaderboardsResultMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.profiles.FirebaseUserToFeatureProfilesUserMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.profiles.ResultToFeatureProfilesResultMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.DatabaseQuestionToFeatureQuestionsDatabaseQuestionMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.FeatureQuestionsDatabaseQuestionToDatabaseQuestionMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.FeatureQuestionsResultToResultMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.FeatureQuestionsUserToFirebaseUserMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.FirebaseUserToFeatureQuestionsUserMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.QuestionToFeatureQuestionsQuestionMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.users.FirebaseUserToFeatureUsersUserMapper
+
+typealias QuestionsAdapterUserMapper = FeatureQuestionsUserToFirebaseUserMapper
+
+typealias ProfilesAdapterUserMapper = FirebaseUserToFeatureProfilesUserMapper
+
+typealias LeaderboardsAdapterUserMapper = FirebaseUserToFeatureLeaderboardsUserMapper
 
 val featureMapperAdapterModule = DI.Module("FeatureMapperAdapterModule") {
     bind<FirebaseUserToFeatureAuthenticationUserMapper>() with provider {
@@ -31,7 +37,7 @@ val featureMapperAdapterModule = DI.Module("FeatureMapperAdapterModule") {
         FeatureQuestionsUserToFirebaseUserMapper()
     }
     bind<FeatureQuestionsResultToResultMapper>() with provider {
-        val featureQuestionsUserToFirebaseUserMapper: FeatureQuestionsUserToFirebaseUserMapper = instance()
+        val featureQuestionsUserToFirebaseUserMapper: QuestionsAdapterUserMapper = instance()
         FeatureQuestionsResultToResultMapper(
             featureQuestionsUserToFirebaseUserMapper = featureQuestionsUserToFirebaseUserMapper
         )
@@ -43,7 +49,7 @@ val featureMapperAdapterModule = DI.Module("FeatureMapperAdapterModule") {
         FeatureQuestionsDatabaseQuestionToDatabaseQuestionMapper()
     }
     bind<ResultToFeatureProfilesResultMapper>() with provider {
-        val firebaseUserToFeatureProfilesUserMapper: FirebaseUserToFeatureProfilesUserMapper = instance()
+        val firebaseUserToFeatureProfilesUserMapper: ProfilesAdapterUserMapper = instance()
         ResultToFeatureProfilesResultMapper(
             firebaseUserToFeatureProfilesUserMapper = firebaseUserToFeatureProfilesUserMapper
         )
@@ -52,9 +58,10 @@ val featureMapperAdapterModule = DI.Module("FeatureMapperAdapterModule") {
         FirebaseUserToFeatureLeaderboardsUserMapper()
     }
     bind<ResultToFeatureLeaderboardsResultMapper>() with provider {
-        val firebaseUserToFeatureLeaderboardsUserMapper: FirebaseUserToFeatureLeaderboardsUserMapper = instance()
+        val firebaseUserToFeatureLeaderboardsUserMapper: LeaderboardsAdapterUserMapper = instance()
         ResultToFeatureLeaderboardsResultMapper(
-            firebaseUserToFeatureLeaderboardsUserMapper = firebaseUserToFeatureLeaderboardsUserMapper
+            firebaseUserToFeatureLeaderboardsUserMapper
+                = firebaseUserToFeatureLeaderboardsUserMapper
         )
     }
     bind<FirebaseUserToFeatureUsersUserMapper>() with provider {

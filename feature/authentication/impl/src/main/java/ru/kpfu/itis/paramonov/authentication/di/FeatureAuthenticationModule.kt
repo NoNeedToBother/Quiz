@@ -13,7 +13,7 @@ import ru.kpfu.itis.paramonov.authentication.domain.usecase.AuthenticateUserUseC
 import ru.kpfu.itis.paramonov.authentication.domain.usecase.CheckUserIsAuthenticatedUseCaseImpl
 import ru.kpfu.itis.paramonov.authentication.domain.usecase.RegisterUserUseCaseImpl
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.RegisterViewModel
-import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.SignInViewModel
+import ru.kpfu.itis.paramonov.authentication.presentation.login.SignInViewModel
 
 val featureAuthenticationModule = DI {
     bind<AuthenticateUserUseCase>() with provider {

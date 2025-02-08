@@ -12,21 +12,26 @@ import ru.kpfu.itis.paramonov.questions.api.model.Result
 import ru.kpfu.itis.paramonov.questions.api.model.User
 import ru.kpfu.itis.paramonov.questions.api.model.database.DatabaseQuestion
 import ru.kpfu.itis.paramonov.questions.api.repository.QuestionRepository
+import ru.kpfu.itis.paramonov.network.external.domain.repository.QuestionRepository as NetworkQuestionRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.QuestionSettingsRepository
+import ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettingsRepository as DatabaseQuestionSettingsRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.ResultRepository
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.ResultRepository as FirebaseResultRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.SavedQuestionRepository
+import ru.kpfu.itis.paramonov.database.external.domain.repository.SavedQuestionRepository as DatabaseSavedQuestionRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.UserRepository
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.DatabaseQuestionToFeatureQuestionsDatabaseQuestionMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.FeatureQuestionsDatabaseQuestionToDatabaseQuestionMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.FeatureQuestionsResultToResultMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.FirebaseUserToFeatureQuestionsUserMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_questions.QuestionToFeatureQuestionsQuestionMapper
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository as FirebaseUserRepository
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.DatabaseQuestionToFeatureQuestionsDatabaseQuestionMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.FeatureQuestionsDatabaseQuestionToDatabaseQuestionMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.FeatureQuestionsResultToResultMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.FirebaseUserToFeatureQuestionsUserMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.questions.QuestionToFeatureQuestionsQuestionMapper
 
 val featureQuestionsAdapterModule = DI.Module("FeatureQuestionsAdapterModule") {
     bind<UserRepository>() with provider {
-        val userRepository: ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
-            = instance()
-        val firebaseUserToFeatureQuestionsUserMapper: FirebaseUserToFeatureQuestionsUserMapper = instance()
+        val userRepository: FirebaseUserRepository = instance()
+        val firebaseUserToFeatureQuestionsUserMapper:
+                FirebaseUserToFeatureQuestionsUserMapper = instance()
 
         object : UserRepository {
             override suspend fun getCurrentUser(): User? =
@@ -37,9 +42,9 @@ val featureQuestionsAdapterModule = DI.Module("FeatureQuestionsAdapterModule") {
     }
 
     bind<QuestionRepository>() with provider {
-        val questionRepository: ru.kpfu.itis.paramonov.network.external.domain.repository.QuestionRepository
-            = instance()
-        val questionToFeatureQuestionsQuestionMapper: QuestionToFeatureQuestionsQuestionMapper = instance()
+        val questionRepository: NetworkQuestionRepository = instance()
+        val questionToFeatureQuestionsQuestionMapper:
+                QuestionToFeatureQuestionsQuestionMapper = instance()
 
         object : QuestionRepository {
             override suspend fun getCategoryCode(category: Category): Int {
@@ -59,8 +64,7 @@ val featureQuestionsAdapterModule = DI.Module("FeatureQuestionsAdapterModule") {
     }
 
     bind<QuestionSettingsRepository>() with provider {
-        val sharedPreferencesRepository: ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettingsRepository
-            = instance()
+        val sharedPreferencesRepository: DatabaseQuestionSettingsRepository = instance()
         object : QuestionSettingsRepository {
             override fun getDifficulty(): Difficulty = sharedPreferencesRepository.getDifficulty()
 
@@ -89,8 +93,7 @@ val featureQuestionsAdapterModule = DI.Module("FeatureQuestionsAdapterModule") {
     }
 
     bind<ResultRepository>() with provider {
-        val resultRepository: ru.kpfu.itis.paramonov.firebase.external.domain.repository.ResultRepository
-            = instance()
+        val resultRepository: FirebaseResultRepository = instance()
         val featureQuestionsResultToResultMapper: FeatureQuestionsResultToResultMapper = instance()
         object : ResultRepository {
             override suspend fun getMaxScore(): Double = resultRepository.getMaxScore()
@@ -102,12 +105,11 @@ val featureQuestionsAdapterModule = DI.Module("FeatureQuestionsAdapterModule") {
     }
 
     bind<SavedQuestionRepository>() with provider {
-        val savedQuestionRepository: ru.kpfu.itis.paramonov.database.external.domain.repository.SavedQuestionRepository
-            = instance()
-        val databaseQuestionToFeatureQuestionsDatabaseQuestionMapper: DatabaseQuestionToFeatureQuestionsDatabaseQuestionMapper
-            = instance()
-        val featureQuestionsDatabaseQuestionToDatabaseQuestionMapper: FeatureQuestionsDatabaseQuestionToDatabaseQuestionMapper
-            = instance()
+        val savedQuestionRepository: DatabaseSavedQuestionRepository = instance()
+        val databaseQuestionToFeatureQuestionsDatabaseQuestionMapper:
+                DatabaseQuestionToFeatureQuestionsDatabaseQuestionMapper = instance()
+        val featureQuestionsDatabaseQuestionToDatabaseQuestionMapper:
+                FeatureQuestionsDatabaseQuestionToDatabaseQuestionMapper = instance()
 
         object : SavedQuestionRepository {
             override suspend fun getQuestions(limit: Int): List<DatabaseQuestion> =
@@ -116,7 +118,9 @@ val featureQuestionsAdapterModule = DI.Module("FeatureQuestionsAdapterModule") {
 
             override suspend fun saveQuestions(questions: List<DatabaseQuestion>) {
                 savedQuestionRepository.saveQuestions(
-                    questions.map { featureQuestionsDatabaseQuestionToDatabaseQuestionMapper.map(it) }
+                    questions.map {
+                        featureQuestionsDatabaseQuestionToDatabaseQuestionMapper.map(it)
+                    }
                 )
             }
         }

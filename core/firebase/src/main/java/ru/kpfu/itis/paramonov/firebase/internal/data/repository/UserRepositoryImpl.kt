@@ -220,7 +220,8 @@ internal class UserRepositoryImpl(
                                 }
                             }
                         }
-                    val registration = database.collection(USERS_COLLECTION_NAME).document(user.id).addSnapshotListener(listener)
+                    val registration = database.collection(USERS_COLLECTION_NAME)
+                        .document(user.id).addSnapshotListener(listener)
                     awaitClose {
                         registration.remove()
                     }

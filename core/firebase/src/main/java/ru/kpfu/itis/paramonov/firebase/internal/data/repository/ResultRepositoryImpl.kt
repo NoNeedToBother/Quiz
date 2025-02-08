@@ -186,7 +186,7 @@ internal class ResultRepositoryImpl(
                 GameMode.CHALLENGE -> CHALLENGE_FACTOR
                 GameMode.EXPERT -> EXPERT_CHALLENGE
         }
-        val timeValue = Math.E.pow((-1) * (time * gameModeFactor).pow(4))
+        val timeValue = Math.E.pow((-1) * (time * gameModeFactor).pow(TIME_POW_FACTOR))
 
         return ratioValue * (timeValue + 1) / 2 / Math.E * MAX_SCORE
     }
@@ -229,6 +229,7 @@ internal class ResultRepositoryImpl(
         private const val BLITZ_FACTOR = (1).toDouble() / 10 / 5
         private const val CHALLENGE_FACTOR = (1).toDouble() / 15 / 8
         private const val EXPERT_CHALLENGE = (1).toDouble() / 25 / 10
+        private const val TIME_POW_FACTOR = 4
 
         private const val MAX_SCORE = 10
     }

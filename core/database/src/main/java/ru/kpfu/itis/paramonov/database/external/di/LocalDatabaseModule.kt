@@ -11,7 +11,7 @@ import ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettin
 import ru.kpfu.itis.paramonov.database.external.domain.repository.SavedQuestionRepository
 import ru.kpfu.itis.paramonov.database.internal.data.room.database.QuestionDatabase
 import ru.kpfu.itis.paramonov.database.internal.data.room.repository.SavedQuestionRepositoryImpl
-import ru.kpfu.itis.paramonov.database.internal.data.shared_pref.repository.QuestionSettingsRepositoryImpl
+import ru.kpfu.itis.paramonov.database.internal.data.sharedpref.repository.QuestionSettingsRepositoryImpl
 
 val localDatabaseModule = DI.Module("LocalDatabase") {
     bind<String>(tag = "quiz_shared_pref_tag") with provider { "quiz_database" }

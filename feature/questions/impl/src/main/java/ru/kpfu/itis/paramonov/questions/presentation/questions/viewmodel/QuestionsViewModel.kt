@@ -131,7 +131,7 @@ class QuestionsViewModel(
                     }
                     time++
                 }
-            }, 0, 1000L)
+            }, 0, ONE_SECOND_MILLIS)
         }
     }
 
@@ -147,5 +147,9 @@ class QuestionsViewModel(
 
     private fun saveQuestions() = intent {
         saveQuestionsUseCase.invoke(state.questions.map { question -> questionDataApiModelMapper.map(question) })
+    }
+
+    companion object {
+        private const val ONE_SECOND_MILLIS = 1000L
     }
 }

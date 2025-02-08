@@ -103,46 +103,27 @@ fun ScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Logo()
-            InputSection(
-                value = username,
-                onValueChange = {
+            InputSections(
+                username = username,
+                password = password,
+                confirmPassword = confirmPassword,
+                email = email,
+                onUsernameInput = {
                     username = it
-                    onUsernameInput.invoke(username)
+                    onUsernameInput(it)
                 },
-                label = stringResource(R.string.enter_username)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            InputSection(
-                value = email,
-                onValueChange = {
-                    email = it
-                    onEmailInput.invoke(email)
-                },
-                label = stringResource(R.string.enter_email)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            PasswordSection(
-                value = password,
-                onValueChange = {
-                    password = it
-                    onPasswordInput.invoke(password)
-                },
-                label = stringResource(R.string.enter_password)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            PasswordSection(
-                value = confirmPassword,
-                onValueChange = {
+                onConfirmPasswordInput = {
                     confirmPassword = it
-                    onConfirmPasswordInput.invoke(confirmPassword)
+                    onConfirmPasswordInput(it)
                 },
-                label = stringResource(R.string.confirm_password)
+                onPasswordInput = {
+                    password = it
+                    onPasswordInput(it)
+                },
+                onEmailInput = {
+                    email = it
+                    onEmailInput(it)
+                }
             )
         }
 
@@ -178,4 +159,54 @@ fun ScreenContent(
             Spacer(modifier = Modifier.height(12.dp))
         }
     }
+}
+
+@Composable
+fun InputSections(
+    username: String,
+    password: String,
+    confirmPassword: String,
+    email: String,
+    onUsernameInput: (String) -> Unit,
+    onConfirmPasswordInput: (String) -> Unit,
+    onPasswordInput: (String) -> Unit,
+    onEmailInput: (String) -> Unit,
+) {
+    InputSection(
+        value = username,
+        onValueChange = {
+            onUsernameInput.invoke(username)
+        },
+        label = stringResource(R.string.enter_username)
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    InputSection(
+        value = email,
+        onValueChange = {
+            onEmailInput.invoke(email)
+        },
+        label = stringResource(R.string.enter_email)
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    PasswordSection(
+        value = password,
+        onValueChange = {
+            onPasswordInput.invoke(password)
+        },
+        label = stringResource(R.string.enter_password)
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    PasswordSection(
+        value = confirmPassword,
+        onValueChange = {
+            onConfirmPasswordInput.invoke(confirmPassword)
+        },
+        label = stringResource(R.string.confirm_password)
+    )
 }

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -27,6 +28,16 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+}
+
+detekt {
+    toolVersion = "1.23.7"
+
+    source.setFrom("src/main/java", "src/main/kotlin")
+
+    parallel = true
+
+    config.setFrom("$rootDir/config/detekt/detekt.yml")
 }
 
 dependencies {

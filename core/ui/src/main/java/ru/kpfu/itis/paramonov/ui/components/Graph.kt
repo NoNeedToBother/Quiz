@@ -75,17 +75,14 @@ fun Graph(
         }
 
         if (gradient) {
-            drawPath(
-                path = path,
+            drawPath(path = path,
                 brush = Brush.verticalGradient(
                     colors = listOf(graphFillColor, graphGradientColor),
                     startY = 0f, endY = height
                 ),
                 style = Fill
             )
-        } else {
-            drawPath(path, color = graphFillColor)
-        }
+        } else { drawPath(path, color = graphFillColor) }
 
         drawPath(graphPath, color = graphStrokeColor, style = Stroke(width = graphStrokeWidth))
 

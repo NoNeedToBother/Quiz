@@ -6,14 +6,17 @@ import org.kodein.di.instance
 import org.kodein.di.provider
 import ru.kpfu.itis.paramonov.authentication.api.model.User
 import ru.kpfu.itis.paramonov.authentication.api.repository.AuthenticationRepository
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_authentication.FirebaseUserToFeatureAuthenticationUserMapper
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.AuthenticationRepository as FirebaseAuthenticationRepository
+import ru.kpfu.itis.paramonov.quiz.mapper.authentication.FirebaseUserToFeatureAuthenticationUserMapper
+
+typealias AuthenticationAdapterUserMapper = FirebaseUserToFeatureAuthenticationUserMapper
 
 val featureAuthenticationAdapterModule = DI.Module("featureAuthenticationAdapter") {
     bind<AuthenticationRepository>() with provider {
         object : AuthenticationRepository {
-            val authenticationRepository: ru.kpfu.itis.paramonov.firebase.external.domain.repository.AuthenticationRepository
+            val authenticationRepository: FirebaseAuthenticationRepository
                 = instance()
-            val firebaseUserToFeatureAuthenticationUserMapper: FirebaseUserToFeatureAuthenticationUserMapper = instance()
+            val firebaseUserToFeatureAuthenticationUserMapper: AuthenticationAdapterUserMapper = instance()
 
             override suspend fun registerUser(
                 username: String,
@@ -22,7 +25,10 @@ val featureAuthenticationAdapterModule = DI.Module("featureAuthenticationAdapter
                 confirmPassword: String
             ): User = firebaseUserToFeatureAuthenticationUserMapper.map(
                 authenticationRepository.registerUser(
-                    username = username, email = email, password = password, confirmPassword = confirmPassword
+                    username = username,
+                    email = email,
+                    password = password,
+                    confirmPassword = confirmPassword
                 )
             )
 

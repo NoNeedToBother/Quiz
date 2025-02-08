@@ -73,10 +73,16 @@ fun ResultItem(
                     .fillMaxWidth()
                     .padding(top = 8.dp)
             ) {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Text(stringResource(R.string.res_game_mode, result.gameMode.name.normalizeEnumName()), fontSize = 14.sp)
-                    Text(stringResource(R.string.res_difficulty, result.difficulty.name.normalizeEnumName()), fontSize = 14.sp)
-                    Text(stringResource(R.string.res_category, result.category.name.normalizeEnumName()), fontSize = 14.sp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly)
+                {
+                    Text(stringResource(R.string.res_game_mode,
+                        result.gameMode.name.normalizeEnumName()), fontSize = 14.sp)
+                    Text(stringResource(R.string.res_difficulty,
+                        result.difficulty.name.normalizeEnumName()), fontSize = 14.sp)
+                    Text(stringResource(R.string.res_category,
+                        result.category.name.normalizeEnumName()), fontSize = 14.sp)
                 }
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                     val min = result.time / 60

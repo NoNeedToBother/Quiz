@@ -8,7 +8,7 @@ class UsernameValidator(
 ): Validator {
 
     override fun validate(param: String): Boolean {
-        return param.length > 6
+        return param.length >= MIN_USERNAME_LENGTH
     }
 
     override fun getRequirements(): String {
@@ -17,5 +17,9 @@ class UsernameValidator(
 
     override fun getMessage(): String {
         return resourceManager.getString(R.string.invalid_username_msg)
+    }
+
+    companion object {
+        private const val MIN_USERNAME_LENGTH = 7
     }
 }

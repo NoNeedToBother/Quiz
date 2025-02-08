@@ -39,7 +39,7 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.closestDI
 import org.kodein.di.compose.withDI
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.RegisterScreen
-import ru.kpfu.itis.paramonov.authentication.presentation.signing_in.SignInScreen
+import ru.kpfu.itis.paramonov.authentication.presentation.login.SignInScreen
 import ru.kpfu.itis.paramonov.leaderboards.presentation.ui.screens.LeaderboardsScreen
 import ru.kpfu.itis.paramonov.navigation.Routes
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.screens.OtherUserProfileScreen

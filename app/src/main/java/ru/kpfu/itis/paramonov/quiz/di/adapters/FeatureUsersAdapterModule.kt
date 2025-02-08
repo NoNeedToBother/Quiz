@@ -4,14 +4,15 @@ import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.provider
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_users.FirebaseUserToFeatureUsersUserMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.users.FirebaseUserToFeatureUsersUserMapper
 import ru.kpfu.itis.paramonov.users.api.model.User
 import ru.kpfu.itis.paramonov.users.api.repository.UserRepository
+import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository as FirebaseUserRepository
 
 val featureUsersAdapterModule = DI.Module("FeatureUsersAdapterModule") {
     bind<UserRepository>() with provider {
-        val userRepository: ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
-            = instance()
+        val userRepository: FirebaseUserRepository
+        = instance()
         val firebaseUserToFeatureUsersUserMapper: FirebaseUserToFeatureUsersUserMapper = instance()
         object : UserRepository {
             override suspend fun findByUsername(

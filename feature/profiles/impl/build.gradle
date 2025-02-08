@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -37,6 +38,16 @@ android {
     }
 }
 
+detekt {
+    toolVersion = "1.23.7"
+
+    source.setFrom("src/main/java", "src/main/kotlin")
+
+    parallel = true
+
+    config.setFrom("$rootDir/config/detekt/detekt.yml")
+}
+
 dependencies {
     implementation project(':core:core')
     implementation project(':core:ui')
@@ -59,6 +70,8 @@ dependencies {
     implementation(libs.bundles.kodein.android)
 
     testImplementation(libs.junit)
+    testImplementation(libs.bundles.mockito)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

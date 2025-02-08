@@ -58,7 +58,8 @@ internal class AuthenticationRepositoryImpl(
                         UpdateKeys.UPDATE_USERNAME_KEY to username,
                         UpdateKeys.UPDATE_PROFILE_PICTURE_KEY to DEFAULT_PROFILE_PICTURE_URL,
                         UpdateKeys.UPDATE_INFO_KEY to getDefaultInfo(username),
-                        UpdateKeys.UPDATE_DATE_REGISTERED_KEY to dateTimeParser.parseMillisToString(System.currentTimeMillis())
+                        UpdateKeys.UPDATE_DATE_REGISTERED_KEY
+                                to dateTimeParser.parseMillisToString(System.currentTimeMillis())
                     )
                 } ?: throw RegisterException(resourceManager.getString(R.string.register_fail_try_again))
             } else {
@@ -102,7 +103,8 @@ internal class AuthenticationRepositoryImpl(
 
     companion object {
         private const val DEFAULT_PROFILE_PICTURE_URL =
-            "https://firebasestorage.googleapis.com/v0/b/quiz-6001c.appspot.com/o/profiles%2Fdefault.png?alt=media&token=52efa4e4-9779-4389-b8f4-61aa48004a48"
+            "https://firebasestorage.googleapis.com/v0/b/quiz-6001c.appspot.com/o/" +
+                    "profiles%2Fdefault.png?alt=media&token=52efa4e4-9779-4389-b8f4-61aa48004a48"
         private const val DEFAULT_INFO = "Hello this is %s"
     }
 }

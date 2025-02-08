@@ -5,14 +5,16 @@ kotlin = "2.0.21"
 ksp = "2.0.21-1.0.28"
 googleServices = "4.4.2"
 firebaseCrashlyticsPlugin = "3.0.2"
+detekt = "1.23.7"
 
 firebaseBom = "33.7.0"
 
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
+mockito = "5.15.2"
+mockitoKotlin = "5.4.0"
 
-viewBindingDelegate = "1.5.9"
 androidXCore = "1.15.0"
 androidXCompat = "1.7.0"
 androidxComposeBom = "2024.11.00"
@@ -20,7 +22,6 @@ material = "1.12.0"
 navigation = "2.8.6"
 
 viewModelKtx = "2.8.7"
-fragment = "1.8.5"
 
 retrofit = "2.9.0"
 okHttp3 = "4.12.0"
@@ -90,6 +91,10 @@ androidx-compose-activity = { group = "androidx.activity", name = "activity-comp
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
 
 mvi-core-core = { group = "org.orbit-mvi", name = "orbit-core", version.ref = "mviOrbit" }
 mvi-core-viewmodel = { group = "org.orbit-mvi", name = "orbit-viewmodel", version.ref = "mviOrbit" }
@@ -115,6 +120,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
 gms = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [bundles]
 compose = [
@@ -161,4 +167,9 @@ coil = [
 kodein-android = [
     "kodein-android",
     "kodein-compose"
+]
+
+mockito = [
+    "mockito-core",
+    "mockito-kotlin"
 ]

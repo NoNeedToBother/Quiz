@@ -7,7 +7,7 @@ import org.kodein.di.provider
 import ru.kpfu.itis.paramonov.quiz.mapper.users.FirebaseUserToFeatureUsersUserMapper
 import ru.kpfu.itis.paramonov.users.api.model.User
 import ru.kpfu.itis.paramonov.users.api.repository.UserRepository
-import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository as FirebaseUserRepository
+import ru.kpfu.itis.paramonov.firebase.external.repository.UserRepository as FirebaseUserRepository
 
 val featureUsersAdapterModule = DI.Module("FeatureUsersAdapterModule") {
     bind<UserRepository>() with provider {

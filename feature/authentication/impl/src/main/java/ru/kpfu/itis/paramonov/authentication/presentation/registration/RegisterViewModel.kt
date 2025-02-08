@@ -60,18 +60,26 @@ class RegisterViewModel(
     }
 
     fun validatePassword(password: String) = intent {
-        reduce { state.copy(isPasswordCorrect = passwordValidator.validate(password)) }
+        val result = if (passwordValidator.validate(password)) null
+        else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.weak_password_msg)
+        reduce { state.copy(passwordError = result) }
     }
 
     fun validateConfirmPassword(password: String) = intent {
-        reduce { state.copy(isConfirmPasswordCorrect = passwordValidator.validate(password)) }
+        val result = if (passwordValidator.validate(password)) null
+        else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.weak_password_msg)
+        reduce { state.copy(confirmPasswordError = result) }
     }
 
     fun validateUsername(username: String) = intent {
-        reduce { state.copy(isUsernameCorrect = usernameValidator.validate(username)) }
+        val result = if (usernameValidator.validate(username)) null
+        else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.invalid_username_msg)
+        reduce { state.copy(usernameError = result) }
     }
 
     fun validateEmail(email: String) = intent {
-        reduce { state.copy(isEmailCorrect = email.contains("@")) }
+        val result = if (email.contains("@")) null
+        else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.invalid_email)
+        reduce { state.copy(emailError = result) }
     }
 }

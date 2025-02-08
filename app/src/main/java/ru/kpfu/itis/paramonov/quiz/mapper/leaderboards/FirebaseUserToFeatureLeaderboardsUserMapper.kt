@@ -1,7 +1,7 @@
 package ru.kpfu.itis.paramonov.quiz.mapper.leaderboards
 
 import ru.kpfu.itis.paramonov.core.mapper.ModelMapper
-import ru.kpfu.itis.paramonov.firebase.external.domain.model.FirebaseUser
+import ru.kpfu.itis.paramonov.firebase.external.model.FirebaseUser
 import ru.kpfu.itis.paramonov.leaderboards.api.model.User
 
 class FirebaseUserToFeatureLeaderboardsUserMapper: ModelMapper<FirebaseUser, User> {

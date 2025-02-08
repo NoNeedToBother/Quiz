@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.kpfu.itis.paramonov.profiles.R
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.DialogWithTitle
-import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.ProfileInfoInputField
+import ru.kpfu.itis.paramonov.ui.components.InputSection
 
 const val USERNAME_UPDATE_KEY = "username"
 const val INFO_UPDATE_KEY = "info"
@@ -28,11 +28,12 @@ const val INFO_UPDATE_KEY = "info"
 fun ProfileSettingsDialog(
     onDismiss: () -> Unit,
     onSave: (username: String?, info: String?) -> Unit,
-    checkUsername: (username: String?) -> String?,
+    checkUsername: (username: String?) -> Unit,
+    usernameError: String? = null
 ) {
     var username by remember { mutableStateOf("") }
     var info by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf<String?>(null) }
+
     DialogWithTitle(
         title = stringResource(R.string.settings),
         onDismiss = onDismiss
@@ -40,17 +41,17 @@ fun ProfileSettingsDialog(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            ProfileInfoInputField(
+            InputSection(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                 onInput = {
                     username = it
-                    error = checkUsername(it)
+                    checkUsername(it)
                 },
                 label = stringResource(R.string.username),
                 value = username,
-                error = error
+                error = usernameError
             )
-            ProfileInfoInputField(
+            InputSection(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                 onInput = { info = it },
                 label = stringResource(R.string.info),

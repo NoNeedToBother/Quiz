@@ -190,22 +190,39 @@ class ProfileViewModel(
         }
     }
 
-    fun checkUsername(username: String?): String? = username?.let {
-        if (username.isEmpty()) null
-        else if (usernameValidator.validate(username)) null
-        else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.invalid_username_msg)
-    }
-
-    fun checkPassword(password: String?): String? = password?.let {
-        if (password.isEmpty()) resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.empty_password)
+    fun validatePassword(password: String?) = intent {
+        val result = if (password.isNullOrEmpty()) null
         else if (passwordValidator.validate(password)) null
         else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.weak_password_msg)
+        reduce { state.copy(passwordError = result) }
     }
 
-    fun checkEmail(email: String?): String? = email?.let {
-        if (email.isEmpty()) resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.empty_email)
+    fun validateConfirmPassword(confirmPassword: String?) = intent {
+        val result = if (confirmPassword.isNullOrEmpty()) null
+        else if (passwordValidator.validate(confirmPassword)) null
+        else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.weak_password_msg)
+        reduce { state.copy(confirmPasswordError = result) }
+    }
+
+    fun validateUsername(username: String?) = intent {
+        val result = if (username.isNullOrEmpty()) null
+        else if (usernameValidator.validate(username)) null
+        else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.invalid_username_msg)
+        reduce { state.copy(usernameError = result) }
+    }
+
+    fun validateEmail(email: String?) = intent {
+        val result = if (email.isNullOrEmpty()) null
         else if (email.contains("@")) null
         else resourceManager.getString(ru.kpfu.itis.paramonov.core.R.string.invalid_email)
+        reduce { state.copy(emailError = result) }
+    }
+
+    fun clearErrors() = intent {
+        reduce {
+            state.copy(usernameError = null, passwordError = null,
+                emailError = null, confirmPasswordError = null)
+        }
     }
 
     companion object {

@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.dp
 import org.kodein.di.compose.localDI
 import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.authentication.R
-import ru.kpfu.itis.paramonov.authentication.presentation.components.InputSection
 import ru.kpfu.itis.paramonov.authentication.presentation.components.Logo
-import ru.kpfu.itis.paramonov.authentication.presentation.components.PasswordSection
 import ru.kpfu.itis.paramonov.authentication.presentation.login.mvi.SignInScreenSideEffect
 import ru.kpfu.itis.paramonov.authentication.presentation.login.mvi.SignInScreenState
 import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
+import ru.kpfu.itis.paramonov.ui.components.InputSection
+import ru.kpfu.itis.paramonov.ui.components.PasswordInputSection
 
 @Composable
 fun SignInScreen(
@@ -108,22 +108,24 @@ fun ScreenContent(
             Logo()
             InputSection(
                 value = email,
-                onValueChange = {
+                onInput = {
                     email = it
                     onEmailInput.invoke(email)
                 },
-                label = stringResource(R.string.enter_email)
+                label = stringResource(R.string.enter_email),
+                error = state.value.emailError
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            PasswordSection(
+            PasswordInputSection(
                 value = password,
-                onValueChange = {
+                onInput = {
                     password = it
                     onPasswordInput.invoke(password)
                 },
-                label = stringResource(R.string.enter_password)
+                label = stringResource(R.string.enter_password),
+                error = state.value.passwordError
             )
         }
 
@@ -140,7 +142,8 @@ fun ScreenContent(
                     onSignInBtnClick.invoke(email, password)
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = state.value.isPasswordCorrect && email.contains("@")
+                enabled = state.value.passwordError != null && password.isNotEmpty()
+                        && state.value.emailError != null && email.isNotEmpty()
             ) {
                 Text(stringResource(R.string.sign_in))
             }

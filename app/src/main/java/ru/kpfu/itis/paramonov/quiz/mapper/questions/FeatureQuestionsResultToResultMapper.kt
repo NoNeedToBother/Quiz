@@ -5,9 +5,9 @@ import ru.kpfu.itis.paramonov.questions.api.model.Result
 
 class FeatureQuestionsResultToResultMapper(
     private val featureQuestionsUserToFirebaseUserMapper: FeatureQuestionsUserToFirebaseUserMapper
-): ModelMapper<Result, ru.kpfu.itis.paramonov.firebase.external.domain.model.Result> {
-    override fun map(model: Result): ru.kpfu.itis.paramonov.firebase.external.domain.model.Result {
-        return ru.kpfu.itis.paramonov.firebase.external.domain.model.Result(
+): ModelMapper<Result, ru.kpfu.itis.paramonov.firebase.external.model.Result> {
+    override fun map(model: Result): ru.kpfu.itis.paramonov.firebase.external.model.Result {
+        return ru.kpfu.itis.paramonov.firebase.external.model.Result(
             user = featureQuestionsUserToFirebaseUserMapper.map(model.user),
             time = model.time,
             correct = model.correct,

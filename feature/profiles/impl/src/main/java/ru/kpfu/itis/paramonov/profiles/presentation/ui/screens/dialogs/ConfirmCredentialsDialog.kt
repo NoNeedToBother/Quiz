@@ -19,20 +19,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.kpfu.itis.paramonov.profiles.R
 import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.DialogWithTitle
-import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.ProfileInfoInputField
-import ru.kpfu.itis.paramonov.profiles.presentation.ui.components.ProfilePasswordInputField
+import ru.kpfu.itis.paramonov.ui.components.InputSection
+import ru.kpfu.itis.paramonov.ui.components.PasswordInputSection
 
 @Composable
 fun ConfirmCredentialsDialog(
     onDismiss: () -> Unit,
     onSave: (email: String?, password: String?) -> Unit,
-    checkEmail: (email: String?) -> String?,
-    checkPassword: (password: String?) -> String?,
+    checkEmail: (email: String?) -> Unit,
+    checkPassword: (password: String?) -> Unit,
+    emailError: String? = null,
+    passwordError: String? = null
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var emailError by remember { mutableStateOf<String?>(null) }
-    var passwordError by remember { mutableStateOf<String?>(null) }
 
     DialogWithTitle(
         title = stringResource(R.string.confirm_credentials),
@@ -41,21 +41,21 @@ fun ConfirmCredentialsDialog(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            ProfileInfoInputField(
+            InputSection(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                 onInput = {
                     email = it
-                    emailError = checkEmail(it)
+                    checkEmail(it)
                 },
                 label = stringResource(R.string.email),
                 value = email,
                 error = emailError
             )
-            ProfilePasswordInputField(
+            PasswordInputSection(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                 onInput = {
                     password = it
-                    passwordError = checkPassword(it)
+                    checkPassword(it)
                 },
                 label = stringResource(R.string.password),
                 value = password,

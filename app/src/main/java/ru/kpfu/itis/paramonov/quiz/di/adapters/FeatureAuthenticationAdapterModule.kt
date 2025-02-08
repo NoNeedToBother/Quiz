@@ -6,7 +6,7 @@ import org.kodein.di.instance
 import org.kodein.di.provider
 import ru.kpfu.itis.paramonov.authentication.api.model.User
 import ru.kpfu.itis.paramonov.authentication.api.repository.AuthenticationRepository
-import ru.kpfu.itis.paramonov.firebase.external.domain.repository.AuthenticationRepository as FirebaseAuthenticationRepository
+import ru.kpfu.itis.paramonov.firebase.external.repository.AuthenticationRepository as FirebaseAuthenticationRepository
 import ru.kpfu.itis.paramonov.quiz.mapper.authentication.FirebaseUserToFeatureAuthenticationUserMapper
 
 typealias AuthenticationAdapterUserMapper = FirebaseUserToFeatureAuthenticationUserMapper

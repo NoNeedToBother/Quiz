@@ -7,11 +7,11 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.provider
 import org.kodein.di.singleton
-import ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettingsRepository
-import ru.kpfu.itis.paramonov.database.external.domain.repository.SavedQuestionRepository
-import ru.kpfu.itis.paramonov.database.internal.data.room.database.QuestionDatabase
-import ru.kpfu.itis.paramonov.database.internal.data.room.repository.SavedQuestionRepositoryImpl
-import ru.kpfu.itis.paramonov.database.internal.data.sharedpref.repository.QuestionSettingsRepositoryImpl
+import ru.kpfu.itis.paramonov.database.external.repository.QuestionSettingsRepository
+import ru.kpfu.itis.paramonov.database.external.repository.SavedQuestionRepository
+import ru.kpfu.itis.paramonov.database.internal.room.database.QuestionDatabase
+import ru.kpfu.itis.paramonov.database.internal.room.repository.SavedQuestionRepositoryImpl
+import ru.kpfu.itis.paramonov.database.internal.repository.QuestionSettingsRepositoryImpl
 
 val localDatabaseModule = DI.Module("LocalDatabase") {
     bind<String>(tag = "quiz_shared_pref_tag") with provider { "quiz_database" }

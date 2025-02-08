@@ -11,8 +11,8 @@ import ru.kpfu.itis.paramonov.profiles.api.model.User
 import ru.kpfu.itis.paramonov.profiles.api.repository.FriendRepository
 import ru.kpfu.itis.paramonov.profiles.api.repository.ResultRepository
 import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_profiles.FirebaseUserToFeatureProfilesUserMapper
-import ru.kpfu.itis.paramonov.quiz.mapper.feature_profiles.ResultToFeatureProfilesResultMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.profiles.FirebaseUserToFeatureProfilesUserMapper
+import ru.kpfu.itis.paramonov.quiz.mapper.profiles.ResultToFeatureProfilesResultMapper
 
 val featureProfilesAdapterModule = DI.Module("") {
     bind<FriendRepository>() with provider {

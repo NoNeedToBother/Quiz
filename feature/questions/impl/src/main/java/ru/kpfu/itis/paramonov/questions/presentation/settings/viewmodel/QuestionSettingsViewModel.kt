@@ -95,7 +95,8 @@ class QuestionSettingsViewModel(
 
     fun saveTrainingQuestionSettings() = intent {
         try {
-            saveTrainingQuestionSettingsUseCase.invoke(state.trainingSettings?.limit ?: 50)
+            saveTrainingQuestionSettingsUseCase.invoke(state.trainingSettings?.limit
+                ?: DEFAULT_SAVE_LIMIT_VALUE)
         } catch (ex: Throwable) {
             postSideEffect(QuestionSettingsScreenSideEffect.ShowError(
                 title = resourceManager.getString(R.string.save_settings_fail),
@@ -119,5 +120,7 @@ class QuestionSettingsViewModel(
     companion object {
         private const val LIMIT_LOWER_BOUND = 1
         private const val LIMIT_UPPER_BOUND = 100
+
+        private const val DEFAULT_SAVE_LIMIT_VALUE = 50
     }
 }

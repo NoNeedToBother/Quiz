@@ -17,5 +17,4 @@ data class DateTime(
         if (sec != other.sec) return sec.compareTo(other.sec)
         return 0
     }
-
 }

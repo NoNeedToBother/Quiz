@@ -14,5 +14,4 @@ internal data class QuestionEntity(
     val text: String,
     val difficulty: String,
     val category: String
-) {
-}
+)

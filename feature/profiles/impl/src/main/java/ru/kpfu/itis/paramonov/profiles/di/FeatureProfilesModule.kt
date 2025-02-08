@@ -16,10 +16,10 @@ import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.DenyFriendRequestUseC
 import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.GetFriendRequestsUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.GetFriendStatusUseCase
 import ru.kpfu.itis.paramonov.profiles.api.usecase.friends.SendFriendRequestUseCase
-import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.ChangeCredentialsUseCase
-import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.ConfirmCredentialsUseCase
-import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.SaveProfilePictureUseCase
-import ru.kpfu.itis.paramonov.profiles.api.usecase.profile_settings.SaveUserSettingsUseCase
+import ru.kpfu.itis.paramonov.profiles.api.usecase.settings.ChangeCredentialsUseCase
+import ru.kpfu.itis.paramonov.profiles.api.usecase.settings.ConfirmCredentialsUseCase
+import ru.kpfu.itis.paramonov.profiles.api.usecase.settings.SaveProfilePictureUseCase
+import ru.kpfu.itis.paramonov.profiles.api.usecase.settings.SaveUserSettingsUseCase
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.FriendStatusUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.ResultUiModelMapper
 import ru.kpfu.itis.paramonov.profiles.domain.mapper.UserUiModelMapper
@@ -34,10 +34,10 @@ import ru.kpfu.itis.paramonov.profiles.domain.usecase.friends.DenyFriendRequestU
 import ru.kpfu.itis.paramonov.profiles.domain.usecase.friends.GetFriendRequestsUseCaseImpl
 import ru.kpfu.itis.paramonov.profiles.domain.usecase.friends.GetFriendStatusUseCaseImpl
 import ru.kpfu.itis.paramonov.profiles.domain.usecase.friends.SendFriendRequestUseCaseImpl
-import ru.kpfu.itis.paramonov.profiles.domain.usecase.profile_settings.ChangeCredentialsUseCaseImpl
-import ru.kpfu.itis.paramonov.profiles.domain.usecase.profile_settings.ConfirmCredentialsUseCaseImpl
-import ru.kpfu.itis.paramonov.profiles.domain.usecase.profile_settings.SaveProfilePictureUseCaseImpl
-import ru.kpfu.itis.paramonov.profiles.domain.usecase.profile_settings.SaveUserSettingsUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.settings.ChangeCredentialsUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.settings.ConfirmCredentialsUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.settings.SaveProfilePictureUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.settings.SaveUserSettingsUseCaseImpl
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.OtherUserProfileViewModel
 import ru.kpfu.itis.paramonov.profiles.presentation.viewmodel.ProfileViewModel
 

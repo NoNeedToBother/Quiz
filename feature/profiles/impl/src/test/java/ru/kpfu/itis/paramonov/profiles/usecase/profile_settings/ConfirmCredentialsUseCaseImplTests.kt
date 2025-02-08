@@ -9,7 +9,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import ru.kpfu.itis.paramonov.profiles.api.repository.UserRepository
-import ru.kpfu.itis.paramonov.profiles.domain.usecase.profile_settings.ChangeCredentialsUseCaseImpl
+import ru.kpfu.itis.paramonov.profiles.domain.usecase.settings.ChangeCredentialsUseCaseImpl
 
 class ConfirmCredentialsUseCaseImplTests {
 

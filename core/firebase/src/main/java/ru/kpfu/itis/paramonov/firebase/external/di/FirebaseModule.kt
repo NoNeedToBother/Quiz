@@ -8,16 +8,16 @@ import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.provider
-import ru.kpfu.itis.paramonov.firebase.external.domain.repository.AuthenticationRepository
-import ru.kpfu.itis.paramonov.firebase.external.domain.repository.FriendRepository
-import ru.kpfu.itis.paramonov.firebase.external.domain.repository.ResultRepository
-import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
-import ru.kpfu.itis.paramonov.firebase.internal.data.handler.RegistrationExceptionHandler
-import ru.kpfu.itis.paramonov.firebase.internal.data.handler.SignInExceptionHandler
-import ru.kpfu.itis.paramonov.firebase.internal.data.repository.AuthenticationRepositoryImpl
-import ru.kpfu.itis.paramonov.firebase.internal.data.repository.FriendRepositoryImpl
-import ru.kpfu.itis.paramonov.firebase.internal.data.repository.ResultRepositoryImpl
-import ru.kpfu.itis.paramonov.firebase.internal.data.repository.UserRepositoryImpl
+import ru.kpfu.itis.paramonov.firebase.external.repository.AuthenticationRepository
+import ru.kpfu.itis.paramonov.firebase.external.repository.FriendRepository
+import ru.kpfu.itis.paramonov.firebase.external.repository.ResultRepository
+import ru.kpfu.itis.paramonov.firebase.external.repository.UserRepository
+import ru.kpfu.itis.paramonov.firebase.internal.handler.RegistrationExceptionHandler
+import ru.kpfu.itis.paramonov.firebase.internal.handler.SignInExceptionHandler
+import ru.kpfu.itis.paramonov.firebase.internal.repository.AuthenticationRepositoryImpl
+import ru.kpfu.itis.paramonov.firebase.internal.repository.FriendRepositoryImpl
+import ru.kpfu.itis.paramonov.firebase.internal.repository.ResultRepositoryImpl
+import ru.kpfu.itis.paramonov.firebase.internal.repository.UserRepositoryImpl
 
 val firebaseModule = DI {
     bind<RegistrationExceptionHandler>() with provider { RegistrationExceptionHandler(resourceManager = instance()) }

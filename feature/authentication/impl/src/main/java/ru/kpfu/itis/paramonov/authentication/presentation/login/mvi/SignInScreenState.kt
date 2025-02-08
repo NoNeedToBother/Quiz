@@ -5,6 +5,6 @@ import ru.kpfu.itis.paramonov.core.model.presentation.UserModel
 data class SignInScreenState(
     val userData: UserModel?,
     val isLoading: Boolean = false,
-    val isPasswordCorrect: Boolean = false,
-    val isEmailCorrect: Boolean = false,
+    val passwordError: String? = null,
+    val emailError: String? = null,
 )

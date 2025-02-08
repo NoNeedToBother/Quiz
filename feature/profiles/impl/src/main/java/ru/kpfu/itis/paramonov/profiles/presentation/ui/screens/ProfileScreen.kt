@@ -153,7 +153,10 @@ fun ProfileScreen(
         }
         if (showProfileSettingsDialog)
             ProfileSettingsDialog(
-                onDismiss = { showProfileSettingsDialog = false },
+                onDismiss = {
+                    showProfileSettingsDialog = false
+                    viewModel.clearErrors()
+                },
                 onSave = { username, info ->
                     val params = mutableMapOf<String, String>()
                     username?.let { params.put(USERNAME_UPDATE_KEY, username) }
@@ -161,22 +164,31 @@ fun ProfileScreen(
                     viewModel.saveUserSettings(params)
                     showProfileSettingsDialog = false
                 },
-                checkUsername = { viewModel.checkUsername(it) }
+                checkUsername = { viewModel.validateUsername(it) },
+                usernameError = state.value.usernameError
             )
         if (showConfirmCredentialsDialog)
             ConfirmCredentialsDialog(
-                onDismiss = { showConfirmCredentialsDialog = false },
+                onDismiss = {
+                    showConfirmCredentialsDialog = false
+                    viewModel.clearErrors()
+                },
                 onSave = { email, password ->
                     if (email != null && password != null)
                         viewModel.confirmCredentials(email, password)
                     showConfirmCredentialsDialog = false
                 },
-                checkPassword = { viewModel.checkPassword(it) },
-                checkEmail = { viewModel.checkEmail(it) }
+                checkPassword = { viewModel.validatePassword(it) },
+                checkEmail = { viewModel.validateUsername(it) },
+                passwordError = state.value.passwordError,
+                emailError = state.value.emailError
             )
         if (showCredentialsDialog)
             CredentialsDialog(
-                onDismiss = { showCredentialsDialog = false },
+                onDismiss = {
+                    showCredentialsDialog = false
+                    viewModel.clearErrors()
+                },
                 onSave = { email, password, confirmPassword ->
                     if (password != null && confirmPassword != null) {
                         if (password == confirmPassword) viewModel.changeCredentials(email, password)
@@ -193,8 +205,12 @@ fun ProfileScreen(
                     }
                     showCredentialsDialog = false
                 },
-                checkEmail = { viewModel.checkEmail(it) },
-                checkPassword = { viewModel.checkPassword(it) },
+                checkEmail = { viewModel.validateEmail(it) },
+                checkPassword = { viewModel.validatePassword(it) },
+                checkConfirmPassword = { viewModel.validateConfirmPassword(it) },
+                emailError = state.value.emailError,
+                passwordError = state.value.passwordError,
+                confirmPasswordError = state.value.confirmPasswordError
             )
         error?.let {
             ErrorDialog(

@@ -5,8 +5,8 @@ import ru.kpfu.itis.paramonov.profiles.api.model.Result
 
 class ResultToFeatureProfilesResultMapper(
     private val firebaseUserToFeatureProfilesUserMapper: FirebaseUserToFeatureProfilesUserMapper
-): ModelMapper<ru.kpfu.itis.paramonov.firebase.external.domain.model.Result, Result> {
-    override fun map(model: ru.kpfu.itis.paramonov.firebase.external.domain.model.Result): Result {
+): ModelMapper<ru.kpfu.itis.paramonov.firebase.external.model.Result, Result> {
+    override fun map(model: ru.kpfu.itis.paramonov.firebase.external.model.Result): Result {
         return Result(
             id = model.id ?: "",
             user = firebaseUserToFeatureProfilesUserMapper.map(model.user),

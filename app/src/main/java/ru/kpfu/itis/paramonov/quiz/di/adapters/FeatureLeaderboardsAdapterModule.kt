@@ -8,9 +8,9 @@ import ru.kpfu.itis.paramonov.core.model.data.Category
 import ru.kpfu.itis.paramonov.core.model.data.Difficulty
 import ru.kpfu.itis.paramonov.core.model.data.GameMode
 import ru.kpfu.itis.paramonov.leaderboards.api.repository.QuestionSettingsRepository
-import ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettingsRepository as DatabaseQuestionSettingsRepository
+import ru.kpfu.itis.paramonov.database.external.repository.QuestionSettingsRepository as DatabaseQuestionSettingsRepository
 import ru.kpfu.itis.paramonov.leaderboards.api.repository.ResultRepository
-import ru.kpfu.itis.paramonov.firebase.external.domain.repository.ResultRepository as FirebaseResultRepository
+import ru.kpfu.itis.paramonov.firebase.external.repository.ResultRepository as FirebaseResultRepository
 import ru.kpfu.itis.paramonov.quiz.mapper.leaderboards.ResultToFeatureLeaderboardsResultMapper
 
 val featureLeaderboardsAdapterModule = DI.Module("FeatureLeaderboardsAdapterModule") {

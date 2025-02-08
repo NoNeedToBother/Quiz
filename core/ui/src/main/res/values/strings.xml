@@ -3,4 +3,6 @@
     <string name="empty"/>
     <string name="app_name">Quiz</string>
     <string name="empty_results">Nothing to see here…</string>
+
+    <string name="toggle">Toggle</string>
 </resources>

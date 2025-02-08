@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.dp
 import org.kodein.di.compose.localDI
 import org.kodein.di.instance
 import ru.kpfu.itis.paramonov.authentication.R
-import ru.kpfu.itis.paramonov.authentication.presentation.components.InputSection
 import ru.kpfu.itis.paramonov.authentication.presentation.components.Logo
-import ru.kpfu.itis.paramonov.authentication.presentation.components.PasswordSection
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.mvi.RegisterScreenSideEffect
 import ru.kpfu.itis.paramonov.authentication.presentation.registration.mvi.RegisterScreenState
 import ru.kpfu.itis.paramonov.ui.components.ErrorDialog
+import ru.kpfu.itis.paramonov.ui.components.InputSection
+import ru.kpfu.itis.paramonov.ui.components.PasswordInputSection
 
 @Composable
 fun RegisterScreen(
@@ -104,6 +104,7 @@ fun ScreenContent(
         ) {
             Logo()
             InputSections(
+                state = state,
                 username = username,
                 password = password,
                 confirmPassword = confirmPassword,
@@ -142,8 +143,10 @@ fun ScreenContent(
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = state.value.isPasswordCorrect && state.value.isUsernameCorrect
-                        && state.value.isConfirmPasswordCorrect && state.value.isEmailCorrect
+                enabled = state.value.passwordError != null && state.value.usernameError != null
+                        && state.value.confirmPasswordError != null && state.value.emailError != null
+                        && username.isNotEmpty() && password.isNotEmpty() &&
+                        confirmPassword.isNotEmpty() && email.isNotEmpty()
             ) {
                 Text(stringResource(R.string.register))
             }
@@ -163,6 +166,7 @@ fun ScreenContent(
 
 @Composable
 fun InputSections(
+    state: State<RegisterScreenState>,
     username: String,
     password: String,
     confirmPassword: String,
@@ -174,39 +178,43 @@ fun InputSections(
 ) {
     InputSection(
         value = username,
-        onValueChange = {
+        onInput = {
             onUsernameInput.invoke(username)
         },
-        label = stringResource(R.string.enter_username)
+        label = stringResource(R.string.enter_username),
+        error = state.value.usernameError
     )
 
     Spacer(modifier = Modifier.height(16.dp))
 
     InputSection(
         value = email,
-        onValueChange = {
+        onInput = {
             onEmailInput.invoke(email)
         },
-        label = stringResource(R.string.enter_email)
+        label = stringResource(R.string.enter_email),
+        error = state.value.emailError
     )
 
     Spacer(modifier = Modifier.height(16.dp))
 
-    PasswordSection(
+    PasswordInputSection(
         value = password,
-        onValueChange = {
+        onInput = {
             onPasswordInput.invoke(password)
         },
-        label = stringResource(R.string.enter_password)
+        label = stringResource(R.string.enter_password),
+        error = state.value.passwordError
     )
 
     Spacer(modifier = Modifier.height(16.dp))
 
-    PasswordSection(
+    PasswordInputSection(
         value = confirmPassword,
-        onValueChange = {
+        onInput = {
             onConfirmPasswordInput.invoke(confirmPassword)
         },
-        label = stringResource(R.string.confirm_password)
+        label = stringResource(R.string.confirm_password),
+        error = state.value.confirmPasswordError
     )
 }

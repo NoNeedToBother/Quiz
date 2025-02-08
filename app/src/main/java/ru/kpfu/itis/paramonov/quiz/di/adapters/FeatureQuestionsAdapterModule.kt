@@ -14,13 +14,13 @@ import ru.kpfu.itis.paramonov.questions.api.model.database.DatabaseQuestion
 import ru.kpfu.itis.paramonov.questions.api.repository.QuestionRepository
 import ru.kpfu.itis.paramonov.network.external.domain.repository.QuestionRepository as NetworkQuestionRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.QuestionSettingsRepository
-import ru.kpfu.itis.paramonov.database.external.domain.repository.QuestionSettingsRepository as DatabaseQuestionSettingsRepository
+import ru.kpfu.itis.paramonov.database.external.repository.QuestionSettingsRepository as DatabaseQuestionSettingsRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.ResultRepository
-import ru.kpfu.itis.paramonov.firebase.external.domain.repository.ResultRepository as FirebaseResultRepository
+import ru.kpfu.itis.paramonov.firebase.external.repository.ResultRepository as FirebaseResultRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.SavedQuestionRepository
-import ru.kpfu.itis.paramonov.database.external.domain.repository.SavedQuestionRepository as DatabaseSavedQuestionRepository
+import ru.kpfu.itis.paramonov.database.external.repository.SavedQuestionRepository as DatabaseSavedQuestionRepository
 import ru.kpfu.itis.paramonov.questions.api.repository.UserRepository
-import ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository as FirebaseUserRepository
+import ru.kpfu.itis.paramonov.firebase.external.repository.UserRepository as FirebaseUserRepository
 import ru.kpfu.itis.paramonov.quiz.mapper.questions.DatabaseQuestionToFeatureQuestionsDatabaseQuestionMapper
 import ru.kpfu.itis.paramonov.quiz.mapper.questions.FeatureQuestionsDatabaseQuestionToDatabaseQuestionMapper
 import ru.kpfu.itis.paramonov.quiz.mapper.questions.FeatureQuestionsResultToResultMapper

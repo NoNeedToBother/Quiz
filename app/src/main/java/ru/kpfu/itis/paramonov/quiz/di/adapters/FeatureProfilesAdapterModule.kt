@@ -16,7 +16,7 @@ import ru.kpfu.itis.paramonov.quiz.mapper.profiles.ResultToFeatureProfilesResult
 
 val featureProfilesAdapterModule = DI.Module("") {
     bind<FriendRepository>() with provider {
-        val friendRepository: ru.kpfu.itis.paramonov.firebase.external.domain.repository.FriendRepository
+        val friendRepository: ru.kpfu.itis.paramonov.firebase.external.repository.FriendRepository
                 = instance()
         object : FriendRepository {
             override suspend fun sendFriendRequest(id: String) {
@@ -32,7 +32,7 @@ val featureProfilesAdapterModule = DI.Module("") {
     }
 
     bind<ResultRepository>() with provider {
-        val resultRepository: ru.kpfu.itis.paramonov.firebase.external.domain.repository.ResultRepository
+        val resultRepository: ru.kpfu.itis.paramonov.firebase.external.repository.ResultRepository
             = instance()
         val resultToFeatureProfilesResultMapper: ResultToFeatureProfilesResultMapper = instance()
 
@@ -53,7 +53,7 @@ val featureProfilesAdapterModule = DI.Module("") {
     }
 
     bind<UserRepository>() with provider {
-        val userRepository: ru.kpfu.itis.paramonov.firebase.external.domain.repository.UserRepository
+        val userRepository: ru.kpfu.itis.paramonov.firebase.external.repository.UserRepository
             = instance()
         val firebaseUserToFeatureProfilesUserMapper: FirebaseUserToFeatureProfilesUserMapper = instance()
 
